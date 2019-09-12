@@ -30,7 +30,13 @@ namespace MvcTemplate.Components.Mvc
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception, "An unhandled exception has occurred while executing the request.");
+                try
+                {
+                    Logger.LogError(exception, "An unhandled exception has occurred while executing the request.");
+                }
+                catch
+                {
+                }
 
                 View(context, "/home/error");
             }
