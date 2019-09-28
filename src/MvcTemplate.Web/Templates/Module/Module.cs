@@ -92,10 +92,10 @@ namespace MvcTemplate.Web.Templates
                 AddResource("Page", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
                 AddResource("Page", "Titles", $"{Area}{Controller}Edit", $"{Model.Humanize()} edit");
 
-                AddResource("Shared", "Areas", Area, Area.Humanize());
+                AddResource("Shared", "Areas", Area, Area?.Humanize());
                 AddResource("Shared", "Controllers", $"{Area}{Controller}", Model.Pluralize().Humanize());
 
-                AddResource("SiteMap", "Titles", Area, Area.Humanize());
+                AddResource("SiteMap", "Titles", Area, Area?.Humanize());
                 AddResource("SiteMap", "Titles", $"{Area}{Controller}Create", "Create");
                 AddResource("SiteMap", "Titles", $"{Area}{Controller}Delete", "Delete");
                 AddResource("SiteMap", "Titles", $"{Area}{Controller}Details", "Details");
@@ -250,11 +250,11 @@ namespace MvcTemplate.Web.Templates
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
             Dictionary<String, SortedDictionary<String, String>> resources = JsonConvert.DeserializeObject<Dictionary<String, SortedDictionary<String, String>>>(page);
 
-            if (resources[group].ContainsKey(key))
+            if (key != null && resources[group].ContainsKey(key))
             {
                 Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
             }
-            else
+            else if (key != null)
             {
                 resources[group][key] = value;
 
