@@ -1,5 +1,5 @@
 Validator = {
-    init: function () {
+    init() {
         Wellidate.prototype.rules.date.isValid = function () {
             return !this.element.value || moment(this.element.value).isValid();
         };
@@ -17,21 +17,21 @@ Validator = {
         };
 
         Wellidate.prototype.rules.range.isValid = function () {
-            var value = numbro(this.element.value).value();
+            const value = numbro(this.element.value).value();
 
             return !this.element.value || this.min <= value && value <= this.max;
         };
 
         Wellidate.prototype.rules.greater.isValid = function () {
-            var value = numbro(this.element.value).value();
+            const value = numbro(this.element.value).value();
 
             return !this.element.value || this.min <= value && value <= this.max;
         };
 
-        document.addEventListener('wellidate-error', function (e) {
+        document.addEventListener('wellidate-error', e => {
             if (event.target.classList.contains('mvc-lookup-value')) {
-                var wellidate = e.detail.validatable.wellidate;
-                var control = new MvcLookup(event.target).control;
+                const wellidate = e.detail.validatable.wellidate;
+                const control = new MvcLookup(event.target).control;
 
                 control.classList.add(wellidate.inputErrorClass);
                 control.classList.remove(wellidate.inputValidClass);
@@ -39,10 +39,10 @@ Validator = {
             }
         });
 
-        document.addEventListener('wellidate-success', function (e) {
+        document.addEventListener('wellidate-success', e => {
             if (event.target.classList.contains('mvc-lookup-value')) {
-                var wellidate = e.detail.validatable.wellidate;
-                var control = new MvcLookup(event.target).control;
+                const wellidate = e.detail.validatable.wellidate;
+                const control = new MvcLookup(event.target).control;
 
                 control.classList.add(wellidate.inputValidClass);
                 control.classList.remove(wellidate.inputErrorClass);
@@ -50,14 +50,12 @@ Validator = {
             }
         });
 
-        [].forEach.call(document.querySelectorAll('.mvc-lookup-value.input-validation-error'), function (value) {
-            return new MvcLookup(value).control.classList.add('input-validation-error');
+        document.querySelectorAll('.mvc-lookup-value.input-validation-error').forEach(value => {
+            new MvcLookup(value).control.classList.add('input-validation-error');
         });
 
-        [].forEach.call(document.querySelectorAll('form'), function (form) {
-            return new Wellidate(form, {
-                wasValidatedClass: 'validated'
-            });
-        });
+        document.querySelectorAll('form').forEach(form => new Wellidate(form, {
+            wasValidatedClass: 'validated'
+        }));
     }
 };

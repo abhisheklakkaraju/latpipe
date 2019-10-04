@@ -12,27 +12,27 @@
 
 // Read only binding
 (function () {
-    [].forEach.call(document.querySelectorAll('.widget-box.readonly'), function (widget) {
-        [].forEach.call(widget.querySelectorAll('.mvc-lookup'), function (element) {
-            return new MvcLookup(element, { readonly: true });
+    document.querySelectorAll('.widget-box.readonly').forEach(widget => {
+        widget.querySelectorAll('.mvc-lookup').forEach(element => {
+            new MvcLookup(element, { readonly: true });
         });
 
-        [].forEach.call(widget.querySelectorAll('.mvc-tree'), function (element) {
-            return new MvcTree(element, { readonly: true });
+        widget.querySelectorAll('.mvc-tree').forEach(element => {
+            new MvcTree(element, { readonly: true });
         });
 
-        [].forEach.call(widget.querySelectorAll('textarea'), function (textarea) {
+        widget.querySelectorAll('textarea').forEach(textarea => {
             textarea.readOnly = true;
             textarea.tabIndex = -1;
         });
 
-        [].forEach.call(widget.querySelectorAll('input'), function (input) {
+        widget.querySelectorAll('input').forEach(input => {
             input.readOnly = true;
             input.tabIndex = -1;
         });
     });
 
-    window.addEventListener('click', function (e) {
+    window.addEventListener('click', e => {
         if (e.target && e.target.readOnly) {
             e.preventDefault();
         }
@@ -41,13 +41,13 @@
 
 // Input focus binding
 (function () {
-    var invalidInput = document.querySelector('.input-validation-error[type=text]:not([readonly]):not(.datepicker):not(.datetimepicker)');
+    const invalidInput = document.querySelector('.input-validation-error[type=text]:not([readonly]):not(.datepicker):not(.datetimepicker)');
 
     if (invalidInput) {
         invalidInput.setSelectionRange(0, invalidInput.value.length);
         invalidInput.focus();
     } else {
-        var input = document.querySelector('input[type=text]:not([readonly]):not(.datepicker):not(.datetimepicker)');
+        const input = document.querySelector('input[type=text]:not([readonly]):not(.datepicker):not(.datetimepicker)');
 
         if (input) {
             input.setSelectionRange(0, input.value.length);

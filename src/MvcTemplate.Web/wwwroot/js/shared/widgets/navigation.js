@@ -1,14 +1,10 @@
 Navigation = {
-    init: function () {
-        var navigation = this;
+    init() {
+        const navigation = this;
 
         navigation.element = document.querySelector('.navigation');
-        navigation.nodes = [].map.call(navigation.element.querySelectorAll('li'), function (node) {
-            return node;
-        });
-        navigation.activeNodes = [].map.call(navigation.element.querySelectorAll('.has-active'), function (node) {
-            return node;
-        });
+        navigation.nodes = navigation.element.querySelectorAll('li');
+        navigation.activeNodes = navigation.element.querySelectorAll('.has-active');
 
         if (navigation.element) {
             navigation.search = navigation.element.querySelector('input');
@@ -17,33 +13,33 @@ Navigation = {
                 navigation.filter(this.value);
             });
 
-            navigation.nodes.filter(function (node) {
-                return node.classList.contains('submenu');
-            }).forEach(function (submenu) {
-                submenu.firstElementChild.addEventListener('click', function (e) {
-                    e.preventDefault();
+            [].map.call(navigation.nodes, node => node)
+                .filter(node => node.classList.contains('submenu'))
+                .forEach(submenu => {
+                    submenu.firstElementChild.addEventListener('click', e => {
+                        e.preventDefault();
 
-                    submenu.classList.toggle('open');
+                        submenu.classList.toggle('open');
 
-                    if (navigation.element.clientWidth < 100) {
-                        [].forEach.call(submenu.parentElement.children, function (sibling) {
-                            if (sibling != submenu) {
-                                sibling.classList.remove('open');
-                            }
-                        });
-                    }
+                        if (navigation.element.clientWidth < 100) {
+                            [].forEach.call(submenu.parentElement.children, sibling => {
+                                if (sibling != submenu) {
+                                    sibling.classList.remove('open');
+                                }
+                            });
+                        }
+                    });
                 });
-            });
 
-            window.addEventListener('resize', function () {
+            window.addEventListener('resize', () => {
                 if (navigation.element.clientWidth < 100) {
                     navigation.closeAll();
                 }
             });
 
-            window.addEventListener('click', function (e) {
+            window.addEventListener('click', e => {
                 if (navigation.element.clientWidth < 100) {
-                    var target = e && e.target;
+                    let target = e && e.target;
 
                     while (target && !/navigation/.test(target.className)) {
                         target = target.parentElement;
@@ -61,33 +57,33 @@ Navigation = {
         }
     },
 
-    filter: function (term) {
+    filter(term) {
         this.search.value = term;
         term = term.toLowerCase();
 
-        this.nodes.forEach(function (node) {
+        this.nodes.forEach(node => {
             node.classList.remove('open');
             node.style.display = '';
         });
 
         if (term) {
-            [].forEach.call(this.element.lastElementChild.children, function (node) {
+            [].forEach.call(this.element.lastElementChild.children, node => {
                 filterNode(node, term);
             });
         } else {
-            this.activeNodes.forEach(function (node) {
+            this.activeNodes.forEach(node => {
                 node.classList.add('open');
             });
         }
 
         function filterNode(element, term) {
-            var text = element.firstElementChild.querySelector('.text').textContent.toLowerCase();
-            var matches = text.indexOf(term) >= 0;
+            const text = element.firstElementChild.querySelector('.text').textContent.toLowerCase();
+            const matches = text.includes(term);
 
             if (element.classList.contains('submenu')) {
-                var children = element.lastElementChild.children;
+                const children = element.lastElementChild.children;
 
-                for (var i = 0; i < children.length; i++) {
+                for (let i = 0; i < children.length; i++) {
                     if (filterNode(children[i], term)) {
                         element.classList.add('open');
                     }
@@ -102,8 +98,8 @@ Navigation = {
         }
     },
 
-    closeAll: function () {
-        this.nodes.forEach(function (node) {
+    closeAll() {
+        this.nodes.forEach(node => {
             node.classList.remove('open');
         });
     }

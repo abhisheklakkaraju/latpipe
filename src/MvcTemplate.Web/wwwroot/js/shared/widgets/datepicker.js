@@ -1,9 +1,9 @@
 Datepicker = {
-    init: function () {
+    init() {
         if (typeof rome == 'function') {
-            var dateFormat = moment().locale(document.documentElement.lang)._locale._longDateFormat.L;
+            const dateFormat = moment().locale(document.documentElement.lang)._locale._longDateFormat.L;
 
-            [].forEach.call(document.querySelectorAll('.datepicker'), function (date) {
+            document.querySelectorAll('.datepicker').forEach(date => {
                 rome(date, {
                     styles: {
                         container: 'rd-container date-container'
@@ -15,12 +15,12 @@ Datepicker = {
                 });
             });
 
-            [].forEach.call(document.querySelectorAll('.datetimepicker'), function (date) {
+            document.querySelectorAll('.datetimepicker').forEach(date => {
                 rome(date, {
                     styles: {
                         container: 'rd-container datetime-container'
                     },
-                    inputFormat: dateFormat + ' HH:mm',
+                    inputFormat: `${dateFormat} HH:mm`,
                     monthFormat: 'YYYY MMMM',
                     timeInterval: 900,
                     autoClose: false,

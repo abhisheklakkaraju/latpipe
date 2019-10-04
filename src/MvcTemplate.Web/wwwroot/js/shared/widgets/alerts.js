@@ -1,5 +1,5 @@
 Alerts = {
-    init: function () {
+    init() {
         this.element = document.querySelector('.alerts');
 
         if (this.element) {
@@ -7,13 +7,13 @@ Alerts = {
         }
     },
 
-    show: function (alerts) {
+    show(alerts) {
         alerts = [].concat(alerts);
-        for (var i = 0; i < alerts.length; i++) {
-            var alert = document.getElementById(alerts[i].id) || emptyAlert();
+        for (let i = 0; i < alerts.length; i++) {
+            const alert = document.getElementById(alerts[i].id) || emptyAlert();
 
             alert.setAttribute('data-timeout', alerts[i].timeout || 0);
-            alert.className = 'alert alert-' + getType(alerts[i].type);
+            alert.className = `alert alert-${getType(alerts[i].type)}`;
             alert.children[0].innerText = alerts[i].message || '';
             alert.id = alerts[i].id || '';
 
@@ -22,9 +22,9 @@ Alerts = {
         }
 
         function emptyAlert() {
-            var alert = document.createElement('div');
-            var close = document.createElement('span');
-            var message = document.createElement('span');
+            const alert = document.createElement('div');
+            const close = document.createElement('span');
+            const message = document.createElement('span');
 
             close.innerHTML = '&#x00D7;';
             close.className = 'close';
@@ -50,23 +50,23 @@ Alerts = {
             }
         }
     },
-    bind: function (alert) {
+    bind(alert) {
         if (alert.dataset.timeout > 0) {
-            setTimeout(function () {
+            setTimeout(() => {
                 alert.querySelector('.close').click();
             }, alert.dataset.timeout);
         }
     },
-    close: function (id) {
-        document.querySelector('#' + id + ' .close').click();
+    close(id) {
+        document.querySelector(`#${id} .close`).click();
     },
-    closeAll: function () {
-        [].forEach.call(this.element.querySelectorAll('.close'), function (close) {
+    closeAll() {
+        this.element.querySelectorAll('.close').forEach(close => {
             close.click();
         });
     },
 
-    clear: function () {
+    clear() {
         this.element.innerHTML = '';
     }
 };

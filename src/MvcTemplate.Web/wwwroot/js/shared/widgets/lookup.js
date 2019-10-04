@@ -1,8 +1,8 @@
 Lookup = {
-    init: function () {
+    init() {
         if (typeof MvcLookup == 'function') {
-            [].forEach.call(document.querySelectorAll('.mvc-lookup'), function (element) {
-                return new MvcLookup(element);
+            document.querySelectorAll('.mvc-lookup').forEach(element => {
+                new MvcLookup(element);
             });
         }
     }

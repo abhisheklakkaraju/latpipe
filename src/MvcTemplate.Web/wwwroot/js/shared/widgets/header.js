@@ -1,5 +1,5 @@
 Header = {
-    init: function () {
+    init() {
         Header.languages = document.querySelector('.header .dropdown');
 
         if (Header.languages) {
