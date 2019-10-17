@@ -32,13 +32,13 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(1)));
+            Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(2)));
         }
 
         [Fact]
         public void CanCreate_Valid@(Model.ModelShortName)()
         {
-            Assert.True(validator.CanCreate(ObjectsFactory.Create@(Model.View)(1)));
+            Assert.True(validator.CanCreate(ObjectsFactory.Create@(Model.View)(2)));
             Assert.Empty(validator.ModelState);
             Assert.Empty(validator.Alerts);
         }
@@ -48,13 +48,13 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id)));
+            Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)()));
         }
 
         [Fact]
         public void CanEdit_Valid@(Model.ModelShortName)()
         {
-            Assert.True(validator.CanEdit(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id)));
+            Assert.True(validator.CanEdit(ObjectsFactory.Create@(Model.View)()));
             Assert.Empty(validator.ModelState);
             Assert.Empty(validator.Alerts);
         }

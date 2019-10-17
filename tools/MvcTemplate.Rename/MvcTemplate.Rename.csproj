@@ -4,7 +4,7 @@
     <Version>1.1.0</Version>
     <OutputType>Exe</OutputType>
     <GenerateFullPaths>true</GenerateFullPaths>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 

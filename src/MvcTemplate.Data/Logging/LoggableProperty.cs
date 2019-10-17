@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 
 namespace MvcTemplate.Data.Logging
 {
@@ -35,7 +35,7 @@ namespace MvcTemplate.Data.Logging
             if (value is DateTime date)
                 return $"\"{date:yyyy-MM-dd HH:mm:ss}\"";
 
-            return JsonConvert.ToString(value);
+            return JsonSerializer.Serialize(value);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security;
@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MvcTemplate.Components.Extensions
 {
@@ -21,7 +20,8 @@ namespace MvcTemplate.Components.Extensions
             if (!IsAuthorizedFor(columns.Grid.ViewContext, action))
                 return new GridColumn<T, IHtmlContent>(columns.Grid, model => null);
 
-            UrlHelper url = new UrlHelper(columns.Grid.ViewContext);
+            IUrlHelperFactory factory = columns.Grid.ViewContext.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            IUrlHelper url = factory.GetUrlHelper(columns.Grid.ViewContext);
 
             return columns
                 .Add(model => GenerateLink(model, url, action, iconClass))
@@ -83,7 +83,7 @@ namespace MvcTemplate.Components.Extensions
                 .Sortable();
         }
 
-        private static IHtmlContent GenerateLink<T>(T model, UrlHelper url, String action, String iconClass)
+        private static IHtmlContent GenerateLink<T>(T model, IUrlHelper url, String action, String iconClass)
         {
             TagBuilder link = new TagBuilder("a");
             link.Attributes["href"] = url.Action(action, RouteFor(model));

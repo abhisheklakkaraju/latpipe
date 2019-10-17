@@ -176,7 +176,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_Account()
         {
-            AccountCreateView view = ObjectsFactory.CreateAccountCreateView(1);
+            AccountCreateView view = ObjectsFactory.CreateAccountCreateView(2);
             view.Email = view.Email.ToUpper();
             view.RoleId = account.RoleId;
 
@@ -198,7 +198,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_Account()
         {
-            AccountEditView view = ObjectsFactory.CreateAccountEditView(account.Id);
+            AccountEditView view = ObjectsFactory.CreateAccountEditView();
             view.IsLocked = account.IsLocked = !account.IsLocked;
             view.Username = $"{account.Username}Test";
             view.RoleId = account.RoleId = null;

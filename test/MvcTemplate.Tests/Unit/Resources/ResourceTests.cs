@@ -1,10 +1,10 @@
 ﻿using MvcTemplate.Objects;
 using MvcTemplate.Tests;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using System.Text.Json;
 using Xunit;
 
 namespace MvcTemplate.Resources.Tests
@@ -338,7 +338,7 @@ namespace MvcTemplate.Resources.Tests
         {
             String resource = File.ReadAllText(Path.Combine("Resources", $"{path}.json"));
 
-            return JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, String>>>(resource)[group][key];
+            return JsonSerializer.Deserialize<Dictionary<String, Dictionary<String, String>>>(resource)[group][key];
         }
     }
 }

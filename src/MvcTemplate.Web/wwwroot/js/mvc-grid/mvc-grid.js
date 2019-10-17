@@ -1,5 +1,5 @@
 /*!
- * Mvc.Grid 5.0.0
+ * Mvc.Grid 5.0.1
  * https://github.com/NonFactors/MVC6.Grid
  *
  * Copyright © NonFactors
@@ -314,7 +314,7 @@ var MvcGrid = (function () {
                 });
             } else {
                 event = document.createEvent('Event');
-                event.initEvent(type, true, true);
+                event.initEvent(type, true, false);
                 event.detail = detail;
             }
 
@@ -341,7 +341,7 @@ var MvcGrid = (function () {
                             });
                         } else {
                             typedEvent = document.createEvent('Event');
-                            typedEvent.initEvent('rowclick', true, true);
+                            typedEvent.initEvent('rowclick', true, false);
                             typedEvent.detail = detail;
                         }
 

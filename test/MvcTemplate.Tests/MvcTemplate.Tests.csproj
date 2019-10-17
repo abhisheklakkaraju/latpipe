@@ -4,7 +4,7 @@
     <Version>1.1.0</Version>
     <OutputType>Exe</OutputType>
     <GenerateFullPaths>true</GenerateFullPaths>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <GenerateProgramFile>false</GenerateProgramFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType Condition="'$(Configuration)'=='Debug'">portable</DebugType>
@@ -18,12 +18,12 @@
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="Castle.Core" Version="4.4.0" />
-    <PackageReference Include="NSubstitute" Version="4.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.10" />
+    <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.11" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

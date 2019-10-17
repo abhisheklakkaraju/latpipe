@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Resources;
@@ -31,23 +32,25 @@ namespace MvcTemplate.Components.Mvc
             String area = context.RouteData.Values["area"] as String;
             String action = context.RouteData.Values["action"] as String;
             String controller = context.RouteData.Values["controller"] as String;
-            List<SiteMapNode> nodes = SetState(Tree, context, area, controller, action);
+            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            List<SiteMapNode> nodes = SetState(Tree, factory.GetUrlHelper(context), area, controller, action);
 
             return Authorize(account, nodes);
         }
         public IEnumerable<SiteMapNode> BreadcrumbFor(ViewContext context)
         {
-            UrlHelper url = new UrlHelper(context);
-            String area = context.RouteData.Values["area"] as String;
-            String action = context.RouteData.Values["action"] as String;
+            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
             String controller = context.RouteData.Values["controller"] as String;
+            String action = context.RouteData.Values["action"] as String;
+            String area = context.RouteData.Values["area"] as String;
+            List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
+            IUrlHelper url = factory.GetUrlHelper(context);
 
             SiteMapNode current = Nodes.SingleOrDefault(node =>
                 String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
                 String.Equals(node.Action, action, StringComparison.OrdinalIgnoreCase) &&
                 String.Equals(node.Controller, controller, StringComparison.OrdinalIgnoreCase));
 
-            List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
             while (current != null)
             {
                 breadcrumb.Insert(0, new SiteMapNode
@@ -67,10 +70,9 @@ namespace MvcTemplate.Components.Mvc
             return breadcrumb;
         }
 
-        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, ViewContext context, String area, String controller, String action)
+        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, String area, String controller, String action)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
-            UrlHelper url = new UrlHelper(context);
 
             foreach (SiteMapNode node in nodes)
             {
@@ -84,7 +86,7 @@ namespace MvcTemplate.Components.Mvc
                 copy.Action = node.Action;
                 copy.Area = node.Area;
 
-                copy.Children = SetState(node.Children, context, area, controller, action);
+                copy.Children = SetState(node.Children, url, area, controller, action);
                 copy.HasActiveChildren = copy.Children.Any(child => child.IsActive || child.HasActiveChildren);
                 copy.IsActive =
                     copy.Children.Any(child => child.IsActive && !child.IsMenu) ||
@@ -158,7 +160,7 @@ namespace MvcTemplate.Components.Mvc
                 .Where(attribute => attribute.Name.LocalName.StartsWith("route-"))
                 .ToDictionary(attribute => attribute.Name.LocalName.Substring(6), attribute => attribute.Value);
         }
-        private String FormUrl(UrlHelper url, SiteMapNode node)
+        private String FormUrl(IUrlHelper url, SiteMapNode node)
         {
             if (node.Action == null)
                 return "#";

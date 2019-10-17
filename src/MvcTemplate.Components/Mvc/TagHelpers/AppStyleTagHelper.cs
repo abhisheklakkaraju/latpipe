@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -21,7 +23,9 @@ namespace MvcTemplate.Components.Mvc
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; }
 
-        private IHostingEnvironment Environment { get; }
+        private IWebHostEnvironment Environment { get; }
+
+        private Func<ActionContext, IUrlHelper> UrlFactory { get; }
 
         private static ConcurrentDictionary<String, String> Styles { get; }
 
@@ -29,9 +33,10 @@ namespace MvcTemplate.Components.Mvc
         {
             Styles = new ConcurrentDictionary<String, String>();
         }
-        public AppStyleTagHelper(IHostingEnvironment environment)
+        public AppStyleTagHelper(IWebHostEnvironment environment, IUrlHelperFactory url)
         {
             Environment = environment;
+            UrlFactory = url.GetUrlHelper;
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -43,7 +48,7 @@ namespace MvcTemplate.Components.Mvc
                 Styles[path] = null;
 
                 if (ScriptsAvailable(path))
-                    Styles[path] = new UrlHelper(ViewContext).Content($"~/css/application/{path}");
+                    Styles[path] = UrlFactory(ViewContext).Content($"~/css/application/{path}");
             }
 
             if (Styles[path] == null)

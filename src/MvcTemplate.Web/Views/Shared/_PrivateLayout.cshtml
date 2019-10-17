@@ -115,7 +115,7 @@
                     <div class="alerts col-12">
                         @if (TempData["Alerts"] is String alerts)
                         {
-                            foreach (Alert alert in JsonConvert.DeserializeObject<Alerts>(alerts))
+                            foreach (Alert alert in JsonSerializer.Deserialize<Alerts>(alerts))
                             {
                                 <div id="@alert.Id" class="alert alert-@alert.Type.ToString().ToLowerInvariant() fade show" data-timeout="@alert.Timeout">
                                     <span>@alert.Message</span>

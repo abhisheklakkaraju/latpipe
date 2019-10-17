@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Resources;
@@ -21,13 +22,15 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public SiteMapTests()
         {
-            IRouter router = Substitute.For<IRouter>();
+            IUrlHelper url = Substitute.For<IUrlHelper>();
             authorization = Substitute.For<IAuthorization>();
             siteMap = new SiteMap(CreateSiteMap(), authorization);
             context = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
-            router.GetVirtualPath(Arg.Any<VirtualPathContext>()).Returns(new VirtualPathData(router, "/test"));
-            context.RouteData.Routers.Add(router);
+            context.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
+            factory.GetUrlHelper(context).Returns(url);
             route = context.RouteData.Values;
         }
 

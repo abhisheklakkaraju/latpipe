@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MvcTemplate.Data.Migrations
@@ -13,7 +12,7 @@ namespace MvcTemplate.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     AccountId = table.Column<int>(nullable: true),
                     Action = table.Column<string>(maxLength: 16, nullable: false),
@@ -31,7 +30,7 @@ namespace MvcTemplate.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Area = table.Column<string>(maxLength: 64, nullable: true),
                     Controller = table.Column<string>(maxLength: 64, nullable: false),
@@ -47,7 +46,7 @@ namespace MvcTemplate.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Title = table.Column<string>(maxLength: 128, nullable: false)
                 },
@@ -61,7 +60,7 @@ namespace MvcTemplate.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Username = table.Column<string>(maxLength: 32, nullable: false),
                     Passhash = table.Column<string>(maxLength: 64, nullable: false),
@@ -87,7 +86,7 @@ namespace MvcTemplate.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     RoleId = table.Column<int>(nullable: false),
                     PermissionId = table.Column<int>(nullable: false)

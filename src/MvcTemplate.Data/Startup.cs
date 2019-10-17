@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MvcTemplate.Data.Core;
 using System.IO;
 
@@ -11,7 +11,7 @@ namespace MvcTemplate.Data
     {
         private IConfiguration Config { get; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             Config = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)

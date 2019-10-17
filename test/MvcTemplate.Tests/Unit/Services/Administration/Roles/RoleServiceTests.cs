@@ -177,7 +177,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_Role()
         {
-            RoleView view = ObjectsFactory.CreateRoleView(1);
+            RoleView view = ObjectsFactory.CreateRoleView();
 
             service.Create(view);
 
@@ -191,7 +191,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_RolePermissions()
         {
-            RoleView view = ObjectsFactory.CreateRoleView(1);
+            RoleView view = ObjectsFactory.CreateRoleView();
             view.Permissions = CreatePermissions();
 
             service.Create(view);
@@ -210,7 +210,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_Role()
         {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id);
+            RoleView view = ObjectsFactory.CreateRoleView();
             view.Title = role.Title += "Test";
 
             service.Edit(view);
@@ -226,11 +226,11 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_RolePermissions()
         {
-            Permission permission = ObjectsFactory.CreatePermission();
+            Permission permission = ObjectsFactory.CreatePermission(100);
             context.Add(permission);
             context.SaveChanges();
 
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id);
+            RoleView view = ObjectsFactory.CreateRoleView();
             view.Permissions = CreatePermissions();
             view.Permissions.SelectedIds.Remove(view.Permissions.SelectedIds.First());
             view.Permissions.SelectedIds.Add(permission.Id);

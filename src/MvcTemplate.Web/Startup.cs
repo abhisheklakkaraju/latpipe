@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Logging;
@@ -34,11 +34,13 @@ namespace MvcTemplate.Web
     {
         private IConfiguration Config { get; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostEnvironment env)
         {
-            Dictionary<String, String> config = new Dictionary<String, String>();
-            config.Add("Application:Path", env.ContentRootPath);
-            config.Add("Application:Env", env.EnvironmentName);
+            Dictionary<String, String> config = new Dictionary<String, String>
+            {
+                { "Application:Path", env.ContentRootPath },
+                { "Application:Env", env.EnvironmentName }
+            };
 
             Config = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -47,61 +49,26 @@ namespace MvcTemplate.Web
                 .AddJsonFile("configuration.json")
                 .AddJsonFile($"configuration.{env.EnvironmentName.ToLower()}.json", optional: true)
                 .Build();
-
-            RegisterViewResources();
         }
+
         public void Configure(IApplicationBuilder app)
         {
             RegisterMiddleware(app);
-            RegisterMvc(app);
+            RegisterResources();
 
             UpdateDatabase(app);
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            RegisterMvc(services);
-            RegisterLogging(services);
-            RegisterServices(services);
-            RegisterLowercaseUrls(services);
-            RegisterSecureResponse(services);
+            ConfigureMvc(services);
+            ConfigureOptions(services);
+            ConfigureDependencies(services);
         }
 
-        public void RegisterViewResources()
-        {
-            if (Config["Resources:Path"] is String path)
-            {
-                String directory = Path.Combine(Config["Application:Path"], path);
-                if (Directory.Exists(directory))
-                {
-                    foreach (String resource in Directory.GetFiles(directory, "*.json", SearchOption.AllDirectories))
-                    {
-                        String type = Path.GetFileNameWithoutExtension(resource);
-                        String language = Path.GetExtension(type).TrimStart('.');
-                        type = Path.GetFileNameWithoutExtension(type);
-
-                        Resource.Set(type).Override(language, File.ReadAllText(resource));
-                    }
-                }
-            }
-
-            foreach (Type view in typeof(BaseView).Assembly.GetTypes())
-            {
-                Type type = view;
-
-                while (typeof(BaseView).IsAssignableFrom(type.BaseType))
-                {
-                    Resource.Set(view.Name).Inherit(Resource.Set(type.BaseType.Name));
-
-                    type = type.BaseType;
-                }
-            }
-        }
-
-        public void RegisterMvc(IServiceCollection services)
+        private void ConfigureMvc(IServiceCollection services)
         {
             services
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add<LanguageFilter>())
                 .AddMvcOptions(options => options.Filters.Add<AuthorizationFilter>())
                 .AddMvcOptions(options => ModelMessagesProvider.Set(options.ModelBindingMessageProvider))
@@ -110,6 +77,7 @@ namespace MvcTemplate.Web
                 .AddMvcOptions(options => options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider()))
                 .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new NumberValidatorProvider()))
                 .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()));
+
 
             services.AddAuthentication("Cookies").AddCookie(authentication =>
             {
@@ -122,15 +90,24 @@ namespace MvcTemplate.Web
                 filters.BooleanFalseOptionText = () => Resource.ForString("No");
                 filters.BooleanTrueOptionText = () => Resource.ForString("Yes");
             });
-        }
-        public void RegisterLogging(IServiceCollection services)
-        {
-            if (Config["Application:Env"] != EnvironmentName.Development)
-                services.AddLogging(builder => builder.AddProvider(new FileLoggerProvider(Config)));
-            else
+
+            if (Config["Application:Env"] == Environments.Development)
                 services.AddLogging(builder => builder.AddConsole());
+            else
+                services.AddLogging(builder => builder.AddProvider(new FileLoggerProvider(Config)));
         }
-        public void RegisterServices(IServiceCollection services)
+        private void ConfigureOptions(IServiceCollection services)
+        {
+            services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData:Name"]);
+            services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session:Name"]);
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.Configure<AntiforgeryOptions>(antiforgery =>
+            {
+                antiforgery.Cookie.Name = Config["Cookies:Antiforgery:Name"];
+                antiforgery.FormFieldName = "_Token_";
+            });
+        }
+        private void ConfigureDependencies(IServiceCollection services)
         {
             services.AddSession();
             services.AddSingleton(Config);
@@ -162,24 +139,40 @@ namespace MvcTemplate.Web
             services.AddTransientImplementations<IService>();
             services.AddTransientImplementations<IValidator>();
         }
-        public void RegisterLowercaseUrls(IServiceCollection services)
-        {
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-        }
-        public void RegisterSecureResponse(IServiceCollection services)
-        {
-            services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData:Name"]);
-            services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session:Name"]);
-            services.Configure<AntiforgeryOptions>(antiforgery =>
-            {
-                antiforgery.Cookie.Name = Config["Cookies:Antiforgery:Name"];
-                antiforgery.FormFieldName = "_Token_";
-            });
-        }
 
-        public void RegisterMiddleware(IApplicationBuilder app)
+        private void RegisterResources()
         {
-            if (Config["Application:Env"] == EnvironmentName.Development)
+            if (Config["Resources:Path"] is String path)
+            {
+                String directory = Path.Combine(Config["Application:Path"], path);
+                if (Directory.Exists(directory))
+                {
+                    foreach (String resource in Directory.GetFiles(directory, "*.json", SearchOption.AllDirectories))
+                    {
+                        String type = Path.GetFileNameWithoutExtension(resource);
+                        String language = Path.GetExtension(type).TrimStart('.');
+                        type = Path.GetFileNameWithoutExtension(type);
+
+                        Resource.Set(type).Override(language, File.ReadAllText(resource));
+                    }
+                }
+            }
+
+            foreach (Type view in typeof(BaseView).Assembly.GetTypes())
+            {
+                Type type = view;
+
+                while (typeof(BaseView).IsAssignableFrom(type.BaseType))
+                {
+                    Resource.Set(view.Name).Inherit(Resource.Set(type.BaseType.Name));
+
+                    type = type.BaseType;
+                }
+            }
+        }
+        private void RegisterMiddleware(IApplicationBuilder app)
+        {
+            if (Config["Application:Env"] == Environments.Development)
                 app.UseMiddleware<DeveloperExceptionPageMiddleware>();
             else
                 app.UseMiddleware<ErrorPagesMiddleware>();
@@ -187,7 +180,6 @@ namespace MvcTemplate.Web
             app.UseMiddleware<SecureHeadersMiddleware>();
 
             app.UseHttpsRedirection();
-            app.UseAuthentication();
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -196,21 +188,23 @@ namespace MvcTemplate.Web
                     response.Context.Response.Headers["Cache-Control"] = "max-age=8640000";
                 }
             });
+
             app.UseSession();
-        }
-        public void RegisterMvc(IApplicationBuilder app)
-        {
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute("MultiArea", "{language}/{area:exists}/{controller}/{action=Index}/{id:int?}");
-                routes.MapRoute("DefaultArea", "{area:exists}/{controller}/{action=Index}/{id:int?}");
-                routes.MapRoute("Multi", "{language}/{controller}/{action=Index}/{id:int?}");
-                routes.MapRoute("Default", "{controller}/{action=Index}/{id:int?}");
-                routes.MapRoute("Home", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("MultiArea", "{language}/{area}/{controller}/{action=Index}/{id:int?}");
+                endpoints.MapControllerRoute("DefaultArea", "{area:exists}/{controller}/{action=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Multi", "{language}/{controller}/{action=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Default", "{controller}/{action=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
             });
         }
 
-        public void UpdateDatabase(IApplicationBuilder app)
+        private void UpdateDatabase(IApplicationBuilder app)
         {
             using (Configuration configuration = app.ApplicationServices.GetService<Configuration>())
                 configuration.UpdateDatabase();

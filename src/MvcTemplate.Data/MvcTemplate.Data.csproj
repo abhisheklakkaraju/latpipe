@@ -5,24 +5,21 @@
     <OutputType>Exe</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <GenerateFullPaths>true</GenerateFullPaths>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <TargetFrameworks>netcoreapp2.2;netstandard2.0</TargetFrameworks>
     <DebugType Condition="'$(Configuration)'=='Debug'">portable</DebugType>
     <DebugSymbols Condition="'$(Configuration)'=='Debug'">true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MvcTemplate.Objects\MvcTemplate.Objects.csproj" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <ProjectReference Include="..\MvcTemplate.Objects\MvcTemplate.Objects.csproj" />
   </ItemGroup>
 
 </Project>

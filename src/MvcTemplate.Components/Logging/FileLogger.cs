@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
 using MvcTemplate.Components.Extensions;
 using System;
 using System.IO;
@@ -37,7 +36,7 @@ namespace MvcTemplate.Components.Logging
         }
         public IDisposable BeginScope<TState>(TState state)
         {
-            return NullScope.Instance;
+            return null;
         }
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, String> formatter)
         {

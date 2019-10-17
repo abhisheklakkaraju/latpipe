@@ -76,7 +76,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_@(Model.ModelShortName)()
         {
-            @Model.View view = ObjectsFactory.Create@(Model.View)(1);
+            @Model.View view = ObjectsFactory.Create@(Model.View)(2);
 
             service.Create(view);
 
@@ -106,7 +106,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_@(Model.ModelShortName)()
         {
-            @Model.View view = ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id);
+            @Model.View view = ObjectsFactory.Create@(Model.View)();
             @foreach (PropertyInfo property in Model.ViewProperties.OrderByDescending(prop => prop.Name.Length).ThenBy(prop => prop.Name))
             {
                 if (property.PropertyType == typeof(String))

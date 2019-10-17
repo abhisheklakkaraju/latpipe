@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
-using Newtonsoft.Json;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text.Json;
 using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
@@ -227,7 +227,7 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), null));
 
-            Object expected = JsonConvert.SerializeObject(controller.Alerts);
+            Object expected = JsonSerializer.Serialize(controller.Alerts);
             Object actual = controller.TempData["Alerts"];
 
             Assert.Equal(expected, actual);
@@ -239,14 +239,14 @@ namespace MvcTemplate.Controllers.Tests
             Alerts alerts = new Alerts();
             alerts.AddError("Test1");
 
-            controller.TempData["Alerts"] = JsonConvert.SerializeObject(alerts);
+            controller.TempData["Alerts"] = JsonSerializer.Serialize(alerts);
 
             controller.Alerts.AddError("Test2");
             alerts.AddError("Test2");
 
             controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), null));
 
-            Object expected = JsonConvert.SerializeObject(alerts);
+            Object expected = JsonSerializer.Serialize(alerts);
             Object actual = controller.TempData["Alerts"];
 
             Assert.Equal(expected, actual);

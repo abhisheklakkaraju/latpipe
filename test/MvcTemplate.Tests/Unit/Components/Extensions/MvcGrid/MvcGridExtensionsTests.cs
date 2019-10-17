@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Resources;
@@ -43,12 +44,14 @@ namespace MvcTemplate.Components.Extensions.Tests
         {
             AllTypesView view = new AllTypesView();
             StringWriter writer = new StringWriter();
-            IRouter router = Substitute.For<IRouter>();
-            IAuthorization authorization = columns.Grid.ViewContext.HttpContext.RequestServices.GetService<IAuthorization>();
+            IUrlHelper url = Substitute.For<IUrlHelper>();
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
+            IAuthorization authorization = html.Grid.ViewContext.HttpContext.RequestServices.GetService<IAuthorization>();
 
             authorization.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
-            router.GetVirtualPath(Arg.Any<VirtualPathContext>()).Returns(new VirtualPathData(router, "/test"));
-            columns.Grid.ViewContext.RouteData.Routers.Add(router);
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
+            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
             IGridColumn<AllTypesView, IHtmlContent> column = columns.AddAction("Details", "fa fa-info");
             column.ValueFor(new GridRow<AllTypesView>(view, 0)).WriteTo(writer, HtmlEncoder.Default);
@@ -64,11 +67,13 @@ namespace MvcTemplate.Components.Extensions.Tests
         {
             AllTypesView view = new AllTypesView();
             StringWriter writer = new StringWriter();
-            IRouter router = Substitute.For<IRouter>();
+            IUrlHelper url = Substitute.For<IUrlHelper>();
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
-            columns.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
-            router.GetVirtualPath(Arg.Any<VirtualPathContext>()).Returns(new VirtualPathData(router, "/test"));
-            columns.Grid.ViewContext.RouteData.Routers.Add(router);
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
+            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
             IGridColumn<AllTypesView, IHtmlContent> column = columns.AddAction("Details", "fa fa-info");
             column.ValueFor(new GridRow<AllTypesView>(view, 0)).WriteTo(writer, HtmlEncoder.Default);
@@ -82,8 +87,12 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_NoId_Throws()
         {
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
             IGridColumnsOf<Object> gridColumns = new GridColumns<Object>(new Grid<Object>(Array.Empty<Object>()));
+
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
             html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
             gridColumns.Grid.ViewContext = html.Grid.ViewContext;
 
             IGridColumn<Object, IHtmlContent> column = gridColumns.AddAction("Delete", "fa fa-times");
@@ -97,7 +106,11 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_Column()
         {
-            columns.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
+
+            factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
 
             IGridColumn<AllTypesView, IHtmlContent> actual = columns.AddAction("Edit", "fa fa-pencil-alt");
 

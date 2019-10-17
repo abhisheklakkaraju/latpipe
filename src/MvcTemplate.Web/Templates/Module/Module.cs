@@ -3,12 +3,12 @@ using Humanizer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -248,7 +248,7 @@ namespace MvcTemplate.Web.Templates
             Logger.Write($"../MvcTemplate.Web/Resources/Shared/{resource}.json - ");
 
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
-            Dictionary<String, SortedDictionary<String, String>> resources = JsonConvert.DeserializeObject<Dictionary<String, SortedDictionary<String, String>>>(page);
+            Dictionary<String, SortedDictionary<String, String>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String>>>(page);
 
             if (key != null && resources[group].ContainsKey(key))
             {
@@ -258,19 +258,12 @@ namespace MvcTemplate.Web.Templates
             {
                 resources[group][key] = value;
 
-                using (TextWriter text = new StringWriter())
+                String text = Regex.Replace(JsonSerializer.Serialize(resources, new JsonSerializerOptions
                 {
-                    using (JsonTextWriter json = new JsonTextWriter(text))
-                    {
-                        json.Indentation = 4;
-                        json.IndentChar = ' ';
-                        json.Formatting = Formatting.Indented;
+                    WriteIndented = true
+                }), "(^ +)", "$1$1");
 
-                        new JsonSerializer().Serialize(json, resources);
-                    }
-
-                    File.WriteAllText($"Resources/Shared/{resource}.json", $"{text.ToString()}{Environment.NewLine}");
-                }
+                File.WriteAllText($"Resources/Shared/{resource}.json", $"{text}{Environment.NewLine}");
 
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
@@ -282,7 +275,7 @@ namespace MvcTemplate.Web.Templates
         }
         private String FakeObjectCreation(String name, PropertyInfo[] properties)
         {
-            String creation = $"\n        public static {name} Create{name}(Int32 id = 0)\n";
+            String creation = $"\n        public static {name} Create{name}(Int32 id = 1)\n";
             creation += "        {\n";
             creation += $"            return new {name}\n";
             creation += "            {\n";

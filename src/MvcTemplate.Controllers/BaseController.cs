@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MvcTemplate.Controllers
 {
@@ -84,12 +84,12 @@ namespace MvcTemplate.Controllers
 
             if (TempData["Alerts"] is String alertsJson)
             {
-                alerts = JsonConvert.DeserializeObject<Alerts>(alertsJson);
+                alerts = JsonSerializer.Deserialize<Alerts>(alertsJson);
                 alerts.Merge(Alerts);
             }
 
             if (alerts.Count > 0)
-                TempData["Alerts"] = JsonConvert.SerializeObject(alerts);
+                TempData["Alerts"] = JsonSerializer.Serialize(alerts);
         }
     }
 }

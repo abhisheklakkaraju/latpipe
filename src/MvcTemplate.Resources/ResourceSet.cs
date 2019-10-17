@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MvcTemplate.Resources
 {
@@ -40,7 +40,7 @@ namespace MvcTemplate.Resources
 
         public void Override(String language, String source)
         {
-            Dictionary<String, ResourceDictionary> resources = JsonConvert.DeserializeObject<Dictionary<String, ResourceDictionary>>(source);
+            Dictionary<String, ResourceDictionary> resources = JsonSerializer.Deserialize<Dictionary<String, ResourceDictionary>>(source);
 
             foreach (String group in resources.Keys)
                 foreach (String key in resources[group].Keys)
