@@ -24,7 +24,7 @@ namespace MvcTemplate.Data.Core
         public TDestination GetAs<TModel, TDestination>(Int32? id) where TModel : BaseModel
         {
             return id == null
-                ? default(TDestination)
+                ? default
                 : Context.Set<TModel>().Where(model => model.Id == id).ProjectTo<TDestination>().FirstOrDefault();
         }
         public TModel Get<TModel>(Int32? id) where TModel : BaseModel

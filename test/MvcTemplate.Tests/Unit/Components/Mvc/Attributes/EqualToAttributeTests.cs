@@ -12,7 +12,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public EqualToAttributeTests()
         {
-            attribute = new EqualToAttribute("StringField");
+            attribute = new EqualToAttribute(nameof(AllTypesView.StringField));
         }
 
         [Fact]

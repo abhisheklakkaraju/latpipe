@@ -26,6 +26,7 @@ namespace MvcTemplate.Controllers.Tests
         }
         public override void Dispose()
         {
+            controller.Dispose();
             unitOfWork.Dispose();
         }
 

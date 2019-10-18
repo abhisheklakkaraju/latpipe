@@ -19,8 +19,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             attributes = new Dictionary<String, String>();
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            adapter = new EqualToAdapter(new EqualToAttribute("AlternateStringField"));
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "StringField");
+            adapter = new EqualToAdapter(new EqualToAttribute(nameof(AllTypesView.StringField)));
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

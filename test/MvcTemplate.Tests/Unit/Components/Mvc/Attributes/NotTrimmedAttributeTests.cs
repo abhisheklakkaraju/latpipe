@@ -23,19 +23,19 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public async void BindModelAsync_DoesNotTrimValue()
         {
-            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), "StringField");
+            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
             DefaultModelBindingContext context = new DefaultModelBindingContext();
             NotTrimmedAttribute attribute = new NotTrimmedAttribute();
 
             context.ModelMetadata = metadata;
-            context.ModelName = "StringField";
             context.ActionContext = new ActionContext();
             context.ModelState = new ModelStateDictionary();
+            context.ModelName = nameof(AllTypesView.StringField);
             context.ValueProvider = Substitute.For<IValueProvider>();
             context.ActionContext.HttpContext = new DefaultHttpContext();
             context.HttpContext.RequestServices = Substitute.For<IServiceProvider>();
             context.ValueProvider.GetValue(context.ModelName).Returns(ValueProviderResult.None);
-            context.ValueProvider.GetValue("StringField").Returns(new ValueProviderResult(" Value  "));
+            context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(" Value  "));
             context.HttpContext.RequestServices.GetService(typeof(ILoggerFactory)).Returns(Substitute.For<ILoggerFactory>());
 
             await attribute.BindModelAsync(context);

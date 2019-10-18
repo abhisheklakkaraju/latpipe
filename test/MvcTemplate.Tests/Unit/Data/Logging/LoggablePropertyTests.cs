@@ -13,15 +13,13 @@ namespace MvcTemplate.Data.Logging.Tests
 
         public LoggablePropertyTests()
         {
-            using (TestingContext context = new TestingContext())
-            {
-                TestModel model = new TestModel { Id = 1 };
+            TestModel model = new TestModel { Id = 1 };
+            using TestingContext context = new TestingContext();
 
-                context.Set<TestModel>().Attach(model);
-                context.Entry(model).State = EntityState.Modified;
-                textProperty = context.Entry(model).Property(prop => prop.Title);
-                dateProperty = context.Entry(model).Property(prop => prop.CreationDate);
-            }
+            context.Set<TestModel>().Attach(model);
+            context.Entry(model).State = EntityState.Modified;
+            textProperty = context.Entry(model).Property(prop => prop.Title);
+            dateProperty = context.Entry(model).Property(prop => prop.CreationDate);
         }
 
         [Fact]

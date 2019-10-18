@@ -44,10 +44,10 @@ namespace MvcTemplate.Data.Logging.Tests
         {
             String title = model.Title;
             entry.State = EntityState.Modified;
-            entry.CurrentValues["Title"] = "Role";
-            entry.OriginalValues["Title"] = "Role";
+            entry.CurrentValues[nameof(TestModel.Title)] = "Pneura";
+            entry.OriginalValues[nameof(TestModel.Title)] = "Pneura";
 
-            LoggableProperty expected = new LoggableProperty(entry.Property("Title"), title);
+            LoggableProperty expected = new LoggableProperty(entry.Property(nameof(TestModel.Title)), title);
             LoggableProperty actual = new LoggableEntity(entry).Properties.Single();
 
             Assert.Equal(expected.IsModified, actual.IsModified);
@@ -64,11 +64,11 @@ namespace MvcTemplate.Data.Logging.Tests
             context.Set<TestModel>().Attach(model);
 
             entry = context.Entry<BaseModel>(model);
-            entry.OriginalValues["Title"] = "Role";
-            entry.CurrentValues["Title"] = "Role";
+            entry.OriginalValues[nameof(TestModel.Title)] = "Aneura";
+            entry.CurrentValues[nameof(TestModel.Title)] = "Aneura";
             entry.State = EntityState.Modified;
 
-            LoggableProperty expected = new LoggableProperty(entry.Property("Title"), title);
+            LoggableProperty expected = new LoggableProperty(entry.Property(nameof(TestModel.Title)), title);
             LoggableProperty actual = new LoggableEntity(entry).Properties.Single();
 
             Assert.Equal(expected.IsModified, actual.IsModified);

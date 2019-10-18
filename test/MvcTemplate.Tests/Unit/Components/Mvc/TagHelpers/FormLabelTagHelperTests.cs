@@ -29,7 +29,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             TagHelperOutput output = new TagHelperOutput("label", new TagHelperAttributeList(attributes), (useCache, encoder) => null);
             helper.For = new ModelExpression("Total.Sum", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null));
             metadata.IsRequired.Returns(metadataRequired);
-            metadata.DisplayName.Returns("Title");
+            metadata.DisplayName.Returns("Progix");
             helper.Required = required;
 
             helper.Process(null, output);

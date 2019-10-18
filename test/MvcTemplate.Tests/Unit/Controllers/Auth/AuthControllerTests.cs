@@ -140,7 +140,7 @@ namespace MvcTemplate.Controllers.Tests
         {
             service.IsLoggedIn(controller.User).Returns(false);
             validator.CanRecover(accountRecovery).Returns(true);
-            service.Recover(accountRecovery).Returns("RecoveryToken");
+            service.Recover(accountRecovery).Returns("UmVjb3Zlcnk=");
 
             await controller.Recover(accountRecovery);
 
@@ -156,7 +156,7 @@ namespace MvcTemplate.Controllers.Tests
         {
             service.IsLoggedIn(controller.User).Returns(false);
             validator.CanRecover(accountRecovery).Returns(true);
-            service.Recover(accountRecovery).Returns("RecoveryToken");
+            service.Recover(accountRecovery).Returns("UmVjb3Zlcnk=");
 
             Object expected = RedirectToAction(controller, "Login");
             Object actual = await controller.Recover(accountRecovery);

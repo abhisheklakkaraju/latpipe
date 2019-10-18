@@ -28,8 +28,8 @@ namespace MvcTemplate.Components.Lookups.Tests
         [Fact]
         public void GetColumnHeader_ReturnsPropertyTitle()
         {
-            String actual = lookup.GetColumnHeader(typeof(RoleView).GetProperty("Title"));
-            String expected = Resource.ForProperty(typeof(RoleView), "Title");
+            String actual = lookup.GetColumnHeader(typeof(RoleView).GetProperty(nameof(RoleView.Title)));
+            String expected = Resource.ForProperty(typeof(RoleView), nameof(RoleView.Title));
 
             Assert.Equal(expected, actual);
         }
@@ -37,7 +37,7 @@ namespace MvcTemplate.Components.Lookups.Tests
         [Fact]
         public void GetColumnHeader_ReturnsRelationPropertyTitle()
         {
-            PropertyInfo property = typeof(AllTypesView).GetProperty("Child");
+            PropertyInfo property = typeof(AllTypesView).GetProperty(nameof(AllTypesView.Child));
 
             String actual = lookup.GetColumnHeader(property);
 
@@ -45,38 +45,38 @@ namespace MvcTemplate.Components.Lookups.Tests
         }
 
         [Theory]
-        [InlineData("EnumField", "text-left")]
-        [InlineData("SByteField", "text-right")]
-        [InlineData("ByteField", "text-right")]
-        [InlineData("Int16Field", "text-right")]
-        [InlineData("UInt16Field", "text-right")]
-        [InlineData("Int32Field", "text-right")]
-        [InlineData("UInt32Field", "text-right")]
-        [InlineData("Int64Field", "text-right")]
-        [InlineData("UInt64Field", "text-right")]
-        [InlineData("SingleField", "text-right")]
-        [InlineData("DoubleField", "text-right")]
-        [InlineData("DecimalField", "text-right")]
-        [InlineData("BooleanField", "text-center")]
-        [InlineData("DateTimeField", "text-center")]
+        [InlineData(nameof(AllTypesView.EnumField), "text-left")]
+        [InlineData(nameof(AllTypesView.SByteField), "text-right")]
+        [InlineData(nameof(AllTypesView.ByteField), "text-right")]
+        [InlineData(nameof(AllTypesView.Int16Field), "text-right")]
+        [InlineData(nameof(AllTypesView.UInt16Field), "text-right")]
+        [InlineData(nameof(AllTypesView.Int32Field), "text-right")]
+        [InlineData(nameof(AllTypesView.UInt32Field), "text-right")]
+        [InlineData(nameof(AllTypesView.Int64Field), "text-right")]
+        [InlineData(nameof(AllTypesView.UInt64Field), "text-right")]
+        [InlineData(nameof(AllTypesView.SingleField), "text-right")]
+        [InlineData(nameof(AllTypesView.DoubleField), "text-right")]
+        [InlineData(nameof(AllTypesView.DecimalField), "text-right")]
+        [InlineData(nameof(AllTypesView.BooleanField), "text-center")]
+        [InlineData(nameof(AllTypesView.DateTimeField), "text-center")]
 
-        [InlineData("NullableEnumField", "text-left")]
-        [InlineData("NullableSByteField", "text-right")]
-        [InlineData("NullableByteField", "text-right")]
-        [InlineData("NullableInt16Field", "text-right")]
-        [InlineData("NullableUInt16Field", "text-right")]
-        [InlineData("NullableInt32Field", "text-right")]
-        [InlineData("NullableUInt32Field", "text-right")]
-        [InlineData("NullableInt64Field", "text-right")]
-        [InlineData("NullableUInt64Field", "text-right")]
-        [InlineData("NullableSingleField", "text-right")]
-        [InlineData("NullableDoubleField", "text-right")]
-        [InlineData("NullableDecimalField", "text-right")]
-        [InlineData("NullableBooleanField", "text-center")]
-        [InlineData("NullableDateTimeField", "text-center")]
+        [InlineData(nameof(AllTypesView.NullableEnumField), "text-left")]
+        [InlineData(nameof(AllTypesView.NullableSByteField), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableByteField), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableInt16Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableUInt16Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableInt32Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableUInt32Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableInt64Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableUInt64Field), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableSingleField), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableDoubleField), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableDecimalField), "text-right")]
+        [InlineData(nameof(AllTypesView.NullableBooleanField), "text-center")]
+        [InlineData(nameof(AllTypesView.NullableDateTimeField), "text-center")]
 
-        [InlineData("StringField", "text-left")]
-        [InlineData("Child", "text-left")]
+        [InlineData(nameof(AllTypesView.StringField), "text-left")]
+        [InlineData(nameof(AllTypesView.Child), "text-left")]
         public void GetColumnCssClass_ReturnsCssClassForPropertyType(String propertyName, String cssClass)
         {
             PropertyInfo property = typeof(AllTypesView).GetProperty(propertyName);

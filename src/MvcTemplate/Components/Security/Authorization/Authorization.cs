@@ -47,26 +47,25 @@ namespace MvcTemplate.Components.Security
 
         public void Refresh()
         {
-            using (IUnitOfWork unitOfWork = Services.GetRequiredService<IUnitOfWork>())
-            {
-                Permissions = unitOfWork
-                    .Select<Account>()
-                    .Where(account =>
-                        !account.IsLocked &&
-                        account.RoleId != null)
-                    .Select(account => new
-                    {
-                        Id = account.Id,
-                        Permissions = account
-                            .Role
-                            .Permissions
-                            .Select(role => role.Permission)
-                            .Select(permission => (permission.Area ?? "") + "/" + permission.Controller + "/" + permission.Action)
-                    })
-                    .ToDictionary(
-                        account => account.Id,
-                        account => new HashSet<String>(account.Permissions, StringComparer.OrdinalIgnoreCase));
-            }
+            using IUnitOfWork unitOfWork = Services.GetRequiredService<IUnitOfWork>();
+
+            Permissions = unitOfWork
+                .Select<Account>()
+                .Where(account =>
+                    !account.IsLocked &&
+                    account.RoleId != null)
+                .Select(account => new
+                {
+                    Id = account.Id,
+                    Permissions = account
+                        .Role
+                        .Permissions
+                        .Select(role => role.Permission)
+                        .Select(permission => (permission.Area ?? "") + "/" + permission.Controller + "/" + permission.Action)
+                })
+                .ToDictionary(
+                    account => account.Id,
+                    account => new HashSet<String>(account.Permissions, StringComparer.OrdinalIgnoreCase));
         }
 
         private Boolean RequiresAuthorization(String action)
@@ -82,18 +81,18 @@ namespace MvcTemplate.Components.Security
                 return false;
 
             if (method.IsDefined(typeof(AllowUnauthorizedAttribute), false))
-                isRequired = isRequired ?? false;
+                isRequired ??= false;
 
             while (controller != typeof(Controller))
             {
                 if (controller.IsDefined(typeof(AuthorizeAttribute), false))
-                    isRequired = isRequired ?? true;
+                    isRequired ??= true;
 
                 if (controller.IsDefined(typeof(AllowAnonymousAttribute), false))
                     return false;
 
                 if (controller.IsDefined(typeof(AllowUnauthorizedAttribute), false))
-                    isRequired = isRequired ?? false;
+                    isRequired ??= false;
 
                 controller = controller.BaseType;
             }
@@ -113,9 +112,9 @@ namespace MvcTemplate.Components.Security
         }
         private String ActionFor(MethodInfo method)
         {
-            String controller = method.DeclaringType.Name.Substring(0, method.DeclaringType.Name.Length - 10);
             String action = method.GetCustomAttribute<ActionNameAttribute>(false)?.Name ?? method.Name;
             String area = method.DeclaringType.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;
+            String controller = method.DeclaringType.Name[0..^10];
 
             return $"{area}/{controller}/{action}";
         }

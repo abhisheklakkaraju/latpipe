@@ -48,7 +48,7 @@ namespace MvcTemplate.Validators.Tests
             Assert.False(isSpecified);
             Assert.Empty(validator.Alerts);
             Assert.Single(validator.ModelState);
-            Assert.Equal(message, validator.ModelState["Title"].Errors.Single().ErrorMessage);
+            Assert.Equal(message, validator.ModelState[nameof(RoleView.Title)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace MvcTemplate.Validators.Tests
             Assert.False(isSpecified);
             Assert.Empty(validator.Alerts);
             Assert.Single(validator.ModelState);
-            Assert.Equal(message, validator.ModelState["RoleId"].Errors.Single().ErrorMessage);
+            Assert.Equal(message, validator.ModelState[nameof(AccountEditView.RoleId)].Errors.Single().ErrorMessage);
         }
 
         [Fact]

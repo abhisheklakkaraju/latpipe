@@ -74,8 +74,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForLookup_IsCaseInsensitive()
         {
-            String expected = ResourceFor("Shared/Lookup", "Titles", "Role");
-            String actual = Resource.ForLookup("role");
+            String expected = ResourceFor("Shared/Lookup", "Titles", nameof(Role));
+            String actual = Resource.ForLookup(nameof(Role).ToLower());
 
             Assert.Equal(expected, actual);
         }
@@ -134,10 +134,12 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForPage_IsCaseInsensitive()
         {
-            IDictionary<String, Object> values = new Dictionary<String, Object>();
-            values["area"] = "administration";
-            values["controller"] = "roles";
-            values["action"] = "details";
+            IDictionary<String, Object> values = new Dictionary<String, Object>
+            {
+                ["area"] = "administration",
+                ["controller"] = "roles",
+                ["action"] = "details"
+            };
 
             String expected = ResourceFor("Shared/Page", "Titles", "AdministrationRolesDetails");
             String actual = Resource.ForPage(values);
@@ -150,10 +152,12 @@ namespace MvcTemplate.Resources.Tests
         [InlineData(null)]
         public void ForPage_WithoutArea(String area)
         {
-            IDictionary<String, Object> values = new Dictionary<String, Object>();
-            values["controller"] = "profile";
-            values["action"] = "edit";
-            values["area"] = area;
+            IDictionary<String, Object> values = new Dictionary<String, Object>
+            {
+                ["controller"] = "profile",
+                ["action"] = "edit",
+                ["area"] = area
+            };
 
             String expected = ResourceFor("Shared/Page", "Titles", "ProfileEdit");
             String actual = Resource.ForPage(values);
@@ -207,7 +211,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_FromLambdaExpression()
         {
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
             String actual = Resource.ForProperty<AccountView, String>(account => account.Username);
 
             Assert.Equal(expected, actual);
@@ -216,8 +220,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_FromLambdaExpressionRelation()
         {
+            String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", nameof(RoleView.Id));
             String actual = Resource.ForProperty<AccountEditView, Int32?>(account => account.RoleId);
-            String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", "Id");
 
             Assert.Equal(expected, actual);
         }
@@ -237,7 +241,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_View()
         {
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
             String actual = Resource.ForProperty(nameof(AccountView), nameof(AccountView.Username));
 
             Assert.Equal(expected, actual);
@@ -247,7 +251,7 @@ namespace MvcTemplate.Resources.Tests
         public void ForProperty_IsCaseInsensitive()
         {
             String actual = Resource.ForProperty(typeof(AccountView), nameof(AccountView.Username).ToLower());
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
 
             Assert.Equal(expected, actual);
         }
@@ -256,7 +260,7 @@ namespace MvcTemplate.Resources.Tests
         public void ForProperty_FromRelation()
         {
             String actual = Resource.ForProperty(typeof(Object), $"{nameof(Account)}{nameof(Account.Username)}");
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
 
             Assert.Equal(expected, actual);
         }
@@ -265,7 +269,7 @@ namespace MvcTemplate.Resources.Tests
         public void ForProperty_FromMultipleRelations()
         {
             String actual = Resource.ForProperty(typeof(RoleView), $"{nameof(Account)}{nameof(Role)}{nameof(Account)}{nameof(Account.Username)}");
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(Account.Username));
 
             Assert.Equal(expected, actual);
         }
@@ -273,13 +277,13 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundProperty_ReturnsNull()
         {
-            Assert.Null(Resource.ForProperty(typeof(AccountView), "Id"));
+            Assert.Null(Resource.ForProperty(typeof(AccountView), nameof(AccountView.Id)));
         }
 
         [Fact]
         public void ForProperty_NotFoundTypeProperty_ReturnsNull()
         {
-            Assert.Null(Resource.ForProperty(typeof(TestView), "Title"));
+            Assert.Null(Resource.ForProperty(typeof(TestView), nameof(TestView.Title)));
         }
 
         [Fact]
@@ -301,7 +305,7 @@ namespace MvcTemplate.Resources.Tests
         {
             Expression<Func<AccountView, String>> lambda = (account) => account.Username;
 
-            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", "Username");
+            String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
             String actual = Resource.ForProperty(lambda.Body);
 
             Assert.Equal(expected, actual);
@@ -312,7 +316,7 @@ namespace MvcTemplate.Resources.Tests
         {
             Expression<Func<AccountEditView, Int32?>> lambda = (account) => account.RoleId;
 
-            String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", "Id");
+            String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", nameof(RoleView.Id));
             String actual = Resource.ForProperty(lambda.Body);
 
             Assert.Equal(expected, actual);

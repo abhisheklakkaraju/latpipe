@@ -182,7 +182,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canCreate);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState["Username"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState[nameof(AccountCreateView.Username)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -195,7 +195,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canCreate);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState["Email"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState[nameof(AccountCreateView.Email)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -224,7 +224,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState["Username"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState[nameof(AccountEditView.Username)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -246,7 +246,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState["Email"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState[nameof(AccountEditView.Email)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("IncorrectPassword"), validator.ModelState["Password"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("IncorrectPassword"), validator.ModelState[nameof(ProfileEditView.Password)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -301,7 +301,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState["Username"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueUsername"), validator.ModelState[nameof(ProfileEditView.Username)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -327,7 +327,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState["Email"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<AccountView>("UniqueEmail"), validator.ModelState[nameof(ProfileEditView.Email)].Errors.Single().ErrorMessage);
         }
 
         [Fact]

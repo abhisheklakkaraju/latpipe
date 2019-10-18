@@ -18,20 +18,17 @@ namespace MvcTemplate.Components.Mail
 
         public async Task SendAsync(String email, String subject, String body)
         {
-            using (SmtpClient client = new SmtpClient(Config["Host"], Int32.Parse(Config["Port"])))
-            {
-                using (MailMessage mail = new MailMessage(Config["Sender"], email, subject, body))
-                {
-                    client.Credentials = new NetworkCredential(Config["Sender"], Config["Password"]);
-                    client.EnableSsl = Boolean.Parse(Config["EnableSsl"]);
+            using SmtpClient client = new SmtpClient(Config["Host"], Int32.Parse(Config["Port"]));
+            using MailMessage mail = new MailMessage(Config["Sender"], email, subject, body);
 
-                    mail.SubjectEncoding = Encoding.UTF8;
-                    mail.BodyEncoding = Encoding.UTF8;
-                    mail.IsBodyHtml = true;
+            client.Credentials = new NetworkCredential(Config["Sender"], Config["Password"]);
+            client.EnableSsl = Boolean.Parse(Config["EnableSsl"]);
 
-                    await client.SendMailAsync(mail);
-                }
-            }
+            mail.SubjectEncoding = Encoding.UTF8;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.IsBodyHtml = true;
+
+            await client.SendMailAsync(mail);
         }
     }
 }

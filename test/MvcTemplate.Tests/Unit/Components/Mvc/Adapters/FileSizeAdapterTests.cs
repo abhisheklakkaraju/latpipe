@@ -20,7 +20,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             attributes = new Dictionary<String, String>();
             adapter = new FileSizeAdapter(new FileSizeAttribute(12.25));
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "FileField");
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.FileField));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

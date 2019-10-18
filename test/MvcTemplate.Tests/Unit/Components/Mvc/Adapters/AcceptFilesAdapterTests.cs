@@ -20,7 +20,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             attributes = new Dictionary<String, String>();
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
             adapter = new AcceptFilesAdapter(new AcceptFilesAttribute(".docx,.rtf"));
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "FileField");
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.FileField));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

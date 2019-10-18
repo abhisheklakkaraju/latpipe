@@ -23,7 +23,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             CultureInfo.CurrentCulture = new CultureInfo("lt");
             adapter = new RangeAdapter(new RangeAttribute(4.3, 128.4));
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "DoubleField");
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.DoubleField));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

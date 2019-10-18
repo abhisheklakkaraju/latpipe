@@ -169,8 +169,8 @@ namespace MvcTemplate.Components.Mvc
             ActionContext context = url.ActionContext;
             route["area"] = node.Area;
 
-            foreach (KeyValuePair<String, String> item in node.Route)
-                route[item.Key] = context.RouteData.Values[item.Value] ?? (String)context.HttpContext.Request.Query[item.Value];
+            foreach ((String key, String newKey) in node.Route)
+                route[key] = context.RouteData.Values[newKey] ?? (String)context.HttpContext.Request.Query[newKey];
 
             return url.Action(node.Action, node.Controller, route);
         }

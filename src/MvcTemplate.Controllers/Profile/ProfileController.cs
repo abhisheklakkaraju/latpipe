@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MvcTemplate.Components.Mvc;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;

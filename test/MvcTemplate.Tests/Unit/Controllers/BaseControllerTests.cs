@@ -115,7 +115,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.IsAuthorizedFor("Action", "Controller", areaName).Returns(false);
 
             Object expected = RedirectToDefault(controller);
-            Object actual = controller.RedirectToAction("Action", "Controller", new { id = "Id" });
+            Object actual = controller.RedirectToAction("Action", "Controller", new { id = 1 });
 
             Assert.Same(expected, actual);
         }
@@ -149,12 +149,12 @@ namespace MvcTemplate.Controllers.Tests
         {
             controller.IsAuthorizedFor("Action", "Controller", "Area").Returns(true);
 
-            RedirectToActionResult actual = controller.RedirectToAction("Action", "Controller", new { area = "Area", id = "Id" });
+            RedirectToActionResult actual = controller.RedirectToAction("Action", "Controller", new { area = "Area", id = 1 });
 
             Assert.Equal("Controller", actual.ControllerName);
             Assert.Equal("Area", actual.RouteValues["area"]);
-            Assert.Equal("Id", actual.RouteValues["id"]);
             Assert.Equal("Action", actual.ActionName);
+            Assert.Equal(1, actual.RouteValues["id"]);
             Assert.Equal(2, actual.RouteValues.Count);
         }
 

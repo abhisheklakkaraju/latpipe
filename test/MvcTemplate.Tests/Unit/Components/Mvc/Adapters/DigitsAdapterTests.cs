@@ -20,7 +20,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             attributes = new Dictionary<String, String>();
             adapter = new DigitsAdapter(new DigitsAttribute());
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "StringField");
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

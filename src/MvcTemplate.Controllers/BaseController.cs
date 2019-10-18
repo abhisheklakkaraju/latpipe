@@ -53,10 +53,10 @@ namespace MvcTemplate.Controllers
         public override RedirectToActionResult RedirectToAction(String action, String controller, Object route)
         {
             IDictionary<String, Object> values = HtmlHelper.AnonymousObjectToHtmlAttributes(route);
-            controller = controller ?? (values.ContainsKey("controller") ? values["controller"] as String : null);
+            controller ??= values.ContainsKey("controller") ? values["controller"] as String : null;
             String area = values.ContainsKey("area") ? values["area"] as String : null;
-            controller = controller ?? RouteData.Values["controller"] as String;
-            area = area ?? RouteData.Values["area"] as String;
+            controller ??= RouteData.Values["controller"] as String;
+            area ??= RouteData.Values["area"] as String;
 
             if (!IsAuthorizedFor(action, controller, area))
                 return RedirectToDefault();

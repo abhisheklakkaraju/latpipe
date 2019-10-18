@@ -41,9 +41,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("  ")]
         public async Task BindModelAsync_Null(String value)
         {
-            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), "StringField");
-            context.ValueProvider.GetValue("StringField").Returns(new ValueProviderResult(value));
-            context.ModelName = "StringField";
+            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
+            context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(value));
+            context.ModelName = nameof(AllTypesView.StringField);
             context.ModelMetadata = metadata;
 
             await binder.BindModelAsync(context);
@@ -60,10 +60,10 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("  ")]
         public async Task BindModelAsync_Empty(String value)
         {
+            context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(value));
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
-            context.ValueProvider.GetValue("StringField").Returns(new ValueProviderResult(value));
+            context.ModelName = nameof(AllTypesView.StringField);
             metadata.ConvertEmptyStringToNull.Returns(false);
-            context.ModelName = "StringField";
             context.ModelMetadata = metadata;
 
             await binder.BindModelAsync(context);
@@ -78,9 +78,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public async Task BindModelAsync_Trimmed()
         {
-            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), "StringField");
-            context.ValueProvider.GetValue("StringField").Returns(new ValueProviderResult(" Value "));
-            context.ModelName = "StringField";
+            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
+            context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(" Value "));
+            context.ModelName = nameof(AllTypesView.StringField);
             context.ModelMetadata = metadata;
 
             await binder.BindModelAsync(context);

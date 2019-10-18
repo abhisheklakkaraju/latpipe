@@ -14,12 +14,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             DisplayMetadataProvider provider = new DisplayMetadataProvider();
             DisplayMetadataProviderContext context = new DisplayMetadataProviderContext(
-                ModelMetadataIdentity.ForProperty(typeof(String), "Title", typeof(RoleView)),
+                ModelMetadataIdentity.ForProperty(typeof(String), nameof(RoleView.Title), typeof(RoleView)),
                 ModelAttributes.GetAttributesForType(typeof(RoleView)));
 
             provider.CreateDisplayMetadata(context);
 
-            String expected = Resource.ForProperty(typeof(RoleView), "Title");
+            String expected = Resource.ForProperty(typeof(RoleView), nameof(RoleView.Title));
             String actual = context.DisplayMetadata.DisplayName();
 
             Assert.Equal(expected, actual);

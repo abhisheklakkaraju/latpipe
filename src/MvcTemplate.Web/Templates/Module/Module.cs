@@ -3,6 +3,7 @@ using Humanizer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,29 +35,30 @@ namespace MvcTemplate.Web.Templates
         public override void Run()
         {
             String path = $"{(Area != null ? $"{Area}/" : "")}{Controller}";
-            Dictionary<String, GennyScaffoldingResult> results = new Dictionary<String, GennyScaffoldingResult>();
+            Dictionary<String, GennyScaffoldingResult> results = new Dictionary<String, GennyScaffoldingResult>
+            {
+                { $"../MvcTemplate.Controllers/{path}/{Controller}Controller.cs", Scaffold("Controllers/Controller") },
+                { $"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}ControllerTests.cs", Scaffold("Tests/ControllerTests") },
 
-            results.Add($"../MvcTemplate.Controllers/{path}/{Controller}Controller.cs", Scaffold("Controllers/Controller"));
-            results.Add($"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}ControllerTests.cs", Scaffold("Tests/ControllerTests"));
+                { $"../MvcTemplate.Objects/Models/{path}/{Model}.cs", Scaffold("Objects/Model") },
+                { $"../MvcTemplate.Objects/Views/{path}/{Model}View.cs", Scaffold("Objects/View") },
 
-            results.Add($"../MvcTemplate.Objects/Models/{path}/{Model}.cs", Scaffold("Objects/Model"));
-            results.Add($"../MvcTemplate.Objects/Views/{path}/{Model}View.cs", Scaffold("Objects/View"));
+                { $"../MvcTemplate.Services/{path}/{Model}Service.cs", Scaffold("Services/Service") },
+                { $"../MvcTemplate.Services/{path}/I{Model}Service.cs", Scaffold("Services/IService") },
+                { $"../../test/MvcTemplate.Tests/Unit/Services/{path}/{Model}ServiceTests.cs", Scaffold("Tests/ServiceTests") },
 
-            results.Add($"../MvcTemplate.Services/{path}/{Model}Service.cs", Scaffold("Services/Service"));
-            results.Add($"../MvcTemplate.Services/{path}/I{Model}Service.cs", Scaffold("Services/IService"));
-            results.Add($"../../test/MvcTemplate.Tests/Unit/Services/{path}/{Model}ServiceTests.cs", Scaffold("Tests/ServiceTests"));
+                { $"../MvcTemplate.Validators/{path}/{Model}Validator.cs", Scaffold("Validators/Validator") },
+                { $"../MvcTemplate.Validators/{path}/I{Model}Validator.cs", Scaffold("Validators/IValidator") },
+                { $"../../test/MvcTemplate.Tests/Unit/Validators/{path}/{Model}ValidatorTests.cs", Scaffold("Tests/ValidatorTests") },
 
-            results.Add($"../MvcTemplate.Validators/{path}/{Model}Validator.cs", Scaffold("Validators/Validator"));
-            results.Add($"../MvcTemplate.Validators/{path}/I{Model}Validator.cs", Scaffold("Validators/IValidator"));
-            results.Add($"../../test/MvcTemplate.Tests/Unit/Validators/{path}/{Model}ValidatorTests.cs", Scaffold("Tests/ValidatorTests"));
+                { $"../MvcTemplate.Web/Views/{path}/Index.cshtml", Scaffold("Web/Index") },
+                { $"../MvcTemplate.Web/Views/{path}/Create.cshtml", Scaffold("Web/Create") },
+                { $"../MvcTemplate.Web/Views/{path}/Details.cshtml", Scaffold("Web/Details") },
+                { $"../MvcTemplate.Web/Views/{path}/Edit.cshtml", Scaffold("Web/Edit") },
+                { $"../MvcTemplate.Web/Views/{path}/Delete.cshtml", Scaffold("Web/Delete") },
 
-            results.Add($"../MvcTemplate.Web/Views/{path}/Index.cshtml", Scaffold("Web/Index"));
-            results.Add($"../MvcTemplate.Web/Views/{path}/Create.cshtml", Scaffold("Web/Create"));
-            results.Add($"../MvcTemplate.Web/Views/{path}/Details.cshtml", Scaffold("Web/Details"));
-            results.Add($"../MvcTemplate.Web/Views/{path}/Edit.cshtml", Scaffold("Web/Edit"));
-            results.Add($"../MvcTemplate.Web/Views/{path}/Delete.cshtml", Scaffold("Web/Delete"));
-
-            results.Add($"../MvcTemplate.Web/Resources/Views/{path}/{Model}View.json", Scaffold("Resources/View"));
+                { $"../MvcTemplate.Web/Resources/Views/{path}/{Model}View.json", Scaffold("Resources/View") }
+            };
 
             if (results.Any(result => result.Value.Errors.Any()))
             {
@@ -117,7 +119,7 @@ namespace MvcTemplate.Web.Templates
 
         private void AddSiteMap()
         {
-            Logger.Write($"../MvcTemplate.Web/mvc.sitemap - ");
+            Logger.Write("../MvcTemplate.Web/mvc.sitemap - ");
 
             XElement sitemap = XElement.Parse(File.ReadAllText("mvc.sitemap"));
             Boolean isDefined = sitemap
@@ -198,7 +200,7 @@ namespace MvcTemplate.Web.Templates
         }
         private void AddObjectFactory()
         {
-            Logger.Write($"../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs - ");
+            Logger.Write("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs - ");
 
             ModuleModel model = new ModuleModel(Model, Controller, Area);
             SyntaxNode tree = CSharpSyntaxTree.ParseText(File.ReadAllText("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs")).GetRoot();
@@ -224,7 +226,7 @@ namespace MvcTemplate.Web.Templates
         }
         private void AddPermissionTests(String action)
         {
-            Logger.Write($"../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs - ");
+            Logger.Write("../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs - ");
 
             String testData = $"[InlineData(\"{Area}\", \"{Controller}\", \"{action}\")]";
             String tests = File.ReadAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs");
@@ -281,7 +283,7 @@ namespace MvcTemplate.Web.Templates
             creation += "            {\n";
 
             creation += String.Join(",\n", properties
-                .Where(property => property.Name != "CreationDate")
+                .Where(property => property.Name != nameof(BaseModel.CreationDate))
                 .OrderBy(property => property.Name.Length)
                 .Select(property =>
                 {
@@ -289,12 +291,12 @@ namespace MvcTemplate.Web.Templates
 
                     if (property.PropertyType == typeof(String))
                         return $"{set}$\"{property.Name}{{id}}\"";
-                    else if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
+                    if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
                         return $"{set}true";
-                    else if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
+                    if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
                         return $"{set}DateTime.Now.AddDays(id)";
-                    else
-                        return $"{set}id";
+
+                    return $"{set}id";
                 })) + "\n";
 
             creation += "            };\n";

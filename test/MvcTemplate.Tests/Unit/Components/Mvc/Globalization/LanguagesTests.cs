@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Linq;
-using System.Threading;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -11,7 +10,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public LanguagesTests()
         {
-            languages = new Languages("en", new []
+            languages = new Languages("en", new[]
             {
                 new Language
                 {

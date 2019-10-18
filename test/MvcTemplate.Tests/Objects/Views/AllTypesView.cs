@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MvcTemplate.Components.Mvc;
+using MvcTemplate.Components.Notifications;
 using MvcTemplate.Objects;
 using System;
 
@@ -7,7 +8,7 @@ namespace MvcTemplate.Tests
 {
     public class AllTypesView : BaseView
     {
-        public TestEnum EnumField { get; set; }
+        public AlertType EnumField { get; set; }
         public SByte SByteField { get; set; }
         public Byte ByteField { get; set; }
         public Int16 Int16Field { get; set; }
@@ -22,7 +23,7 @@ namespace MvcTemplate.Tests
         public Boolean BooleanField { get; set; }
         public DateTime DateTimeField { get; set; }
 
-        public TestEnum? NullableEnumField { get; set; }
+        public AlertType? NullableEnumField { get; set; }
         public SByte? NullableSByteField { get; set; }
         public Byte? NullableByteField { get; set; }
         public Int16? NullableInt16Field { get; set; }
@@ -45,11 +46,5 @@ namespace MvcTemplate.Tests
         public DateTime TruncatedDateTimeField { get; set; }
 
         public AllTypesView Child { get; set; }
-    }
-
-    public enum TestEnum
-    {
-        First,
-        Second
     }
 }

@@ -20,7 +20,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             attributes = new Dictionary<String, String>();
             adapter = new MinValueAdapter(new MinValueAttribute(128));
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), "Int32Field");
+            ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.Int32Field));
+
             context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
         }
 

@@ -38,43 +38,40 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllPermissionAreaTitles()
         {
-            using (TestingContext context = new TestingContext())
-            using (Configuration configuration = new Configuration(context, null))
-            {
-                configuration.SeedData();
+            using TestingContext context = new TestingContext();
+            using Configuration configuration = new Configuration(context, null);
 
-                foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
-                    Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area)),
-                        $"'{permission.Area}' permission, does not have a title.");
-            }
+            configuration.SeedData();
+
+            foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
+                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area)),
+                    $"'{permission.Area}' permission, does not have a title.");
         }
 
         [Fact]
         public void Resources_HasAllPermissionControllerTitles()
         {
-            using (TestingContext context = new TestingContext())
-            using (Configuration configuration = new Configuration(context, null))
-            {
-                configuration.SeedData();
+            using TestingContext context = new TestingContext();
+            using Configuration configuration = new Configuration(context, null);
 
-                foreach (Permission permission in context.Set<Permission>())
-                    Assert.True(!String.IsNullOrEmpty(Resource.ForController(permission.Area + permission.Controller)),
-                        $"'{permission.Area}{permission.Controller}' permission, does not have a title.");
-            }
+            configuration.SeedData();
+
+            foreach (Permission permission in context.Set<Permission>())
+                Assert.True(!String.IsNullOrEmpty(Resource.ForController(permission.Area + permission.Controller)),
+                    $"'{permission.Area}{permission.Controller}' permission, does not have a title.");
         }
 
         [Fact]
         public void Resources_HasAllPermissionActionTitles()
         {
-            using (TestingContext context = new TestingContext())
-            using (Configuration configuration = new Configuration(context, null))
-            {
-                configuration.SeedData();
+            using TestingContext context = new TestingContext();
+            using Configuration configuration = new Configuration(context, null);
 
-                foreach (Permission permission in context.Set<Permission>())
-                    Assert.True(!String.IsNullOrEmpty(Resource.ForAction(permission.Action)),
-                        $"'{permission.Area}{permission.Controller}{permission.Action} permission', does not have a title.");
-            }
+            configuration.SeedData();
+
+            foreach (Permission permission in context.Set<Permission>())
+                Assert.True(!String.IsNullOrEmpty(Resource.ForAction(permission.Action)),
+                    $"'{permission.Area}{permission.Controller}{permission.Action} permission', does not have a title.");
         }
 
         private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode parent = null)

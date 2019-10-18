@@ -46,7 +46,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canCreate);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState["Title"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState[nameof(RoleView.Title)].Errors.Single().ErrorMessage);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(canEdit);
             Assert.Single(validator.ModelState);
-            Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState["Title"].Errors.Single().ErrorMessage);
+            Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState[nameof(RoleView.Title)].Errors.Single().ErrorMessage);
         }
 
         [Fact]

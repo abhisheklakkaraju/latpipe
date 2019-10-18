@@ -55,9 +55,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public async Task BindModelAsync_TruncatesValue()
         {
-            context.ValueProvider.GetValue("TruncatedDateTimeField").Returns(new ValueProviderResult(new DateTime(2017, 2, 3, 4, 5, 6).ToString(), CultureInfo.CurrentCulture));
-            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), "TruncatedDateTimeField");
-            context.ModelName = "TruncatedDateTimeField";
+            context.ValueProvider.GetValue(nameof(AllTypesView.TruncatedDateTimeField)).Returns(new ValueProviderResult(new DateTime(2017, 2, 3, 4, 5, 6).ToString(), CultureInfo.CurrentCulture));
+            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.TruncatedDateTimeField));
+            context.ModelName = nameof(AllTypesView.TruncatedDateTimeField);
             context.ModelMetadata = metadata;
 
             await attribute.BindModelAsync(context);
