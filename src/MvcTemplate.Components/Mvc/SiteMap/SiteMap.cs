@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
@@ -29,27 +30,17 @@ namespace MvcTemplate.Components.Mvc
         public IEnumerable<SiteMapNode> For(ViewContext context)
         {
             Int32? account = context.HttpContext.User.Id();
-            String area = context.RouteData.Values["area"] as String;
-            String action = context.RouteData.Values["action"] as String;
-            String controller = context.RouteData.Values["controller"] as String;
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            List<SiteMapNode> nodes = SetState(Tree, factory.GetUrlHelper(context), area, controller, action);
+            List<SiteMapNode> nodes = SetState(Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
 
             return Authorize(account, nodes);
         }
         public IEnumerable<SiteMapNode> BreadcrumbFor(ViewContext context)
         {
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            String controller = context.RouteData.Values["controller"] as String;
-            String action = context.RouteData.Values["action"] as String;
-            String area = context.RouteData.Values["area"] as String;
+            SiteMapNode current = CurrentNodeFor(context.RouteData.Values);
             List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
             IUrlHelper url = factory.GetUrlHelper(context);
-
-            SiteMapNode current = Nodes.SingleOrDefault(node =>
-                String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
-                String.Equals(node.Action, action, StringComparison.OrdinalIgnoreCase) &&
-                String.Equals(node.Controller, controller, StringComparison.OrdinalIgnoreCase));
 
             while (current != null)
             {
@@ -70,7 +61,7 @@ namespace MvcTemplate.Components.Mvc
             return breadcrumb;
         }
 
-        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, String area, String controller, String action)
+        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode current)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
 
@@ -86,13 +77,9 @@ namespace MvcTemplate.Components.Mvc
                 copy.Action = node.Action;
                 copy.Area = node.Area;
 
-                copy.Children = SetState(node.Children, url, area, controller, action);
+                copy.Children = SetState(node.Children, url, current);
                 copy.HasActiveChildren = copy.Children.Any(child => child.IsActive || child.HasActiveChildren);
-                copy.IsActive =
-                    copy.Children.Any(child => child.IsActive && !child.IsMenu) ||
-                    String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
-                    String.Equals(node.Action, action, StringComparison.OrdinalIgnoreCase) &&
-                    String.Equals(node.Controller, controller, StringComparison.OrdinalIgnoreCase);
+                copy.IsActive = copy.Children.Any(child => child.IsActive && !child.IsMenu) || node == current;
 
                 copies.Add(copy);
             }
@@ -159,6 +146,17 @@ namespace MvcTemplate.Components.Mvc
                 .Attributes()
                 .Where(attribute => attribute.Name.LocalName.StartsWith("route-"))
                 .ToDictionary(attribute => attribute.Name.LocalName.Substring(6), attribute => attribute.Value);
+        }
+        private SiteMapNode CurrentNodeFor(RouteValueDictionary route)
+        {
+            String area = route["area"] as String;
+            String action = route["action"] as String;
+            String controller = route["controller"] as String;
+
+            return Nodes.SingleOrDefault(node =>
+                String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
+                String.Equals(node.Action, action, StringComparison.OrdinalIgnoreCase) &&
+                String.Equals(node.Controller, controller, StringComparison.OrdinalIgnoreCase));
         }
         private String FormUrl(IUrlHelper url, SiteMapNode node)
         {
