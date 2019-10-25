@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <Version>1.1.0</Version>
+    <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <GenerateFullPaths>true</GenerateFullPaths>
     <TargetFramework>netcoreapp3.0</TargetFramework>

@@ -22,12 +22,12 @@ namespace MvcTemplate.Components.Mvc
         {
             return String.Format(ErrorMessageString, name, Extensions);
         }
-        public override Boolean IsValid(Object value)
+        public override Boolean IsValid(Object? value)
         {
             if (value == null)
                 return true;
 
-            IEnumerable<IFormFile> files = value is IFormFile formFile ? new[] { formFile } : value as IEnumerable<IFormFile>;
+            IEnumerable<IFormFile>? files = value is IFormFile formFile ? new[] { formFile } : value as IEnumerable<IFormFile>;
 
             return files?.All(file => Extensions.Split(',').Any(ext => file.FileName?.EndsWith(ext) == true)) == true;
         }

@@ -25,7 +25,7 @@ namespace MvcTemplate.Services.Tests
             context = new TestingContext();
             service = Substitute.ForPartsOf<RoleService>(new UnitOfWork(new TestingContext(context)));
 
-            SetUpData();
+            role = SetUpData();
         }
         public void Dispose()
         {
@@ -76,8 +76,8 @@ namespace MvcTemplate.Services.Tests
 
             service.SeedPermissions(view);
 
-            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).ToList();
-            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).ToList();
+            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
+            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
 
             for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
             {
@@ -145,7 +145,7 @@ namespace MvcTemplate.Services.Tests
             service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
 
             RoleView expected = Mapper.Map<RoleView>(role);
-            RoleView actual = service.GetView(role.Id);
+            RoleView actual = service.GetView(role.Id)!;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.NotEmpty(actual.Permissions.SelectedIds);
@@ -159,7 +159,7 @@ namespace MvcTemplate.Services.Tests
             service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
 
             IEnumerable<Int32> expected = role.Permissions.Select(rolePermission => rolePermission.PermissionId).OrderBy(id => id);
-            IEnumerable<Int32> actual = service.GetView(role.Id).Permissions.SelectedIds.OrderBy(id => id);
+            IEnumerable<Int32> actual = service.GetView(role.Id)!.Permissions.SelectedIds.OrderBy(id => id);
 
             Assert.Equal(expected, actual);
         }
@@ -169,7 +169,7 @@ namespace MvcTemplate.Services.Tests
         {
             service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
 
-            RoleView view = service.GetView(role.Id);
+            RoleView view = service.GetView(role.Id)!;
 
             service.Received().SeedPermissions(view);
         }
@@ -266,9 +266,9 @@ namespace MvcTemplate.Services.Tests
             Assert.Empty(context.Set<Role>().AsNoTracking());
         }
 
-        private void SetUpData()
+        private Role SetUpData()
         {
-            role = ObjectsFactory.CreateRole();
+            Role role = ObjectsFactory.CreateRole();
             foreach (String controller in new[] { "Roles", "Profile" })
                 foreach (String action in new[] { "Edit", "Delete" })
                     role.Permissions.Add(new RolePermission
@@ -283,6 +283,8 @@ namespace MvcTemplate.Services.Tests
 
             context.Add(role);
             context.SaveChanges();
+
+            return role;
         }
 
         private MvcTree CreatePermissions()
@@ -293,34 +295,33 @@ namespace MvcTemplate.Services.Tests
             expectedTree.Nodes.Add(root);
             expectedTree.SelectedIds = new HashSet<Int32>(role.Permissions.Select(rolePermission => rolePermission.PermissionId));
 
-            IEnumerable<Permission> permissions = role
+            IEnumerable<PermissionView> permissions = role
                 .Permissions
                 .Select(rolePermission => rolePermission.Permission)
-                .Select(permission => new Permission
+                .Select(permission => new PermissionView
                 {
                     Id = permission.Id,
-                    Area = Resource.ForArea(permission.Area),
                     Action = Resource.ForAction(permission.Action),
+                    Area = permission.Area == null ? null : Resource.ForArea(permission.Area),
                     Controller = Resource.ForController(permission.Area + permission.Controller)
                 });
 
-            foreach (IGrouping<String, Permission> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault().Controller))
+            foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault().Controller))
             {
-                MvcTreeNode areaNode = new MvcTreeNode(area.Key);
-                foreach (IGrouping<String, Permission> controller in area.GroupBy(permission => permission.Controller).OrderBy(permission => permission.Key))
+                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
                 {
-                    MvcTreeNode controllerNode = new MvcTreeNode(controller.Key);
-                    foreach (Permission permission in controller.OrderBy(permission => permission.Action))
-                        controllerNode.Children.Add(new MvcTreeNode(permission.Id, permission.Action));
+                    MvcTreeNode node = new MvcTreeNode(controller.Key);
+                    foreach (PermissionView permission in controller)
+                        node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
 
-                    if (areaNode.Title == null)
-                        root.Children.Add(controllerNode);
-                    else
-                        areaNode.Children.Add(controllerNode);
+                    nodes.Add(node);
                 }
 
-                if (areaNode.Title != null)
-                    root.Children.Add(areaNode);
+                if (area.Key == null)
+                    root.Children.AddRange(nodes);
+                else
+                    root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });
             }
 
             return expectedTree;

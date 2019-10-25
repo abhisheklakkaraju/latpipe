@@ -371,7 +371,7 @@ namespace MvcTemplate.Components.Security.Tests
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
         }
 
-        private Int32 CreateAccountWithPermissionFor(String area, String controller, String action, Boolean isLocked = false)
+        private Int32 CreateAccountWithPermissionFor(String? area, String controller, String action, Boolean isLocked = false)
         {
             RolePermission rolePermission = ObjectsFactory.CreateRolePermission();
             rolePermission.Permission.Controller = controller;

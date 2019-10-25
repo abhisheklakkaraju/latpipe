@@ -12,22 +12,22 @@ namespace MvcTemplate.Data.Core
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private IAuditLogger Logger { get; }
         private DbContext Context { get; }
+        private IAuditLogger? Logger { get; }
 
-        public UnitOfWork(DbContext context, IAuditLogger logger = null)
+        public UnitOfWork(DbContext context, IAuditLogger? logger = null)
         {
             Context = context;
             Logger = logger;
         }
 
-        public TDestination GetAs<TModel, TDestination>(Int32? id) where TModel : BaseModel
+        public TDestination? GetAs<TModel, TDestination>(Int32? id) where TModel : BaseModel where TDestination : class
         {
             return id == null
                 ? default
                 : Context.Set<TModel>().Where(model => model.Id == id).ProjectTo<TDestination>().FirstOrDefault();
         }
-        public TModel Get<TModel>(Int32? id) where TModel : BaseModel
+        public TModel? Get<TModel>(Int32? id) where TModel : BaseModel
         {
             return id == null ? null : Context.Find<TModel>(id);
         }

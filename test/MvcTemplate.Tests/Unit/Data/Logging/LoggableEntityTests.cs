@@ -42,7 +42,7 @@ namespace MvcTemplate.Data.Logging.Tests
         [Fact]
         public void LoggableEntity_CreatesPropertiesForModifiedEntity()
         {
-            String title = model.Title;
+            String? title = model.Title;
             entry.State = EntityState.Modified;
             entry.CurrentValues[nameof(TestModel.Title)] = "Pneura";
             entry.OriginalValues[nameof(TestModel.Title)] = "Pneura";
@@ -58,7 +58,7 @@ namespace MvcTemplate.Data.Logging.Tests
         public void LoggableEntity_CreatesPropertiesForAttachedEntity()
         {
             context.Dispose();
-            String title = model.Title;
+            String? title = model.Title;
 
             context = new TestingContext(context);
             context.Set<TestModel>().Attach(model);

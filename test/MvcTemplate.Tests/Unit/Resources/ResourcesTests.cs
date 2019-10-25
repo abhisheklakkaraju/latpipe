@@ -44,7 +44,7 @@ namespace MvcTemplate.Resources.Tests
             configuration.SeedData();
 
             foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
-                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area)),
+                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area!)),
                     $"'{permission.Area}' permission, does not have a title.");
         }
 
@@ -74,7 +74,7 @@ namespace MvcTemplate.Resources.Tests
                     $"'{permission.Area}{permission.Controller}{permission.Action} permission', does not have a title.");
         }
 
-        private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode parent = null)
+        private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode? parent = null)
         {
             List<SiteMapNode> list = new List<SiteMapNode>();
             foreach (XElement element in elements)

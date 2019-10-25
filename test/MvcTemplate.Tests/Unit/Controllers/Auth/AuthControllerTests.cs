@@ -78,7 +78,7 @@ namespace MvcTemplate.Controllers.Tests
             validator.CanRecover(accountRecovery).Returns(true);
 
             Object expected = RedirectToDefault(controller);
-            Object actual = await controller.Recover(null);
+            Object actual = await controller.Recover(new AccountRecoveryView());
 
             Assert.Same(expected, actual);
         }
@@ -118,7 +118,7 @@ namespace MvcTemplate.Controllers.Tests
             String url = controller.Url.Action("Reset", "Auth", new { token = "TestToken" }, controller.Request.Scheme);
             String subject = Message.For<AccountView>("RecoveryEmailSubject");
             String body = Message.For<AccountView>("RecoveryEmailBody", url);
-            String email = accountRecovery.Email;
+            String email = accountRecovery.Email!;
 
             await mail.Received().SendAsync(email, subject, body);
         }
@@ -290,7 +290,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.RedirectToLocal("/").Returns(new RedirectResult("/"));
 
             Object expected = controller.RedirectToLocal("/");
-            Object actual = await controller.Login(null, "/");
+            Object actual = await controller.Login(new AccountLoginView(), "/");
 
             Assert.Same(expected, actual);
         }
@@ -317,7 +317,7 @@ namespace MvcTemplate.Controllers.Tests
 
             await controller.Login(accountLogin, null);
 
-            await service.Received().Login(controller.HttpContext, accountLogin.Username);
+            await service.Received().Login(controller.HttpContext, accountLogin.Username!);
         }
 
         [Fact]

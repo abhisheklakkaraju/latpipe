@@ -17,12 +17,12 @@ namespace MvcTemplate.Components.Mvc
         public Int32? HideDepth { get; set; }
 
         [HtmlAttributeName("mvc-tree-for")]
-        public ModelExpression For { get; set; }
+        public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
             String treeClasses = "mvc-tree";
-            MvcTree tree = For.Model as MvcTree;
+            MvcTree tree = For?.Model as MvcTree ?? new MvcTree();
 
             if (Readonly)
                 treeClasses += " mvc-tree-readonly";
@@ -30,13 +30,13 @@ namespace MvcTemplate.Components.Mvc
             output.Content.AppendHtml(IdsFor(tree));
             output.Content.AppendHtml(ViewFor(tree));
 
-            output.Attributes.SetAttribute("data-for", $"{For.Name}.SelectedIds");
+            output.Attributes.SetAttribute("data-for", $"{For?.Name}.SelectedIds");
             output.Attributes.SetAttribute("class", $"{treeClasses} {output.Attributes["class"]?.Value}".Trim());
         }
 
         private TagBuilder IdsFor(MvcTree model)
         {
-            String name = $"{For.Name}.SelectedIds";
+            String name = $"{For?.Name}.SelectedIds";
             TagBuilder ids = new TagBuilder("div");
             ids.AddCssClass("mvc-tree-ids");
 
@@ -67,7 +67,8 @@ namespace MvcTemplate.Components.Mvc
                 TagBuilder item = new TagBuilder("li");
                 item.InnerHtml.AppendHtml("<i></i>");
 
-                if (node.Id is Int32 id) {
+                if (node.Id is Int32 id)
+                {
                     if (model.SelectedIds.Contains(id))
                         item.AddCssClass("mvc-tree-checked");
 

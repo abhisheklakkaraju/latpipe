@@ -20,8 +20,8 @@ namespace MvcTemplate.Components.Logging
         public FileLogger(String path, LogLevel logLevel, Int64 rollSize)
         {
             String file = Path.GetFileNameWithoutExtension(path);
+            LogDirectory = Path.GetDirectoryName(path) ?? "";
             String extension = Path.GetExtension(path);
-            LogDirectory = Path.GetDirectoryName(path);
             Accessor = new HttpContextAccessor();
 
             RollingFileFormat = $"{file}-{{0:yyyyMMdd-HHmmss}}{extension}";
@@ -34,11 +34,11 @@ namespace MvcTemplate.Components.Logging
         {
             return Level <= logLevel;
         }
-        public IDisposable BeginScope<TState>(TState state)
+        public IDisposable? BeginScope<TState>(TState state)
         {
             return null;
         }
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, String> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, String> formatter)
         {
             if (!IsEnabled(logLevel))
                 return;
@@ -54,8 +54,10 @@ namespace MvcTemplate.Components.Logging
             while (exception != null)
             {
                 log.AppendLine($"    {exception.GetType()}: {exception.Message}");
-                foreach (String line in exception.StackTrace.Split('\n'))
-                    log.AppendLine($"     {line.TrimEnd('\r')}");
+
+                if (exception.StackTrace is String stackTrace)
+                    foreach (String line in stackTrace.Split('\n'))
+                        log.AppendLine($"     {line.TrimEnd('\r')}");
 
                 exception = exception.InnerException;
             }

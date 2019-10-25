@@ -36,13 +36,13 @@ namespace MvcTemplate.Components.Security
             Refresh();
         }
 
-        public Boolean IsGrantedFor(Int32? accountId, String area, String controller, String action)
+        public Boolean IsGrantedFor(Int32? accountId, String? area, String? controller, String? action)
         {
             String permission = $"{area}/{controller}/{action}".ToLower();
             if (!Required.ContainsKey(permission))
                 return true;
 
-            return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId.Value].Contains(Required[permission]);
+            return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId!.Value].Contains(Required[permission]);
         }
 
         public void Refresh()
@@ -58,7 +58,7 @@ namespace MvcTemplate.Components.Security
                 {
                     Id = account.Id,
                     Permissions = account
-                        .Role
+                        .Role!
                         .Permissions
                         .Select(role => role.Permission)
                         .Select(permission => (permission.Area ?? "") + "/" + permission.Controller + "/" + permission.Action)
@@ -72,7 +72,7 @@ namespace MvcTemplate.Components.Security
         {
             Boolean? isRequired = null;
             MethodInfo method = Actions[action];
-            Type controller = method.DeclaringType;
+            Type? controller = method.DeclaringType;
 
             if (method.IsDefined(typeof(AuthorizeAttribute), false))
                 isRequired = true;
@@ -83,7 +83,7 @@ namespace MvcTemplate.Components.Security
             if (method.IsDefined(typeof(AllowUnauthorizedAttribute), false))
                 isRequired ??= false;
 
-            while (controller != typeof(Controller))
+            while (controller != null)
             {
                 if (controller.IsDefined(typeof(AuthorizeAttribute), false))
                     isRequired ??= true;
@@ -99,10 +99,10 @@ namespace MvcTemplate.Components.Security
 
             return isRequired == true;
         }
-        private String RequiredPermissionFor(String action)
+        private String? RequiredPermissionFor(String action)
         {
             String[] path = action.Split('/');
-            AuthorizeAsAttribute auth = Actions[action].GetCustomAttribute<AuthorizeAsAttribute>(false);
+            AuthorizeAsAttribute? auth = Actions[action].GetCustomAttribute<AuthorizeAsAttribute>(false);
             String asAction = $"{auth?.Area ?? path[0]}/{auth?.Controller ?? path[1]}/{auth?.Action ?? path[2]}";
 
             if (action != asAction)
@@ -113,8 +113,8 @@ namespace MvcTemplate.Components.Security
         private String ActionFor(MethodInfo method)
         {
             String action = method.GetCustomAttribute<ActionNameAttribute>(false)?.Name ?? method.Name;
-            String area = method.DeclaringType.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;
-            String controller = method.DeclaringType.Name[0..^10];
+            String? area = method.DeclaringType?.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;
+            String? controller = method.DeclaringType?.Name[..^10];
 
             return $"{area}/{controller}/{action}";
         }

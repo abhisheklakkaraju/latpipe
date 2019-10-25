@@ -174,7 +174,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(role);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization!.Received().Refresh();
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.DeleteConfirmed(role.Id);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization!.Received().Refresh();
         }
 
         [Fact]

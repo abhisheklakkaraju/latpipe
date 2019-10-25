@@ -14,7 +14,10 @@ namespace MvcTemplate.Components.Mvc
 
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            Languages.Current = Languages[context.RouteData.Values["language"] as String];
+            if (context.RouteData.Values["language"] is String abbrevation)
+                Languages.Current = Languages[abbrevation];
+            else
+                Languages.Current = Languages.Default;
         }
         public void OnResourceExecuted(ResourceExecutedContext context)
         {

@@ -14,7 +14,7 @@ namespace MvcTemplate.Resources
             Source = new ConcurrentDictionary<String, ConcurrentDictionary<String, ResourceDictionary>>();
         }
 
-        public String this[String language, String group, String key]
+        public String? this[String language, String group, String key]
         {
             get
             {
@@ -24,7 +24,7 @@ namespace MvcTemplate.Resources
                 if (!Source[language].ContainsKey(group))
                     return null;
 
-                return Source[language][group].TryGetValue(key, out String title) ? title : null;
+                return Source[language][group].TryGetValue(key, out String? title) ? title : null;
             }
             set
             {

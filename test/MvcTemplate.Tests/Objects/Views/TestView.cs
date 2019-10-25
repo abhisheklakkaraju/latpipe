@@ -7,6 +7,6 @@ namespace MvcTemplate.Tests
     public class TestView : BaseView
     {
         [StringLength(128)]
-        public String Title { get; set; }
+        public String? Title { get; set; }
     }
 }

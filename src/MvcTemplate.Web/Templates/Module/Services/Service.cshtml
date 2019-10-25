@@ -13,7 +13,7 @@ namespace MvcTemplate.Services
         {
         }
 
-        public TView Get<TView>(Int32 id) where TView : BaseView
+        public TView? Get<TView>(Int32 id) where TView : BaseView
         {
             return UnitOfWork.GetAs<@Model.Model, TView>(id);
         }

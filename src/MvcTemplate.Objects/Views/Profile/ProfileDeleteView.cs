@@ -9,6 +9,6 @@ namespace MvcTemplate.Objects
         [Required]
         [NotTrimmed]
         [StringLength(32)]
-        public String Password { get; set; }
+        public String? Password { get; set; }
     }
 }

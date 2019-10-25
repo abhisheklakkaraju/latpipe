@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using MvcTemplate.Resources;
+using System;
 
 namespace MvcTemplate.Components.Mvc
 {
@@ -7,8 +8,9 @@ namespace MvcTemplate.Components.Mvc
     {
         public void CreateDisplayMetadata(DisplayMetadataProviderContext context)
         {
-            if (context.Key.ContainerType != null && context.Key.MetadataKind == ModelMetadataKind.Property)
-                context.DisplayMetadata.DisplayName = () => Resource.ForProperty(context.Key.ContainerType, context.Key.Name);
+            if (context.Key.ContainerType is Type view && context.Key.MetadataKind == ModelMetadataKind.Property)
+                if (Resource.ForProperty(view, context.Key.Name) is String title && title.Length > 0)
+                    context.DisplayMetadata.DisplayName = () => title;
         }
     }
 }

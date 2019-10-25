@@ -43,7 +43,7 @@ namespace MvcTemplate.Validators.Tests
             RoleView view = new RoleView();
 
             Boolean isSpecified = validator.BaseIsSpecified(view, role => role.Title);
-            String message = Validation.For("Required", Resource.ForProperty<RoleView, String>(role => role.Title));
+            String message = Validation.For("Required", Resource.ForProperty<RoleView, String?>(role => role.Title));
 
             Assert.False(isSpecified);
             Assert.Empty(validator.Alerts);

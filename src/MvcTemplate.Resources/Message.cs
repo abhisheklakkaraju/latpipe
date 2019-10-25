@@ -8,7 +8,7 @@ namespace MvcTemplate.Resources
         {
             String message = Resource.Localized(typeof(TView).Name, "Messages", key);
 
-            return message == null || args.Length == 0 ? message : String.Format(message, args);
+            return message == "" || args.Length == 0 ? message : String.Format(message, args);
         }
     }
 }

@@ -38,13 +38,13 @@ namespace MvcTemplate.Tests
         public Boolean? NullableBooleanField { get; set; }
         public DateTime? NullableDateTimeField { get; set; }
 
-        public String StringField { get; set; }
+        public String? StringField { get; set; }
 
-        public IFormFile FileField { get; set; }
+        public IFormFile? FileField { get; set; }
 
         [Truncated]
         public DateTime TruncatedDateTimeField { get; set; }
 
-        public AllTypesView Child { get; set; }
+        public AllTypesView? Child { get; set; }
     }
 }

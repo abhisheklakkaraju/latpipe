@@ -19,7 +19,7 @@ namespace MvcTemplate.Components.Mvc
         {
             return String.Format(ErrorMessageString, name, Minimum);
         }
-        public override Boolean IsValid(Object value)
+        public override Boolean IsValid(Object? value)
         {
             try
             {

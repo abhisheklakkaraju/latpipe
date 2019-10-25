@@ -43,7 +43,7 @@ namespace MvcTemplate.Controllers
             {
                 String url = Url.Action("Reset", "Auth", new { token }, Request.Scheme);
 
-                await MailClient.SendAsync(account.Email,
+                await MailClient.SendAsync(account.Email!,
                     Message.For<AccountView>("RecoveryEmailSubject"),
                     Message.For<AccountView>("RecoveryEmailBody", url));
             }
@@ -54,7 +54,7 @@ namespace MvcTemplate.Controllers
         }
 
         [HttpGet]
-        public ActionResult Reset(String token)
+        public ActionResult Reset(String? token)
         {
             if (Service.IsLoggedIn(User))
                 return RedirectToDefault();
@@ -82,7 +82,7 @@ namespace MvcTemplate.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login(String returnUrl)
+        public ActionResult Login(String? returnUrl)
         {
             if (Service.IsLoggedIn(User))
                 return RedirectToLocal(returnUrl);
@@ -91,7 +91,7 @@ namespace MvcTemplate.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(AccountLoginView account, String returnUrl)
+        public async Task<ActionResult> Login(AccountLoginView account, String? returnUrl)
         {
             if (Service.IsLoggedIn(User))
                 return RedirectToLocal(returnUrl);
@@ -99,7 +99,7 @@ namespace MvcTemplate.Controllers
             if (!Validator.CanLogin(account))
                 return View(account);
 
-            await Service.Login(HttpContext, account.Username);
+            await Service.Login(HttpContext, account.Username!);
 
             return RedirectToLocal(returnUrl);
         }

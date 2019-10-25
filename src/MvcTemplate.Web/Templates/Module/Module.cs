@@ -19,13 +19,13 @@ namespace MvcTemplate.Web.Templates
     public class Module : GennyModule
     {
         [GennyParameter(0, Required = true)]
-        public String Model { get; set; }
+        public String? Model { get; set; }
 
         [GennyParameter(1, Required = true)]
-        public String Controller { get; set; }
+        public String? Controller { get; set; }
 
         [GennyParameter(2, Required = false)]
-        public String Area { get; set; }
+        public String? Area { get; set; }
 
         public Module(IServiceProvider services)
             : base(services)
@@ -202,7 +202,7 @@ namespace MvcTemplate.Web.Templates
         {
             Logger.Write("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs - ");
 
-            ModuleModel model = new ModuleModel(Model, Controller, Area);
+            ModuleModel model = new ModuleModel(Model!, Controller!, Area);
             SyntaxNode tree = CSharpSyntaxTree.ParseText(File.ReadAllText("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs")).GetRoot();
 
             if (tree.DescendantNodes().OfType<MethodDeclarationSyntax>().Any(method => method.Identifier.Text == $"Create{Model}"))
@@ -245,12 +245,12 @@ namespace MvcTemplate.Web.Templates
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
         }
-        private void AddResource(String resource, String group, String key, String value)
+        private void AddResource(String resource, String group, String? key, String? value)
         {
             Logger.Write($"../MvcTemplate.Web/Resources/Shared/{resource}.json - ");
 
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
-            Dictionary<String, SortedDictionary<String, String>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String>>>(page);
+            Dictionary<String, SortedDictionary<String, String?>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String?>>>(page);
 
             if (key != null && resources[group].ContainsKey(key))
             {
@@ -263,7 +263,7 @@ namespace MvcTemplate.Web.Templates
                 String text = Regex.Replace(JsonSerializer.Serialize(resources, new JsonSerializerOptions
                 {
                     WriteIndented = true
-                }), "(^ +)", "$1$1");
+                }), "(^ +)", "$1$1", RegexOptions.Multiline);
 
                 File.WriteAllText($"Resources/Shared/{resource}.json", $"{text}{Environment.NewLine}");
 
@@ -273,7 +273,7 @@ namespace MvcTemplate.Web.Templates
 
         private GennyScaffoldingResult Scaffold(String path)
         {
-            return Scaffolder.Scaffold($"Templates/Module/{path}", new ModuleModel(Model, Controller, Area));
+            return Scaffolder.Scaffold($"Templates/Module/{path}", new ModuleModel(Model!, Controller!, Area));
         }
         private String FakeObjectCreation(String name, PropertyInfo[] properties)
         {

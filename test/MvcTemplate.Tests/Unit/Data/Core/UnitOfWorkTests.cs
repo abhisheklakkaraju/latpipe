@@ -46,7 +46,7 @@ namespace MvcTemplate.Data.Core.Tests
             context.SaveChanges();
 
             TestView expected = Mapper.Map<TestView>(model);
-            TestView actual = unitOfWork.GetAs<TestModel, TestView>(model.Id);
+            TestView actual = unitOfWork.GetAs<TestModel, TestView>(model.Id)!;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.Title, actual.Title);
@@ -66,7 +66,7 @@ namespace MvcTemplate.Data.Core.Tests
             context.SaveChanges();
 
             TestModel expected = context.Set<TestModel>().AsNoTracking().Single();
-            TestModel actual = unitOfWork.Get<TestModel>(model.Id);
+            TestModel actual = unitOfWork.Get<TestModel>(model.Id)!;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.Title, actual.Title);

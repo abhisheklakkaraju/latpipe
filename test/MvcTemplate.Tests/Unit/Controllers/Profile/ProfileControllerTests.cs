@@ -75,7 +75,7 @@ namespace MvcTemplate.Controllers.Tests
             service.IsActive(controller.CurrentAccountId).Returns(false);
 
             Object expected = RedirectToAction(controller, "Logout", "Auth");
-            Object actual = controller.Edit(null);
+            Object actual = controller.Edit(new ProfileEditView());
 
             Assert.Same(expected, actual);
         }
@@ -223,7 +223,7 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.DeleteConfirmed(profileDelete);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization!.Received().Refresh();
         }
 
         [Fact]

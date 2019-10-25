@@ -13,32 +13,32 @@ namespace MvcTemplate.Components.Security.Area.Tests
         [HttpGet]
         public ViewResult Action()
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         public ViewResult Action(Object obj)
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ViewResult AuthorizedGetAction()
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         public ViewResult AuthorizedGetAction(Object obj)
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         public ViewResult AuthorizedPostAction()
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
@@ -46,42 +46,42 @@ namespace MvcTemplate.Components.Security.Area.Tests
         [ActionName("AuthorizedNamedGetAction")]
         public ViewResult GetActionWithName()
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         [ActionName("AuthorizedNamedGetAction")]
         public ViewResult GetActionWithName(Object obj)
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         [ActionName("AuthorizedNamedPostAction")]
         public ViewResult PostActionWithName()
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AuthorizeAs("Action")]
         public ViewResult AuthorizedAsAction()
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AuthorizeAs("AuthorizedAsSelf")]
         public ViewResult AuthorizedAsSelf()
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AuthorizeAs("InheritanceAction", Controller = "InheritedAuthorized", Area = "")]
         public ViewResult AuthorizedAsOtherAction()
         {
-            return null;
+            return View();
         }
     }
 }

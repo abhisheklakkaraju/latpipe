@@ -30,7 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Default_Language()
         {
-            CultureInfo.CurrentUICulture = languages["lt"].Culture;
+            CultureInfo.CurrentUICulture = languages["lt"].Culture!;
 
             Language actual = languages.Default;
             Language expected = languages["en"];
@@ -41,7 +41,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Current_GetsLanguage()
         {
-            CultureInfo.CurrentUICulture = languages["en"].Culture;
+            CultureInfo.CurrentUICulture = languages["en"].Culture!;
 
             Language actual = languages.Current;
             Language expected = languages["en"];
@@ -54,7 +54,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             languages.Current = languages.Supported.Last();
 
-            CultureInfo expectedCulture = languages.Supported.Last().Culture;
+            CultureInfo expectedCulture = languages.Supported.Last().Culture!;
             CultureInfo actualUICulture = CultureInfo.CurrentUICulture;
             CultureInfo actualCulture = CultureInfo.CurrentCulture;
 

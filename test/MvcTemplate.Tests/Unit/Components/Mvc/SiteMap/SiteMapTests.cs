@@ -15,7 +15,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 {
     public class SiteMapTests
     {
-        private IDictionary<String, Object> route;
+        private IDictionary<String, Object?> route;
         private IAuthorization authorization;
         private ViewContext context;
         private SiteMap siteMap;

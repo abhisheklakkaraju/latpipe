@@ -21,7 +21,7 @@ namespace MvcTemplate.Controllers.Tests
         private BaseController controller;
         private String controllerName;
         private ActionContext action;
-        private String areaName;
+        private String? areaName;
 
         public BaseControllerTests()
         {
@@ -35,7 +35,7 @@ namespace MvcTemplate.Controllers.Tests
 
             action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
 
-            controllerName = controller.RouteData.Values["controller"] as String;
+            controllerName = (String)controller.RouteData.Values["controller"];
             areaName = controller.RouteData.Values["area"] as String;
         }
         public override void Dispose()
@@ -164,7 +164,7 @@ namespace MvcTemplate.Controllers.Tests
             controller = Substitute.ForPartsOf<BaseController>();
 
             Assert.Null(controller.Authorization);
-            Assert.True(controller.IsAuthorizedFor(null, null, null));
+            Assert.True(controller.IsAuthorizedFor("TestArea", "TestController", "TestAction"));
         }
 
         [Fact]
@@ -186,8 +186,8 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuting(null);
 
-            Object actual = controller.Authorization;
-            Object expected = authorization;
+            Object? actual = controller.Authorization;
+            Object? expected = authorization;
 
             Assert.Same(expected, actual);
         }

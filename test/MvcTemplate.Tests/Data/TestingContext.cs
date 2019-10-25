@@ -6,8 +6,6 @@ namespace MvcTemplate.Tests
 {
     public class TestingContext : Context
     {
-        protected DbSet<TestModel> TestModel { get; set; }
-
         private String DatabaseName { get; }
 
         public TestingContext()
@@ -19,6 +17,12 @@ namespace MvcTemplate.Tests
             DatabaseName = context.DatabaseName;
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Model.AddEntityType(typeof(TestModel));
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseInMemoryDatabase(DatabaseName);

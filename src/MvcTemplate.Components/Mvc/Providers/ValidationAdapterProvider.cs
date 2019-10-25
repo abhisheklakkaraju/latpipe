@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Mvc
 {
     public class ValidationAdapterProvider : IValidationAttributeAdapterProvider
     {
-        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer localizer)
+        public IAttributeAdapter? GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer? localizer)
         {
             Type type = attribute.GetType();
             if (type == typeof(RequiredAttribute))

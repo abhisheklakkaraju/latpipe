@@ -16,13 +16,6 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
-        public void EqualToAttribute_NullProperty_Throws()
-        {
-            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => new EqualToAttribute(null));
-            Assert.Equal("otherPropertyName", exception.ParamName);
-        }
-
-        [Fact]
         public void EqualToAttribute_SetsOtherPropertyName()
         {
             String actual = new EqualToAttribute("Other").OtherPropertyName;

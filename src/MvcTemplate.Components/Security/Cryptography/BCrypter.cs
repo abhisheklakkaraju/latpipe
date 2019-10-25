@@ -13,7 +13,7 @@ namespace MvcTemplate.Components.Security
             return BCrypt.Net.BCrypt.HashPassword(value, 13);
         }
 
-        public Boolean Verify(String value, String hash)
+        public Boolean Verify(String? value, String? hash)
         {
             if (value == null)
                 return false;
@@ -27,7 +27,7 @@ namespace MvcTemplate.Components.Security
 
             return BCrypt.Net.BCrypt.Verify(value, hash);
         }
-        public Boolean VerifyPassword(String value, String passhash)
+        public Boolean VerifyPassword(String? value, String? passhash)
         {
             if (value == null)
                 return false;

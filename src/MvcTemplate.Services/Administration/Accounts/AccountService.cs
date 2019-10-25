@@ -22,7 +22,7 @@ namespace MvcTemplate.Services
             Hasher = hasher;
         }
 
-        public TView Get<TView>(Int32 id) where TView : BaseView
+        public TView? Get<TView>(Int32 id) where TView : BaseView
         {
             return UnitOfWork.GetAs<Account, TView>(id);
         }
@@ -36,16 +36,16 @@ namespace MvcTemplate.Services
 
         public Boolean IsLoggedIn(IPrincipal user)
         {
-            return user.Identity.IsAuthenticated;
+            return user.Identity?.IsAuthenticated == true;
         }
         public Boolean IsActive(Int32 id)
         {
             return UnitOfWork.Select<Account>().Any(account => account.Id == id && !account.IsLocked);
         }
 
-        public String Recover(AccountRecoveryView view)
+        public String? Recover(AccountRecoveryView view)
         {
-            Account account = UnitOfWork.Select<Account>().SingleOrDefault(model => model.Email.ToLower() == view.Email.ToLower());
+            Account account = UnitOfWork.Select<Account>().SingleOrDefault(model => model.Email.ToLower() == view.Email!.ToLower());
             if (account == null)
                 return null;
 
@@ -60,7 +60,7 @@ namespace MvcTemplate.Services
         public void Reset(AccountResetView view)
         {
             Account account = UnitOfWork.Select<Account>().Single(model => model.RecoveryToken == view.Token);
-            account.Passhash = Hasher.HashPassword(view.NewPassword);
+            account.Passhash = Hasher.HashPassword(view.NewPassword!);
             account.RecoveryTokenExpirationDate = null;
             account.RecoveryToken = null;
 
@@ -71,15 +71,15 @@ namespace MvcTemplate.Services
         public void Create(AccountCreateView view)
         {
             Account account = UnitOfWork.To<Account>(view);
-            account.Passhash = Hasher.HashPassword(view.Password);
-            account.Email = view.Email.ToLower();
+            account.Passhash = Hasher.HashPassword(view.Password!);
+            account.Email = view.Email!.ToLower();
 
             UnitOfWork.Insert(account);
             UnitOfWork.Commit();
         }
         public void Edit(AccountEditView view)
         {
-            Account account = UnitOfWork.Get<Account>(view.Id);
+            Account account = UnitOfWork.Get<Account>(view.Id)!;
             account.IsLocked = view.IsLocked;
             account.RoleId = view.RoleId;
 
@@ -89,9 +89,9 @@ namespace MvcTemplate.Services
 
         public void Edit(ClaimsPrincipal user, ProfileEditView view)
         {
-            Account account = UnitOfWork.Get<Account>(CurrentAccountId);
-            account.Email = view.Email.ToLower();
-            account.Username = view.Username;
+            Account account = UnitOfWork.Get<Account>(CurrentAccountId)!;
+            account.Email = view.Email!.ToLower();
+            account.Username = view.Username!;
 
             if (!String.IsNullOrWhiteSpace(view.NewPassword))
                 account.Passhash = Hasher.HashPassword(view.NewPassword);

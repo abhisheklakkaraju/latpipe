@@ -14,9 +14,9 @@ namespace MvcTemplate.Tests
         {
             return CreateHtmlHelper<Object>(null);
         }
-        public static IHtmlHelper<T> CreateHtmlHelper<T>(T model)
+        public static IHtmlHelper<T?> CreateHtmlHelper<T>(T? model) where T : class
         {
-            IHtmlHelper<T> html = Substitute.For<IHtmlHelper<T>>();
+            IHtmlHelper<T?> html = Substitute.For<IHtmlHelper<T?>>();
 
             html.ViewContext.Returns(new ViewContext());
             html.ViewContext.RouteData = new RouteData();

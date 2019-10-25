@@ -12,27 +12,27 @@ namespace MvcTemplate.Components.Security.Tests
         [HttpGet]
         public ViewResult Action()
         {
-            return null;
+            return View();
         }
 
         [HttpPost]
         public ViewResult Action(Object obj)
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ViewResult AllowAnonymousAction()
         {
-            return null;
+            return View();
         }
 
         [HttpGet]
         [AllowUnauthorized]
         public ViewResult AllowUnauthorizedAction()
         {
-            return null;
+            return View();
         }
     }
 }

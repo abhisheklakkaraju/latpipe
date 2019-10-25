@@ -6,12 +6,12 @@ namespace MvcTemplate.Components.Security
     public class AuthorizeAsAttribute : Attribute
     {
         public String Action { get; }
-        public String Area { get; set; }
-        public String Controller { get; set; }
+        public String? Area { get; set; }
+        public String? Controller { get; set; }
 
         public AuthorizeAsAttribute(String action)
         {
-            Action = action ?? throw new ArgumentNullException(nameof(action));
+            Action = action;
         }
     }
 }

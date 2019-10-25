@@ -78,7 +78,6 @@ namespace MvcTemplate.Web
                 .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new NumberValidatorProvider()))
                 .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()));
 
-
             services.AddAuthentication("Cookies").AddCookie(authentication =>
             {
                 authentication.Cookie.Name = Config["Cookies:Auth:Name"];
@@ -164,7 +163,7 @@ namespace MvcTemplate.Web
 
                 while (typeof(BaseView).IsAssignableFrom(type.BaseType))
                 {
-                    Resource.Set(view.Name).Inherit(Resource.Set(type.BaseType.Name));
+                    Resource.Set(view.Name).Inherit(Resource.Set(type.BaseType!.Name));
 
                     type = type.BaseType;
                 }

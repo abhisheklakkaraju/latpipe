@@ -18,7 +18,7 @@ namespace MvcTemplate.Controllers
     public abstract class BaseController : Controller
     {
         public virtual Int32 CurrentAccountId { get; protected set; }
-        public IAuthorization Authorization { get; protected set; }
+        public IAuthorization? Authorization { get; protected set; }
         public Alerts Alerts { get; protected set; }
 
         protected BaseController()
@@ -32,14 +32,14 @@ namespace MvcTemplate.Controllers
 
             return View("~/Views/Home/NotFound.cshtml");
         }
-        public virtual ViewResult NotEmptyView(Object model)
+        public virtual ViewResult NotEmptyView(Object? model)
         {
             if (model == null)
                 return NotFoundView();
 
             return View(model);
         }
-        public virtual ActionResult RedirectToLocal(String url)
+        public virtual ActionResult RedirectToLocal(String? url)
         {
             if (!Url.IsLocalUrl(url))
                 return RedirectToDefault();
@@ -50,12 +50,13 @@ namespace MvcTemplate.Controllers
         {
             return base.RedirectToAction("Index", "Home", new { area = "" });
         }
-        public override RedirectToActionResult RedirectToAction(String action, String controller, Object route)
+        public override RedirectToActionResult RedirectToAction(String? action, String? controller, Object? route)
         {
             IDictionary<String, Object> values = HtmlHelper.AnonymousObjectToHtmlAttributes(route);
             controller ??= values.ContainsKey("controller") ? values["controller"] as String : null;
-            String area = values.ContainsKey("area") ? values["area"] as String : null;
+            String? area = values.ContainsKey("area") ? values["area"] as String : null;
             controller ??= RouteData.Values["controller"] as String;
+            action ??= RouteData.Values["action"] as String;
             area ??= RouteData.Values["area"] as String;
 
             if (!IsAuthorizedFor(action, controller, area))
@@ -64,12 +65,12 @@ namespace MvcTemplate.Controllers
             return base.RedirectToAction(action, controller, route);
         }
 
-        public virtual Boolean IsAuthorizedFor(String action, String controller, String area)
+        public virtual Boolean IsAuthorizedFor(String? action, String? controller, String? area)
         {
             return Authorization?.IsGrantedFor(CurrentAccountId, area, controller, action) != false;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext? context)
         {
             Authorization = HttpContext.RequestServices.GetService<IAuthorization>();
 

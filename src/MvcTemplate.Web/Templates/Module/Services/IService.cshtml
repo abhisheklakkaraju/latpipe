@@ -7,7 +7,7 @@ namespace MvcTemplate.Services
 {
     public interface @Model.IService : IService
     {
-        TView Get<TView>(Int32 id) where TView : BaseView;
+        TView? Get<TView>(Int32 id) where TView : BaseView;
         IQueryable<@Model.View> GetViews();
 
         void Create(@Model.View view);

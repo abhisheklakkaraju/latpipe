@@ -95,7 +95,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Create(accountCreate);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization!.Received().Refresh();
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(accountEdit);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization!.Received().Refresh();
         }
 
         [Fact]

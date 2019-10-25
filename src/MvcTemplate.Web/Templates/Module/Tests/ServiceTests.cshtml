@@ -34,7 +34,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Get_ReturnsViewById()
         {
-            @Model.View actual = service.Get<@Model.View>(@(Model.ModelVarName).Id);
+            @Model.View actual = service.Get<@Model.View>(@(Model.ModelVarName).Id)!;
             @Model.View expected = Mapper.Map<@Model.View>(@Model.ModelVarName);
 
             @if (Model.ViewProperties.Length == 0)

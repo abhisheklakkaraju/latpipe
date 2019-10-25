@@ -28,7 +28,7 @@ namespace MvcTemplate.Components.Lookups.Tests
         [Fact]
         public void GetColumnHeader_ReturnsPropertyTitle()
         {
-            String actual = lookup.GetColumnHeader(typeof(RoleView).GetProperty(nameof(RoleView.Title)));
+            String actual = lookup.GetColumnHeader(typeof(RoleView).GetProperty(nameof(RoleView.Title))!);
             String expected = Resource.ForProperty(typeof(RoleView), nameof(RoleView.Title));
 
             Assert.Equal(expected, actual);
@@ -37,11 +37,9 @@ namespace MvcTemplate.Components.Lookups.Tests
         [Fact]
         public void GetColumnHeader_ReturnsRelationPropertyTitle()
         {
-            PropertyInfo property = typeof(AllTypesView).GetProperty(nameof(AllTypesView.Child));
+            PropertyInfo property = typeof(AllTypesView).GetProperty(nameof(AllTypesView.Child))!;
 
-            String actual = lookup.GetColumnHeader(property);
-
-            Assert.Empty(actual);
+            Assert.Empty(lookup.GetColumnHeader(property));
         }
 
         [Theory]
@@ -79,7 +77,7 @@ namespace MvcTemplate.Components.Lookups.Tests
         [InlineData(nameof(AllTypesView.Child), "text-left")]
         public void GetColumnCssClass_ReturnsCssClassForPropertyType(String propertyName, String cssClass)
         {
-            PropertyInfo property = typeof(AllTypesView).GetProperty(propertyName);
+            PropertyInfo property = typeof(AllTypesView).GetProperty(propertyName)!;
 
             String actual = lookup.GetColumnCssClass(property);
             String expected = cssClass;

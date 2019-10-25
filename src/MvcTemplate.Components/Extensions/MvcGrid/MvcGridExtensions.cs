@@ -17,11 +17,11 @@ namespace MvcTemplate.Components.Extensions
     {
         public static IGridColumn<T, IHtmlContent> AddAction<T>(this IGridColumnsOf<T> columns, String action, String iconClass) where T : class
         {
-            if (!IsAuthorizedFor(columns.Grid.ViewContext, action))
-                return new GridColumn<T, IHtmlContent>(columns.Grid, model => null);
+            if (!IsAuthorizedFor(columns.Grid.ViewContext!, action))
+                return new GridColumn<T, IHtmlContent>(columns.Grid, model => HtmlString.Empty);
 
-            IUrlHelperFactory factory = columns.Grid.ViewContext.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            IUrlHelper url = factory.GetUrlHelper(columns.Grid.ViewContext);
+            IUrlHelperFactory? factory = columns.Grid.ViewContext?.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            IUrlHelper? url = factory?.GetUrlHelper(columns.Grid.ViewContext);
 
             return columns
                 .Add(model => GenerateLink(model, url, action, iconClass))
@@ -83,10 +83,10 @@ namespace MvcTemplate.Components.Extensions
                 .Sortable();
         }
 
-        private static IHtmlContent GenerateLink<T>(T model, IUrlHelper url, String action, String iconClass)
+        private static IHtmlContent GenerateLink<T>(T model, IUrlHelper? url, String action, String iconClass)
         {
             TagBuilder link = new TagBuilder("a");
-            link.Attributes["href"] = url.Action(action, RouteFor(model));
+            link.Attributes["href"] = url?.Action(action, RouteFor(model));
             link.Attributes["title"] = Resource.ForAction(action);
             link.AddCssClass(iconClass);
 
@@ -99,16 +99,16 @@ namespace MvcTemplate.Components.Extensions
                 return true;
 
             Int32? account = context.HttpContext.User.Id();
-            String area = context.RouteData.Values["area"] as String;
-            String controller = context.RouteData.Values["controller"] as String;
+            String? area = context.RouteData.Values["area"] as String;
+            String? controller = context.RouteData.Values["controller"] as String;
 
             return authorization.IsGrantedFor(account, area, controller, action);
         }
-        private static IDictionary<String, Object> RouteFor<T>(T model)
+        private static IDictionary<String, Object?> RouteFor<T>(T model)
         {
             PropertyInfo id = typeof(T).GetProperty("Id") ?? throw new Exception($"{typeof(T).Name} type does not have an id.");
 
-            return new Dictionary<String, Object> { ["id"] = id.GetValue(model) };
+            return new Dictionary<String, Object?> { ["id"] = id.GetValue(model) };
         }
         private static String CssClassFor<TProperty>()
         {

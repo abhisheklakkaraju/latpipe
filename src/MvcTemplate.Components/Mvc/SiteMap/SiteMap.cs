@@ -17,9 +17,9 @@ namespace MvcTemplate.Components.Mvc
     {
         private List<SiteMapNode> Tree { get; }
         private List<SiteMapNode> Nodes { get; }
-        private IAuthorization Authorization { get; }
+        private IAuthorization? Authorization { get; }
 
-        public SiteMap(String map, IAuthorization authorization)
+        public SiteMap(String map, IAuthorization? authorization)
         {
             XElement siteMap = XElement.Parse(map);
             Authorization = authorization;
@@ -38,7 +38,7 @@ namespace MvcTemplate.Components.Mvc
         public IEnumerable<SiteMapNode> BreadcrumbFor(ViewContext context)
         {
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            SiteMapNode current = CurrentNodeFor(context.RouteData.Values);
+            SiteMapNode? current = CurrentNodeFor(context.RouteData.Values);
             List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
             IUrlHelper url = factory.GetUrlHelper(context);
 
@@ -61,7 +61,7 @@ namespace MvcTemplate.Components.Mvc
             return breadcrumb;
         }
 
-        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode current)
+        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode? current)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
 
@@ -102,11 +102,11 @@ namespace MvcTemplate.Components.Mvc
             return authorized;
         }
 
-        private Boolean IsAuthorizedFor(Int32? accountId, String area, String controller, String action)
+        private Boolean IsAuthorizedFor(Int32? accountId, String? area, String? controller, String? action)
         {
             return action == null || Authorization?.IsGrantedFor(accountId, area, controller, action) != false;
         }
-        private List<SiteMapNode> Parse(XElement root, SiteMapNode parent = null)
+        private List<SiteMapNode> Parse(XElement root, SiteMapNode? parent = null)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
             foreach (XElement element in root.Elements("siteMapNode"))
@@ -147,11 +147,11 @@ namespace MvcTemplate.Components.Mvc
                 .Where(attribute => attribute.Name.LocalName.StartsWith("route-"))
                 .ToDictionary(attribute => attribute.Name.LocalName.Substring(6), attribute => attribute.Value);
         }
-        private SiteMapNode CurrentNodeFor(RouteValueDictionary route)
+        private SiteMapNode? CurrentNodeFor(RouteValueDictionary route)
         {
-            String area = route["area"] as String;
-            String action = route["action"] as String;
-            String controller = route["controller"] as String;
+            String? area = route["area"] as String;
+            String? action = route["action"] as String;
+            String? controller = route["controller"] as String;
 
             return Nodes.SingleOrDefault(node =>
                 String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
@@ -163,12 +163,12 @@ namespace MvcTemplate.Components.Mvc
             if (node.Action == null)
                 return "#";
 
-            Dictionary<String, Object> route = new Dictionary<String, Object>();
+            Dictionary<String, Object?> route = new Dictionary<String, Object?>();
             ActionContext context = url.ActionContext;
             route["area"] = node.Area;
 
             foreach ((String key, String newKey) in node.Route)
-                route[key] = context.RouteData.Values[newKey] ?? (String)context.HttpContext.Request.Query[newKey];
+                route[key] = context.RouteData.Values[newKey] ?? context.HttpContext.Request.Query[newKey];
 
             return url.Action(node.Action, node.Controller, route);
         }

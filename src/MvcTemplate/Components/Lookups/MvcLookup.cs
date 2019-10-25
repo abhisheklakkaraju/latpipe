@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Lookups
 
         public override String GetColumnHeader(PropertyInfo property)
         {
-            return Resource.ForProperty(typeof(TView), property.Name) ?? "";
+            return Resource.ForProperty(typeof(TView), property.Name);
         }
         public override String GetColumnCssClass(PropertyInfo property)
         {

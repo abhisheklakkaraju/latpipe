@@ -11,9 +11,9 @@ namespace MvcTemplate.Components.Mvc
         public Boolean? Required { get; set; }
 
         [HtmlAttributeName("asp-for")]
-        public ModelExpression For { get; set; }
+        public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
             TagBuilder require = new TagBuilder("span");
             require.Attributes["class"] = "require";
@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Mvc
             if (Required == true)
                 require.InnerHtml.Append("*");
 
-            if (Required == null && For.Metadata.IsRequired && For.Metadata.ModelType != typeof(Boolean))
+            if (Required == null && For?.Metadata.IsRequired == true && For?.Metadata.ModelType != typeof(Boolean))
                 require.InnerHtml.Append("*");
 
             output.Content.AppendHtml(require);

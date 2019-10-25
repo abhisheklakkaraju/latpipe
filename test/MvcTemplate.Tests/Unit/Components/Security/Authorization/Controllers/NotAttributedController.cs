@@ -9,7 +9,7 @@ namespace MvcTemplate.Components.Security.Tests
         [HttpGet]
         public ViewResult Action()
         {
-            return null;
+            return View();
         }
     }
 }

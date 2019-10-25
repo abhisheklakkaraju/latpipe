@@ -40,8 +40,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             identity.AddClaim(new Claim(ClaimTypes.Email, "ClaimTypeEmail"));
 
-            String expected = "ClaimTypeEmail";
-            String actual = principal.Email();
+            String? expected = "ClaimTypeEmail";
+            String? actual = principal.Email();
 
             Assert.Equal(expected, actual);
         }
@@ -59,8 +59,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             identity.AddClaim(new Claim(ClaimTypes.Name, "ClaimTypeName"));
 
-            String actual = principal.Username();
-            String expected = "ClaimTypeName";
+            String? actual = principal.Username();
+            String? expected = "ClaimTypeName";
 
             Assert.Equal(expected, actual);
         }

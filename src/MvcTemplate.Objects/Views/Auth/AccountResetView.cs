@@ -8,11 +8,11 @@ namespace MvcTemplate.Objects
     {
         [Required]
         [StringLength(36)]
-        public String Token { get; set; }
+        public String? Token { get; set; }
 
         [Required]
         [NotTrimmed]
         [StringLength(32)]
-        public String NewPassword { get; set; }
+        public String? NewPassword { get; set; }
     }
 }

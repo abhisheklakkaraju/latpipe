@@ -6,12 +6,12 @@ namespace MvcTemplate.Data.Logging
 {
     public class LoggableProperty
     {
-        private Object OldValue { get; }
-        private Object NewValue { get; }
-        private String Property { get; }
         public Boolean IsModified { get; }
+        private Object? OldValue { get; }
+        private Object? NewValue { get; }
+        private String Property { get; }
 
-        public LoggableProperty(PropertyEntry entry, Object newValue)
+        public LoggableProperty(PropertyEntry entry, Object? newValue)
         {
             NewValue = newValue;
             OldValue = entry.CurrentValue;
@@ -27,7 +27,7 @@ namespace MvcTemplate.Data.Logging
             return $"{Property}: {Format(NewValue)}";
         }
 
-        private String Format(Object value)
+        private String Format(Object? value)
         {
             if (value is null)
                 return "null";

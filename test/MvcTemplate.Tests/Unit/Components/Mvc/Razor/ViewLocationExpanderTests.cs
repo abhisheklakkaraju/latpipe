@@ -19,7 +19,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             context.RouteData.Values["area"] = "Test";
 
             IEnumerable<String> expected = new[] { "/Views/{2}/Shared/{0}.cshtml", "/Views/{2}/{1}/{0}.cshtml", "/Views/Shared/{0}.cshtml" };
-            IEnumerable<String> actual = new ViewLocationExpander().ExpandViewLocations(expander, null);
+            IEnumerable<String> actual = new ViewLocationExpander().ExpandViewLocations(expander, Array.Empty<String>());
 
             Assert.Equal(expected, actual);
         }
@@ -30,16 +30,10 @@ namespace MvcTemplate.Components.Mvc.Tests
             ActionContext context = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             ViewLocationExpanderContext expander = new ViewLocationExpanderContext(context, "Index", null, null, null, true);
 
+            IEnumerable<String> actual = new ViewLocationExpander().ExpandViewLocations(expander, Array.Empty<String>());
             IEnumerable<String> expected = new[] { "/Views/{1}/{0}.cshtml", "/Views/Shared/{0}.cshtml" };
-            IEnumerable<String> actual = new ViewLocationExpander().ExpandViewLocations(expander, null);
 
             Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void PopulateValues_DoesNothing()
-        {
-            new ViewLocationExpander().PopulateValues(null);
         }
     }
 }

@@ -72,9 +72,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData(12840000, 5056)]
         public void IsValid_LowerOrEqualFileSizes(Int32 firstFileSize, Int32 secondFileSize)
         {
-            IFormFile[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>(), null };
-            files[1].Length.Returns(secondFileSize);
-            files[0].Length.Returns(firstFileSize);
+            IFormFile?[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>(), null };
+            files[1]?.Length.Returns(secondFileSize);
+            files[0]?.Length.Returns(firstFileSize);
 
             Assert.True(attribute.IsValid(files));
         }
@@ -82,9 +82,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void IsValid_GreaterThanMaximumSizesAreNotValid()
         {
-            IFormFile[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>(), null };
-            files[1].Length.Returns(12840000);
-            files[0].Length.Returns(5057);
+            IFormFile?[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>(), null };
+            files[1]?.Length.Returns(12840000);
+            files[0]?.Length.Returns(5057);
 
             Assert.False(attribute.IsValid(files));
         }

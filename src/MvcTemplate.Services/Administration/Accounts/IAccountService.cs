@@ -10,13 +10,13 @@ namespace MvcTemplate.Services
 {
     public interface IAccountService : IService
     {
-        TView Get<TView>(Int32 id) where TView : BaseView;
+        TView? Get<TView>(Int32 id) where TView : BaseView;
         IQueryable<AccountView> GetViews();
 
         Boolean IsLoggedIn(IPrincipal user);
         Boolean IsActive(Int32 id);
 
-        String Recover(AccountRecoveryView view);
+        String? Recover(AccountRecoveryView view);
         void Reset(AccountResetView view);
 
         void Create(AccountCreateView view);

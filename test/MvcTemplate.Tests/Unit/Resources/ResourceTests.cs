@@ -30,15 +30,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForArea_NotFound_ReturnsNull()
+        public void ForArea_NotFound_Empty()
         {
-            Assert.Null(Resource.ForArea("Null"));
-        }
-
-        [Fact]
-        public void ForAction_Null_ReturnsNull()
-        {
-            Assert.Null(Resource.ForAction(null));
+            Assert.Empty(Resource.ForArea("Null"));
         }
 
         [Fact]
@@ -51,9 +45,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForAction_NotFound_ReturnsNull()
+        public void ForAction_NotFound_Empty()
         {
-            Assert.Null(Resource.ForAction("Null"));
+            Assert.Empty(Resource.ForAction("Null"));
         }
 
         [Fact]
@@ -66,9 +60,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForController_NotFound_ReturnsNull()
+        public void ForController_NotFound_Empty()
         {
-            Assert.Null(Resource.ForController("Null"));
+            Assert.Empty(Resource.ForController("Null"));
         }
 
         [Fact]
@@ -81,9 +75,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForLookup_NotFound_ReturnsNull()
+        public void ForLookup_NotFound_Empty()
         {
-            Assert.Null(Resource.ForLookup("Test"));
+            Assert.Empty(Resource.ForLookup("Test"));
         }
 
         [Fact]
@@ -96,9 +90,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForString_NotFound_ReturnsNull()
+        public void ForString_NotFound_Empty()
         {
-            Assert.Null(Resource.ForString("Null"));
+            Assert.Empty(Resource.ForString("Null"));
         }
 
         [Fact]
@@ -111,9 +105,9 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForHeader_NotFound_ReturnsNull()
+        public void ForHeader_NotFound_Empty()
         {
-            Assert.Null(Resource.ForHeader("Test"));
+            Assert.Empty(Resource.ForHeader("Test"));
         }
 
         [Fact]
@@ -126,15 +120,15 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForPage_PathNotFound_ReturnsNull()
+        public void ForPage_PathNotFound_Empty()
         {
-            Assert.Null(Resource.ForPage("Test"));
+            Assert.Empty(Resource.ForPage("Test"));
         }
 
         [Fact]
         public void ForPage_IsCaseInsensitive()
         {
-            IDictionary<String, Object> values = new Dictionary<String, Object>
+            IDictionary<String, Object?> values = new Dictionary<String, Object?>
             {
                 ["area"] = "administration",
                 ["controller"] = "roles",
@@ -150,9 +144,9 @@ namespace MvcTemplate.Resources.Tests
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void ForPage_WithoutArea(String area)
+        public void ForPage_WithoutArea(String? area)
         {
-            IDictionary<String, Object> values = new Dictionary<String, Object>
+            IDictionary<String, Object?> values = new Dictionary<String, Object?>
             {
                 ["controller"] = "profile",
                 ["action"] = "edit",
@@ -166,16 +160,16 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForPage_NotFound_ReturnsNull()
+        public void ForPage_NotFound_Empty()
         {
-            IDictionary<String, Object> values = new Dictionary<String, Object>
+            IDictionary<String, Object?> values = new Dictionary<String, Object?>
             {
                 ["controller"] = null,
                 ["action"] = null,
                 ["area"] = null
             };
 
-            Assert.Null(Resource.ForPage(values));
+            Assert.Empty(Resource.ForPage(values));
         }
 
         [Fact]
@@ -197,22 +191,22 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForSiteMap_NotFound_ReturnsNull()
+        public void ForSiteMap_NotFound_Empty()
         {
-            Assert.Null(Resource.ForSiteMap("Test", "Test", "Test"));
+            Assert.Empty(Resource.ForSiteMap("Test", "Test", "Test"));
         }
 
         [Fact]
         public void ForProperty_NotMemberLambdaExpression_ReturnNull()
         {
-            Assert.Null(Resource.ForProperty<TestView, String>(view => view.ToString()));
+            Assert.Empty(Resource.ForProperty<TestView, String?>(view => view.ToString()));
         }
 
         [Fact]
         public void ForProperty_FromLambdaExpression()
         {
             String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
-            String actual = Resource.ForProperty<AccountView, String>(account => account.Username);
+            String actual = Resource.ForProperty<AccountView, String?>(account => account.Username);
 
             Assert.Equal(expected, actual);
         }
@@ -227,15 +221,15 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForProperty_NotFoundLambdaExpression_ReturnsNull()
+        public void ForProperty_NotFoundLambdaExpression_Empty()
         {
-            Assert.Null(Resource.ForProperty<AccountView, Int32>(account => account.Id));
+            Assert.Empty(Resource.ForProperty<AccountView, Int32>(account => account.Id));
         }
 
         [Fact]
-        public void ForProperty_NotFoundLambdaType_ReturnsNull()
+        public void ForProperty_NotFoundLambdaType_Empty()
         {
-            Assert.Null(Resource.ForProperty<TestView, String>(test => test.Title));
+            Assert.Empty(Resource.ForProperty<TestView, String?>(test => test.Title));
         }
 
         [Fact]
@@ -250,8 +244,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_IsCaseInsensitive()
         {
-            String actual = Resource.ForProperty(typeof(AccountView), nameof(AccountView.Username).ToLower());
             String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
+            String actual = Resource.ForProperty(typeof(AccountView), nameof(AccountView.Username).ToLower());
 
             Assert.Equal(expected, actual);
         }
@@ -259,8 +253,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_FromRelation()
         {
-            String actual = Resource.ForProperty(typeof(Object), $"{nameof(Account)}{nameof(Account.Username)}");
             String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
+            String actual = Resource.ForProperty(typeof(Object), $"{nameof(Account)}{nameof(Account.Username)}");
 
             Assert.Equal(expected, actual);
         }
@@ -275,35 +269,29 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForProperty_NotFoundProperty_ReturnsNull()
+        public void ForProperty_NotFoundProperty_Empty()
         {
-            Assert.Null(Resource.ForProperty(typeof(AccountView), nameof(AccountView.Id)));
+            Assert.Empty(Resource.ForProperty(typeof(AccountView), nameof(AccountView.Id)));
         }
 
         [Fact]
-        public void ForProperty_NotFoundTypeProperty_ReturnsNull()
+        public void ForProperty_NotFoundTypeProperty_Empty()
         {
-            Assert.Null(Resource.ForProperty(typeof(TestView), nameof(TestView.Title)));
-        }
-
-        [Fact]
-        public void ForProperty_NullKey_ReturnsNull()
-        {
-            Assert.Null(Resource.ForProperty(typeof(RoleView), null));
+            Assert.Empty(Resource.ForProperty(typeof(TestView), nameof(TestView.Title)));
         }
 
         [Fact]
         public void ForProperty_NotMemberExpression_ReturnNull()
         {
-            Expression<Func<TestView, String>> lambda = (view) => view.ToString();
+            Expression<Func<TestView, String?>> lambda = (view) => view.ToString();
 
-            Assert.Null(Resource.ForProperty(lambda.Body));
+            Assert.Empty(Resource.ForProperty(lambda.Body));
         }
 
         [Fact]
         public void ForProperty_FromExpression()
         {
-            Expression<Func<AccountView, String>> lambda = (account) => account.Username;
+            Expression<Func<AccountView, String?>> lambda = (account) => account.Username;
 
             String expected = ResourceFor("Views/Administration/Accounts/AccountView", "Titles", nameof(AccountView.Username));
             String actual = Resource.ForProperty(lambda.Body);
@@ -323,26 +311,26 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForProperty_NotFoundExpression_ReturnsNull()
+        public void ForProperty_NotFoundExpression_Empty()
         {
             Expression<Func<AccountView, Int32>> lambda = (account) => account.Id;
 
-            Assert.Null(Resource.ForProperty(lambda.Body));
+            Assert.Empty(Resource.ForProperty(lambda.Body));
         }
 
         [Fact]
-        public void ForProperty_NotFoundType_ReturnsNull()
+        public void ForProperty_NotFoundType_Empty()
         {
-            Expression<Func<TestView, String>> lambda = (test) => test.Title;
+            Expression<Func<TestView, String?>> lambda = (test) => test.Title;
 
-            Assert.Null(Resource.ForProperty(lambda.Body));
+            Assert.Empty(Resource.ForProperty(lambda.Body));
         }
 
         private String ResourceFor(String path, String group, String key)
         {
             String resource = File.ReadAllText(Path.Combine("Resources", $"{path}.json"));
 
-            return JsonSerializer.Deserialize<Dictionary<String, Dictionary<String, String>>>(resource)[group][key];
+            return JsonSerializer.Deserialize<Dictionary<String, Dictionary<String, String?>>>(resource)[group][key] ?? "";
         }
     }
 }

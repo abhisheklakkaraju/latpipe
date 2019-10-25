@@ -22,9 +22,9 @@ namespace MvcTemplate.Components.Mvc
                 return;
 
             Int32? accountId = context.HttpContext.User.Id();
-            String area = context.RouteData.Values["area"] as String;
-            String action = context.RouteData.Values["action"] as String;
-            String controller = context.RouteData.Values["controller"] as String;
+            String? area = context.RouteData.Values["area"] as String;
+            String? action = context.RouteData.Values["action"] as String;
+            String? controller = context.RouteData.Values["controller"] as String;
 
             if (Authorization?.IsGrantedFor(accountId, area, controller, action) == false)
                 context.Result = new ViewResult

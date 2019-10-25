@@ -34,7 +34,7 @@ namespace MvcTemplate.Data.Migrations.Tests
         [Fact]
         public void AccountsTable_HasAdmin()
         {
-            Assert.Single(context.Set<Account>(), account => account.Username == "admin" && account.Role.Title == "Sys_Admin");
+            Assert.Single(context.Set<Account>(), account => account.Username == "admin" && account.Role?.Title == "Sys_Admin");
         }
 
         [Theory]
@@ -60,7 +60,7 @@ namespace MvcTemplate.Data.Migrations.Tests
         {
             Int32 actual = context.Set<Permission>().Count();
             Int32 expected = GetType()
-                .GetMethod(nameof(PermissionsTable_HasPermission))
+                .GetMethod(nameof(PermissionsTable_HasPermission))!
                 .GetCustomAttributes<InlineDataAttribute>()
                 .Count();
 

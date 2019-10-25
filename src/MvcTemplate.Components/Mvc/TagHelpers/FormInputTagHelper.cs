@@ -8,11 +8,11 @@ namespace MvcTemplate.Components.Mvc
     public class FormInputTagHelper : TagHelper
     {
         [HtmlAttributeName("asp-for")]
-        public ModelExpression For { get; set; }
+        public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
-            if (For.Metadata.ModelType == typeof(Boolean))
+            if (For?.Metadata.ModelType == typeof(Boolean))
                 return;
 
             if (output.Attributes["autocomplete"] == null)

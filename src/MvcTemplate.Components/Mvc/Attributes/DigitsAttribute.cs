@@ -13,7 +13,7 @@ namespace MvcTemplate.Components.Mvc
         {
         }
 
-        public override Boolean IsValid(Object value)
+        public override Boolean IsValid(Object? value)
         {
             return value == null || Regex.IsMatch(value.ToString(), "^[0-9]+$");
         }

@@ -7,17 +7,17 @@ namespace MvcTemplate.Components.Extensions
     {
         public static Int32? Id(this ClaimsPrincipal principal)
         {
-            String id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            String? id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (String.IsNullOrEmpty(id))
                 return null;
 
             return Int32.Parse(id);
         }
-        public static String Email(this ClaimsPrincipal principal)
+        public static String? Email(this ClaimsPrincipal principal)
         {
             return principal.FindFirst(ClaimTypes.Email)?.Value;
         }
-        public static String Username(this ClaimsPrincipal principal)
+        public static String? Username(this ClaimsPrincipal principal)
         {
             return principal.FindFirst(ClaimTypes.Name)?.Value;
         }

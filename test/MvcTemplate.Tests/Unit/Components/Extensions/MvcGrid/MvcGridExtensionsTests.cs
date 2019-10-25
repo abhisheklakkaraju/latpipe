@@ -35,7 +35,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         {
             IGridColumn<AllTypesView, IHtmlContent> actual = columns.AddAction("Edit", "fa fa-pencil-alt");
 
-            Assert.Empty(actual.ValueFor(null).ToString());
+            Assert.Empty(actual.ValueFor(new GridRow<AllTypesView>(new AllTypesView(), 0)).ToString());
             Assert.Empty(columns);
         }
 
@@ -46,10 +46,10 @@ namespace MvcTemplate.Components.Extensions.Tests
             StringWriter writer = new StringWriter();
             IUrlHelper url = Substitute.For<IUrlHelper>();
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
-            IAuthorization authorization = html.Grid.ViewContext.HttpContext.RequestServices.GetService<IAuthorization>();
+            IAuthorization? authorization = html.Grid.ViewContext?.HttpContext.RequestServices.GetService<IAuthorization>();
 
-            authorization.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            authorization?.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
@@ -70,8 +70,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             IUrlHelper url = Substitute.For<IUrlHelper>();
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
@@ -90,8 +90,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
             IGridColumnsOf<Object> gridColumns = new GridColumns<Object>(new Grid<Object>(Array.Empty<Object>()));
 
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
             gridColumns.Grid.ViewContext = html.Grid.ViewContext;
 
@@ -109,8 +109,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
-            html.Grid.ViewContext.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
+            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
 
             IGridColumn<AllTypesView, IHtmlContent> actual = columns.AddAction("Edit", "fa fa-pencil-alt");
 
@@ -165,8 +165,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { BooleanField = true }, 0);
             IGridColumn<AllTypesView, Boolean> column = columns.AddBoolean(model => model.BooleanField);
 
-            String actual = column.ValueFor(row).ToString();
-            String expected = Resource.ForString("Yes");
+            String? actual = column.ValueFor(row).ToString();
+            String? expected = Resource.ForString("Yes");
 
             Assert.Equal(expected, actual);
         }
@@ -177,8 +177,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { BooleanField = false }, 0);
             IGridColumn<AllTypesView, Boolean> column = columns.AddBoolean(model => model.BooleanField);
 
-            String actual = column.ValueFor(row).ToString();
-            String expected = Resource.ForString("No");
+            String? actual = column.ValueFor(row).ToString();
+            String? expected = Resource.ForString("No");
 
             Assert.Equal(expected, actual);
         }
@@ -202,9 +202,7 @@ namespace MvcTemplate.Components.Extensions.Tests
             GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = null }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
-            String actual = column.ValueFor(row).ToString();
-
-            Assert.Empty(actual);
+            Assert.Empty(column.ValueFor(row).ToString());
         }
 
         [Fact]
@@ -213,8 +211,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = true }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
-            String actual = column.ValueFor(row).ToString();
-            String expected = Resource.ForString("Yes");
+            String? actual = column.ValueFor(row).ToString();
+            String? expected = Resource.ForString("Yes");
 
             Assert.Equal(expected, actual);
         }
@@ -225,8 +223,8 @@ namespace MvcTemplate.Components.Extensions.Tests
             GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = false }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
-            String actual = column.ValueFor(row).ToString();
-            String expected = Resource.ForString("No");
+            String? actual = column.ValueFor(row).ToString();
+            String? expected = Resource.ForString("No");
 
             Assert.Equal(expected, actual);
         }

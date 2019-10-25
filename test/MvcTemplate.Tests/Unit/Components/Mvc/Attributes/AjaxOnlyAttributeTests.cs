@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 using NSubstitute;
@@ -17,7 +18,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             RouteContext context = new RouteContext(Substitute.For<HttpContext>());
             context.HttpContext.Request.Headers["X-Requested-With"].Returns(new StringValues(header));
 
-            Boolean actual = new AjaxOnlyAttribute().IsValidForRequest(context, null);
+            Boolean actual = new AjaxOnlyAttribute().IsValidForRequest(context, new ActionDescriptor());
             Boolean expected = isValid;
 
             Assert.Equal(expected, actual);

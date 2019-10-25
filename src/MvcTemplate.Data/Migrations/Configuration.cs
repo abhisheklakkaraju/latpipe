@@ -13,7 +13,7 @@ namespace MvcTemplate.Data.Migrations
         private IUnitOfWork UnitOfWork { get; }
         private DbContext Context { get; }
 
-        public Configuration(DbContext context, DbContext audit)
+        public Configuration(DbContext context, DbContext? audit)
         {
             UnitOfWork = new UnitOfWork(context, audit == null ? null : new AuditLogger(audit, 0));
             Context = context;

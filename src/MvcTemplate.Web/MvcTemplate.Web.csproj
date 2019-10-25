@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <Version>1.1.0</Version>
+    <Nullable>enable</Nullable>
     <GenerateFullPaths>true</GenerateFullPaths>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -40,8 +41,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NonFactors.Grid.Mvc6" Version="5.0.1" />
-    <PackageReference Include="NonFactors.Lookup.Mvc6" Version="4.1.1" />
+    <PackageReference Include="NonFactors.Grid.Mvc6" Version="5.1.0" />
+    <PackageReference Include="NonFactors.Lookup.Mvc6" Version="4.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <PackageReference Include="Genny" Version="2.3.1" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Humanizer.Core" Version="2.7.9" Condition="'$(Configuration)'=='Debug'" />

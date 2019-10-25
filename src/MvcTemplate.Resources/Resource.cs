@@ -72,16 +72,16 @@ namespace MvcTemplate.Resources
         {
             return Localized("Page", "Titles", path);
         }
-        public static String ForPage(IDictionary<String, Object> path)
+        public static String ForPage(IDictionary<String, Object?> path)
         {
-            String area = path["area"] as String;
-            String action = path["action"] as String;
-            String controller = path["controller"] as String;
+            String? area = path["area"] as String;
+            String? action = path["action"] as String;
+            String? controller = path["controller"] as String;
 
             return ForPage($"{area}{controller}{action}");
         }
 
-        public static String ForSiteMap(String area, String controller, String action)
+        public static String ForSiteMap(String? area, String? controller, String? action)
         {
             return Localized("SiteMap", "Titles", $"{area}{controller}{action}");
         }
@@ -92,7 +92,7 @@ namespace MvcTemplate.Resources
         }
         public static String ForProperty(String view, String name)
         {
-            if (Localized(view, "Titles", name) is String title)
+            if (Localized(view, "Titles", name) is String title && title.Length > 0)
                 return title;
 
             String[] properties = SplitCamelCase(name);
@@ -105,20 +105,20 @@ namespace MvcTemplate.Resources
                     String relation = $"{String.Concat(properties.Skip(skipped).Take(viewSize))}View";
                     String property = String.Concat(properties.Skip(viewSize + skipped));
 
-                    if (Localized(relation, "Titles", property) is String relationTitle)
+                    if (Localized(relation, "Titles", property) is String relationTitle && relationTitle.Length > 0)
                         return Set(view)[language, "Titles", name] = relationTitle;
                 }
             }
 
-            return null;
+            return "";
         }
         public static String ForProperty(Type view, String name)
         {
-            return ForProperty(view.Name, name ?? "");
+            return ForProperty(view.Name, name);
         }
         public static String ForProperty(Expression expression)
         {
-            return expression is MemberExpression member ? ForProperty(member.Expression.Type, member.Member.Name) : null;
+            return expression is MemberExpression member ? ForProperty(member.Expression.Type, member.Member.Name) : "";
         }
 
         internal static String Localized(String type, String group, String key)
@@ -126,7 +126,7 @@ namespace MvcTemplate.Resources
             ResourceSet resources = Set(type);
             String language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-            return key == null ? null : resources[language, group, key] ?? resources["", group, key];
+            return resources[language, group, key] ?? resources["", group, key] ?? "";
         }
 
         private static String[] SplitCamelCase(String value)

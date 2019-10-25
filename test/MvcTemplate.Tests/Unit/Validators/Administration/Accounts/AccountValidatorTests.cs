@@ -151,7 +151,7 @@ namespace MvcTemplate.Validators.Tests
         public void CanLogin_IsCaseInsensitive()
         {
             AccountLoginView view = ObjectsFactory.CreateAccountLoginView();
-            view.Username = view.Username.ToUpper();
+            view.Username = view.Username?.ToUpper();
 
             Assert.True(validator.CanLogin(view));
         }

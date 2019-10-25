@@ -56,7 +56,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             authorization.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
             authorization.IsGrantedFor(1, authArea, authController, authAction).Returns(false);
 
-            helper.ViewContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
+            helper.ViewContext!.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
             helper.ViewContext.RouteData.Values["controller"] = routeController;
             helper.ViewContext.RouteData.Values["action"] = routeAction;
             helper.ViewContext.RouteData.Values["area"] = routeArea;
@@ -94,7 +94,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             authorization.IsGrantedFor(1, Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(false);
             authorization.IsGrantedFor(1, authArea, authController, authAction).Returns(true);
 
-            helper.ViewContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
+            helper.ViewContext!.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
             helper.ViewContext.RouteData.Values["controller"] = routeController;
             helper.ViewContext.RouteData.Values["action"] = routeAction;
             helper.ViewContext.RouteData.Values["area"] = routeArea;

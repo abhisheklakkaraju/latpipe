@@ -14,7 +14,7 @@ namespace MvcTemplate.Components.Security.Tests
         [AllowUnauthorized]
         public ViewResult AuthorizedAction()
         {
-            return null;
+            return View();
         }
     }
 }

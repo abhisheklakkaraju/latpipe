@@ -20,23 +20,22 @@ namespace MvcTemplate.Services
             MvcTreeNode root = new MvcTreeNode(Resource.ForString("All"));
             view.Permissions.Nodes.Add(root);
 
-            foreach (IGrouping<String, Permission> area in GetAllPermissions().GroupBy(permission => permission.Area))
+            foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
             {
-                MvcTreeNode areaNode = new MvcTreeNode(area.Key);
-                foreach (IGrouping<String, Permission> controller in area.GroupBy(permission => permission.Controller))
+                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
                 {
-                    MvcTreeNode controllerNode = new MvcTreeNode(controller.Key);
-                    foreach (Permission permission in controller)
-                        controllerNode.Children.Add(new MvcTreeNode(permission.Id, permission.Action));
+                    MvcTreeNode node = new MvcTreeNode(controller.Key);
+                    foreach (PermissionView permission in controller)
+                        node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
 
-                    if (areaNode.Title == null)
-                        root.Children.Add(controllerNode);
-                    else
-                        areaNode.Children.Add(controllerNode);
+                    nodes.Add(node);
                 }
 
-                if (areaNode.Title != null)
-                    root.Children.Add(areaNode);
+                if (area.Key == null)
+                    root.Children.AddRange(nodes);
+                else
+                    root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });
             }
         }
 
@@ -47,9 +46,9 @@ namespace MvcTemplate.Services
                 .To<RoleView>()
                 .OrderByDescending(role => role.Id);
         }
-        public RoleView GetView(Int32 id)
+        public RoleView? GetView(Int32 id)
         {
-            RoleView role = UnitOfWork.GetAs<Role, RoleView>(id);
+            RoleView? role = UnitOfWork.GetAs<Role, RoleView>(id);
             if (role != null)
             {
                 role.Permissions.SelectedIds = new HashSet<Int32>(UnitOfWork
@@ -79,8 +78,8 @@ namespace MvcTemplate.Services
         public void Edit(RoleView view)
         {
             List<Int32> permissions = view.Permissions.SelectedIds.ToList();
-            Role role = UnitOfWork.Get<Role>(view.Id);
-            role.Title = view.Title;
+            Role role = UnitOfWork.Get<Role>(view.Id)!;
+            role.Title = view.Title!;
 
             foreach (RolePermission rolePermission in role.Permissions.ToArray())
                 if (!permissions.Remove(rolePermission.PermissionId))
@@ -93,7 +92,7 @@ namespace MvcTemplate.Services
         }
         public void Delete(Int32 id)
         {
-            Role role = UnitOfWork.Get<Role>(id);
+            Role role = UnitOfWork.Get<Role>(id)!;
             role.Accounts.ForEach(account => account.RoleId = null);
 
             UnitOfWork.DeleteRange(role.Permissions);
@@ -101,16 +100,16 @@ namespace MvcTemplate.Services
             UnitOfWork.Commit();
         }
 
-        private IEnumerable<Permission> GetAllPermissions()
+        private IEnumerable<PermissionView> GetAllPermissions()
         {
             return UnitOfWork
                 .Select<Permission>()
                 .ToArray()
-                .Select(permission => new Permission
+                .Select(permission => new PermissionView
                 {
                     Id = permission.Id,
-                    Area = Resource.ForArea(permission.Area),
                     Action = Resource.ForAction(permission.Action),
+                    Area = permission.Area == null ? null : Resource.ForArea(permission.Area),
                     Controller = Resource.ForController(permission.Area + permission.Controller)
                 })
                 .OrderBy(permission => permission.Area ?? permission.Controller)

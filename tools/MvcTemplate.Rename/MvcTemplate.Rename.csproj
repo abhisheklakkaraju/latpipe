@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <Version>1.1.0</Version>
+    <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
+    <LangVersion>8.0</LangVersion>
     <GenerateFullPaths>true</GenerateFullPaths>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

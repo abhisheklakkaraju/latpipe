@@ -15,12 +15,12 @@ namespace MvcTemplate.Components.Mvc
         {
             get
             {
-                return Supported.Single(language => language.Culture.Equals(CultureInfo.CurrentUICulture));
+                return Supported.Single(language => CultureInfo.CurrentUICulture.Equals(language.Culture));
             }
             set
             {
-                CultureInfo.CurrentCulture = value.Culture;
-                CultureInfo.CurrentUICulture = value.Culture;
+                CultureInfo.CurrentCulture = value.Culture ?? CultureInfo.CurrentCulture;
+                CultureInfo.CurrentUICulture = value.Culture ?? CultureInfo.CurrentUICulture;
             }
         }
         public Language[] Supported
@@ -33,13 +33,13 @@ namespace MvcTemplate.Components.Mvc
             get;
         }
 
-        public Languages(String defaultLanguage, Language[] supported)
+        public Languages(String defaultAbbreviation, Language[] supported)
         {
-            Dictionary = supported.ToDictionary(language => language.Abbreviation);
-            Default = Dictionary[defaultLanguage];
+            Dictionary = supported.ToDictionary(language => language.Abbreviation!);
+            Default = Dictionary[defaultAbbreviation];
             Supported = supported;
         }
 
-        public Language this[String abbreviation] => Dictionary.TryGetValue(abbreviation ?? "", out Language language) ? language : Default;
+        public Language this[String abbreviation] => Dictionary.TryGetValue(abbreviation, out Language? language) ? language : Default;
     }
 }

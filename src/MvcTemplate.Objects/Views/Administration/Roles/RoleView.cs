@@ -10,7 +10,7 @@ namespace MvcTemplate.Objects
         [Required]
         [LookupColumn]
         [StringLength(128)]
-        public String Title { get; set; }
+        public String? Title { get; set; }
 
         public MvcTree Permissions { get; set; }
 

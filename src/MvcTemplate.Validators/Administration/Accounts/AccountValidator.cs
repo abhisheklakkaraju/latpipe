@@ -72,7 +72,7 @@ namespace MvcTemplate.Validators
             return isValid;
         }
 
-        private Boolean IsUniqueUsername(Int32 accountId, String username)
+        private Boolean IsUniqueUsername(Int32 accountId, String? username)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Account>()
@@ -86,7 +86,7 @@ namespace MvcTemplate.Validators
 
             return isUnique;
         }
-        private Boolean IsUniqueEmail(Int32 accountId, String email)
+        private Boolean IsUniqueEmail(Int32 accountId, String? email)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Account>()
@@ -101,21 +101,22 @@ namespace MvcTemplate.Validators
             return isUnique;
         }
 
-        private Boolean IsAuthenticated(String username, String password)
+        private Boolean IsAuthenticated(String? username, String? password)
         {
-            String passhash = UnitOfWork
+            String? passhash = UnitOfWork
                 .Select<Account>()
                 .Where(account => account.Username.ToLower() == (username ?? "").ToLower())
                 .Select(account => account.Passhash)
                 .SingleOrDefault();
 
             Boolean isCorrect = Hasher.VerifyPassword(password, passhash);
+
             if (!isCorrect)
                 Alerts.AddError(Validation.For<AccountView>("IncorrectAuthentication"));
 
             return isCorrect;
         }
-        private Boolean IsCorrectPassword(Int32 accountId, String password)
+        private Boolean IsCorrectPassword(Int32 accountId, String? password)
         {
             String passhash = UnitOfWork
                 .Select<Account>()
@@ -124,6 +125,7 @@ namespace MvcTemplate.Validators
                 .Single();
 
             Boolean isCorrect = Hasher.VerifyPassword(password, passhash);
+
             if (!isCorrect)
                 ModelState.AddModelError<ProfileEditView>(account => account.Password,
                     Validation.For<AccountView>("IncorrectPassword"));
@@ -131,7 +133,7 @@ namespace MvcTemplate.Validators
             return isCorrect;
         }
 
-        private Boolean IsValidResetToken(String token)
+        private Boolean IsValidResetToken(String? token)
         {
             Boolean isValid = UnitOfWork
                 .Select<Account>()
@@ -144,7 +146,7 @@ namespace MvcTemplate.Validators
 
             return isValid;
         }
-        private Boolean IsActive(String username)
+        private Boolean IsActive(String? username)
         {
             Boolean isActive = UnitOfWork
                 .Select<Account>()

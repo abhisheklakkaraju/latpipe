@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Security
         String Hash(String value);
         String HashPassword(String value);
 
-        Boolean Verify(String value, String hash);
-        Boolean VerifyPassword(String value, String passhash);
+        Boolean Verify(String? value, String? hash);
+        Boolean VerifyPassword(String? value, String? passhash);
     }
 }

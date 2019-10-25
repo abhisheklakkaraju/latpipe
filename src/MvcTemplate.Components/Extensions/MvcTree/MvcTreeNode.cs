@@ -9,15 +9,15 @@ namespace MvcTemplate.Components.Extensions
         public String Title { get; set; }
         public List<MvcTreeNode> Children { get; set; }
 
-        public MvcTreeNode(Int32? id, String title)
+        public MvcTreeNode(Int32 id, String title)
+            : this(title)
         {
             Id = id;
-            Title = title;
-            Children = new List<MvcTreeNode>();
         }
         public MvcTreeNode(String title)
-            : this(null, title)
         {
+            Title = title;
+            Children = new List<MvcTreeNode>();
         }
     }
 }

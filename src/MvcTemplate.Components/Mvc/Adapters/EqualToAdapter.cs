@@ -15,7 +15,8 @@ namespace MvcTemplate.Components.Mvc
         public override void AddValidation(ClientModelValidationContext context)
         {
             Attribute.OtherPropertyDisplayName = Resource.ForProperty(context.ModelMetadata.ContainerType, Attribute.OtherPropertyName);
-            Attribute.OtherPropertyDisplayName ??= Attribute.OtherPropertyName;
+            if (String.IsNullOrEmpty(Attribute.OtherPropertyDisplayName))
+                Attribute.OtherPropertyDisplayName = Attribute.OtherPropertyName;
 
             context.Attributes["data-val-equalto-other"] = $"*.{Attribute.OtherPropertyName}";
             context.Attributes["data-val-equalto"] = GetErrorMessage(context);

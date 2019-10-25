@@ -3,17 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class Permission : BaseModel
+    public class PermissionView : BaseView
     {
         [StringLength(64)]
         public String? Area { get; set; }
 
-        [Required]
         [StringLength(64)]
-        public String Controller { get; set; }
+        public String? Controller { get; set; }
 
-        [Required]
         [StringLength(64)]
-        public String Action { get; set; }
+        public String? Action { get; set; }
     }
 }
