@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.1.0</Version>
+    <Version>0.0.0</Version>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <LangVersion>8.0</LangVersion>
