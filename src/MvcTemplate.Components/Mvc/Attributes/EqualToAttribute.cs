@@ -21,11 +21,11 @@ namespace MvcTemplate.Components.Mvc
         {
             return String.Format(ErrorMessageString, name, OtherPropertyDisplayName);
         }
-        protected override ValidationResult? IsValid(Object? value, ValidationContext context)
+        protected override ValidationResult IsValid(Object? value, ValidationContext context)
         {
             PropertyInfo? other = context.ObjectType.GetProperty(OtherPropertyName);
             if (other != null && Equals(value, other.GetValue(context.ObjectInstance)))
-                return null;
+                return ValidationResult.Success;
 
             OtherPropertyDisplayName = Resource.ForProperty(context.ObjectType, OtherPropertyName);
             if (String.IsNullOrEmpty(OtherPropertyDisplayName))
