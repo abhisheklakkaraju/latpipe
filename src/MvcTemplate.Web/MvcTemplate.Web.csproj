@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <Compile Remove="Templates/**" Condition="'$(Configuration)'!='Debug'" />
+    <Content Remove="Templates/**" Condition="'$(Configuration)'!='Debug'" />
   </ItemGroup>
 
   <ItemGroup>
