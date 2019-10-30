@@ -2,8 +2,8 @@
 const rimraf = require('rimraf');
 const less = require('gulp-less');
 const concat = require('gulp-concat');
-const uglifyjs = require('gulp-uglify');
 const uglifycss = require('gulp-uglifycss');
+const uglifyjs = require('gulp-uglify-es').default;
 
 gulp.task('clean.css', (callback) => {
     return rimraf('./wwwroot/css/**/*.min.css', callback);

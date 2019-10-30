@@ -1,6 +1,4 @@
 class MvcTree {
-    static instances = [];
-
     constructor(element, options) {
         const tree = this;
         element = tree.closestTree(element);
@@ -180,3 +178,5 @@ class MvcTree {
         });
     }
 }
+
+MvcTree.instances = [];
