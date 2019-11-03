@@ -13,6 +13,7 @@
         "MaxValue": "'{0}' field must be less or equal to {1}.",
         "MinLength": "'{0}' field must be at least {1} characters long.",
         "MinValue": "'{0}' field must be greater or equal to {1}.",
+        "Number": "'{0}' field can not exceed {1} significant and {2} fractional digits.",
         "Numeric": "'{0}' field must be numeric.",
         "Range": "'{0}' field must be between {1} and {2}.",
         "Required": "'{0}' field is required.",

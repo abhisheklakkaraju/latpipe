@@ -4,8 +4,9 @@ Validator = {
             return !this.element.value || moment(this.element.value).isValid();
         };
 
+        const isValid = Wellidate.prototype.rules.number.isValid;
         Wellidate.prototype.rules.number.isValid = function () {
-            return !this.element.value || !isNaN(numbro(this.element.value).value());
+            return !this.element.value || isValid.call(this, numbro(this.element.value).value());
         };
 
         Wellidate.prototype.rules.min.isValid = function () {

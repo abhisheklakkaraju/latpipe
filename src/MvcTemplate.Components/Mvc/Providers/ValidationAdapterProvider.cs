@@ -46,6 +46,9 @@ namespace MvcTemplate.Components.Mvc
             if (type == typeof(DigitsAttribute))
                 return new DigitsAdapter((DigitsAttribute)attribute);
 
+            if (type == typeof(NumberAttribute))
+                return new NumberAdapter((NumberAttribute)attribute);
+
             if (type == typeof(RangeAttribute))
                 return new RangeAdapter((RangeAttribute)attribute);
 

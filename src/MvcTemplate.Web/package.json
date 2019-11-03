@@ -16,6 +16,6 @@
     "bootstrap.native": "2.0.26",
     "moment": "2.24.0",
     "numbro": "2.1.2",
-    "wellidate": "1.0.0"
+    "wellidate": "1.1.0"
   }
 }

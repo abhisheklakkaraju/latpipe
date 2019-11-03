@@ -8,7 +8,9 @@ namespace MvcTemplate.Components.Mvc
         public void AddValidation(ClientModelValidationContext context)
         {
             context.Attributes["data-val"] = "true";
-            context.Attributes["data-val-number"] = Validation.For("Numeric", context.ModelMetadata.GetDisplayName());
+
+            if (!context.Attributes.ContainsKey("data-val-number"))
+                context.Attributes["data-val-number"] = Validation.For("Numeric", context.ModelMetadata.GetDisplayName());
         }
     }
 }

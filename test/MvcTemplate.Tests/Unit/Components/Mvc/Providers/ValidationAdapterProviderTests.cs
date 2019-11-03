@@ -79,6 +79,12 @@ namespace MvcTemplate.Components.Mvc.Providers.Tests
         }
 
         [Fact]
+        public void GetAttributeAdapter_Number()
+        {
+            Assert.IsType<NumberAdapter>(provider.GetAttributeAdapter(new NumberAttribute(7, 3), null));
+        }
+
+        [Fact]
         public void GetAttributeAdapter_Range()
         {
             Assert.IsType<RangeAdapter>(provider.GetAttributeAdapter(new RangeAttribute(4, 77), null));
