@@ -17,9 +17,10 @@ Validator = {
         };
 
         Wellidate.prototype.rules.range.isValid = function () {
+            const range = this;
             const value = numbro(this.element.value).value();
 
-            return !this.element.value || this.min <= value && value <= this.max;
+            return !range.element.value || (range.min == null || range.min <= value) && (range.max == null || value <= range.max);
         };
 
         Wellidate.prototype.rules.greater.isValid = function () {
