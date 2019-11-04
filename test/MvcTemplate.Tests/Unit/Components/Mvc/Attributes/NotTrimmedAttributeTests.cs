@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using MvcTemplate.Tests;
 using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -21,7 +22,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
-        public async void BindModelAsync_DoesNotTrimValue()
+        public async Task BindModelAsync_DoesNotTrimValue()
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
             DefaultModelBindingContext context = new DefaultModelBindingContext();

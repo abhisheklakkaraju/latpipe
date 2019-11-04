@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc
                 await Next(context);
 
                 if (!context.Response.HasStarted && context.Response.StatusCode == StatusCodes.Status404NotFound)
-                    View(context, "/home/not-found");
+                    await View(context, "/home/not-found");
             }
             catch (Exception exception)
             {
@@ -38,11 +38,11 @@ namespace MvcTemplate.Components.Mvc
                 {
                 }
 
-                View(context, "/home/error");
+                await View(context, "/home/error");
             }
         }
 
-        private async void View(HttpContext context, String path)
+        private async Task View(HttpContext context, String path)
         {
             String originalPath = context.Request.Path;
             Match abbreviation = Regex.Match(originalPath, "^/(\\w{2})(/|$)");
