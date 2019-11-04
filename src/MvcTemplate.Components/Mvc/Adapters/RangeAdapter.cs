@@ -12,6 +12,7 @@ namespace MvcTemplate.Components.Mvc
         public RangeAdapter(RangeAttribute attribute)
             : base(attribute, null)
         {
+            attribute.ErrorMessage = Validation.For("Range");
         }
 
         public override void AddValidation(ClientModelValidationContext context)
@@ -23,8 +24,6 @@ namespace MvcTemplate.Components.Mvc
         }
         public override String GetErrorMessage(ModelValidationContextBase context)
         {
-            Attribute.ErrorMessage = Validation.For("Range");
-
             return GetErrorMessage(context.ModelMetadata);
         }
     }

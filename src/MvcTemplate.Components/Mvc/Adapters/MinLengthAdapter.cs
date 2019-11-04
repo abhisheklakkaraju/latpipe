@@ -12,6 +12,7 @@ namespace MvcTemplate.Components.Mvc
         public MinLengthAdapter(MinLengthAttribute attribute)
             : base(attribute, null)
         {
+            attribute.ErrorMessage = Validation.For("MinLength");
         }
 
         public override void AddValidation(ClientModelValidationContext context)
@@ -22,8 +23,6 @@ namespace MvcTemplate.Components.Mvc
         }
         public override String GetErrorMessage(ModelValidationContextBase context)
         {
-            Attribute.ErrorMessage = Validation.For("MinLength");
-
             return GetErrorMessage(context.ModelMetadata);
         }
     }

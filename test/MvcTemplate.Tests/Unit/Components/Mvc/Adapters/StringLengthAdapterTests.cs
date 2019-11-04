@@ -12,14 +12,12 @@ namespace MvcTemplate.Components.Mvc.Tests
 {
     public class StringLengthAdapterTests
     {
-        private StringLengthAdapter adapter;
         private ClientModelValidationContext context;
         private Dictionary<String, String> attributes;
 
         public StringLengthAdapterTests()
         {
             attributes = new Dictionary<String, String>();
-            adapter = new StringLengthAdapter(new StringLengthAttribute(128));
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
             ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
 
@@ -29,7 +27,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void AddValidation_StringLength()
         {
-            adapter.Attribute.MinimumLength = 0;
+            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 0 });
 
             adapter.AddValidation(context);
 
@@ -42,7 +40,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void AddValidation_StringLengthRange()
         {
-            adapter.Attribute.MinimumLength = 4;
+            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 4 });
 
             adapter.AddValidation(context);
 
@@ -56,7 +54,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetErrorMessage_StringLength()
         {
-            adapter.Attribute.MinimumLength = 0;
+            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 0 });
 
             String expected = Validation.For("StringLength", context.ModelMetadata.PropertyName, 128);
             String actual = adapter.GetErrorMessage(context);
@@ -68,7 +66,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetErrorMessage_StringLengthRange()
         {
-            adapter.Attribute.MinimumLength = 4;
+            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 4 });
 
             String expected = Validation.For("StringLengthRange", context.ModelMetadata.PropertyName, 128, 4);
             String actual = adapter.GetErrorMessage(context);

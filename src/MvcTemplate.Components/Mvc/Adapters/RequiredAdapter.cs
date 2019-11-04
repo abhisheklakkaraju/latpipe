@@ -11,6 +11,7 @@ namespace MvcTemplate.Components.Mvc
         public RequiredAdapter(RequiredAttribute attribute)
             : base(attribute, null)
         {
+            attribute.ErrorMessage = Validation.For("Required");
         }
 
         public override void AddValidation(ClientModelValidationContext context)
@@ -20,8 +21,6 @@ namespace MvcTemplate.Components.Mvc
         }
         public override String GetErrorMessage(ModelValidationContextBase context)
         {
-            Attribute.ErrorMessage = Validation.For("Required");
-
             return GetErrorMessage(context.ModelMetadata);
         }
     }

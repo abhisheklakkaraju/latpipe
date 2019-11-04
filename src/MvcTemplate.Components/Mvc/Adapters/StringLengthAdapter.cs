@@ -12,6 +12,7 @@ namespace MvcTemplate.Components.Mvc
         public StringLengthAdapter(StringLengthAttribute attribute)
             : base(attribute, null)
         {
+            attribute.ErrorMessage = Validation.For(Attribute.MinimumLength == 0 ? "StringLength" : "StringLengthRange");
         }
 
         public override void AddValidation(ClientModelValidationContext context)
@@ -25,8 +26,6 @@ namespace MvcTemplate.Components.Mvc
         }
         public override String GetErrorMessage(ModelValidationContextBase context)
         {
-            Attribute.ErrorMessage = Validation.For(Attribute.MinimumLength == 0 ? "StringLength" : "StringLengthRange");
-
             return GetErrorMessage(context.ModelMetadata);
         }
     }
