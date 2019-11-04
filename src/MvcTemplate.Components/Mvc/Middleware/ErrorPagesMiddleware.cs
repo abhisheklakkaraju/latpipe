@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;
@@ -60,7 +61,9 @@ namespace MvcTemplate.Components.Mvc
                     context.Request.Path = path;
                 }
 
+                context.Features.Get<IRouteValuesFeature>()?.RouteValues?.Clear();
                 context.Request.Method = "GET";
+                context.SetEndpoint(null);
 
                 await Next(context);
             }
