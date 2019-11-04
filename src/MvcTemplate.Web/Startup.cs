@@ -90,10 +90,16 @@ namespace MvcTemplate.Web
                 filters.BooleanTrueOptionText = () => Resource.ForString("Yes");
             });
 
-            if (Config["Application:Env"] == Environments.Development)
-                services.AddLogging(builder => builder.AddConsole());
-            else
-                services.AddLogging(builder => builder.AddProvider(new FileLoggerProvider(Config)));
+            services.AddLogging(builder =>
+            {
+                builder.AddConfiguration(Config.GetSection("Logging"));
+
+                if (Config["Application:Env"] == Environments.Development)
+                    builder.AddConsole();
+                else
+                    builder.AddProvider(new FileLoggerProvider(Config));
+            });
+
         }
         private void ConfigureOptions(IServiceCollection services)
         {

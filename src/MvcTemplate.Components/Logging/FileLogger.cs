@@ -11,13 +11,12 @@ namespace MvcTemplate.Components.Logging
     {
         private Int64 RollSize { get; }
         private String LogPath { get; }
-        private LogLevel Level { get; }
         private String LogDirectory { get; }
         private String RollingFileFormat { get; }
         private IHttpContextAccessor Accessor { get; }
         private static Object LogWriting { get; } = new Object();
 
-        public FileLogger(String path, LogLevel logLevel, Int64 rollSize)
+        public FileLogger(String path, Int64 rollSize)
         {
             String file = Path.GetFileNameWithoutExtension(path);
             LogDirectory = Path.GetDirectoryName(path) ?? "";
@@ -26,13 +25,12 @@ namespace MvcTemplate.Components.Logging
 
             RollingFileFormat = $"{file}-{{0:yyyyMMdd-HHmmss}}{extension}";
             RollSize = rollSize;
-            Level = logLevel;
             LogPath = path;
         }
 
         public Boolean IsEnabled(LogLevel logLevel)
         {
-            return Level <= logLevel;
+            return logLevel != LogLevel.None;
         }
         public IDisposable? BeginScope<TState>(TState state)
         {

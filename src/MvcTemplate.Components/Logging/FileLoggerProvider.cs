@@ -5,6 +5,7 @@ using System.IO;
 
 namespace MvcTemplate.Components.Logging
 {
+    [ProviderAlias("File")]
     public class FileLoggerProvider : ILoggerProvider
     {
         private ILogger Logger { get; }
@@ -12,10 +13,9 @@ namespace MvcTemplate.Components.Logging
         public FileLoggerProvider(IConfiguration config)
         {
             String path = Path.Combine(config["Application:Path"], config["Logging:File:Path"]);
-            LogLevel logLevel = Enum.Parse<LogLevel>(config["Logging:File:LogLevel:Default"]);
             Int64 rollSize = Int64.Parse(config["Logging:File:RollSize"]);
 
-            Logger = new FileLogger(path, logLevel, rollSize);
+            Logger = new FileLogger(path, rollSize);
         }
 
         public ILogger CreateLogger(String categoryName)

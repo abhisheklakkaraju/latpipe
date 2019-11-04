@@ -1,58 +1,45 @@
 ﻿{
-  "Cookies": {
-    "Antiforgery": {
-      "Name": ".Web-Token"
+    "Cookies": {
+        "Antiforgery": {
+            "Name": ".Web-Token"
+        },
+        "Auth": {
+            "Name": ".Web-Auth"
+        },
+        "TempData": {
+            "Name": ".Web-Temp"
+        },
+        "Session": {
+            "Name": ".Web-Session"
+        }
     },
-    "Auth": {
-      "Name": ".Web-Auth"
+    "Data": {
+        "Connection": "Server=(localdb)\\mssqllocaldb;Database=MvcTemplate;Trusted_Connection=True;MultipleActiveResultSets=True"
     },
-    "TempData": {
-      "Name": ".Web-Temp"
+    "Languages": {
+        "Default": "en",
+        "Supported": [
+            {
+                "name": "English",
+                "culture": "en-GB",
+                "abbreviation": "en"
+            }
+        ]
     },
-    "Session": {
-      "Name": ".Web-Session"
+    "Logging": {
+        "File": {
+            "Path": "Logs/log.txt",
+            "RollSize": 5242880
+        }
+    },
+    "Mail": {
+        "Port": 587,
+        "EnableSsl": true,
+        "Host": "smtp.gmail.com",
+        "Sender": "MVC.Template@gmail.com",
+        "Password": "ChangeIt"
+    },
+    "SiteMap": {
+        "Path": "mvc.sitemap"
     }
-  },
-
-  "Data": {
-    "Connection": "Server=(localdb)\\mssqllocaldb;Database=MvcTemplate;Trusted_Connection=True;MultipleActiveResultSets=True"
-  },
-
-  "Languages": {
-    "Default": "en",
-    "Supported": [
-      {
-        "name": "English",
-        "culture": "en-GB",
-        "abbreviation": "en"
-      }
-    ]
-  },
-
-  "Logging": {
-    "Console": {
-      "LogLevel": {
-        "Default": "Debug"
-      }
-    },
-    "File": {
-      "Path": "Logs/log.txt",
-      "RollSize": 5242880,
-      "LogLevel": {
-        "Default": "Error"
-      }
-    }
-  },
-
-  "Mail": {
-    "Port": 587,
-    "EnableSsl": true,
-    "Host": "smtp.gmail.com",
-    "Sender": "MVC.Template@gmail.com",
-    "Password": "ChangeIt"
-  },
-
-  "SiteMap": {
-    "Path": "mvc.sitemap"
-  }
 }
