@@ -42,9 +42,9 @@ namespace MvcTemplate.Components.Logging
                 return;
 
             StringBuilder log = new StringBuilder();
-            log.AppendLine($"Id         : {Accessor.HttpContext?.TraceIdentifier}");
-            log.AppendLine($"{logLevel.ToString().PadRight(11)}: {DateTime.Now:yyyy-MM-dd HH:mm:ss.ffffff} [{Accessor.HttpContext?.User.Id()}]");
-            log.AppendLine($"Message    : {formatter(state, exception)}");
+            log.AppendLine($"Id         : {Accessor.HttpContext?.TraceIdentifier} [{Accessor.HttpContext?.User.Id()}]");
+            log.AppendLine($"Time       : {DateTime.Now:yyyy-MM-dd HH:mm:ss.ffffff}");
+            log.AppendLine($"{logLevel.ToString().PadRight(11)}: {formatter(state, exception)}");
 
             if (exception != null)
                 log.AppendLine("Stack trace:");
