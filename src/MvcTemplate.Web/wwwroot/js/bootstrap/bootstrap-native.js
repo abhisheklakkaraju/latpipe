@@ -1,4 +1,4 @@
-// Native Javascript for Bootstrap 4 v2.0.26 | © dnp_theme | MIT-License
+// Native Javascript for Bootstrap 4 v2.0.27 | © dnp_theme | MIT-License
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD support:
@@ -84,7 +84,8 @@
     clientWidth  = 'clientWidth',    clientHeight   = 'clientHeight',
     offsetWidth  = 'offsetWidth',    offsetHeight   = 'offsetHeight',
     innerWidth   = 'innerWidth',     innerHeight    = 'innerHeight',
-    scrollHeight = 'scrollHeight',   height         = 'height',
+    scrollHeight = 'scrollHeight',   scrollWidth    = 'scrollWidth',
+    height         = 'height',
   
     // aria
     ariaExpanded = 'aria-expanded',
@@ -93,11 +94,15 @@
   
     // event names
     clickEvent    = 'click',
+    focusEvent    = 'focus',
     hoverEvent    = 'hover',
     keydownEvent  = 'keydown',
     keyupEvent    = 'keyup',
-    resizeEvent   = 'resize',
-    scrollEvent   = 'scroll',
+    resizeEvent   = 'resize', // passive
+    scrollEvent   = 'scroll', // passive
+    mouseHover = ('onmouseleave' in DOC) ? [ 'mouseenter', 'mouseleave'] : [ 'mouseover', 'mouseout' ],
+    // touch since 2.0.26
+    touchEvents = { start: 'touchstart', end: 'touchend', move:'touchmove' }, // passive
     // originalEvents
     showEvent     = 'show',
     shownEvent    = 'shown',
@@ -146,7 +151,6 @@
     bottom     = 'bottom',
   
     // tooltip / popover
-    mouseHover = ('onmouseleave' in DOC) ? [ 'mouseenter', 'mouseleave'] : [ 'mouseover', 'mouseout' ],
     tipPositions = /\b(top|bottom|left|right)+/,
   
     // modal
@@ -158,9 +162,6 @@
     supportTransitions = Webkit+Transition in HTML[style] || Transition[toLowerCase]() in HTML[style],
     transitionEndEvent = Webkit+Transition in HTML[style] ? Webkit[toLowerCase]()+Transition+'End' : Transition[toLowerCase]()+'end',
     transitionDuration = Webkit+Duration in HTML[style] ? Webkit[toLowerCase]()+Transition+Duration : Transition[toLowerCase]()+Duration,
-  
-    // touch since 2.0.26
-    touchEvents = { start: 'touchstart', end: 'touchend', move:'touchmove' },
   
     // set new focus element since 2.0.3
     setFocus = function(element){
@@ -202,18 +203,39 @@
     },
   
     // event attach jQuery style / trigger  since 1.2.0
-    on = function (element, event, handler) {
-      element.addEventListener(event, handler, false);
+    on = function (element, event, handler, options) {
+      options = options || false;
+      element.addEventListener(event, handler, options);
     },
-    off = function(element, event, handler) {
-      element.removeEventListener(event, handler, false);
+    off = function(element, event, handler, options) {
+      options = options || false;
+      element.removeEventListener(event, handler, options);
     },
-    one = function (element, event, handler) { // one since 2.0.4
+    one = function (element, event, handler, options) { // one since 2.0.4
       on(element, event, function handlerWrapper(e){
         handler(e);
-        off(element, event, handlerWrapper);
-      });
+        off(element, event, handlerWrapper, options);
+      }, options);
     },
+    // determine support for passive events
+    supportPassive = (function(){
+      // Test via a getter in the options object to see if the passive property is accessed
+      var result = false;
+      try {
+        var opts = Object.defineProperty({}, 'passive', {
+          get: function() {
+            result = true;
+          }
+        });
+        one(globalObject, 'testPassive', null, opts);
+      } catch (e) {}
+  
+      return result;
+    }()),
+    // event options
+    // https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
+    passiveHandler = supportPassive ? { passive: true } : false,
+    // transitions
     getTransitionDurationFromElement = function(element) {
       var duration = supportTransitions ? globalObject[getComputedStyle](element)[transitionDuration] : 0;
       duration = parseFloat(duration);
@@ -307,7 +329,7 @@
           arrowLeft = elementDimensions.w - ( windowWidth - rect[left] ) + linkDimensions.w/2 - arrowWidth/2;
         } else {
           leftPosition = rect[left] + scroll.x - elementDimensions.w/2 + linkDimensions.w/2;
-          arrowLeft = elementDimensions.w/2 - arrowWidth/2;
+          arrowLeft = elementDimensions.w/2 - ( isPopover ? arrowWidth : arrowWidth/2 );
         }
       }
   
@@ -319,7 +341,7 @@
       arrowLeft && (arrow[style][left] = arrowLeft + 'px');
     };
   
-  BSN.version = '2.0.26';
+  BSN.version = '2.0.27';
   
   /* Native Javascript for Bootstrap 4 | Alert
   -------------------------------------------*/
@@ -384,7 +406,6 @@
         // strings
         component = 'button',
         checked = 'checked',
-        reset = 'reset',
         LABEL = 'LABEL',
         INPUT = 'INPUT',
   
@@ -402,11 +423,10 @@
         
         if ( !label ) return; //react if a label or its immediate child is clicked
   
-        var eventTarget = e[target], // the button itself, the target of the handler function
-          labels = getElementsByClassName(eventTarget[parentNode],'btn'), // all the button group buttons
+        var labels = getElementsByClassName(label[parentNode],'btn'), // all the button group buttons
           input = label[getElementsByTagName](INPUT)[0];
   
-        if ( !input ) return; //return if no input found
+        if ( !input ) return; // return if no input found
   
         // manage the dom manipulation
         if ( input.type === 'checkbox' ) { //checkboxes
@@ -430,8 +450,10 @@
         }
   
         if ( input.type === 'radio' && !toggled ) { // radio buttons
-          if ( !input[checked] ) { // don't trigger if already active
+          // don't trigger if already active (the OR condition is a hack to check if the buttons were selected with key press and NOT mouse click)
+          if ( !input[checked] || (e.screenX === 0 && e.screenY == 0) ) {
             addClass(label,active);
+            addClass(label,focusEvent);
             input[setAttribute](checked,checked);
             input[checked] = true;
             bootstrapCustomEvent.call(input, changeEvent, component); //trigger the change for the input
@@ -450,13 +472,24 @@
           }
         }
         setTimeout( function() { toggled = false; }, 50 );
+      },
+      focusHandler = function(e) {
+        addClass(e[target][parentNode],focusEvent);
+      },
+      blurHandler = function(e) {
+        removeClass(e[target][parentNode],focusEvent);
       };
   
     // init
     if ( !( stringButton in element ) ) { // prevent adding event handlers twice
       on( element, clickEvent, toggle );
-      queryElement('['+tabindex+']',element) && on( element, keyupEvent, keyHandler ), 
-                                                on( element, keydownEvent, preventScroll );    
+      on( element, keyupEvent, keyHandler ), on( element, keydownEvent, preventScroll );
+  
+      var allBtns = getElementsByClassName(element, 'btn');
+      for (var i=0; i<allBtns.length; i++) {
+        var input = allBtns[i][getElementsByTagName](INPUT)[0];
+        on( input, focusEvent, focusHandler), on( input, 'blur', blurHandler);
+      }    
     }
   
     // activate items on load
@@ -577,9 +610,9 @@
       },
       // touch events
       toggleTouchEvents = function(toggle){
-        toggle( element, touchEvents.move, touchMoveHandler );
-        toggle( element, touchEvents.end, touchEndHandler );
-      },  
+        toggle( element, touchEvents.move, touchMoveHandler, passiveHandler );
+        toggle( element, touchEvents.end, touchEndHandler, passiveHandler );
+    },  
       touchDownHandler = function(e) {
         if ( isTouch ) { return; } 
           
@@ -729,17 +762,18 @@
       if ( self[pause] && self[interval] ) {
         on( element, mouseHover[0], pauseHandler );
         on( element, mouseHover[1], resumeHandler );
-        on( element, touchEvents.start, pauseHandler );
-        on( element, touchEvents.end, resumeHandler );
-    }
+        on( element, touchEvents.start, pauseHandler, passiveHandler );
+        on( element, touchEvents.end, resumeHandler, passiveHandler );
+      }
     
-      slides[length] > 1 && on( element, touchEvents.start, touchDownHandler );
+      slides[length] > 1 && on( element, touchEvents.start, touchDownHandler, passiveHandler );
   
       rightArrow && on( rightArrow, clickEvent, controlsHandler );
       leftArrow && on( leftArrow, clickEvent, controlsHandler );
     
       indicator && on( indicator, clickEvent, indicatorHandler );
-      self[keyboard] === true && on( globalObject, keydownEvent, keyHandler );
+      self[keyboard] && on( globalObject, keydownEvent, keyHandler );
+  
     }
     if (self.getActiveIndex()<0) {
       slides[length] && addClass(slides[0],active);
@@ -907,11 +941,17 @@
         type(DOC, clickEvent, dismissHandler); 
         type(DOC, keydownEvent, preventScroll);
         type(DOC, keyupEvent, keyHandler);
+        type(DOC, focusEvent, dismissHandler, true);
       },
   
       // handlers
       dismissHandler = function(e) {
-        var eventTarget = e[target], hasData = eventTarget && (stringDropdown in eventTarget || stringDropdown in eventTarget[parentNode]);
+        var eventTarget = e[target], hasData = eventTarget && (eventTarget[getAttribute](dataToggle) 
+                              || eventTarget[parentNode] && getAttribute in eventTarget[parentNode] 
+                              && eventTarget[parentNode][getAttribute](dataToggle));
+        if ( e.type === focusEvent && (eventTarget === element || eventTarget === menu || menu[contains](eventTarget) ) ) {
+          return;
+        }
         if ( (eventTarget === menu || menu[contains](eventTarget)) && (self.persist || hasData) ) { return; }
         else {
           relatedTarget = eventTarget === element || element[contains](eventTarget) ? element : null;
@@ -936,7 +976,7 @@
           isInsideMenu = menu[contains](activeItem),
           isMenuItem = activeItem[parentNode] === menu || activeItem[parentNode][parentNode] === menu;          
   
-        if ( isMenuItem || isSameElement ) { // navigate up | down
+        if ( isMenuItem ) { // navigate up | down
           idx = isSameElement ? 0 
                               : key === 38 ? (idx>1?idx-1:0)
                               : key === 40 ? (idx<menuItems[length]-1?idx+1:idx) : idx;
@@ -1017,11 +1057,12 @@
         modalTrigger = 'modalTrigger',
         paddingRight = 'paddingRight',
         modalBackdropString = 'modal-backdrop',
+        isAnimating = 'isAnimating',
         // determine modal, triggering element
         btnCheck = element[getAttribute](dataTarget)||element[getAttribute]('href'),
         checkModal = queryElement( btnCheck ),
-        modal = hasClass(element,component) ? element : checkModal;  
-    
+        modal = hasClass(element,component) ? element : checkModal;
+  
       if ( hasClass(element, component) ) { element = null; } // modal is now independent of it's triggering element
   
     if ( !modal ) { return; } // invalidate
@@ -1032,11 +1073,15 @@
     this[keyboard] = options[keyboard] === false || modal[getAttribute](dataKeyboard) === 'false' ? false : true;
     this[backdrop] = options[backdrop] === staticString || modal[getAttribute](databackdrop) === staticString ? staticString : true;
     this[backdrop] = options[backdrop] === false || modal[getAttribute](databackdrop) === 'false' ? false : this[backdrop];
+    this[animation] = hasClass(modal, 'fade') ? true : false;
     this[content]  = options[content]; // JavaScript only
   
+    // set an initial state of the modal
+    modal[isAnimating] = false;
+    
     // bind, constants, event targets and other vars
     var self = this, relatedTarget = null,
-      bodyIsOverflowing, scrollBarWidth, overlay, overlayDelay,
+      bodyIsOverflowing, scrollBarWidth, overlay, overlayDelay, modalTimer,
   
       // also find fixed-top / fixed-bottom items
       fixedItems = getElementsByClassName(HTML,fixedTop).concat(getElementsByClassName(HTML,fixedBottom)),
@@ -1082,73 +1127,56 @@
         scrollBarWidth = measureScrollbar();
       },
       createOverlay = function() {
-        modalOverlay = 1;        
-        
         var newOverlay = DOC[createElement]('div');
         overlay = queryElement('.'+modalBackdropString);
   
         if ( overlay === null ) {
-          newOverlay[setAttribute]('class',modalBackdropString+' fade');
+          newOverlay[setAttribute]('class', modalBackdropString + (self[animation] ? ' fade' : ''));
           overlay = newOverlay;
           DOC[body][appendChild](overlay);
         }
+        modalOverlay = 1;
       },
       removeOverlay = function() {
         overlay = queryElement('.'+modalBackdropString);
         if ( overlay && overlay !== null && typeof overlay === 'object' ) {
-          modalOverlay = 0;        
+          modalOverlay = 0;
           DOC[body].removeChild(overlay); overlay = null;
-        }
-        bootstrapCustomEvent.call(modal, hiddenEvent, component);      
-      },
-      keydownHandlerToggle = function() {
-        if (hasClass(modal,showClass)) {
-          on(DOC, keydownEvent, keyHandler);
-        } else {
-          off(DOC, keydownEvent, keyHandler);
-        }
-      },
-      resizeHandlerToggle = function() {
-        if (hasClass(modal,showClass)) {
-          on(globalObject, resizeEvent, self.update);
-        } else {
-          off(globalObject, resizeEvent, self.update);
-        }
-      },
-      dismissHandlerToggle = function() {
-        if (hasClass(modal,showClass)) {
-          on(modal, clickEvent, dismissHandler);
-        } else {
-          off(modal, clickEvent, dismissHandler);
         }
       },
       // triggers
       triggerShow = function() {
-        resizeHandlerToggle();
-        dismissHandlerToggle();
-        keydownHandlerToggle();
         setFocus(modal);
+        modal[isAnimating] = false;
         bootstrapCustomEvent.call(modal, shownEvent, component, relatedTarget);
+  
+        on(globalObject, resizeEvent, self.update, passiveHandler);
+        on(modal, clickEvent, dismissHandler);
+        on(DOC, keydownEvent, keyHandler);      
       },
       triggerHide = function() {
         modal[style].display = '';
         element && (setFocus(element));
-        
+        bootstrapCustomEvent.call(modal, hiddenEvent, component);
+  
         (function(){
           if (!getElementsByClassName(DOC,component+' '+showClass)[0]) {
             resetScrollbar();
             removeClass(DOC[body],component+'-open');
-            overlay && hasClass(overlay,'fade') ? (removeClass(overlay,showClass), emulateTransitionEnd(overlay,removeOverlay)) 
+            overlay && hasClass(overlay,'fade') ? (removeClass(overlay,showClass), emulateTransitionEnd(overlay,removeOverlay))
             : removeOverlay();
   
-            resizeHandlerToggle();
-            dismissHandlerToggle();
-            keydownHandlerToggle();
+            off(globalObject, resizeEvent, self.update, passiveHandler);
+            off(modal, clickEvent, dismissHandler);
+            off(DOC, keydownEvent, keyHandler);
           }
         }());
+        modal[isAnimating] = false;
       },
       // handlers
       clickHandler = function(e) {
+        if ( modal[isAnimating] ) return;
+  
         var clickTarget = e[target];
         clickTarget = clickTarget[hasAttribute](dataTarget) || clickTarget[hasAttribute]('href') ? clickTarget : clickTarget[parentNode];
         if ( clickTarget === element && !hasClass(modal,showClass) ) {
@@ -1159,15 +1187,19 @@
         }
       },
       keyHandler = function(e) {
-        if (self[keyboard] && e.which == 27 && hasClass(modal,showClass)) {
+        if ( modal[isAnimating] ) return;
+  
+        if (self[keyboard] && e.which == 27 && hasClass(modal,showClass) ) {
           self.hide();
         }
       },
       dismissHandler = function(e) {
+        if ( modal[isAnimating] ) return;
         var clickTarget = e[target];
-        if ( hasClass(modal,showClass) && (clickTarget[parentNode][getAttribute](dataDismiss) === component
+  
+        if ( hasClass(modal,showClass) && ( clickTarget[parentNode][getAttribute](dataDismiss) === component
             || clickTarget[getAttribute](dataDismiss) === component
-            || (clickTarget === modal && self[backdrop] !== staticString) ) ) {
+            || clickTarget === modal && self[backdrop] !== staticString ) ) {
           self.hide(); relatedTarget = null;
           e[preventDefault]();
         }
@@ -1178,49 +1210,61 @@
       if ( hasClass(modal,showClass) ) {this.hide();} else {this.show();}
     };
     this.show = function() {
-      bootstrapCustomEvent.call(modal, showEvent, component, relatedTarget);
+      if ( hasClass(modal,showClass) || modal[isAnimating] ) {return}
   
-      // we elegantly hide any opened modal
-      var currentOpen = getElementsByClassName(DOC,component+' '+showClass)[0];
-      if (currentOpen && currentOpen !== modal) {
-        modalTrigger in currentOpen && currentOpen[modalTrigger][stringModal].hide();
-        stringModal in currentOpen && currentOpen[stringModal].hide();
-      }
+      clearTimeout(modalTimer);
+      modalTimer = setTimeout(function(){
+        modal[isAnimating] = true;
+        bootstrapCustomEvent.call(modal, showEvent, component, relatedTarget);
   
-      if ( this[backdrop] ) {
-        !modalOverlay && createOverlay();
-      }
+        // we elegantly hide any opened modal
+        var currentOpen = getElementsByClassName(DOC,component+' '+showClass)[0];
+        if (currentOpen && currentOpen !== modal) {
+          modalTrigger in currentOpen && currentOpen[modalTrigger][stringModal].hide();
+          stringModal in currentOpen && currentOpen[stringModal].hide();
+        }
   
-      if ( overlay && modalOverlay && !hasClass(overlay,showClass)) {
-        overlay[offsetWidth]; // force reflow to enable trasition
-        overlayDelay = getTransitionDurationFromElement(overlay);              
-        addClass(overlay, showClass);
-      }
+        if ( self[backdrop] ) {
+          !modalOverlay && !overlay && createOverlay();
+        }
   
-      setTimeout( function() {
-        modal[style].display = 'block';
+        if ( overlay && !hasClass(overlay,showClass) ) {
+          overlay[offsetWidth]; // force reflow to enable trasition
+          overlayDelay = getTransitionDurationFromElement(overlay);
+          addClass(overlay, showClass);
+        }
   
-        checkScrollbar();
-        setScrollbar();
+        setTimeout( function() {
+          modal[style].display = 'block';
   
-        addClass(DOC[body],component+'-open');
-        addClass(modal,showClass);
-        modal[setAttribute](ariaHidden, false);
+          checkScrollbar();
+          setScrollbar();
   
-        hasClass(modal,'fade') ? emulateTransitionEnd(modal, triggerShow) : triggerShow();
-      }, supportTransitions && overlay ? overlayDelay : 0);
+          addClass(DOC[body],component+'-open');
+          addClass(modal,showClass);
+          modal[setAttribute](ariaHidden, false);
+  
+          hasClass(modal,'fade') ? emulateTransitionEnd(modal, triggerShow) : triggerShow();
+        }, supportTransitions && overlay && overlayDelay ? overlayDelay : 1);
+      },1);
     };
     this.hide = function() {
-      bootstrapCustomEvent.call(modal, hideEvent, component);
-      overlay = queryElement('.'+modalBackdropString);
-      overlayDelay = overlay && getTransitionDurationFromElement(overlay);    
+      if ( modal[isAnimating] || !hasClass(modal,showClass) ) {return}
   
-      removeClass(modal,showClass);
-      modal[setAttribute](ariaHidden, true);
+      clearTimeout(modalTimer);
+      modalTimer = setTimeout(function(){
+        modal[isAnimating] = true;    
+        bootstrapCustomEvent.call(modal, hideEvent, component);
+        overlay = queryElement('.'+modalBackdropString);
+        overlayDelay = overlay && getTransitionDurationFromElement(overlay);
   
-      setTimeout(function(){
-        hasClass(modal,'fade') ? emulateTransitionEnd(modal, triggerHide) : triggerHide();
-      }, supportTransitions && overlay ? overlayDelay : 0);
+        removeClass(modal,showClass);
+        modal[setAttribute](ariaHidden, true);
+  
+        setTimeout(function(){
+          hasClass(modal,'fade') ? emulateTransitionEnd(modal, triggerHide) : triggerHide();
+        }, supportTransitions && overlay && overlayDelay ? overlayDelay : 2);
+      },2)
     };
     this.setContent = function( content ) {
       queryElement('.'+component+'-content',modal)[innerHTML] = content;
@@ -1304,8 +1348,8 @@
     
     // bind, content
     var self = this, 
-      titleString = element[getAttribute](dataTitle) || null,
-      contentString = element[getAttribute](dataContent) || null;
+        titleString = options.title || element[getAttribute](dataTitle) || null,
+        contentString = options.content || element[getAttribute](dataContent) || null;
   
     if ( !contentString && !this[template] ) return; // invalidate
   
@@ -1325,8 +1369,10 @@
         timer = null; popover = null; 
       },
       createPopover = function() {
-        titleString = options.title || element[getAttribute](dataTitle) || null,
-        contentString = options.content || element[getAttribute](dataContent) || null;
+        titleString = options.title || element[getAttribute](dataTitle);
+        contentString = options.content || element[getAttribute](dataContent);
+        // fixing https://github.com/thednp/bootstrap.native/issues/233
+        contentString = !!contentString ? contentString.trim() : null;
   
         popover = DOC[createElement](div);
   
@@ -1337,7 +1383,7 @@
   
         if ( contentString !== null && self[template] === null ) { //create the popover from data attributes
   
-          popover[setAttribute]('role','tooltip');
+          popover[setAttribute]('role','tooltip');     
   
           if (titleString !== null) {
             var popoverTitle = DOC[createElement]('h3');
@@ -1355,6 +1401,7 @@
   
         } else {  // or create the popover from template
           var popoverTemplate = DOC[createElement](div);
+          self[template] = self[template].trim();
           popoverTemplate[innerHTML] = self[template];
           popover[innerHTML] = popoverTemplate.firstChild[innerHTML];
         }
@@ -1368,7 +1415,7 @@
         !hasClass(popover,showClass) && ( addClass(popover,showClass) );
       },
       updatePopover = function() {
-        styleTip(element,popover,placementSetting,self[container]);
+        styleTip(element, popover, placementSetting, self[container]);
       },
   
       // event toggle
@@ -1377,7 +1424,7 @@
           !self[dismissible] && type( element, 'blur', self.hide );
         }
         self[dismissible] && type( DOC, clickEvent, dismissibleHandler );     
-        type( globalObject, resizeEvent, self.hide );
+        type( globalObject, resizeEvent, self.hide, passiveHandler );
       },
   
       // triggers
@@ -1453,7 +1500,9 @@
   
     // set options
     options = options || {};
-    if ( !options[target] && !targetData ) { return; } // invalidate
+  
+    // invalidate
+    if ( !options[target] && !targetData ) { return; } 
   
     // event targets, constants
     var self = this, spyTarget = options[target] && queryElement(options[target]) || targetData,
@@ -1521,8 +1570,8 @@
   
     // init
     if ( !(stringScrollSpy in element) ) { // prevent adding event handlers twice
-      on( scrollTarget, scrollEvent, self.refresh );
-      on( globalObject, resizeEvent, self.refresh ); 
+      on( scrollTarget, scrollEvent, self.refresh, passiveHandler );
+      on( globalObject, resizeEvent, self.refresh, passiveHandler );
     }
     self.refresh();
     element[stringScrollSpy] = self;
@@ -1831,7 +1880,7 @@
   
     // bind, event targets, title and constants
     var self = this, timer = 0, placementSetting = this[placement], tooltip = null,
-      titleString = element[getAttribute](title) || element[getAttribute](dataTitle) || element[getAttribute](dataOriginalTitle);
+        titleString = element[getAttribute](title) || element[getAttribute](dataTitle) || element[getAttribute](dataOriginalTitle);
   
     if ( !titleString || titleString == "" ) return; // invalidate
   
@@ -1842,36 +1891,40 @@
       },
       createToolTip = function() {
         titleString = element[getAttribute](title) || element[getAttribute](dataTitle) || element[getAttribute](dataOriginalTitle); // read the title again
-        if ( !titleString || titleString == "" ) return false; // invalidate
-        tooltip = DOC[createElement](div);
-        tooltip[setAttribute]('role',component);
   
-        // tooltip arrow
-        var tooltipArrow = DOC[createElement](div);
-        tooltipArrow[setAttribute](classString,'arrow');
-        tooltip[appendChild](tooltipArrow);
-    
-        var tooltipInner = DOC[createElement](div);
-        tooltipInner[setAttribute](classString,component+'-inner');
-        tooltip[appendChild](tooltipInner);
-        tooltipInner[innerHTML] = titleString;
+        if ( titleString && titleString !== "" ) { // invalidate, maybe markup changed
+          tooltip = DOC[createElement](div);
+          tooltip[setAttribute]('role',component);
+          tooltip[style][left] = '0';
+          tooltip[style][top] = '0';        
   
-        self[container][appendChild](tooltip);
-        tooltip[setAttribute](classString, component + ' bs-' + component+'-'+placementSetting + ' ' + self[animation]);
+          // tooltip arrow
+          var tooltipArrow = DOC[createElement](div);
+          tooltipArrow[setAttribute](classString,'arrow');
+          tooltip[appendChild](tooltipArrow);
+      
+          var tooltipInner = DOC[createElement](div);
+          tooltipInner[setAttribute](classString,component+'-inner');
+          tooltip[appendChild](tooltipInner);
+          tooltipInner[innerHTML] = titleString;
+  
+          self[container][appendChild](tooltip);
+          tooltip[setAttribute](classString, component + ' bs-' + component+'-'+placementSetting + ' ' + self[animation]);
+        }
       },
       updateTooltip = function () {
-        styleTip(element,tooltip,placementSetting,self[container]);
+        styleTip(element, tooltip, placementSetting, self[container]);
       },
       showTooltip = function () {
         !hasClass(tooltip,showClass) && ( addClass(tooltip,showClass) );
       },
       // triggers
       showTrigger = function() {
-        on( globalObject, resizeEvent, self.hide );
+        on( globalObject, resizeEvent, self.hide, passiveHandler );
         bootstrapCustomEvent.call(element, shownEvent, component);
       },
       hideTrigger = function() {
-        off( globalObject, resizeEvent, self.hide );
+        off( globalObject, resizeEvent, self.hide, passiveHandler );
         removeToolTip();
         bootstrapCustomEvent.call(element, hiddenEvent, component);
       };
@@ -1882,11 +1935,13 @@
       timer = setTimeout( function() {
         if (tooltip === null) {
           placementSetting = self[placement]; // we reset placement in all cases
-          if(createToolTip() == false) return;
-          updateTooltip();
-          showTooltip();
-          bootstrapCustomEvent.call(element, showEvent, component);
-          !!self[animation] ? emulateTransitionEnd(tooltip, showTrigger) : showTrigger();
+          // if(createToolTip() == false) return;
+          if(createToolTip() !== false) {
+            updateTooltip();
+            showTooltip();
+            bootstrapCustomEvent.call(element, showEvent, component);
+            !!self[animation] ? emulateTransitionEnd(tooltip, showTrigger) : showTrigger();          
+          }
         }
       }, 20 );
     };
