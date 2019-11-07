@@ -16,7 +16,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-email"] = GetErrorMessage(context);
         }
         public override String GetErrorMessage(ModelValidationContextBase context)

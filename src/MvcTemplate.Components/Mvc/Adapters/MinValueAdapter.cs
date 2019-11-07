@@ -14,7 +14,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-range"] = GetErrorMessage(context);
             context.Attributes["data-val-range-min"] = Attribute.Minimum.ToString(CultureInfo.InvariantCulture);
         }

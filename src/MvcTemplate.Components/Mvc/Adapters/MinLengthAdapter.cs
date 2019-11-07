@@ -17,7 +17,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-minlength"] = GetErrorMessage(context);
             context.Attributes["data-val-minlength-min"] = Attribute.Length.ToString(CultureInfo.InvariantCulture);
         }

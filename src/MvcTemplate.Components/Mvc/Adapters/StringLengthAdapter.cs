@@ -17,7 +17,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-length"] = GetErrorMessage(context);
             context.Attributes["data-val-length-max"] = Attribute.MaximumLength.ToString(CultureInfo.InvariantCulture);
 

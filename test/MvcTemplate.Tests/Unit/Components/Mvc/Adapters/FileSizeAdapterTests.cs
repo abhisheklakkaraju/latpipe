@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal("12845056.00", attributes["data-val-filesize-max"]);
             Assert.Equal(Validation.For("FileSize", context.ModelMetadata.PropertyName, 12.25), attributes["data-val-filesize"]);
         }

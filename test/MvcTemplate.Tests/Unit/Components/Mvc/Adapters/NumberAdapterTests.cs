@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(4, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(3, attributes.Count);
             Assert.Equal("2", attributes["data-val-number-scale"]);
             Assert.Equal("6", attributes["data-val-number-precision"]);
             Assert.Equal(Validation.For("Number", context.ModelMetadata.PropertyName, 4, 2), attributes["data-val-number"]);

@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal(adapter.Attribute.OtherPropertyName, attributes["data-val-equalto-other"]);
             Assert.Equal(Validation.For("EqualTo", context.ModelMetadata.PropertyName, adapter.Attribute.OtherPropertyName), attributes["data-val-equalto"]);
         }

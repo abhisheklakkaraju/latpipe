@@ -20,8 +20,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             new NumberValidator().AddValidation(context);
 
-            Assert.Equal(2, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Single(attributes);
             Assert.Equal(Validation.For("Numeric", "Int32"), attributes["data-val-number"]);
         }
 
@@ -35,8 +34,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             new NumberValidator().AddValidation(context);
 
-            Assert.Equal(2, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Single(attributes);
             Assert.Equal("Test", attributes["data-val-number"]);
         }
     }

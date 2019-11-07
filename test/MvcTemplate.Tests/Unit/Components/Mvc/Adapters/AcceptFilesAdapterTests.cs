@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal(".docx,.rtf", attributes["data-val-accept-types"]);
             Assert.Equal(Validation.For("AcceptFiles", context.ModelMetadata.PropertyName, ".docx,.rtf"), attributes["data-val-accept"]);
         }

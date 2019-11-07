@@ -13,7 +13,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-accept"] = GetErrorMessage(context);
             context.Attributes["data-val-accept-types"] = Attribute.Extensions;
         }

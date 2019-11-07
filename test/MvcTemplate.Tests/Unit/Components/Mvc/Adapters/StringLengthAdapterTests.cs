@@ -31,8 +31,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal("128", attributes["data-val-length-max"]);
             Assert.Equal(Validation.For("StringLength", context.ModelMetadata.PropertyName, 128), attributes["data-val-length"]);
         }
@@ -44,8 +43,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             adapter.AddValidation(context);
 
-            Assert.Equal(4, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(3, attributes.Count);
             Assert.Equal("4", attributes["data-val-length-min"]);
             Assert.Equal("128", attributes["data-val-length-max"]);
             Assert.Equal(Validation.For("StringLengthRange", context.ModelMetadata.PropertyName, 128, 4), attributes["data-val-length"]);

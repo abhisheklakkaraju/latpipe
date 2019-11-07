@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal("128", attributes["data-val-range-min"]);
             Assert.Equal(Validation.For("MinValue", context.ModelMetadata.PropertyName, 128), attributes["data-val-range"]);
         }

@@ -20,7 +20,6 @@ namespace MvcTemplate.Components.Mvc
 
             context.Attributes["data-val-equalto-other"] = Attribute.OtherPropertyName;
             context.Attributes["data-val-equalto"] = GetErrorMessage(context);
-            context.Attributes["data-val"] = "true";
         }
         public override String GetErrorMessage(ModelValidationContextBase context)
         {

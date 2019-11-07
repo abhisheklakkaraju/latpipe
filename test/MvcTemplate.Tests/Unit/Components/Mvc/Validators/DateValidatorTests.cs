@@ -20,8 +20,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             new DateValidator().AddValidation(context);
 
-            Assert.Equal(2, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Single(attributes);
             Assert.Equal(Validation.For("Date", "DateTime"), attributes["data-val-date"]);
         }
     }

@@ -31,8 +31,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(2, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Single(attributes);
             Assert.Equal(Validation.For("Email", context.ModelMetadata.PropertyName), attributes["data-val-email"]);
         }
 

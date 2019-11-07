@@ -30,8 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             adapter.AddValidation(context);
 
-            Assert.Equal(3, attributes.Count);
-            Assert.Equal("true", attributes["data-val"]);
+            Assert.Equal(2, attributes.Count);
             Assert.Equal("128", attributes["data-val-range-max"]);
             Assert.Equal(Validation.For("MaxValue", context.ModelMetadata.PropertyName, 128), attributes["data-val-range"]);
         }

@@ -14,7 +14,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes["data-val"] = "true";
             context.Attributes["data-val-filesize"] = GetErrorMessage(context);
             context.Attributes["data-val-filesize-max"] = (Attribute.MaximumMB * 1024 * 1024).ToString(CultureInfo.InvariantCulture);
         }
