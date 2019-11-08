@@ -31,6 +31,14 @@
         "ASPNETCORE_HTTPS_PORT": "44393",
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
+    },
+    "Kestrel (Development)": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
