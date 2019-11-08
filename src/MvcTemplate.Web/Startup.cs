@@ -73,9 +73,8 @@ namespace MvcTemplate.Web
                 .AddMvcOptions(options => options.Filters.Add<AuthorizationFilter>())
                 .AddMvcOptions(options => ModelMessagesProvider.Set(options.ModelBindingMessageProvider))
                 .AddRazorOptions(options => options.ViewLocationExpanders.Add(new ViewLocationExpander()))
-                .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new DateValidatorProvider()))
                 .AddMvcOptions(options => options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider()))
-                .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new NumberValidatorProvider()))
+                .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new ClientValidatorProvider()))
                 .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()));
 
             services.AddAuthentication("Cookies").AddCookie(authentication =>
