@@ -78,9 +78,9 @@ Navigation = {
 
         function filterNode(element, term) {
             const text = element.firstElementChild.querySelector('.text').textContent.toLowerCase();
-            const matches = text.includes(term);
+            const match = text.includes(term);
 
-            if (element.classList.contains('submenu')) {
+            if (!match && element.classList.contains('submenu')) {
                 const children = element.lastElementChild.children;
 
                 for (let i = 0; i < children.length; i++) {
@@ -90,11 +90,11 @@ Navigation = {
                 }
             }
 
-            if (!matches && !element.classList.contains('open')) {
+            if (!match && !element.classList.contains('open')) {
                 element.style.display = 'none';
             }
 
-            return matches;
+            return match;
         }
     },
 
