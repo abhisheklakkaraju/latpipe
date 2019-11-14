@@ -16,15 +16,14 @@ namespace MvcTemplate.Components.Mvc
     public class SiteMap : ISiteMap
     {
         private List<SiteMapNode> Tree { get; }
-        private List<SiteMapNode> Nodes { get; }
         private IAuthorization? Authorization { get; }
+        private Dictionary<String, SiteMapNode> Lookup { get; }
 
         public SiteMap(String map, IAuthorization? authorization)
         {
-            XElement siteMap = XElement.Parse(map);
             Authorization = authorization;
-            Tree = Parse(siteMap);
-            Nodes = Flatten(Tree);
+            Tree = Parse(XElement.Parse(map));
+            Lookup = Flatten(Tree).ToDictionary(node => $"{node.Area}/{node.Controller}/{node.Action}", StringComparer.OrdinalIgnoreCase);
         }
 
         public IEnumerable<SiteMapNode> For(ViewContext context)
@@ -153,10 +152,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = route["action"] as String;
             String? controller = route["controller"] as String;
 
-            return Nodes.SingleOrDefault(node =>
-                String.Equals(node.Area, area, StringComparison.OrdinalIgnoreCase) &&
-                String.Equals(node.Action, action, StringComparison.OrdinalIgnoreCase) &&
-                String.Equals(node.Controller, controller, StringComparison.OrdinalIgnoreCase));
+            return Lookup.TryGetValue($"{area}/{controller}/{action}", out SiteMapNode? node) ? node : null;
         }
         private String FormUrl(IUrlHelper url, SiteMapNode node)
         {
