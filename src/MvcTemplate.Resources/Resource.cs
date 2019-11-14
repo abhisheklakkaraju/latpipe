@@ -58,9 +58,11 @@ namespace MvcTemplate.Resources
             return Localized("Lookup", "Titles", type);
         }
 
-        public static String ForString(String value)
+        public static String ForString(String key, params Object[] args)
         {
-            return Localized("Shared", "Strings", value);
+            String value = Localized("Shared", "Strings", key);
+
+            return value == "" || args.Length == 0 ? value : String.Format(value, args);
         }
 
         public static String ForHeader(String model)

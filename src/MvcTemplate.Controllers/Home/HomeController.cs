@@ -37,7 +37,7 @@ namespace MvcTemplate.Controllers
                 {
                     Id = "SystemError",
                     Type = AlertType.Danger,
-                    Message = Resource.ForString("SystemError")
+                    Message = Resource.ForString("SystemError", HttpContext.TraceIdentifier)
                 });
 
                 return Json(new { alerts = Alerts });
