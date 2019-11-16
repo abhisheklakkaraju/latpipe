@@ -30,7 +30,7 @@ namespace MvcTemplate.Components.Mvc
         {
             Int32? account = context.HttpContext.User.Id();
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            List<SiteMapNode> nodes = SetState(Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
+            List<SiteMapNode> nodes = SetState(null, Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
 
             return Authorize(account, nodes);
         }
@@ -60,7 +60,7 @@ namespace MvcTemplate.Components.Mvc
             return breadcrumb;
         }
 
-        private List<SiteMapNode> SetState(IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode? current)
+        private List<SiteMapNode> SetState(SiteMapNode? parent, IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode? current)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
 
@@ -71,14 +71,17 @@ namespace MvcTemplate.Components.Mvc
                 copy.Url = FormUrl(url, node);
                 copy.IsMenu = node.IsMenu;
                 copy.Title = node.Title;
+                copy.Parent = parent;
 
                 copy.Controller = node.Controller;
                 copy.Action = node.Action;
                 copy.Area = node.Area;
 
-                copy.Children = SetState(node.Children, url, current);
-                copy.HasActiveChildren = copy.Children.Any(child => child.IsActive || child.HasActiveChildren);
-                copy.IsActive = copy.Children.Any(child => child.IsActive && !child.IsMenu) || node == current;
+                copy.IsActive = node == current;
+                copy.Children = SetState(copy, node.Children, url, current);
+
+                if (parent?.IsActive == false)
+                    parent.IsActive = copy.IsActive;
 
                 copies.Add(copy);
             }

@@ -3,21 +3,21 @@
 <ul>
     @foreach (SiteMapNode node in Model)
     {
-        String menu = node.HasActiveChildren ? "has-active open" : "";
-        menu += node.Children.Any() ? " submenu" : "";
+        Boolean submenu = node.Children.Any();
+        String menu = submenu ? "submenu" : "";
         menu += node.IsActive ? " active" : "";
-        menu = menu.Trim();
+        menu += submenu && node.IsActive ? " open" : "";
 
-        <li class="@menu">
+        <li class="@menu.TrimStart()">
             <a href="@node.Url">
                 <span class="icon @node.IconClass"></span>
                 <span class="text">@node.Title</span>
-                @if (node.Action == null)
+                @if (submenu)
                 {
                     <span class="toggle fa fa-angle-right"></span>
                 }
             </a>
-            @if (node.Children.Any())
+            @if (submenu)
             {
                 <partial name="_SiteMap" model="@node.Children" />
             }

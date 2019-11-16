@@ -4,7 +4,7 @@ Navigation = {
 
         navigation.element = document.querySelector('.navigation');
         navigation.nodes = navigation.element.querySelectorAll('li');
-        navigation.activeNodes = navigation.element.querySelectorAll('.has-active');
+        navigation.activeSubmenus = navigation.element.querySelectorAll('.active.submenu');
 
         if (navigation.element) {
             navigation.search = navigation.element.querySelector('input');
@@ -71,7 +71,7 @@ Navigation = {
                 filterNode(node, term);
             });
         } else {
-            this.activeNodes.forEach(node => {
+            this.activeSubmenus.forEach(node => {
                 node.classList.add('open');
             });
         }

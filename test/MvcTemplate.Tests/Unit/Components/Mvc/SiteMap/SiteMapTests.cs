@@ -125,13 +125,13 @@ namespace MvcTemplate.Components.Mvc.Tests
             SiteMapNode[] actual = siteMap.For(context).ToArray();
 
             Assert.Single(actual);
-            Assert.False(actual[0].IsActive);
+            Assert.True(actual[0].IsActive);
 
             actual = actual[0].Children.ToArray();
 
             Assert.Equal(2, actual.Length);
+            Assert.True(actual[1].IsActive);
             Assert.False(actual[0].IsActive);
-            Assert.False(actual[1].IsActive);
             Assert.Empty(actual[0].Children);
 
             actual = actual[1].Children.ToArray();
@@ -139,62 +139,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Empty(actual[0].Children);
             Assert.True(actual[0].IsActive);
             Assert.Single(actual);
-        }
-
-        [Fact]
-        public void For_NonMenuChildrenNodeIsActive_SetsActiveMenu()
-        {
-            route["action"] = "Edit";
-            route["controller"] = "Accounts";
-            route["area"] = "Administration";
-
-            siteMap = new SiteMap(CreateSiteMap(), null);
-
-            SiteMapNode[] actual = siteMap.For(context).ToArray();
-
-            Assert.Single(actual);
-            Assert.False(actual[0].IsActive);
-
-            actual = actual[0].Children.ToArray();
-
-            Assert.Equal(2, actual.Length);
-            Assert.True(actual[0].IsActive);
-            Assert.False(actual[1].IsActive);
-            Assert.Empty(actual[0].Children);
-
-            actual = actual[1].Children.ToArray();
-
-            Assert.Single(actual);
-            Assert.False(actual[0].IsActive);
-            Assert.Empty(actual[0].Children);
-        }
-
-        [Fact]
-        public void For_ActiveMenuParents_SetsHasActiveChildren()
-        {
-            route["action"] = "Create";
-            route["controller"] = "Roles";
-            route["area"] = "Administration";
-
-            siteMap = new SiteMap(CreateSiteMap(), null);
-
-            SiteMapNode[] actual = siteMap.For(context).ToArray();
-
-            Assert.Single(actual);
-            Assert.True(actual[0].HasActiveChildren);
-
-            actual = actual[0].Children.ToArray();
-
-            Assert.Equal(2, actual.Length);
-            Assert.Empty(actual[0].Children);
-            Assert.True(actual[1].HasActiveChildren);
-            Assert.False(actual[0].HasActiveChildren);
-
-            actual = actual[1].Children.ToArray();
-
-            Assert.Single(actual);
-            Assert.Empty(actual[0].Children);
-            Assert.False(actual[0].HasActiveChildren);
         }
 
         [Fact]
@@ -276,17 +220,17 @@ namespace MvcTemplate.Components.Mvc.Tests
             return @"<siteMap>
                 <siteMapNode icon=""fa fa-home"" controller=""Home"" action=""Index"">
                     <siteMapNode icon=""fa fa-user"" controller=""Profile"">
-                        <siteMapNode icon=""fa fa-pencil-alt"" controller=""Profile"" action=""Edit"" />
+                        <siteMapNode icon=""fa fa-pencil-alt"" action=""Edit"" />
                     </siteMapNode>
                     <siteMapNode menu=""true"" icon=""fa fa-cogs"" area=""Administration"">
-                        <siteMapNode menu=""true"" icon=""fa fa-user"" area=""Administration"" controller=""Accounts"" action=""Index"">
-                            <siteMapNode icon=""fa fa-info"" area=""Administration"" controller=""Accounts"" action=""Details"">
-                                <siteMapNode icon=""fa fa-pencil-alt"" area=""Administration"" controller=""Accounts"" action=""Edit"" />
+                        <siteMapNode menu=""true"" icon=""fa fa-user"" controller=""Accounts"" action=""Index"">
+                            <siteMapNode icon=""fa fa-info"" action=""Details"">
+                                <siteMapNode icon=""fa fa-pencil-alt"" action=""Edit"" />
                             </siteMapNode>
                         </siteMapNode>
-                        <siteMapNode menu=""true"" icon=""fa fa-users"" area=""Administration"" controller=""Roles"">
-                            <siteMapNode menu=""true"" icon=""far fa-file"" area=""Administration"" controller=""Roles"" action=""Create"" />
-                            <siteMapNode icon=""fa fa-pencil-alt"" area=""Administration"" controller=""Roles"" action=""Edit"" />
+                        <siteMapNode menu=""true"" icon=""fa fa-users"" controller=""Roles"">
+                            <siteMapNode menu=""true"" icon=""far fa-file"" action=""Create"" />
+                            <siteMapNode icon=""fa fa-pencil-alt"" action=""Edit"" />
                         </siteMapNode>
                     </siteMapNode>
                 </siteMapNode>

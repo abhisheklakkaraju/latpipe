@@ -69,7 +69,7 @@
   padding-left: 35px;
 }
 @media (min-width: 768px) {
-  .navigation > ul:not(:hover) .active > a {
+  .navigation > ul:not(:hover) .active:not(.open) > a {
     background-image: url("../../img/shared/menu-active.png"), linear-gradient(#6f93a7, #2a4e62);
     background-position: right center;
     background-repeat: no-repeat;
@@ -84,7 +84,7 @@
   .navigation .navigation-search {
     display: none;
   }
-  .navigation > ul:not(:hover) > .has-active > a {
+  .navigation > ul:not(:hover) > .active > a {
     background-image: url("../../img/shared/menu-active.png"), linear-gradient(#6f93a7, #2a4e62);
     background-position: right center;
     background-repeat: no-repeat;
