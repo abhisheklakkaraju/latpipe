@@ -18,7 +18,7 @@ namespace MvcTemplate.Data.Core
         protected Context()
         {
         }
-        public Context(DbContextOptions<Context> options)
+        public Context(DbContextOptions options)
             : base(options)
         {
         }

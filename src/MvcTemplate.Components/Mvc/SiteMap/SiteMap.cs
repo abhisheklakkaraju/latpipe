@@ -105,7 +105,7 @@ namespace MvcTemplate.Components.Mvc
         {
             return action == null || Authorization?.IsGrantedFor(accountId, area, controller, action) != false;
         }
-        private List<SiteMapNode> Parse(XElement root, SiteMapNode? parent = null)
+        private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
             foreach (XElement element in root.Elements("siteMapNode"))

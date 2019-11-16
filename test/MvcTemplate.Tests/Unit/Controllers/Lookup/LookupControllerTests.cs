@@ -78,10 +78,11 @@ namespace MvcTemplate.Controllers.Tests
 
         private JsonResult GetData<TLookup>(LookupController lookupController) where TLookup : MvcLookup
         {
-            lookupController.When(sub => sub.GetData(Arg.Any<MvcLookup>(), filter)).DoNotCallBase();
-            lookupController.GetData(Arg.Any<MvcLookup>(), filter).Returns(new JsonResult("Test"));
+            JsonResult result = new JsonResult("Test");
+            lookupController.GetData(Arg.Any<TLookup>(), filter).Returns(result);
+            lookupController.When(sub => sub.GetData(Arg.Any<TLookup>(), filter)).DoNotCallBase();
 
-            return lookupController.GetData(lookup, filter);
+            return result;
         }
     }
 }

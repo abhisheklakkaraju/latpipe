@@ -110,7 +110,7 @@ namespace MvcTemplate.Components.Security
 
             return RequiresAuthorization(action) ? action : null;
         }
-        private String ActionFor(MethodInfo method)
+        private String ActionFor(MemberInfo method)
         {
             String action = method.GetCustomAttribute<ActionNameAttribute>(false)?.Name ?? method.Name;
             String? area = method.DeclaringType?.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;

@@ -9,9 +9,9 @@ namespace MvcTemplate.Components.Mvc
 {
     public class ErrorPagesMiddleware
     {
-        private ILogger Logger { get; }
         private ILanguages Languages { get; }
         private RequestDelegate Next { get; }
+        private ILogger<ErrorPagesMiddleware> Logger { get; }
 
         public ErrorPagesMiddleware(RequestDelegate next, ILanguages languages, ILogger<ErrorPagesMiddleware> logger)
         {

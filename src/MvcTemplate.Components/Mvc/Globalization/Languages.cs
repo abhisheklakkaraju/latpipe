@@ -40,6 +40,12 @@ namespace MvcTemplate.Components.Mvc
             Supported = supported;
         }
 
-        public Language this[String abbreviation] => Dictionary.TryGetValue(abbreviation, out Language? language) ? language : Default;
+        public Language this[String abbreviation]
+        {
+            get
+            {
+                return Dictionary.TryGetValue(abbreviation, out Language? language) ? language : Default;
+            }
+        }
     }
 }

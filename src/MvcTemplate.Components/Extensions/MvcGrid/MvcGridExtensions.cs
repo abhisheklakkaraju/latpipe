@@ -92,7 +92,7 @@ namespace MvcTemplate.Components.Extensions
 
             return link;
         }
-        private static Boolean IsAuthorizedFor(ViewContext context, String action)
+        private static Boolean IsAuthorizedFor(ActionContext context, String action)
         {
             IAuthorization authorization = context.HttpContext.RequestServices.GetService<IAuthorization>();
             if (authorization == null)
