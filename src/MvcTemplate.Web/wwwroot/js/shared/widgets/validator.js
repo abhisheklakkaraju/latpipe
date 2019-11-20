@@ -1,10 +1,11 @@
 Validator = {
     init() {
+        const { isValid } = Wellidate.prototype.rules.number;
+
         Wellidate.prototype.rules.date.isValid = function () {
             return !this.element.value || moment(this.element.value).isValid();
         };
 
-        const isValid = Wellidate.prototype.rules.number.isValid;
         Wellidate.prototype.rules.number.isValid = function () {
             return !this.element.value || isValid.call(this, numbro(this.element.value).value());
         };
@@ -32,8 +33,8 @@ Validator = {
 
         document.addEventListener('wellidate-error', e => {
             if (event.target.classList.contains('mvc-lookup-value')) {
-                const wellidate = e.detail.validatable.wellidate;
-                const control = new MvcLookup(event.target).control;
+                const { wellidate } = e.detail.validatable;
+                const { control } = new MvcLookup(event.target);
 
                 control.classList.add(wellidate.inputErrorClass);
                 control.classList.remove(wellidate.inputValidClass);
@@ -43,8 +44,8 @@ Validator = {
 
         document.addEventListener('wellidate-success', e => {
             if (event.target.classList.contains('mvc-lookup-value')) {
-                const wellidate = e.detail.validatable.wellidate;
-                const control = new MvcLookup(event.target).control;
+                const { wellidate } = e.detail.validatable;
+                const { control } = new MvcLookup(event.target);
 
                 control.classList.add(wellidate.inputValidClass);
                 control.classList.remove(wellidate.inputErrorClass);

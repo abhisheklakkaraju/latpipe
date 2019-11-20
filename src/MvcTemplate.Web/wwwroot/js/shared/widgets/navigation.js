@@ -1,5 +1,6 @@
 Navigation = {
     init() {
+        const maxWidth = 100;
         const navigation = this;
 
         navigation.element = document.querySelector('.navigation');
@@ -21,7 +22,7 @@ Navigation = {
 
                         submenu.classList.toggle('open');
 
-                        if (navigation.element.clientWidth < 100) {
+                        if (navigation.element.clientWidth < maxWidth) {
                             [].forEach.call(submenu.parentElement.children, sibling => {
                                 if (sibling != submenu) {
                                     sibling.classList.remove('open');
@@ -32,13 +33,13 @@ Navigation = {
                 });
 
             window.addEventListener('resize', () => {
-                if (navigation.element.clientWidth < 100) {
+                if (navigation.element.clientWidth < maxWidth) {
                     navigation.closeAll();
                 }
             });
 
             window.addEventListener('click', e => {
-                if (navigation.element.clientWidth < 100) {
+                if (navigation.element.clientWidth < maxWidth) {
                     let target = e && e.target;
 
                     while (target && !/navigation/.test(target.className)) {
@@ -51,7 +52,7 @@ Navigation = {
                 }
             });
 
-            if (navigation.element.clientWidth < 100) {
+            if (navigation.element.clientWidth < maxWidth) {
                 navigation.closeAll();
             }
         }
@@ -59,7 +60,6 @@ Navigation = {
 
     filter(term) {
         this.search.value = term;
-        term = term.toLowerCase();
 
         this.nodes.forEach(node => {
             node.classList.remove('open');
@@ -68,7 +68,7 @@ Navigation = {
 
         if (term) {
             [].forEach.call(this.element.lastElementChild.children, node => {
-                filterNode(node, term);
+                filterNode(node, term.toLowerCase());
             });
         } else {
             this.activeSubmenus.forEach(node => {
@@ -76,15 +76,15 @@ Navigation = {
             });
         }
 
-        function filterNode(element, term) {
+        function filterNode(element, search) {
             const text = element.firstElementChild.querySelector('.text').textContent.toLowerCase();
-            const match = text.includes(term);
+            const match = text.includes(search);
 
             if (!match && element.classList.contains('submenu')) {
-                const children = element.lastElementChild.children;
+                const { children } = element.lastElementChild;
 
                 for (let i = 0; i < children.length; i++) {
-                    if (filterNode(children[i], term)) {
+                    if (filterNode(children[i], search)) {
                         element.classList.add('open');
                     }
                 }

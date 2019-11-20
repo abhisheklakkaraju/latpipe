@@ -8,23 +8,22 @@ Alerts = {
     },
 
     show(alerts) {
-        alerts = [].concat(alerts);
-        for (let i = 0; i < alerts.length; i++) {
-            const alert = document.getElementById(alerts[i].id) || emptyAlert();
+        [].concat(alerts).forEach(alert => {
+            const element = document.getElementById(alert.id) || emptyAlert();
 
-            alert.setAttribute('data-timeout', alerts[i].timeout || 0);
-            alert.className = `alert alert-${getType(alerts[i].type)}`;
-            alert.children[0].innerText = alerts[i].message || '';
-            alert.id = alerts[i].id || '';
+            element.setAttribute('data-timeout', alert.timeout || 0);
+            element.className = `alert alert-${getType(alert.type)}`;
+            element.children[0].innerText = alert.message || '';
+            element.id = alert.id || '';
 
-            this.element.appendChild(alert);
-            this.bind(alert);
-        }
+            this.element.appendChild(element);
+            this.bind(element);
+        });
 
         function emptyAlert() {
-            const alert = document.createElement('div');
-            const close = document.createElement('span');
             const message = document.createElement('span');
+            const close = document.createElement('span');
+            const alert = document.createElement('div');
 
             close.innerHTML = '&#x00D7;';
             close.className = 'close';

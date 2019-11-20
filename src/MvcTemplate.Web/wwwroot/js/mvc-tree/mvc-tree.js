@@ -1,17 +1,18 @@
 class MvcTree {
     constructor(element, options) {
         const tree = this;
-        element = tree.closestTree(element);
-        if (element.dataset.id) {
-            return MvcTree.instances[parseInt(element.dataset.id)].set(options || {});
+        const treeElement = tree.closestTree(element);
+
+        if (treeElement.dataset.id) {
+            return MvcTree.instances[parseInt(treeElement.dataset.id)].set(options || {});
         }
 
         tree.values = {};
-        tree.element = element;
+        tree.element = treeElement;
         tree.element.dataset.id = MvcTree.instances.length;
         tree.ids = tree.element.querySelector('.mvc-tree-ids');
         tree.view = tree.element.querySelector('.mvc-tree-view');
-        tree.readonly = element.classList.contains('mvc-tree-readonly');
+        tree.readonly = treeElement.classList.contains('mvc-tree-readonly');
 
         [].forEach.call(tree.ids.children, input => {
             tree.values[input.value] = input;
@@ -90,16 +91,17 @@ class MvcTree {
         if (branch.lastElementChild.tagName == 'UL') {
             let checked = 0;
             let unchecked = 0;
-            const children = branch.lastElementChild.children;
+            const { children } = branch.lastElementChild;
 
             [].forEach.call(children, node => {
                 const states = recursive ? this.update(node, recursive) : node.classList;
 
-                if (states.contains('mvc-tree-undetermined')) {
-                } else if (states.contains('mvc-tree-checked')) {
-                    checked++;
-                } else {
-                    unchecked++;
+                if (!states.contains('mvc-tree-undetermined')) {
+                    if (states.contains('mvc-tree-checked')) {
+                        checked++;
+                    } else {
+                        unchecked++;
+                    }
                 }
             });
 
@@ -132,6 +134,7 @@ class MvcTree {
 
         if (node.dataset.id && !this.values[node.dataset.id]) {
             const input = document.createElement('input');
+
             input.name = this.element.dataset.for;
             input.value = node.dataset.id;
             input.type = 'hidden';
@@ -152,11 +155,12 @@ class MvcTree {
         const tree = this;
 
         tree.element.querySelectorAll('a').forEach(node => {
-            node.addEventListener('click', function (e) {
+            node.addEventListener('click', e => {
                 e.preventDefault();
 
                 if (!tree.readonly) {
-                    const branch = this.parentElement;
+                    const branch = node.parentElement;
+
                     if (branch.classList.contains('mvc-tree-checked')) {
                         tree.uncheck(branch);
                     } else {
@@ -167,8 +171,9 @@ class MvcTree {
         });
 
         tree.element.querySelectorAll('.mvc-tree-branch > i').forEach(branch => {
-            branch.addEventListener('click', function () {
-                const parent = this.parentElement;
+            branch.addEventListener('click', () => {
+                const parent = branch.parentElement;
+
                 if (parent.classList.contains('mvc-tree-collapsed')) {
                     tree.expand(parent);
                 } else {
