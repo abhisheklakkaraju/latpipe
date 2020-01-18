@@ -1,9 +1,9 @@
 Tree = {
     init() {
-        if (typeof MvcTree == 'function') {
-            document.querySelectorAll('.mvc-tree').forEach(element => {
+        if (typeof MvcTree == "function") {
+            for (const element of document.querySelectorAll(".mvc-tree")) {
                 new MvcTree(element);
-            });
+            }
         }
     }
 };

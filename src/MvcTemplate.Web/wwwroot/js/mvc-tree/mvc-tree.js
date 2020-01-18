@@ -1,18 +1,18 @@
 class MvcTree {
-    constructor(element, options) {
+    constructor(element, options = {}) {
         const tree = this;
-        const treeElement = tree.closestTree(element);
+        const treeElement = tree.findTree(element);
 
         if (treeElement.dataset.id) {
-            return MvcTree.instances[parseInt(treeElement.dataset.id)].set(options || {});
+            return MvcTree.instances[parseInt(treeElement.dataset.id)].set(options);
         }
 
         tree.values = {};
         tree.element = treeElement;
-        tree.element.dataset.id = MvcTree.instances.length;
-        tree.ids = tree.element.querySelector('.mvc-tree-ids');
-        tree.view = tree.element.querySelector('.mvc-tree-view');
-        tree.readonly = treeElement.classList.contains('mvc-tree-readonly');
+        tree.ids = tree.element.querySelector(".mvc-tree-ids");
+        tree.view = tree.element.querySelector(".mvc-tree-view");
+        tree.element.dataset.id = MvcTree.instances.length.toString();
+        tree.readonly = treeElement.classList.contains("mvc-tree-readonly");
 
         [].forEach.call(tree.ids.children, input => {
             tree.values[input.value] = input;
@@ -23,37 +23,22 @@ class MvcTree {
         });
 
         MvcTree.instances.push(tree);
-        tree.set(options || {});
+        tree.set(options);
         tree.bind();
     }
 
-    closestTree(element) {
-        let tree = element;
-
-        if (!tree) {
-            throw new Error('Tree element was not specified.');
-        }
-
-        while (tree.parentElement && !tree.classList.contains('mvc-tree')) {
-            tree = tree.parentElement;
-        }
-
-        if (tree == document) {
-            throw new Error('Tree can only be created from within mvc-tree structure.');
-        }
-
-        return tree;
-    }
     set({ readonly }) {
         const tree = this;
 
         tree.readonly = readonly == null ? tree.readonly : readonly;
 
         if (tree.readonly) {
-            tree.element.classList.add('mvc-tree-readonly');
+            tree.element.classList.add("mvc-tree-readonly");
         } else {
-            tree.element.classList.remove('mvc-tree-readonly');
+            tree.element.classList.remove("mvc-tree-readonly");
         }
+
+        return tree;
     }
 
     uncheck(branch) {
@@ -61,11 +46,11 @@ class MvcTree {
 
         this.uncheckNode(branch);
 
-        branch.querySelectorAll('li').forEach(node => {
+        for (const node of branch.querySelectorAll("li")) {
             this.uncheckNode(node);
-        });
+        }
 
-        while (parent.tagName == 'LI') {
+        while (parent.tagName == "LI") {
             this.update(parent);
 
             parent = parent.parentElement.parentElement;
@@ -76,11 +61,11 @@ class MvcTree {
 
         this.checkNode(branch);
 
-        branch.querySelectorAll('li').forEach(node => {
+        for (const node of branch.querySelectorAll("li")) {
             this.checkNode(node);
-        });
+        }
 
-        while (parent.tagName == 'LI') {
+        while (parent.tagName == "LI") {
             this.update(parent);
 
             parent = parent.parentElement.parentElement;
@@ -88,7 +73,7 @@ class MvcTree {
     }
 
     update(branch, recursive) {
-        if (branch.lastElementChild.tagName == 'UL') {
+        if (branch.lastElementChild.tagName == "UL") {
             let checked = 0;
             let unchecked = 0;
             const { children } = branch.lastElementChild;
@@ -96,8 +81,8 @@ class MvcTree {
             [].forEach.call(children, node => {
                 const states = recursive ? this.update(node, recursive) : node.classList;
 
-                if (!states.contains('mvc-tree-undetermined')) {
-                    if (states.contains('mvc-tree-checked')) {
+                if (!states.contains("mvc-tree-undetermined")) {
+                    if (states.contains("mvc-tree-checked")) {
                         checked++;
                     } else {
                         unchecked++;
@@ -106,21 +91,21 @@ class MvcTree {
             });
 
             if (children.length == unchecked) {
-                branch.classList.remove('mvc-tree-checked');
-                branch.classList.remove('mvc-tree-undetermined');
+                branch.classList.remove("mvc-tree-checked");
+                branch.classList.remove("mvc-tree-undetermined");
             } else if (children.length == checked) {
-                branch.classList.add('mvc-tree-checked');
-                branch.classList.remove('mvc-tree-undetermined');
+                branch.classList.add("mvc-tree-checked");
+                branch.classList.remove("mvc-tree-undetermined");
             } else {
-                branch.classList.add('mvc-tree-undetermined');
+                branch.classList.add("mvc-tree-undetermined");
             }
         }
 
         return branch.classList;
     }
     uncheckNode(node) {
-        node.classList.remove('mvc-tree-checked');
-        node.classList.remove('mvc-tree-undetermined');
+        node.classList.remove("mvc-tree-checked");
+        node.classList.remove("mvc-tree-undetermined");
 
         if (node.dataset.id && this.values[node.dataset.id]) {
             this.ids.removeChild(this.values[node.dataset.id]);
@@ -129,15 +114,15 @@ class MvcTree {
         }
     }
     checkNode(node) {
-        node.classList.add('mvc-tree-checked');
-        node.classList.remove('mvc-tree-undetermined');
+        node.classList.add("mvc-tree-checked");
+        node.classList.remove("mvc-tree-undetermined");
 
         if (node.dataset.id && !this.values[node.dataset.id]) {
-            const input = document.createElement('input');
+            const input = document.createElement("input");
 
             input.name = this.element.dataset.for;
             input.value = node.dataset.id;
-            input.type = 'hidden';
+            input.type = "hidden";
 
             this.values[node.dataset.id] = input;
             this.ids.appendChild(input);
@@ -145,42 +130,51 @@ class MvcTree {
     }
 
     collapse(branch) {
-        branch.classList.add('mvc-tree-collapsed');
+        branch.classList.add("mvc-tree-collapsed");
     }
     expand(branch) {
-        branch.classList.remove('mvc-tree-collapsed');
+        branch.classList.remove("mvc-tree-collapsed");
     }
 
+    findTree(element) {
+        const tree = element.closest(".mvc-tree");
+
+        if (!tree) {
+            throw new Error("Tree can only be created from within mvc-tree structure.");
+        }
+
+        return tree;
+    }
     bind() {
         const tree = this;
 
-        tree.element.querySelectorAll('a').forEach(node => {
-            node.addEventListener('click', e => {
+        for (const node of tree.element.querySelectorAll("a")) {
+            node.addEventListener("click", e => {
                 e.preventDefault();
 
                 if (!tree.readonly) {
                     const branch = node.parentElement;
 
-                    if (branch.classList.contains('mvc-tree-checked')) {
+                    if (branch.classList.contains("mvc-tree-checked")) {
                         tree.uncheck(branch);
                     } else {
                         tree.check(branch);
                     }
                 }
             });
-        });
+        }
 
-        tree.element.querySelectorAll('.mvc-tree-branch > i').forEach(branch => {
-            branch.addEventListener('click', () => {
+        for (const branch of tree.element.querySelectorAll(".mvc-tree-branch > i")) {
+            branch.addEventListener("click", () => {
                 const parent = branch.parentElement;
 
-                if (parent.classList.contains('mvc-tree-collapsed')) {
+                if (parent.classList.contains("mvc-tree-collapsed")) {
                     tree.expand(parent);
                 } else {
                     tree.collapse(parent);
                 }
             });
-        });
+        }
     }
 }
 

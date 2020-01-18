@@ -1,13 +1,13 @@
 Grid = {
     init() {
-        if (typeof MvcGrid == 'function') {
+        if (typeof MvcGrid == "function") {
             MvcGridNumberFilter.prototype.isValid = function (value) {
-                return value == '' || !isNaN(numbro(value).value());
+                return !value || !isNaN(numbro(value).value());
             };
 
-            document.querySelectorAll('.mvc-grid').forEach(element => {
+            for (const element of document.querySelectorAll(".mvc-grid")) {
                 new MvcGrid(element);
-            });
+            }
         }
     }
 };

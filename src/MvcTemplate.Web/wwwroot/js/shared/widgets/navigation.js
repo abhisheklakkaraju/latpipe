@@ -3,42 +3,42 @@ Navigation = {
         const maxWidth = 100;
         const navigation = this;
 
-        navigation.element = document.querySelector('.navigation');
-        navigation.nodes = navigation.element.querySelectorAll('li');
-        navigation.activeSubmenus = navigation.element.querySelectorAll('.active.submenu');
+        navigation.element = document.querySelector(".navigation");
+        navigation.nodes = navigation.element.querySelectorAll("li");
+        navigation.activeSubmenus = navigation.element.querySelectorAll(".active.submenu");
 
         if (navigation.element) {
-            navigation.search = navigation.element.querySelector('input');
+            navigation.search = navigation.element.querySelector("input");
 
-            navigation.search.addEventListener('input', function () {
+            navigation.search.addEventListener("input", function () {
                 navigation.filter(this.value);
             });
 
             [].map.call(navigation.nodes, node => node)
-                .filter(node => node.classList.contains('submenu'))
+                .filter(node => node.classList.contains("submenu"))
                 .forEach(submenu => {
-                    submenu.firstElementChild.addEventListener('click', e => {
+                    submenu.firstElementChild.addEventListener("click", e => {
                         e.preventDefault();
 
-                        submenu.classList.toggle('open');
+                        submenu.classList.toggle("open");
 
                         if (navigation.element.clientWidth < maxWidth) {
                             [].forEach.call(submenu.parentElement.children, sibling => {
                                 if (sibling != submenu) {
-                                    sibling.classList.remove('open');
+                                    sibling.classList.remove("open");
                                 }
                             });
                         }
                     });
                 });
 
-            window.addEventListener('resize', () => {
+            window.addEventListener("resize", () => {
                 if (navigation.element.clientWidth < maxWidth) {
                     navigation.closeAll();
                 }
             });
 
-            window.addEventListener('click', e => {
+            window.addEventListener("click", e => {
                 if (navigation.element.clientWidth < maxWidth) {
                     let target = e && e.target;
 
@@ -61,37 +61,37 @@ Navigation = {
     filter(term) {
         this.search.value = term;
 
-        this.nodes.forEach(node => {
-            node.classList.remove('open');
-            node.style.display = '';
-        });
+        for (const node of this.nodes) {
+            node.classList.remove("open");
+            node.style.display = "";
+        }
 
         if (term) {
             [].forEach.call(this.element.lastElementChild.children, node => {
                 filterNode(node, term.toLowerCase());
             });
         } else {
-            this.activeSubmenus.forEach(node => {
-                node.classList.add('open');
-            });
+            for (const node of this.activeSubmenus) {
+                node.classList.add("open");
+            }
         }
 
         function filterNode(element, search) {
-            const text = element.firstElementChild.querySelector('.text').textContent.toLowerCase();
+            const text = element.firstElementChild.querySelector(".text").textContent.toLowerCase();
             const match = text.includes(search);
 
-            if (!match && element.classList.contains('submenu')) {
+            if (!match && element.classList.contains("submenu")) {
                 const { children } = element.lastElementChild;
 
                 for (let i = 0; i < children.length; i++) {
                     if (filterNode(children[i], search)) {
-                        element.classList.add('open');
+                        element.classList.add("open");
                     }
                 }
             }
 
-            if (!match && !element.classList.contains('open')) {
-                element.style.display = 'none';
+            if (!match && !element.classList.contains("open")) {
+                element.style.display = "none";
             }
 
             return match;
@@ -99,8 +99,8 @@ Navigation = {
     },
 
     closeAll() {
-        this.nodes.forEach(node => {
-            node.classList.remove('open');
-        });
+        for (const node of this.nodes) {
+            node.classList.remove("open");
+        }
     }
 };

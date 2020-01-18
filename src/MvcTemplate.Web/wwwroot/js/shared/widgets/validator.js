@@ -31,8 +31,8 @@ Validator = {
             return !this.element.value || this.min <= value && value <= this.max;
         };
 
-        document.addEventListener('wellidate-error', e => {
-            if (event.target.classList.contains('mvc-lookup-value')) {
+        document.addEventListener("wellidate-error", e => {
+            if (event.target.classList.contains("mvc-lookup-value")) {
                 const { wellidate } = e.detail.validatable;
                 const { control } = new MvcLookup(event.target);
 
@@ -42,8 +42,8 @@ Validator = {
             }
         });
 
-        document.addEventListener('wellidate-success', e => {
-            if (event.target.classList.contains('mvc-lookup-value')) {
+        document.addEventListener("wellidate-success", e => {
+            if (event.target.classList.contains("mvc-lookup-value")) {
                 const { wellidate } = e.detail.validatable;
                 const { control } = new MvcLookup(event.target);
 
@@ -53,12 +53,12 @@ Validator = {
             }
         });
 
-        document.querySelectorAll('.mvc-lookup-value.input-validation-error').forEach(value => {
-            new MvcLookup(value).control.classList.add('input-validation-error');
-        });
+        for (const value of document.querySelectorAll(".mvc-lookup-value.input-validation-error")) {
+            new MvcLookup(value).control.classList.add("input-validation-error");
+        }
 
-        document.querySelectorAll('form').forEach(form => new Wellidate(form, {
-            wasValidatedClass: 'validated'
+        document.querySelectorAll("form").forEach(form => new Wellidate(form, {
+            wasValidatedClass: "validated"
         }));
     }
 };
