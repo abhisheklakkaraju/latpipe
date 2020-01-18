@@ -1,6 +1,5 @@
 ﻿const gulp = require('gulp');
 const rimraf = require('rimraf');
-const less = require('gulp-less');
 const concat = require('gulp-concat');
 const uglifycss = require('gulp-uglifycss');
 const uglifyjs = require('gulp-uglify-es').default;
@@ -17,15 +16,6 @@ gulp.task('clean', gulp.series([
     'clean.css',
     'clean.js'
 ]));
-
-gulp.task('less', () => {
-    return gulp
-        .src('./wwwroot/css/**/*.less')
-        .pipe(less())
-        .pipe(gulp.dest(file => {
-            return file.base;
-        }));
-});
 
 gulp.task('vendor.private.css', () => {
     return gulp
@@ -184,16 +174,9 @@ gulp.task('app.js', () => {
         }));
 });
 
-gulp.task('watch', () => {
-    gulp.watch('./wwwroot/css/**/*.less', gulp.series([
-        'less'
-    ]));
-});
-
 gulp.task('minify', gulp.series([
     'clean.css',
     'clean.js',
-    'less',
     'vendor.private.css',
     'vendor.public.css',
     'site.private.css',
