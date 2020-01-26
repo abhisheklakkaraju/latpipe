@@ -184,15 +184,18 @@ hr {
     outline: none;
 }
 
+.mvc-lookup-rows:focus,
+.mvc-lookup-search:focus {
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+    border-color: #80bdff;
+    position: relative;
+    outline: none;
+}
+
 .mvc-lookup-browser:focus.input-validation-error,
 .mvc-lookup-focus .mvc-lookup-control.input-validation-error {
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
     border-color: #dc3545;
-}
-
-.mvc-lookup-browser:active {
-    border-color: #ced4da;
-    box-shadow: none;
 }
 
 /* mvc.grid */
