@@ -204,26 +204,28 @@ hr {
     font-size: 1em;
 }
 
-.mvc-grid thead {
+.mvc-grid > table > thead {
     background-image: linear-gradient(#ffffff, #f2f2f2);
     background-color: #ffffff;
 }
 
-.mvc-grid th {
+.mvc-grid > table > thead > tr > th {
     text-align: center !important;
     vertical-align: middle;
     white-space: nowrap;
     background: none;
 }
 
-.mvc-grid th,
-.mvc-grid td {
+.mvc-grid > table > thead > tr > th,
+.mvc-grid > table > tbody > tr > td,
+.mvc-grid > table > tfoot > tr > td {
     border-width: 0 0 1px;
     padding: 0.5rem;
 }
 
-.mvc-grid th + th,
-.mvc-grid td + td {
+.mvc-grid > table > thead > tr > th + th,
+.mvc-grid > table > tbody > tr > td + td,
+.mvc-grid > table > tfoot > tr > td + td {
     border-left-width: 1px;
 }
 

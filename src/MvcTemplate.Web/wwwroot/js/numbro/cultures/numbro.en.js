@@ -10,9 +10,10 @@ numbro.registerLanguage({
         billion: "b",
         trillion: "t"
     },
-    ordinal: function(number) {
-        var b = number % 10;
-        return (~~(number % 100 / 10) === 1) ? "th" : (b === 1) ? "st" : (b === 2) ? "nd" : (b === 3) ? "rd" : "th";
+    ordinal: function (number) {
+        const b = number % 10;
+
+        return ~~(number % 100 / 10) === 1 ? "th" : b === 1 ? "st" : b === 2 ? "nd" : b === 3 ? "rd" : "th";
     },
     currency: {
         symbol: "£",
@@ -50,6 +51,6 @@ numbro.registerLanguage({
     }
 });
 
-if (document.documentElement.lang == 'en') {
-    numbro.setLanguage('en');
+if (document.documentElement.lang == "en") {
+    numbro.setLanguage("en");
 }

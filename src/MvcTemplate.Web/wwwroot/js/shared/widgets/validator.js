@@ -1,31 +1,31 @@
 Validator = {
     init() {
-        const { isValid } = Wellidate.prototype.rules.number;
+        const { isValid } = Wellidate.default.rules.number;
 
-        Wellidate.prototype.rules.date.isValid = function () {
+        Wellidate.default.rules.date.isValid = function () {
             return !this.element.value || moment(this.element.value).isValid();
         };
 
-        Wellidate.prototype.rules.number.isValid = function () {
+        Wellidate.default.rules.number.isValid = function () {
             return !this.element.value || isValid.call(this, numbro(this.element.value).value());
         };
 
-        Wellidate.prototype.rules.min.isValid = function () {
+        Wellidate.default.rules.min.isValid = function () {
             return !this.element.value || this.min <= numbro(this.element.value).value();
         };
 
-        Wellidate.prototype.rules.max.isValid = function () {
+        Wellidate.default.rules.max.isValid = function () {
             return !this.element.value || numbro(this.element.value).value() <= this.max;
         };
 
-        Wellidate.prototype.rules.range.isValid = function () {
+        Wellidate.default.rules.range.isValid = function () {
             const range = this;
             const value = numbro(this.element.value).value();
 
             return !range.element.value || (range.min == null || range.min <= value) && (range.max == null || value <= range.max);
         };
 
-        Wellidate.prototype.rules.greater.isValid = function () {
+        Wellidate.default.rules.greater.isValid = function () {
             const value = numbro(this.element.value).value();
 
             return !this.element.value || this.min <= value && value <= this.max;

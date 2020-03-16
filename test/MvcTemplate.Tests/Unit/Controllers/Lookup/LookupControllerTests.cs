@@ -14,14 +14,14 @@ namespace MvcTemplate.Controllers.Tests
         private LookupController controller;
         private IUnitOfWork unitOfWork;
         private LookupFilter filter;
-        private MvcLookup lookup;
+        private ALookup lookup;
 
         public LookupControllerTests()
         {
             unitOfWork = Substitute.For<IUnitOfWork>();
             controller = Substitute.ForPartsOf<LookupController>(unitOfWork);
 
-            lookup = Substitute.For<MvcLookup>();
+            lookup = Substitute.For<ALookup>();
             filter = new LookupFilter();
         }
         public override void Dispose()
@@ -76,7 +76,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.Dispose();
         }
 
-        private JsonResult GetData<TLookup>(LookupController lookupController) where TLookup : MvcLookup
+        private JsonResult GetData<TLookup>(LookupController lookupController) where TLookup : ALookup
         {
             JsonResult result = new JsonResult("Test");
             lookupController.GetData(Arg.Any<TLookup>(), filter).Returns(result);

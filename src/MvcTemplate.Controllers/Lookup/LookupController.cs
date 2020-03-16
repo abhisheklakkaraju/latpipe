@@ -20,7 +20,7 @@ namespace MvcTemplate.Controllers
         }
 
         [NonAction]
-        public virtual JsonResult GetData(MvcLookup lookup, LookupFilter filter)
+        public virtual JsonResult GetData(ALookup lookup, LookupFilter filter)
         {
             lookup.Filter = filter;
 

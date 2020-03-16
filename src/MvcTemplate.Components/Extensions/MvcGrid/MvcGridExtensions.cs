@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace MvcTemplate.Components.Extensions
 {
@@ -69,6 +70,7 @@ namespace MvcTemplate.Components.Extensions
         {
             return columns
                 .Add(expression)
+                .Named(NameFor(expression))
                 .Css(CssClassFor<TProperty>())
                 .Titled(Resource.ForProperty(expression));
         }
@@ -109,6 +111,14 @@ namespace MvcTemplate.Components.Extensions
             PropertyInfo id = typeof(T).GetProperty("Id") ?? throw new Exception($"{typeof(T).Name} type does not have an id.");
 
             return new Dictionary<String, Object?> { ["id"] = id.GetValue(model) };
+        }
+        private static String NameFor(LambdaExpression expression)
+        {
+            String text = expression.Body is MemberExpression member ? member.ToString() : "";
+            text = text.IndexOf('.') > 0 ? text.Substring(text.IndexOf('.') + 1) : text;
+            text = text.Replace("_", "-");
+
+            return String.Join("-", Regex.Split(text, "(?<=[a-z])(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")).ToLower();
         }
         private static String CssClassFor<TProperty>()
         {

@@ -126,6 +126,7 @@ namespace MvcTemplate.Components.Extensions.Tests
             IGridColumn<AllTypesView, DateTime> actual = columns.AddDate(expression);
 
             Assert.Equal("text-center", actual.CssClasses);
+            Assert.Equal("date-time-field", actual.Name);
             Assert.Equal(expression, actual.Expression);
             Assert.Equal("{0:d}", actual.Format);
             Assert.Empty(actual.Title.ToString());
@@ -139,6 +140,7 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             IGridColumn<AllTypesView, DateTime?> actual = columns.AddDate(expression);
 
+            Assert.Equal("nullable-date-time-field", actual.Name);
             Assert.Equal("text-center", actual.CssClasses);
             Assert.Equal(expression, actual.Expression);
             Assert.Empty(actual.Title.ToString());
@@ -155,6 +157,7 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             Assert.Equal("text-center", actual.CssClasses);
             Assert.Equal(expression, actual.Expression);
+            Assert.Equal("boolean-field", actual.Name);
             Assert.Empty(actual.Title.ToString());
             Assert.Single(columns);
         }
@@ -190,6 +193,7 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             IGridColumn<AllTypesView, Boolean?> actual = columns.AddBoolean(expression);
 
+            Assert.Equal("nullable-boolean-field", actual.Name);
             Assert.Equal("text-center", actual.CssClasses);
             Assert.Equal(expression, actual.Expression);
             Assert.Empty(actual.Title.ToString());
@@ -237,6 +241,7 @@ namespace MvcTemplate.Components.Extensions.Tests
             IGridColumn<AllTypesView, DateTime> actual = columns.AddDateTime(expression);
 
             Assert.Equal("text-center", actual.CssClasses);
+            Assert.Equal("date-time-field", actual.Name);
             Assert.Equal(expression, actual.Expression);
             Assert.Empty(actual.Title.ToString());
             Assert.Equal("{0:g}", actual.Format);
@@ -250,6 +255,7 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             IGridColumn<AllTypesView, DateTime?> actual = columns.AddDateTime(expression);
 
+            Assert.Equal("nullable-date-time-field", actual.Name);
             Assert.Equal("text-center", actual.CssClasses);
             Assert.Equal(expression, actual.Expression);
             Assert.Empty(actual.Title.ToString());
@@ -267,7 +273,19 @@ namespace MvcTemplate.Components.Extensions.Tests
             Assert.Equal("text-left", actual.CssClasses);
             Assert.Equal(expression, actual.Expression);
             Assert.Empty(actual.Title.ToString());
+            Assert.Empty(actual.Name);
             Assert.Single(columns);
+        }
+
+        [Fact]
+        public void AddProperty_SetsColumnName()
+        {
+            Expression<Func<AllTypesView, SByte?>> expression = (model) => model.NullableSByteField;
+
+            String actual = columns.AddProperty(expression).Name;
+            String expected = "nullable-s-byte-field";
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

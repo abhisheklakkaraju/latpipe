@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace MvcTemplate.Components.Lookups
 {
-    public class MvcLookup<TModel, TView> : MvcLookup<TView>
+    public class MvcLookup<TModel, TView> : ALookup<TView>
         where TModel : BaseModel
         where TView : BaseView
     {

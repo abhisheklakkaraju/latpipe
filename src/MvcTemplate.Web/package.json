@@ -7,13 +7,13 @@
     "gulp-concat": "2.6.1",
     "gulp-uglify-es": "2.0.0",
     "gulp-uglifycss": "1.1.0",
-    "rimraf": "3.0.0"
+    "rimraf": "3.0.2"
   },
   "dependencies": {
     "@bevacqua/rome": "3.0.3",
     "bootstrap.native": "2.0.27",
     "moment": "2.24.0",
     "numbro": "2.1.2",
-    "wellidate": "1.1.1"
+    "wellidate": "2.0.0"
   }
 }

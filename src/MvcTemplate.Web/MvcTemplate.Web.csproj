@@ -37,14 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Genny" Version="2.3.2" />
+    <DotNetCliToolReference Include="Genny" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NonFactors.Grid.Mvc6" Version="5.1.2" />
-    <PackageReference Include="NonFactors.Lookup.Mvc6" Version="4.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.0" />
-    <PackageReference Include="Genny" Version="2.3.2" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="NonFactors.Grid.Mvc6" Version="6.0.1" />
+    <PackageReference Include="NonFactors.Lookup.Mvc6" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.2" />
+    <PackageReference Include="Genny" Version="2.4.0" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Humanizer.Core" Version="2.7.9" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
 
