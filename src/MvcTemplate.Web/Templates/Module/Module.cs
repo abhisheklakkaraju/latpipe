@@ -226,10 +226,10 @@ namespace MvcTemplate.Web.Templates
         }
         private void AddPermissionTests(String action)
         {
-            Logger.Write("../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs - ");
+            Logger.Write("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs - ");
 
             String testData = $"[InlineData(\"{Area}\", \"{Controller}\", \"{action}\")]";
-            String tests = File.ReadAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs");
+            String tests = File.ReadAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs");
 
             if (tests.Contains(testData))
             {
@@ -238,9 +238,9 @@ namespace MvcTemplate.Web.Templates
             else
             {
                 testData += $"{Environment.NewLine}        ";
-                tests = tests.Insert(tests.IndexOf("public void PermissionsTable_HasPermission"), testData);
+                tests = tests.Insert(tests.IndexOf("public void Seed_Permissions"), testData);
 
-                File.WriteAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/InitialDataTests.cs", tests);
+                File.WriteAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs", tests);
 
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }

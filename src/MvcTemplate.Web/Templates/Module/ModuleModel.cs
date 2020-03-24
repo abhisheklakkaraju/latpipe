@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using MvcTemplate.Components.Mvc;
 using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace MvcTemplate.Web.Templates
 
         public String? Area { get; }
 
+        public PropertyInfo[] Indexes { get; set; }
         public PropertyInfo[] ViewProperties { get; set; }
         public PropertyInfo[] ModelProperties { get; set; }
         public PropertyInfo[] AllViewProperties { get; set; }
@@ -70,6 +72,13 @@ namespace MvcTemplate.Web.Templates
             ViewProperties = viewType.GetProperties().Where(property => property.DeclaringType?.Name == View).ToArray();
             ModelProperties = AllModelProperties.Where(property => property.DeclaringType?.Name == Model).ToArray();
             AllViewProperties = viewType.GetProperties();
+            Indexes = ModelProperties
+                .Where(property =>
+                    ViewProperties.Any(prop => prop.Name == property.Name) &&
+                    property.GetCustomAttribute<IndexAttribute>()?.IsUnique == true)
+                .OrderByDescending(property => property.Name.Length)
+                .ThenByDescending(property => property.Name)
+                .ToArray();
             Relations = AllViewProperties
                 .ToDictionary(
                     property => property,

@@ -5,6 +5,6 @@
         "Title": "Title"
     },
     "Validations": {
-        "UniqueTitle": "Role title is already being used."
+        "UniqueTitle": "Title is already being used."
     }
 }

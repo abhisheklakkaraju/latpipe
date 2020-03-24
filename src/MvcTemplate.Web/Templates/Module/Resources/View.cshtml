@@ -7,22 +7,48 @@
             Model.Relations[property] == null)
         .OrderBy(property => property.Name)
         .ToArray();
+
+    PropertyInfo[] indexes = Model
+        .Indexes
+        .OrderBy(property => property.Name)
+        .ToArray();
 }
 {
     "Titles": {
         @for (Int32 i = 0; i < properties.Length; i++)
         {
-            PropertyInfo property = properties[i];
-            String title = property.Name == "Id" ? Model.Model.Humanize() : property.Name.Humanize();
+            String title = properties[i].Name == "Id" ? Model.Model.Humanize() : properties[i].Name.Humanize();
 
             if (i + 1 < properties.Length)
             {
-        @:"@property.Name": "@title",
+        @:"@properties[i].Name": "@title",
             }
             else
             {
-        @:"@property.Name": "@title"
+        @:"@properties[i].Name": "@title"
             }
         }
+    @if (indexes.Any())
+    {
+@:},
+    @:"Validations": {
+        @for (Int32 i = 0; i < indexes.Length; i++)
+        {
+            String title = indexes[i].Name.Humanize();
+
+            if (i + 1 < indexes.Length)
+            {
+        @:"Unique@(indexes[i].Name)": "@title is already being used.",
+            }
+            else
+            {
+        @:"Unique@(indexes[i].Name)": "@title is already being used."
+            }
+        }
+    @:}
+    }
+    else
+    {
+@:}
     }
 }

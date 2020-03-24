@@ -8,16 +8,15 @@ using Xunit;
 
 namespace MvcTemplate.Data.Migrations.Tests
 {
-    public class InitialDataTests : IDisposable
+    public class ConfigurationTests : IDisposable
     {
         private Configuration configuration;
         private TestingContext context;
 
-        public InitialDataTests()
+        public ConfigurationTests()
         {
             context = new TestingContext();
             configuration = new Configuration(context, null);
-            configuration.SeedData();
         }
         public void Dispose()
         {
@@ -26,14 +25,18 @@ namespace MvcTemplate.Data.Migrations.Tests
         }
 
         [Fact]
-        public void RolesTable_HasSysAdmin()
+        public void Seed_Roles()
         {
+            configuration.Seed();
+
             Assert.Single(context.Set<Role>(), role => role.Title == "Sys_Admin");
         }
 
         [Fact]
-        public void AccountsTable_HasAdmin()
+        public void Seed_Accounts()
         {
+            configuration.Seed();
+
             Assert.Single(context.Set<Account>(), account => account.Username == "admin" && account.Role?.Title == "Sys_Admin");
         }
 
@@ -47,8 +50,10 @@ namespace MvcTemplate.Data.Migrations.Tests
         [InlineData("Administration", "Roles", "Details")]
         [InlineData("Administration", "Roles", "Edit")]
         [InlineData("Administration", "Roles", "Delete")]
-        public void PermissionsTable_HasPermission(String area, String controller, String action)
+        public void Seed_Permissions(String area, String controller, String action)
         {
+            configuration.Seed();
+
             Assert.Single(context.Set<Permission>(), permission =>
                 permission.Controller == controller &&
                 permission.Action == action &&
@@ -56,11 +61,34 @@ namespace MvcTemplate.Data.Migrations.Tests
         }
 
         [Fact]
-        public void PermissionsTable_HasExactNumberOfPermissions()
+        public void Seed_RemovesUnusedPermissions()
         {
+            Role role = ObjectsFactory.CreateRole();
+            role.Permissions.Add(new RolePermission
+            {
+                Permission = new Permission { Area = "Test", Controller = "Test", Action = "Test" }
+            });
+
+            context.Add(role);
+            context.SaveChanges();
+
+            configuration.Seed();
+
+            Assert.Empty(role.Permissions);
+            Assert.Empty(context.Set<Permission>().Where(permission =>
+                permission.Controller == "Test" &&
+                permission.Action == "Test" &&
+                permission.Area == "Test"));
+        }
+
+        [Fact]
+        public void Seed_PermissionCount()
+        {
+            configuration.Seed();
+
             Int32 actual = context.Set<Permission>().Count();
             Int32 expected = GetType()
-                .GetMethod(nameof(PermissionsTable_HasPermission))!
+                .GetMethod(nameof(Seed_Permissions))!
                 .GetCustomAttributes<InlineDataAttribute>()
                 .Count();
 
@@ -68,8 +96,10 @@ namespace MvcTemplate.Data.Migrations.Tests
         }
 
         [Fact]
-        public void RolesPermissionsTable_HasAllSysAdminPermissions()
+        public void Seed_RolePermissions()
         {
+            configuration.Seed();
+
             IEnumerable<Int32> expected = context
                 .Set<Permission>()
                 .Select(permission => permission.Id)
@@ -82,6 +112,13 @@ namespace MvcTemplate.Data.Migrations.Tests
                 .OrderBy(permissionId => permissionId);
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Seed_MultipleTimes()
+        {
+            configuration.Seed();
+            configuration.Seed();
         }
     }
 }

@@ -31,6 +31,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
+        public void GetAttributeAdapter_Email()
+        {
+            Assert.IsType<EmailAddressAdapter>(provider.GetAttributeAdapter(new EmailAddressAttribute(), null));
+        }
+
+        [Fact]
         public void GetAttributeAdapter_GreaterThan()
         {
             Assert.IsType<GreaterThanAdapter>(provider.GetAttributeAdapter(new GreaterThanAttribute(45), null));
@@ -88,6 +94,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void GetAttributeAdapter_Range()
         {
             Assert.IsType<RangeAdapter>(provider.GetAttributeAdapter(new RangeAttribute(4, 77), null));
+        }
+
+        [Fact]
+        public void GetAttributeAdapter_Unsupported()
+        {
+            Assert.Null(provider.GetAttributeAdapter(new DataTypeAttribute(DataType.Custom), null));
         }
     }
 }

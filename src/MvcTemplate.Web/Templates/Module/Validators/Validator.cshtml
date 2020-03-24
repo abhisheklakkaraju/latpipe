@@ -1,7 +1,19 @@
 ﻿@model ModuleModel
-using MvcTemplate.Data.Core;
-using MvcTemplate.Objects;
-using System;
+@if (Model.Indexes.Any())
+{
+@:using Microsoft.AspNetCore.Mvc.ModelBinding;
+@:using MvcTemplate.Data.Core;
+@:using MvcTemplate.Objects;
+@:using MvcTemplate.Resources;
+@:using System;
+@:using System.Linq;
+}
+else
+{
+@:using MvcTemplate.Data.Core;
+@:using MvcTemplate.Objects;
+@:using System;
+}
 
 namespace MvcTemplate.Validators
 {
@@ -14,11 +26,87 @@ namespace MvcTemplate.Validators
 
         public Boolean CanCreate(@Model.View view)
         {
-            return ModelState.IsValid;
+            @foreach (PropertyInfo property in Model.Indexes)
+            {
+                if (property == Model.Indexes[0])
+                {
+            @:Boolean isValid = IsUnique@(property.Name)(0, view.@(property.Name));
+                }
+                else
+                {
+            @:isValid &= IsUnique@(property.Name)(0, view.@(property.Name));
+                }
+            }
+            @if (Model.Indexes.Any())
+            {
+@:isValid &= ModelState.IsValid;
+@:
+            @:return isValid;
+            }
+            else
+            {
+@:return ModelState.IsValid;
+            }
         }
         public Boolean CanEdit(@Model.View view)
         {
-            return ModelState.IsValid;
+            @foreach (PropertyInfo property in Model.Indexes)
+            {
+                if (property == Model.Indexes[0])
+                {
+            @:Boolean isValid = IsUnique@(property.Name)(view.Id, view.@(property.Name));
+                }
+                else
+                {
+            @:isValid &= IsUnique@(property.Name)(view.Id, view.@(property.Name));
+                }
+            }
+            @if (Model.Indexes.Any())
+            {
+@:isValid &= ModelState.IsValid;
+@:
+            @:return isValid;
+            }
+            else
+            {
+@:return ModelState.IsValid;
+            }
+        }
+        @if (Model.Indexes.Any())
+        {
+@:
+            @foreach (PropertyInfo property in Model.Indexes)
+            {
+                String name = Regex.Split(property.Name, "(?=[A-Z])").Last().ToLower();
+
+                if (property.PropertyType == typeof(String) || Nullable.GetUnderlyingType(property.PropertyType) is Type)
+                {
+        @:private Boolean IsUnique@(property.Name)(Int32 id, @((Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType).Name)? @name)
+                }
+                else
+                {
+        @:private Boolean IsUnique@(property.Name)(Int32 id, @property.PropertyType.Name @name)
+                }
+        @:{
+        @:    Boolean isUnique = !UnitOfWork
+        @:        .Select<@Model.Model>()
+        @:        .Any(@Model.ModelVarName =>
+        @:            @(Model.ModelVarName).Id != id &&
+                if (property.PropertyType == typeof(String))
+                {
+        @:            @(Model.ModelVarName).@(property.Name).ToLower() == (@name ?? "").ToLower());
+                }
+                else
+                {
+        @:            @(Model.ModelVarName).@(property.Name) == @name);
+                }
+@:
+        @:    if (!isUnique)
+        @:        ModelState.AddModelError<@Model.View>(@Model.ModelVarName => @(Model.ModelVarName).@(property.Name), Validation.For<@Model.View>("Unique@(property.Name)"));
+@:
+        @:    return isUnique;
+        @:}
+            }
         }
     }
 }

@@ -53,6 +53,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
+        public void IsValid_InvalidNumber_ReturnsFalse()
+        {
+            Assert.False(attribute.IsValid("test"));
+        }
+
+        [Fact]
         public void IsValid_DecimalPrecision()
         {
             Assert.True(new NumberAttribute(3, 3).IsValid(0.345M));

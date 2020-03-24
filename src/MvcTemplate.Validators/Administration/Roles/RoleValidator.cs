@@ -16,30 +16,29 @@ namespace MvcTemplate.Validators
 
         public Boolean CanCreate(RoleView view)
         {
-            Boolean isValid = ModelState.IsValid;
-            isValid &= IsUniqueTitle(view);
+            Boolean isValid = IsUniqueTitle(0, view.Title);
+            isValid &= ModelState.IsValid;
 
             return isValid;
         }
         public Boolean CanEdit(RoleView view)
         {
-            Boolean isValid = ModelState.IsValid;
-            isValid &= IsUniqueTitle(view);
+            Boolean isValid = IsUniqueTitle(view.Id, view.Title);
+            isValid &= ModelState.IsValid;
 
             return isValid;
         }
 
-        private Boolean IsUniqueTitle(RoleView view)
+        private Boolean IsUniqueTitle(Int32 id, String? title)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Role>()
                 .Any(role =>
-                    role.Id != view.Id &&
-                    role.Title.ToLower() == (view.Title ?? "").ToLower());
+                    role.Id != id &&
+                    role.Title.ToLower() == (title ?? "").ToLower());
 
             if (!isUnique)
-                ModelState.AddModelError<RoleView>(role => role.Title,
-                    Validation.For<RoleView>("UniqueTitle"));
+                ModelState.AddModelError<RoleView>(role => role.Title, Validation.For<RoleView>("UniqueTitle"));
 
             return isUnique;
         }

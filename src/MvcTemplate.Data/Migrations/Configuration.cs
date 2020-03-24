@@ -19,13 +19,13 @@ namespace MvcTemplate.Data.Migrations
             Context = context;
         }
 
-        public void UpdateDatabase()
+        public void Migrate()
         {
             Context.Database.Migrate();
 
-            SeedData();
+            Seed();
         }
-        public void SeedData()
+        public void Seed()
         {
             SeedPermissions();
             SeedRoles();

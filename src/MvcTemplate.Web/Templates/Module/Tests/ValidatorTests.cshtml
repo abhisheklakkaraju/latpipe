@@ -1,8 +1,16 @@
 ﻿@model ModuleModel
 using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
+@if (Model.Indexes.Any())
+{
+@:using MvcTemplate.Resources;
+}
 using MvcTemplate.Tests;
 using System;
+@if (Model.Indexes.Any())
+{
+@:using System.Linq;
+}
 using Xunit;
 
 namespace MvcTemplate.Validators.Tests
@@ -34,6 +42,30 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(2)));
         }
+        @foreach (PropertyInfo index in Model.Indexes)
+        {
+@:
+        @:[Fact]
+        @:public void CanCreate_Used@(index.Name)_ReturnsFalse()
+        @:{
+        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(2);
+            if (index.PropertyType == typeof(String))
+            {
+        @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name).ToLower();
+            }
+            else
+            {
+        @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name);
+            }
+        @:    view.Id = @(Model.ModelVarName).Id;
+@:
+        @:    Boolean canCreate = validator.CanCreate(view);
+@:
+        @:    Assert.False(canCreate);
+        @:    Assert.Single(validator.ModelState);
+        @:    Assert.Equal(Validation.For<@Model.View>("Unique@(index.Name)"), validator.ModelState[nameof(@(Model.View).@(index.Name))].Errors.Single().ErrorMessage);
+        @:}
+        }
 
         [Fact]
         public void CanCreate_Valid@(Model.ModelShortName)()
@@ -49,6 +81,29 @@ namespace MvcTemplate.Validators.Tests
             validator.ModelState.AddModelError("Test", "Test");
 
             Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)()));
+        }
+        @foreach (PropertyInfo index in Model.Indexes)
+        {
+@:
+        @:[Fact]
+        @:public void CanEdit_Used@(index.Name)_ReturnsFalse()
+        @:{
+        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(2);
+            if (index.PropertyType == typeof(String))
+            {
+        @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name).ToLower();
+            }
+            else
+            {
+        @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name);
+            }
+@:
+        @:    Boolean canEdit = validator.CanEdit(view);
+@:
+        @:    Assert.False(canEdit);
+        @:    Assert.Single(validator.ModelState);
+        @:    Assert.Equal(Validation.For<@Model.View>("Unique@(index.Name)"), validator.ModelState[nameof(@(Model.View).@(index.Name))].Errors.Single().ErrorMessage);
+        @:}
         }
 
         [Fact]

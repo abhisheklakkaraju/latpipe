@@ -52,6 +52,17 @@ namespace MvcTemplate.Controllers.Tests
         }
 
         [Fact]
+        public void Error_ReturnsJsonAlerts()
+        {
+            controller.Request.Headers["X-Requested-With"] = "XMLHttpRequest";
+
+            JsonResult actual = Assert.IsType<JsonResult>(controller.Error());
+
+            Assert.Equal(StatusCodes.Status500InternalServerError, controller.Response.StatusCode);
+            Assert.Same(controller.Alerts, actual.Value.GetType().GetProperty("alerts")?.GetValue(actual.Value));
+        }
+
+        [Fact]
         public void Error_ReturnsEmptyView()
         {
             ViewResult actual = Assert.IsType<ViewResult>(controller.Error());

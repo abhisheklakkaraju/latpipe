@@ -3,10 +3,8 @@
   <PropertyGroup>
     <Version>0.0.0</Version>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
     <GenerateFullPaths>true</GenerateFullPaths>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateProgramFile>false</GenerateProgramFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType Condition="'$(Configuration)'=='Release'">none</DebugType>
   </PropertyGroup>

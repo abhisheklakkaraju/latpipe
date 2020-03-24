@@ -41,7 +41,7 @@ namespace MvcTemplate.Resources.Tests
             using TestingContext context = new TestingContext();
             using Configuration configuration = new Configuration(context, null);
 
-            configuration.SeedData();
+            configuration.Seed();
 
             foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
                 Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area!)),
@@ -54,7 +54,7 @@ namespace MvcTemplate.Resources.Tests
             using TestingContext context = new TestingContext();
             using Configuration configuration = new Configuration(context, null);
 
-            configuration.SeedData();
+            configuration.Seed();
 
             foreach (Permission permission in context.Set<Permission>())
                 Assert.True(!String.IsNullOrEmpty(Resource.ForController(permission.Area + permission.Controller)),
@@ -67,7 +67,7 @@ namespace MvcTemplate.Resources.Tests
             using TestingContext context = new TestingContext();
             using Configuration configuration = new Configuration(context, null);
 
-            configuration.SeedData();
+            configuration.Seed();
 
             foreach (Permission permission in context.Set<Permission>())
                 Assert.True(!String.IsNullOrEmpty(Resource.ForAction(permission.Action)),

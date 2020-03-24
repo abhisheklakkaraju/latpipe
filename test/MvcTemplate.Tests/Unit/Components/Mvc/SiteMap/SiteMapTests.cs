@@ -29,7 +29,9 @@ namespace MvcTemplate.Components.Mvc.Tests
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
             context.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            url.ActionContext.Returns(new ActionContext { RouteData = context.RouteData });
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
+            url.ActionContext.HttpContext = context.HttpContext;
             factory.GetUrlHelper(context).Returns(url);
             route = context.RouteData.Values;
         }
@@ -224,7 +226,7 @@ namespace MvcTemplate.Components.Mvc.Tests
                     </siteMapNode>
                     <siteMapNode menu=""true"" icon=""fa fa-cogs"" area=""Administration"">
                         <siteMapNode menu=""true"" icon=""fa fa-user"" controller=""Accounts"" action=""Index"">
-                            <siteMapNode icon=""fa fa-info"" action=""Details"">
+                            <siteMapNode icon=""fa fa-info"" action=""Details"" route-id=""id"">
                                 <siteMapNode icon=""fa fa-pencil-alt"" action=""Edit"" />
                             </siteMapNode>
                         </siteMapNode>

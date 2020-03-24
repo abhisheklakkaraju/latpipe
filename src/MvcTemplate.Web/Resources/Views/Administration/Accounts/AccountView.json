@@ -19,7 +19,7 @@
         "IncorrectAuthentication": "The username or password is incorrect.",
         "IncorrectPassword": "Password is incorrect.",
         "LockedAccount": "Your account is locked.",
-        "UniqueEmail": "Email address is already being used.",
-        "UniqueUsername": "Username is already taken."
+        "UniqueEmail": "Email is already being used.",
+        "UniqueUsername": "Username is already being used."
     }
 }

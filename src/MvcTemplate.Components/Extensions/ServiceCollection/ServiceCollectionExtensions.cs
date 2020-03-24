@@ -13,7 +13,7 @@ namespace MvcTemplate.Components.Extensions
         }
         private static Boolean Implements<T>(Type type)
         {
-            return typeof(T).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract;
+            return !type.IsAbstract && typeof(T).IsAssignableFrom(type);
         }
     }
 }

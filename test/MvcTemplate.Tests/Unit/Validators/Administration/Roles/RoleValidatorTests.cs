@@ -41,6 +41,7 @@ namespace MvcTemplate.Validators.Tests
         {
             RoleView view = ObjectsFactory.CreateRoleView(2);
             view.Title = role.Title.ToLower();
+            view.Id = role.Id;
 
             Boolean canCreate = validator.CanCreate(view);
 
@@ -52,7 +53,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void CanCreate_ValidRole()
         {
-            Assert.True(validator.CanCreate(ObjectsFactory.CreateRoleView()));
+            Assert.True(validator.CanCreate(ObjectsFactory.CreateRoleView(2)));
             Assert.Empty(validator.ModelState);
             Assert.Empty(validator.Alerts);
         }

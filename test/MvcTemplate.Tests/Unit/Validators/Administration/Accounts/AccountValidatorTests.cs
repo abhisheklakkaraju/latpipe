@@ -177,6 +177,7 @@ namespace MvcTemplate.Validators.Tests
         {
             AccountCreateView view = ObjectsFactory.CreateAccountCreateView(2);
             view.Username = account.Username.ToLower();
+            view.Id = account.Id;
 
             Boolean canCreate = validator.CanCreate(view);
 
@@ -190,6 +191,7 @@ namespace MvcTemplate.Validators.Tests
         {
             AccountCreateView view = ObjectsFactory.CreateAccountCreateView(2);
             view.Email = account.Email.ToUpper();
+            view.Id = account.Id;
 
             Boolean canCreate = validator.CanCreate(view);
 

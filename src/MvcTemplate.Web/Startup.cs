@@ -56,7 +56,7 @@ namespace MvcTemplate.Web
             RegisterMiddleware(app);
             RegisterResources();
 
-            UpdateDatabase(app);
+            SeedDatabase(app);
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -98,7 +98,6 @@ namespace MvcTemplate.Web
                 else
                     builder.AddProvider(new FileLoggerProvider(Config));
             });
-
         }
         private void ConfigureOptions(IServiceCollection services)
         {
@@ -208,10 +207,10 @@ namespace MvcTemplate.Web
             });
         }
 
-        private void UpdateDatabase(IApplicationBuilder app)
+        private void SeedDatabase(IApplicationBuilder app)
         {
             using (Configuration configuration = app.ApplicationServices.GetService<Configuration>())
-                configuration.UpdateDatabase();
+                configuration.Seed();
         }
     }
 }
