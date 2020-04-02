@@ -27,6 +27,9 @@ namespace MvcTemplate.Web.Templates
         [GennyParameter(2, Required = false)]
         public String? Area { get; set; }
 
+        [GennySwitch("force", "f")]
+        public Boolean Force { get; set; }
+
         public Module(IServiceProvider services)
             : base(services)
         {
@@ -35,13 +38,11 @@ namespace MvcTemplate.Web.Templates
         public override void Run()
         {
             String path = $"{(Area != null ? $"{Area}/" : "")}{Controller}";
+
             Dictionary<String, GennyScaffoldingResult> results = new Dictionary<String, GennyScaffoldingResult>
             {
                 { $"../MvcTemplate.Controllers/{path}/{Controller}Controller.cs", Scaffold("Controllers/Controller") },
                 { $"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}ControllerTests.cs", Scaffold("Tests/ControllerTests") },
-
-                { $"../MvcTemplate.Objects/Models/{path}/{Model}.cs", Scaffold("Objects/Model") },
-                { $"../MvcTemplate.Objects/Views/{path}/{Model}View.cs", Scaffold("Objects/View") },
 
                 { $"../MvcTemplate.Services/{path}/{Model}Service.cs", Scaffold("Services/Service") },
                 { $"../MvcTemplate.Services/{path}/I{Model}Service.cs", Scaffold("Services/IService") },
@@ -60,6 +61,16 @@ namespace MvcTemplate.Web.Templates
                 { $"../MvcTemplate.Web/Resources/Views/{path}/{Model}View.json", Scaffold("Resources/View") }
             };
 
+            if (!File.Exists($"../MvcTemplate.Objects/Models/{path}/{Model}.cs") ||
+                !File.Exists($"../MvcTemplate.Objects/Views/{path}/{Model}View.cs"))
+            {
+                results = new Dictionary<String, GennyScaffoldingResult>
+                {
+                    { $"../MvcTemplate.Objects/Models/{path}/{Model}.cs", Scaffold("Objects/Model") },
+                    { $"../MvcTemplate.Objects/Views/{path}/{Model}View.cs", Scaffold("Objects/View") }
+                };
+            }
+
             if (results.Any(result => result.Value.Errors.Any()))
             {
                 Dictionary<String, GennyScaffoldingResult> errors = new Dictionary<String, GennyScaffoldingResult>(results.Where(x => x.Value.Errors.Any()));
@@ -73,48 +84,59 @@ namespace MvcTemplate.Web.Templates
             {
                 Logger.WriteLine("");
 
-                TryWrite(results);
+                if (Force)
+                    Write(results);
+                else
+                    TryWrite(results);
 
-                AddSiteMap();
-                AddPermissions();
-                AddObjectFactory();
+                if (results.Count > 2)
+                {
+                    AddSiteMap();
+                    AddPermissions();
+                    AddObjectFactory();
 
-                AddPermissionTests("Index");
-                AddPermissionTests("Create");
-                AddPermissionTests("Details");
-                AddPermissionTests("Edit");
-                AddPermissionTests("Delete");
+                    AddPermissionTests("Index");
+                    AddPermissionTests("Create");
+                    AddPermissionTests("Details");
+                    AddPermissionTests("Edit");
+                    AddPermissionTests("Delete");
 
-                AddResource("Page", "Headers", Model, Model.Humanize());
-                AddResource("Page", "Headers", Model.Pluralize(), Model.Pluralize().Humanize());
+                    AddResource("Page", "Headers", Model, Model.Humanize());
+                    AddResource("Page", "Headers", Model.Pluralize(), Model.Pluralize().Humanize());
 
-                AddResource("Page", "Titles", $"{Area}{Controller}Create", $"{Model.Humanize()} creation");
-                AddResource("Page", "Titles", $"{Area}{Controller}Delete", $"{Model.Humanize()} deletion");
-                AddResource("Page", "Titles", $"{Area}{Controller}Details", $"{Model.Humanize()} details");
-                AddResource("Page", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
-                AddResource("Page", "Titles", $"{Area}{Controller}Edit", $"{Model.Humanize()} edit");
+                    AddResource("Page", "Titles", $"{Area}{Controller}Create", $"{Model.Humanize()} creation");
+                    AddResource("Page", "Titles", $"{Area}{Controller}Delete", $"{Model.Humanize()} deletion");
+                    AddResource("Page", "Titles", $"{Area}{Controller}Details", $"{Model.Humanize()} details");
+                    AddResource("Page", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
+                    AddResource("Page", "Titles", $"{Area}{Controller}Edit", $"{Model.Humanize()} edit");
 
-                AddResource("Shared", "Areas", Area, Area?.Humanize());
-                AddResource("Shared", "Controllers", $"{Area}{Controller}", Model.Pluralize().Humanize());
+                    AddResource("Shared", "Areas", Area, Area?.Humanize());
+                    AddResource("Shared", "Controllers", $"{Area}{Controller}", Model.Pluralize().Humanize());
 
-                AddResource("SiteMap", "Titles", Area, Area?.Humanize());
-                AddResource("SiteMap", "Titles", $"{Area}{Controller}Create", "Create");
-                AddResource("SiteMap", "Titles", $"{Area}{Controller}Delete", "Delete");
-                AddResource("SiteMap", "Titles", $"{Area}{Controller}Details", "Details");
-                AddResource("SiteMap", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
-                AddResource("SiteMap", "Titles", $"{Area}{Controller}Edit", "Edit");
+                    AddResource("SiteMap", "Titles", Area, Area?.Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Create", "Create");
+                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Delete", "Delete");
+                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Details", "Details");
+                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Edit", "Edit");
 
-                Logger.WriteLine("");
-                Logger.WriteLine("Scaffolded successfully!", ConsoleColor.Green);
+                    Logger.WriteLine("");
+                    Logger.WriteLine("Scaffolded successfully!", ConsoleColor.Green);
+                }
+                else
+                {
+                    Logger.WriteLine("");
+                    Logger.WriteLine("Scaffolded successfully! Write in model and view properties and rerun the scaffolding.", ConsoleColor.Green);
+                }
             }
         }
 
         public override void ShowHelp()
         {
             Logger.WriteLine("Parameters:");
-            Logger.WriteLine("    1 - Scaffolded model.");
-            Logger.WriteLine("    2 - Scaffolded controller.");
-            Logger.WriteLine("    3 - Scaffolded area (optional).");
+            Logger.WriteLine("    0 - Scaffolded model.");
+            Logger.WriteLine("    1 - Scaffolded controller.");
+            Logger.WriteLine("    2 - Scaffolded area (optional).");
         }
 
         private void AddSiteMap()
