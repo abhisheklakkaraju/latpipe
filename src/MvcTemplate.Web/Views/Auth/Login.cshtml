@@ -28,7 +28,7 @@
         <div class="input-group">
             <div class="languages dropdown-toggle" data-toggle="dropdown">
                 <span class="current">
-                    <img src="@Url.Content($"~/img/flags/{languages.Current.Abbreviation}.gif")" width="16" height="11" alt="">
+                    <img src="@Url.Content($"~/img/flags/{languages.Current.Abbreviation}.svg")" width="16" height="11" alt="">
                     @languages.Current.Name
                 </span>
                 <span class="caret"></span>
@@ -38,7 +38,7 @@
                 {
                     <li>
                         <a class="dropdown-item" href="@Url.Action(nameof(Auth.Login), new { language = language == languages.Default ? "" : language.Abbreviation })">
-                            <img src="@Url.Content($"~/img/flags/{language.Abbreviation}.gif")" width="16" height="11" alt="">
+                            <img src="@Url.Content($"~/img/flags/{language.Abbreviation}.svg")" width="16" height="11" alt="">
                             @language.Name
                         </a>
                     </li>
