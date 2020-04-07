@@ -159,21 +159,27 @@ namespace MvcTemplate.Web.Templates
             }
             else
             {
-                XElement areaNode = sitemap
+                XElement parent = sitemap
                     .Descendants("siteMapNode")
                     .FirstOrDefault(node =>
                         node.Attribute("action") == null &&
                         node.Attribute("controller") == null &&
                         node.Attribute("area")?.Value == Area);
 
-                if (areaNode == null)
+                if (parent == null)
                 {
-                    areaNode = XElement.Parse($@"<siteMapNode menu=""true"" icon=""far fa-folder"" area=""{Area}"" />");
-
-                    sitemap.Descendants("siteMapNode").First().Add(areaNode);
+                    if (Area == null)
+                    {
+                        parent = sitemap.Descendants("siteMapNode").First();
+                    }
+                    else
+                    {
+                        parent = XElement.Parse($@"<siteMapNode menu=""true"" icon=""far fa-folder"" area=""{Area}"" />");
+                        sitemap.Descendants("siteMapNode").First().Add(parent);
+                    }
                 }
 
-                areaNode.Add(XElement.Parse(
+                parent.Add(XElement.Parse(
                     $@"<siteMapNode menu=""true"" icon=""far fa-folder"" controller=""{Controller}"" action=""Index"">
                         <siteMapNode icon=""far fa-file"" action=""Create"" />
                         <siteMapNode icon=""fa fa-info"" action=""Details"" />
