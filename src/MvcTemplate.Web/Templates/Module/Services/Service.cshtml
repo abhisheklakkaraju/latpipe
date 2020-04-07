@@ -13,7 +13,7 @@ namespace MvcTemplate.Services
         {
         }
 
-        public TView? Get<TView>(Int32 id) where TView : BaseView
+        public TView? Get<TView>(Int64 id) where TView : BaseView
         {
             return UnitOfWork.GetAs<@Model.Model, TView>(id);
         }
@@ -39,7 +39,7 @@ namespace MvcTemplate.Services
             UnitOfWork.Update(@Model.ModelVarName);
             UnitOfWork.Commit();
         }
-        public void Delete(Int32 id)
+        public void Delete(Int64 id)
         {
             UnitOfWork.Delete<@Model.Model>(id);
             UnitOfWork.Commit();

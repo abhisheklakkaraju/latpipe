@@ -48,7 +48,7 @@ namespace MvcTemplate.Components.Extensions.Tests
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
             IAuthorization? authorization = html.Grid.ViewContext?.HttpContext.RequestServices.GetService<IAuthorization>();
 
-            authorization?.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
+            authorization?.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
             html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");

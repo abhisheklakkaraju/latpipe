@@ -100,12 +100,12 @@ namespace MvcTemplate.Data.Migrations.Tests
         {
             configuration.Seed();
 
-            IEnumerable<Int32> expected = context
+            IEnumerable<Int64> expected = context
                 .Set<Permission>()
                 .Select(permission => permission.Id)
                 .OrderBy(permissionId => permissionId);
 
-            IEnumerable<Int32> actual = context
+            IEnumerable<Int64> actual = context
                 .Set<RolePermission>()
                 .Where(permission => permission.Role.Title == "Sys_Admin")
                 .Select(rolePermission => rolePermission.PermissionId)

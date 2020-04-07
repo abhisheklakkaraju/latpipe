@@ -48,8 +48,8 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuting(null);
 
-            Int32 expected = controller.CurrentAccountId;
-            Int32 actual = service.CurrentAccountId;
+            Int64 expected = controller.CurrentAccountId;
+            Int64 actual = service.CurrentAccountId;
 
             Assert.Equal(expected, actual);
         }
@@ -61,8 +61,8 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuting(null);
 
-            Int32 expected = controller.CurrentAccountId;
-            Int32 actual = validator.CurrentAccountId;
+            Int64 expected = controller.CurrentAccountId;
+            Int64 actual = validator.CurrentAccountId;
 
             Assert.Equal(expected, actual);
         }

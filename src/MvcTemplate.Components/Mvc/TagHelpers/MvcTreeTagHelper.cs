@@ -40,7 +40,7 @@ namespace MvcTemplate.Components.Mvc
             TagBuilder ids = new TagBuilder("div");
             ids.AddCssClass("mvc-tree-ids");
 
-            foreach (Int32 id in model.SelectedIds)
+            foreach (Int64 id in model.SelectedIds)
             {
                 TagBuilder input = new TagBuilder("input");
                 input.TagRenderMode = TagRenderMode.SelfClosing;
@@ -67,7 +67,7 @@ namespace MvcTemplate.Components.Mvc
                 TagBuilder item = new TagBuilder("li");
                 item.InnerHtml.AppendHtml("<i></i>");
 
-                if (node.Id is Int32 id)
+                if (node.Id is Int64 id)
                 {
                     if (model.SelectedIds.Contains(id))
                         item.AddCssClass("mvc-tree-checked");

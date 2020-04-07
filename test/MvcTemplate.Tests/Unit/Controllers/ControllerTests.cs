@@ -8,9 +8,9 @@ namespace MvcTemplate.Controllers.Tests
     {
         public abstract void Dispose();
 
-        protected void ReturnCurrentAccountId(BaseController controller, Int32 id)
+        protected void ReturnCurrentAccountId(BaseController controller, Int64 id)
         {
-            controller.When(sub => { Int32 get = sub.CurrentAccountId; }).DoNotCallBase();
+            controller.When(sub => { Int64 get = sub.CurrentAccountId; }).DoNotCallBase();
             controller.CurrentAccountId.Returns(id);
         }
 

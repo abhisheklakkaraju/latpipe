@@ -11,13 +11,13 @@ namespace MvcTemplate.Data.Migrations
                 name: "AuditLog",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    AccountId = table.Column<int>(nullable: true),
+                    AccountId = table.Column<long>(nullable: true),
                     Action = table.Column<string>(maxLength: 16, nullable: false),
                     EntityName = table.Column<string>(maxLength: 64, nullable: false),
-                    EntityId = table.Column<int>(nullable: false),
+                    EntityId = table.Column<long>(nullable: false),
                     Changes = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -29,7 +29,7 @@ namespace MvcTemplate.Data.Migrations
                 name: "Permission",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Area = table.Column<string>(maxLength: 64, nullable: true),
@@ -45,7 +45,7 @@ namespace MvcTemplate.Data.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Title = table.Column<string>(maxLength: 128, nullable: false)
@@ -59,7 +59,7 @@ namespace MvcTemplate.Data.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Username = table.Column<string>(maxLength: 32, nullable: false),
@@ -68,7 +68,7 @@ namespace MvcTemplate.Data.Migrations
                     IsLocked = table.Column<bool>(nullable: false),
                     RecoveryToken = table.Column<string>(maxLength: 36, nullable: true),
                     RecoveryTokenExpirationDate = table.Column<DateTime>(nullable: true),
-                    RoleId = table.Column<int>(nullable: true)
+                    RoleId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,11 +85,11 @@ namespace MvcTemplate.Data.Migrations
                 name: "RolePermission",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false),
-                    PermissionId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<long>(nullable: false),
+                    PermissionId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {

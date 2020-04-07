@@ -146,7 +146,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_RemovesEmptyNodes()
         {
-            authorization.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
             authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration", "Roles", "Create").Returns(false);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();

@@ -5,13 +5,13 @@ namespace MvcTemplate.Components.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static Int32? Id(this ClaimsPrincipal principal)
+        public static Int64? Id(this ClaimsPrincipal principal)
         {
             String? id = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (String.IsNullOrEmpty(id))
                 return null;
 
-            return Int32.Parse(id);
+            return Int64.Parse(id);
         }
         public static String? Email(this ClaimsPrincipal principal)
         {

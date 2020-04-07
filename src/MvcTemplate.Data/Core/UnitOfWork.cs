@@ -21,13 +21,13 @@ namespace MvcTemplate.Data.Core
             Logger = logger;
         }
 
-        public TDestination? GetAs<TModel, TDestination>(Int32? id) where TModel : BaseModel where TDestination : class
+        public TDestination? GetAs<TModel, TDestination>(Int64? id) where TModel : BaseModel where TDestination : class
         {
             return id == null
                 ? default
                 : Context.Set<TModel>().Where(model => model.Id == id).ProjectTo<TDestination>().FirstOrDefault();
         }
-        public TModel? Get<TModel>(Int32? id) where TModel : BaseModel
+        public TModel? Get<TModel>(Int64? id) where TModel : BaseModel
         {
             return id == null ? null : Context.Find<TModel>(id);
         }
@@ -71,7 +71,7 @@ namespace MvcTemplate.Data.Core
         {
             Context.Remove(model);
         }
-        public void Delete<TModel>(Int32 id) where TModel : BaseModel
+        public void Delete<TModel>(Int64 id) where TModel : BaseModel
         {
             Delete(Context.Find<TModel>(id));
         }

@@ -158,8 +158,8 @@ namespace MvcTemplate.Services.Tests
         {
             service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
 
-            IEnumerable<Int32> expected = role.Permissions.Select(rolePermission => rolePermission.PermissionId).OrderBy(id => id);
-            IEnumerable<Int32> actual = service.GetView(role.Id)!.Permissions.SelectedIds.OrderBy(id => id);
+            IEnumerable<Int64> expected = role.Permissions.Select(rolePermission => rolePermission.PermissionId).OrderBy(id => id);
+            IEnumerable<Int64> actual = service.GetView(role.Id)!.Permissions.SelectedIds.OrderBy(id => id);
 
             Assert.Equal(expected, actual);
         }
@@ -196,8 +196,8 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            IEnumerable<Int32> expected = view.Permissions.SelectedIds.OrderBy(permissionId => permissionId);
-            IEnumerable<Int32> actual = context
+            IEnumerable<Int64> expected = view.Permissions.SelectedIds.OrderBy(permissionId => permissionId);
+            IEnumerable<Int64> actual = context
                 .Set<RolePermission>()
                 .AsNoTracking()
                 .Where(rolePermission => rolePermission.RoleId != role.Id)
@@ -237,8 +237,8 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(view);
 
-            IEnumerable<Int32> actual = context.Set<RolePermission>().AsNoTracking().Select(rolePermission => rolePermission.PermissionId).OrderBy(permissionId => permissionId);
-            IEnumerable<Int32> expected = view.Permissions.SelectedIds.OrderBy(permissionId => permissionId);
+            IEnumerable<Int64> actual = context.Set<RolePermission>().AsNoTracking().Select(rolePermission => rolePermission.PermissionId).OrderBy(permissionId => permissionId);
+            IEnumerable<Int64> expected = view.Permissions.SelectedIds.OrderBy(permissionId => permissionId);
 
             Assert.Equal(expected, actual);
         }
@@ -293,7 +293,7 @@ namespace MvcTemplate.Services.Tests
             MvcTree expectedTree = new MvcTree();
 
             expectedTree.Nodes.Add(root);
-            expectedTree.SelectedIds = new HashSet<Int32>(role.Permissions.Select(rolePermission => rolePermission.PermissionId));
+            expectedTree.SelectedIds = new HashSet<Int64>(role.Permissions.Select(rolePermission => rolePermission.PermissionId));
 
             IEnumerable<PermissionView> permissions = role
                 .Permissions

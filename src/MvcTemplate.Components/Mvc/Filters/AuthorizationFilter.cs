@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Mvc
             if (!context.HttpContext.User.Identity.IsAuthenticated)
                 return;
 
-            Int32? accountId = context.HttpContext.User.Id();
+            Int64? accountId = context.HttpContext.User.Id();
             String? area = context.RouteData.Values["area"] as String;
             String? action = context.RouteData.Values["action"] as String;
             String? controller = context.RouteData.Values["controller"] as String;

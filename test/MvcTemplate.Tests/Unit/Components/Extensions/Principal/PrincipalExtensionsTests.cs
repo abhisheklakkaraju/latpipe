@@ -15,14 +15,14 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Theory]
         [InlineData("1", 1)]
         [InlineData("", null)]
-        public void Id_ReturnsNameIdentifierClaim(String identifier, Int32? id)
+        public void Id_ReturnsNameIdentifierClaim(String identifier, Int64? id)
         {
             ClaimsIdentity identity = new ClaimsIdentity();
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identifier));
 
-            Int32? actual = principal.Id();
-            Int32? expected = id;
+            Int64? actual = principal.Id();
+            Int64? expected = id;
 
             Assert.Equal(expected, actual);
         }

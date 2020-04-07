@@ -17,7 +17,7 @@ namespace MvcTemplate.Controllers
     [AutoValidateAntiforgeryToken]
     public abstract class BaseController : Controller
     {
-        public virtual Int32 CurrentAccountId { get; protected set; }
+        public virtual Int64 CurrentAccountId { get; protected set; }
         public IAuthorization? Authorization { get; protected set; }
         public Alerts Alerts { get; protected set; }
 

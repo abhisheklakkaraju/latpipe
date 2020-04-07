@@ -21,9 +21,9 @@ namespace MvcTemplate.Data.Migrations
 
             modelBuilder.Entity("MvcTemplate.Objects.Account", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate")
@@ -49,8 +49,8 @@ namespace MvcTemplate.Data.Migrations
                     b.Property<DateTime?>("RecoveryTokenExpirationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<long?>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -72,13 +72,13 @@ namespace MvcTemplate.Data.Migrations
 
             modelBuilder.Entity("MvcTemplate.Objects.AuditLog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AccountId")
-                        .HasColumnType("int");
+                    b.Property<long?>("AccountId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -92,8 +92,8 @@ namespace MvcTemplate.Data.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
+                    b.Property<long>("EntityId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("EntityName")
                         .IsRequired()
@@ -107,9 +107,9 @@ namespace MvcTemplate.Data.Migrations
 
             modelBuilder.Entity("MvcTemplate.Objects.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Action")
@@ -136,9 +136,9 @@ namespace MvcTemplate.Data.Migrations
 
             modelBuilder.Entity("MvcTemplate.Objects.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate")
@@ -159,19 +159,19 @@ namespace MvcTemplate.Data.Migrations
 
             modelBuilder.Entity("MvcTemplate.Objects.RolePermission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                    b.Property<long>("PermissionId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

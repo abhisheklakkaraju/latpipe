@@ -29,7 +29,7 @@ namespace MvcTemplate.Components.Mvc
         {
             output.TagName = null;
 
-            Int32? accountId = ViewContext?.HttpContext.User.Id();
+            Int64? accountId = ViewContext?.HttpContext.User.Id();
             String? area = Area ?? ViewContext?.RouteData.Values["area"] as String;
             String? action = Action ?? ViewContext?.RouteData.Values["action"] as String;
             String? controller = Controller ?? ViewContext?.RouteData.Values["controller"] as String;

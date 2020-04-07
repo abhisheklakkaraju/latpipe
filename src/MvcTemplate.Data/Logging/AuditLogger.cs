@@ -9,11 +9,11 @@ namespace MvcTemplate.Data.Logging
 {
     public class AuditLogger : IAuditLogger
     {
-        private Int32? AccountId { get; }
+        private Int64? AccountId { get; }
         private DbContext Context { get; }
         private List<LoggableEntity> Entities { get; }
 
-        public AuditLogger(DbContext context, Int32? accountId)
+        public AuditLogger(DbContext context, Int64? accountId)
         {
             Context = context;
             AccountId = accountId;

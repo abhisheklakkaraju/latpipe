@@ -15,14 +15,14 @@ namespace MvcTemplate.Components.Security
         private IServiceProvider Services { get; }
         private Dictionary<String, String> Required { get; }
         private Dictionary<String, MethodInfo> Actions { get; }
-        private Dictionary<Int32, HashSet<String>> Permissions { get; set; }
+        private Dictionary<Int64, HashSet<String>> Permissions { get; set; }
 
         public Authorization(Assembly controllers, IServiceProvider services)
         {
             BindingFlags flags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
             Actions = new Dictionary<String, MethodInfo>(StringComparer.OrdinalIgnoreCase);
             Required = new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
-            Permissions = new Dictionary<Int32, HashSet<String>>();
+            Permissions = new Dictionary<Int64, HashSet<String>>();
             Services = services;
 
             foreach (Type controller in controllers.GetTypes().Where(IsController))
@@ -36,7 +36,7 @@ namespace MvcTemplate.Components.Security
             Refresh();
         }
 
-        public Boolean IsGrantedFor(Int32? accountId, String? area, String? controller, String? action)
+        public Boolean IsGrantedFor(Int64? accountId, String? area, String? controller, String? action)
         {
             String permission = $"{area}/{controller}/{action}".ToLower();
             if (!Required.ContainsKey(permission))

@@ -224,7 +224,7 @@ namespace MvcTemplate.Resources.Tests
         public void ForProperty_FromLambdaExpressionRelation()
         {
             String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", nameof(RoleView.Id));
-            String actual = Resource.ForProperty<AccountEditView, Int32?>(account => account.RoleId);
+            String actual = Resource.ForProperty<AccountEditView, Int64?>(account => account.RoleId);
 
             Assert.Equal(expected, actual);
         }
@@ -232,7 +232,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundLambdaExpression_Empty()
         {
-            Assert.Empty(Resource.ForProperty<AccountView, Int32>(account => account.Id));
+            Assert.Empty(Resource.ForProperty<AccountView, Int64>(account => account.Id));
         }
 
         [Fact]
@@ -311,7 +311,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_FromExpressionRelation()
         {
-            Expression<Func<AccountEditView, Int32?>> lambda = (account) => account.RoleId;
+            Expression<Func<AccountEditView, Int64?>> lambda = (account) => account.RoleId;
 
             String expected = ResourceFor("Views/Administration/Roles/RoleView", "Titles", nameof(RoleView.Id));
             String actual = Resource.ForProperty(lambda.Body);
@@ -322,7 +322,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundExpression_Empty()
         {
-            Expression<Func<AccountView, Int32>> lambda = (account) => account.Id;
+            Expression<Func<AccountView, Int64>> lambda = (account) => account.Id;
 
             Assert.Empty(Resource.ForProperty(lambda.Body));
         }

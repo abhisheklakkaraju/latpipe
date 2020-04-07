@@ -28,7 +28,7 @@ namespace MvcTemplate.Components.Mvc
 
         public IEnumerable<SiteMapNode> For(ViewContext context)
         {
-            Int32? account = context.HttpContext.User.Id();
+            Int64? account = context.HttpContext.User.Id();
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
             List<SiteMapNode> nodes = SetState(null, Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
 
@@ -88,7 +88,7 @@ namespace MvcTemplate.Components.Mvc
 
             return copies;
         }
-        private List<SiteMapNode> Authorize(Int32? accountId, IEnumerable<SiteMapNode> nodes)
+        private List<SiteMapNode> Authorize(Int64? accountId, IEnumerable<SiteMapNode> nodes)
         {
             List<SiteMapNode> authorized = new List<SiteMapNode>();
             foreach (SiteMapNode node in nodes)
@@ -104,7 +104,7 @@ namespace MvcTemplate.Components.Mvc
             return authorized;
         }
 
-        private Boolean IsAuthorizedFor(Int32? accountId, String? area, String? controller, String? action)
+        private Boolean IsAuthorizedFor(Int64? accountId, String? area, String? controller, String? action)
         {
             return action == null || Authorization?.IsGrantedFor(accountId, area, controller, action) != false;
         }

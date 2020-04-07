@@ -45,13 +45,13 @@ namespace MvcTemplate.Controllers.Administration
         }
 
         [HttpGet]
-        public ActionResult Details(Int32 id)
+        public ActionResult Details(Int64 id)
         {
             return NotEmptyView(Service.GetView(id));
         }
 
         [HttpGet]
-        public ActionResult Edit(Int32 id)
+        public ActionResult Edit(Int64 id)
         {
             return NotEmptyView(Service.GetView(id));
         }
@@ -74,14 +74,14 @@ namespace MvcTemplate.Controllers.Administration
         }
 
         [HttpGet]
-        public ActionResult Delete(Int32 id)
+        public ActionResult Delete(Int64 id)
         {
             return NotEmptyView(Service.GetView(id));
         }
 
         [HttpPost]
         [ActionName("Delete")]
-        public RedirectToActionResult DeleteConfirmed(Int32 id)
+        public RedirectToActionResult DeleteConfirmed(Int64 id)
         {
             Service.Delete(id);
 

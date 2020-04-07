@@ -6,7 +6,7 @@ namespace MvcTemplate.Tests
 {
     public static class ObjectsFactory
     {
-        public static Account CreateAccount(Int32 id = 1)
+        public static Account CreateAccount(Int64 id = 1)
         {
             return new Account
             {
@@ -25,7 +25,7 @@ namespace MvcTemplate.Tests
                 Role = CreateRole(id)
             };
         }
-        public static AccountView CreateAccountView(Int32 id = 1)
+        public static AccountView CreateAccountView(Int64 id = 1)
         {
             return new AccountView
             {
@@ -39,7 +39,7 @@ namespace MvcTemplate.Tests
                 RoleTitle = $"Title{id}"
             };
         }
-        public static AccountEditView CreateAccountEditView(Int32 id = 1)
+        public static AccountEditView CreateAccountEditView(Int64 id = 1)
         {
             return new AccountEditView
             {
@@ -53,7 +53,7 @@ namespace MvcTemplate.Tests
                 RoleId = id
             };
         }
-        public static AccountCreateView CreateAccountCreateView(Int32 id = 1)
+        public static AccountCreateView CreateAccountCreateView(Int64 id = 1)
         {
             return new AccountCreateView
             {
@@ -68,7 +68,7 @@ namespace MvcTemplate.Tests
             };
         }
 
-        public static AccountLoginView CreateAccountLoginView(Int32 id = 1)
+        public static AccountLoginView CreateAccountLoginView(Int64 id = 1)
         {
             return new AccountLoginView
             {
@@ -78,7 +78,7 @@ namespace MvcTemplate.Tests
                 Password = $"Password{id}"
             };
         }
-        public static AccountResetView CreateAccountResetView(Int32 id = 1)
+        public static AccountResetView CreateAccountResetView(Int64 id = 1)
         {
             return new AccountResetView
             {
@@ -88,7 +88,7 @@ namespace MvcTemplate.Tests
                 NewPassword = $"NewPassword{id}"
             };
         }
-        public static AccountRecoveryView CreateAccountRecoveryView(Int32 id = 1)
+        public static AccountRecoveryView CreateAccountRecoveryView(Int64 id = 1)
         {
             return new AccountRecoveryView
             {
@@ -98,7 +98,7 @@ namespace MvcTemplate.Tests
             };
         }
 
-        public static ProfileEditView CreateProfileEditView(Int32 id = 1)
+        public static ProfileEditView CreateProfileEditView(Int64 id = 1)
         {
             return new ProfileEditView
             {
@@ -112,7 +112,7 @@ namespace MvcTemplate.Tests
 
             };
         }
-        public static ProfileDeleteView CreateProfileDeleteView(Int32 id = 1)
+        public static ProfileDeleteView CreateProfileDeleteView(Int64 id = 1)
         {
             return new ProfileDeleteView
             {
@@ -122,7 +122,7 @@ namespace MvcTemplate.Tests
             };
         }
 
-        public static Role CreateRole(Int32 id = 1)
+        public static Role CreateRole(Int64 id = 1)
         {
             return new Role
             {
@@ -134,7 +134,7 @@ namespace MvcTemplate.Tests
                 Permissions = new List<RolePermission>()
             };
         }
-        public static RoleView CreateRoleView(Int32 id = 1)
+        public static RoleView CreateRoleView(Int64 id = 1)
         {
             return new RoleView
             {
@@ -144,7 +144,7 @@ namespace MvcTemplate.Tests
             };
         }
 
-        public static Permission CreatePermission(Int32 id = 1)
+        public static Permission CreatePermission(Int64 id = 1)
         {
             return new Permission
             {
@@ -155,7 +155,7 @@ namespace MvcTemplate.Tests
                 Controller = $"Controller{id}"
             };
         }
-        public static RolePermission CreateRolePermission(Int32 id = 1)
+        public static RolePermission CreateRolePermission(Int64 id = 1)
         {
             return new RolePermission
             {
@@ -169,7 +169,7 @@ namespace MvcTemplate.Tests
             };
         }
 
-        public static TestModel CreateTestModel(Int32 id = 1)
+        public static TestModel CreateTestModel(Int64 id = 1)
         {
             return new TestModel
             {

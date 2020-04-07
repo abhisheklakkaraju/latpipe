@@ -161,7 +161,7 @@ namespace MvcTemplate.Data.Logging.Tests
         [Theory]
         [InlineData(1)]
         [InlineData(null)]
-        public void Save_LogsOnce(Int32? expectedAccountId)
+        public void Save_LogsOnce(Int64? expectedAccountId)
         {
             LoggableEntity entity = new LoggableEntity(entry);
             logger = new AuditLogger(context, expectedAccountId);

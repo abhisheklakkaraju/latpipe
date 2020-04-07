@@ -106,8 +106,8 @@ namespace MvcTemplate.Data.Logging.Tests
         [Fact]
         public void LoggableEntity_SetsEntityId()
         {
-            Int32 actual = new LoggableEntity(entry).Id();
-            Int32 expected = model.Id;
+            Int64 actual = new LoggableEntity(entry).Id();
+            Int64 expected = model.Id;
 
             Assert.Equal(expected, actual);
         }

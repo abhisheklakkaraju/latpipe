@@ -20,6 +20,6 @@ namespace MvcTemplate.Objects
         [StringLength(256)]
         public String? Email { get; set; }
 
-        public Int32? RoleId { get; set; }
+        public Int64? RoleId { get; set; }
     }
 }

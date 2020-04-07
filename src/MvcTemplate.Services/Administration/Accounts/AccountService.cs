@@ -22,7 +22,7 @@ namespace MvcTemplate.Services
             Hasher = hasher;
         }
 
-        public TView? Get<TView>(Int32 id) where TView : BaseView
+        public TView? Get<TView>(Int64 id) where TView : BaseView
         {
             return UnitOfWork.GetAs<Account, TView>(id);
         }
@@ -38,7 +38,7 @@ namespace MvcTemplate.Services
         {
             return user.Identity?.IsAuthenticated == true;
         }
-        public Boolean IsActive(Int32 id)
+        public Boolean IsActive(Int64 id)
         {
             return UnitOfWork.Select<Account>().Any(account => account.Id == id && !account.IsLocked);
         }
@@ -102,7 +102,7 @@ namespace MvcTemplate.Services
             user.UpdateClaim(ClaimTypes.Name, account.Username);
             user.UpdateClaim(ClaimTypes.Email, account.Email);
         }
-        public void Delete(Int32 id)
+        public void Delete(Int64 id)
         {
             UnitOfWork.Delete<Account>(id);
             UnitOfWork.Commit();

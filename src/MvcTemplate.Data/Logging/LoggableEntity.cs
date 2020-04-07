@@ -13,7 +13,7 @@ namespace MvcTemplate.Data.Logging
     {
         public String Name { get; }
         public String Action { get; }
-        public Func<Int32> Id { get; }
+        public Func<Int64> Id { get; }
         private static String IdName { get; }
         public IEnumerable<LoggableProperty> Properties { get; }
 

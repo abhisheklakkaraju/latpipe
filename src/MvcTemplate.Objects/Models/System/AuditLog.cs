@@ -5,7 +5,7 @@ namespace MvcTemplate.Objects
 {
     public class AuditLog : BaseModel
     {
-        public Int32? AccountId { get; set; }
+        public Int64? AccountId { get; set; }
 
         [Required]
         [StringLength(16)]
@@ -15,7 +15,7 @@ namespace MvcTemplate.Objects
         [StringLength(64)]
         public String EntityName { get; set; }
 
-        public Int32 EntityId { get; set; }
+        public Int64 EntityId { get; set; }
 
         [Required]
         public String Changes { get; set; }

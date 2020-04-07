@@ -53,7 +53,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             String routeArea, String routeController, String routeAction,
             String authArea, String authController, String authAction)
         {
-            authorization.IsGrantedFor(Arg.Any<Int32?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
             authorization.IsGrantedFor(1, authArea, authController, authAction).Returns(false);
 
             helper.ViewContext!.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));

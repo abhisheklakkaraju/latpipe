@@ -66,8 +66,8 @@ namespace MvcTemplate.Data.Core.Tests
         [Fact]
         public void Select_Selects()
         {
-            IEnumerable<Int32> expected = context.Set<TestModel>().Select(model => model.Id);
-            IEnumerable<Int32> actual = select.Select(model => model.Id);
+            IEnumerable<Int64> expected = context.Set<TestModel>().Select(model => model.Id);
+            IEnumerable<Int64> actual = select.Select(model => model.Id);
 
             Assert.Equal(expected, actual);
         }
@@ -86,8 +86,8 @@ namespace MvcTemplate.Data.Core.Tests
         [Fact]
         public void To_ProjectsSet()
         {
-            IEnumerable<Int32> expected = context.Set<TestModel>().ProjectTo<TestView>().Select(view => view.Id).ToArray();
-            IEnumerable<Int32> actual = select.To<TestView>().Select(view => view.Id).ToArray();
+            IEnumerable<Int64> expected = context.Set<TestModel>().ProjectTo<TestView>().Select(view => view.Id).ToArray();
+            IEnumerable<Int64> actual = select.To<TestView>().Select(view => view.Id).ToArray();
 
             Assert.Equal(expected, actual);
         }

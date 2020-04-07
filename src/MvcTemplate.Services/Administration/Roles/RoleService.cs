@@ -46,12 +46,12 @@ namespace MvcTemplate.Services
                 .To<RoleView>()
                 .OrderByDescending(role => role.Id);
         }
-        public RoleView? GetView(Int32 id)
+        public RoleView? GetView(Int64 id)
         {
             RoleView? role = UnitOfWork.GetAs<Role, RoleView>(id);
             if (role != null)
             {
-                role.Permissions.SelectedIds = new HashSet<Int32>(UnitOfWork
+                role.Permissions.SelectedIds = new HashSet<Int64>(UnitOfWork
                     .Select<RolePermission>()
                     .Where(rolePermission => rolePermission.RoleId == role.Id)
                     .Select(rolePermission => rolePermission.PermissionId));
@@ -65,7 +65,7 @@ namespace MvcTemplate.Services
         public void Create(RoleView view)
         {
             Role role = UnitOfWork.To<Role>(view);
-            foreach (Int32 permissionId in view.Permissions.SelectedIds)
+            foreach (Int64 permissionId in view.Permissions.SelectedIds)
                 role.Permissions.Add(new RolePermission
                 {
                     RoleId = role.Id,
@@ -77,7 +77,7 @@ namespace MvcTemplate.Services
         }
         public void Edit(RoleView view)
         {
-            List<Int32> permissions = view.Permissions.SelectedIds.ToList();
+            List<Int64> permissions = view.Permissions.SelectedIds.ToList();
             Role role = UnitOfWork.Get<Role>(view.Id)!;
             role.Title = view.Title!;
 
@@ -85,12 +85,12 @@ namespace MvcTemplate.Services
                 if (!permissions.Remove(rolePermission.PermissionId))
                     UnitOfWork.Delete(rolePermission);
 
-            foreach (Int32 permissionId in permissions)
+            foreach (Int64 permissionId in permissions)
                 UnitOfWork.Insert(new RolePermission { RoleId = role.Id, PermissionId = permissionId });
 
             UnitOfWork.Commit();
         }
-        public void Delete(Int32 id)
+        public void Delete(Int64 id)
         {
             Role role = UnitOfWork.Get<Role>(id)!;
             role.Accounts.ForEach(account => account.RoleId = null);

@@ -69,7 +69,7 @@ namespace MvcTemplate.Data.Migrations
             }
 
             Role admin = UnitOfWork.Select<Role>().Single(role => role.Title == "Sys_Admin");
-            Int32[] permissions = admin.Permissions.Select(role => role.PermissionId).ToArray();
+            Int64[] permissions = admin.Permissions.Select(role => role.PermissionId).ToArray();
 
             foreach (Permission permission in UnitOfWork.Select<Permission>())
                 if (!permissions.Contains(permission.Id))

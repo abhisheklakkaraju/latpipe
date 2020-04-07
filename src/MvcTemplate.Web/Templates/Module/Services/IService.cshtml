@@ -7,11 +7,11 @@ namespace MvcTemplate.Services
 {
     public interface @Model.IService : IService
     {
-        TView? Get<TView>(Int32 id) where TView : BaseView;
+        TView? Get<TView>(Int64 id) where TView : BaseView;
         IQueryable<@Model.View> GetViews();
 
         void Create(@Model.View view);
         void Edit(@Model.View view);
-        void Delete(Int32 id);
+        void Delete(Int64 id);
     }
 }

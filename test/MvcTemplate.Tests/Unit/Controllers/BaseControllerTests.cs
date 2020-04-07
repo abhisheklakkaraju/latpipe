@@ -195,14 +195,14 @@ namespace MvcTemplate.Controllers.Tests
         [Theory]
         [InlineData("", 0)]
         [InlineData("1", 1)]
-        public void OnActionExecuting_SetsCurrentAccountId(String identifier, Int32 accountId)
+        public void OnActionExecuting_SetsCurrentAccountId(String identifier, Int64 accountId)
         {
             controller.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, identifier));
 
             controller.OnActionExecuting(null);
 
-            Int32? actual = controller.CurrentAccountId;
-            Int32? expected = accountId;
+            Int64? actual = controller.CurrentAccountId;
+            Int64? expected = accountId;
 
             Assert.Equal(expected, actual);
         }

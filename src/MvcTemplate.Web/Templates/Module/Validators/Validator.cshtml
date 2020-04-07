@@ -81,11 +81,11 @@ namespace MvcTemplate.Validators
 
                 if (property.PropertyType == typeof(String) || Nullable.GetUnderlyingType(property.PropertyType) is Type)
                 {
-        @:private Boolean IsUnique@(property.Name)(Int32 id, @((Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType).Name)? @name)
+        @:private Boolean IsUnique@(property.Name)(Int64 id, @((Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType).Name)? @name)
                 }
                 else
                 {
-        @:private Boolean IsUnique@(property.Name)(Int32 id, @property.PropertyType.Name @name)
+        @:private Boolean IsUnique@(property.Name)(Int64 id, @property.PropertyType.Name @name)
                 }
         @:{
         @:    Boolean isUnique = !UnitOfWork

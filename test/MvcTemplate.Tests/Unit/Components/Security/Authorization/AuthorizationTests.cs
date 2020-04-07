@@ -29,7 +29,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesControllerByIgnoringCase()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "AUTHORIZED", "Action"));
         }
@@ -37,7 +37,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeControllerByIgnoringCase()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "AUTHORIZED", "Action"));
         }
@@ -47,7 +47,7 @@ namespace MvcTemplate.Components.Security.Tests
         [InlineData(null)]
         public void IsGrantedFor_AuthorizesControllerWithoutArea(String area)
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, area, "Authorized", "Action"));
         }
@@ -57,7 +57,7 @@ namespace MvcTemplate.Components.Security.Tests
         [InlineData(null)]
         public void IsGrantedFor_DoesNotAuthorizeControllerWithoutArea(String area)
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, area, "Authorized", "Action"));
         }
@@ -65,7 +65,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesControllerWithArea()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
         }
@@ -73,7 +73,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeControllerWithArea()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
         }
@@ -81,7 +81,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedGetAction");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedGetAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedGetAction"));
         }
@@ -89,7 +89,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedGetAction"));
         }
@@ -97,7 +97,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesNamedGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedNamedGetAction");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedNamedGetAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedNamedGetAction"));
         }
@@ -105,7 +105,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeNamedGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedNamedGetAction"));
         }
@@ -119,7 +119,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesNonGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedPostAction");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedPostAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedPostAction"));
         }
@@ -127,7 +127,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeNonGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedPostAction"));
         }
@@ -135,7 +135,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesNamedNonGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedNamedPostAction");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedNamedPostAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedNamedPostAction"));
         }
@@ -143,7 +143,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeNamedNonGetAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedNamedPostAction"));
         }
@@ -151,7 +151,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesActionAsAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsAction"));
         }
@@ -159,7 +159,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeActionAsAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsAction"));
         }
@@ -167,7 +167,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesActionAsSelf()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedAsSelf");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedAsSelf");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsSelf"));
         }
@@ -175,7 +175,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeActionAsSelf()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsSelf"));
         }
@@ -183,7 +183,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesActionAsOtherAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "InheritedAuthorized", "InheritanceAction");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "InheritedAuthorized", "InheritanceAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsOtherAction"));
         }
@@ -191,7 +191,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeActionAsOtherAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedAsOtherAction");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "AuthorizedAsOtherAction");
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "AuthorizedAsOtherAction"));
         }
@@ -199,7 +199,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesEmptyAreaAsNull()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, "", "Authorized", "Action"));
         }
@@ -207,7 +207,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeEmptyAreaAsNull()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "", "Authorized", "Action"));
         }
@@ -215,7 +215,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAuthorizedAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "AllowAnonymous", "AuthorizedAction");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "AllowAnonymous", "AuthorizedAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "AllowAnonymous", "AuthorizedAction"));
         }
@@ -223,7 +223,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAllowAnonymousAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "Authorized", "AllowAnonymousAction"));
         }
@@ -231,7 +231,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAllowUnauthorizedAction()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "Authorized", "AllowUnauthorizedAction"));
         }
@@ -239,7 +239,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAuthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "Authorized", "Action"));
         }
@@ -247,7 +247,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeAuthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, null, "Authorized", "Action"));
         }
@@ -255,7 +255,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAllowAnonymousController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "AllowAnonymous", "Action"));
         }
@@ -263,7 +263,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesAllowUnauthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "AllowUnauthorized", "Action"));
         }
@@ -271,7 +271,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesInheritedAuthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "InheritedAuthorized", "InheritanceAction");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "InheritedAuthorized", "InheritanceAction");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "InheritedAuthorized", "InheritanceAction"));
         }
@@ -279,7 +279,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeInheritedAuthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, null, "InheritedAuthorized", "InheritanceAction"));
         }
@@ -287,7 +287,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesInheritedAllowAnonymousController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "InheritedAllowAnonymous", "InheritanceAction"));
         }
@@ -295,7 +295,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesInheritedAllowUnauthorizedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "InheritedAllowUnauthorized", "InheritanceAction"));
         }
@@ -303,7 +303,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesNotAttributedController()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Test", "Test");
 
             Assert.True(authorization.IsGrantedFor(accountId, null, "NotAttributed", "Action"));
         }
@@ -319,7 +319,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeLockedAccount()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action", isLocked: true);
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action", isLocked: true);
 
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
         }
@@ -335,7 +335,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_AuthorizesByIgnoringCase()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
 
             Assert.True(authorization.IsGrantedFor(accountId, "area", "authorized", "action"));
         }
@@ -343,7 +343,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_DoesNotAuthorizeByIgnoringCase()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
+            Int64 accountId = CreateAccountWithPermissionFor("Test", "Test", "Test");
 
             Assert.False(authorization.IsGrantedFor(accountId, "area", "authorized", "action"));
         }
@@ -351,7 +351,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void IsGrantedFor_CachesAccountPermissions()
         {
-            Int32 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor(null, "Authorized", "Action");
 
             context.Database.EnsureDeleted();
 
@@ -361,7 +361,7 @@ namespace MvcTemplate.Components.Security.Tests
         [Fact]
         public void Refresh_Permissions()
         {
-            Int32 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
+            Int64 accountId = CreateAccountWithPermissionFor("Area", "Authorized", "Action");
             Assert.True(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
 
             context.Database.EnsureDeleted();
@@ -371,7 +371,7 @@ namespace MvcTemplate.Components.Security.Tests
             Assert.False(authorization.IsGrantedFor(accountId, "Area", "Authorized", "Action"));
         }
 
-        private Int32 CreateAccountWithPermissionFor(String? area, String controller, String action, Boolean isLocked = false)
+        private Int64 CreateAccountWithPermissionFor(String? area, String controller, String action, Boolean isLocked = false)
         {
             RolePermission rolePermission = ObjectsFactory.CreateRolePermission();
             rolePermission.Permission.Controller = controller;

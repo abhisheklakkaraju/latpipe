@@ -50,7 +50,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Theory]
         [InlineData(240546)]
         [InlineData(12845056)]
-        public void IsValid_LowerOrEqualFileSize(Int32 size)
+        public void IsValid_LowerOrEqualFileSize(Int64 size)
         {
             IFormFile file = Substitute.For<IFormFile>();
             file.Length.Returns(size);
@@ -70,7 +70,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Theory]
         [InlineData(240546, 4574)]
         [InlineData(12840000, 5056)]
-        public void IsValid_LowerOrEqualFileSizes(Int32 firstFileSize, Int32 secondFileSize)
+        public void IsValid_LowerOrEqualFileSizes(Int64 firstFileSize, Int64 secondFileSize)
         {
             IFormFile?[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>(), null };
             files[1]?.Length.Returns(secondFileSize);

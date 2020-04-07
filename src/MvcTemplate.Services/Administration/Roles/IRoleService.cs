@@ -9,10 +9,10 @@ namespace MvcTemplate.Services
         void SeedPermissions(RoleView view);
 
         IQueryable<RoleView> GetViews();
-        RoleView? GetView(Int32 id);
+        RoleView? GetView(Int64 id);
 
         void Create(RoleView view);
         void Edit(RoleView view);
-        void Delete(Int32 id);
+        void Delete(Int64 id);
     }
 }

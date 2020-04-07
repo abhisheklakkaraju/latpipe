@@ -57,7 +57,7 @@ namespace MvcTemplate.Validators.Tests
             AccountEditView view = new AccountEditView();
 
             Boolean isSpecified = validator.BaseIsSpecified(view, account => account.RoleId);
-            String message = Validation.For("Required", Resource.ForProperty<AccountEditView, Int32?>(account => account.RoleId));
+            String message = Validation.For("Required", Resource.ForProperty<AccountEditView, Int64?>(account => account.RoleId));
 
             Assert.False(isSpecified);
             Assert.Empty(validator.Alerts);

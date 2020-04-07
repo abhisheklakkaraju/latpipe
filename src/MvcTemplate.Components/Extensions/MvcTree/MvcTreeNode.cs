@@ -5,11 +5,11 @@ namespace MvcTemplate.Components.Extensions
 {
     public class MvcTreeNode
     {
-        public Int32? Id { get; set; }
+        public Int64? Id { get; set; }
         public String Title { get; set; }
         public List<MvcTreeNode> Children { get; set; }
 
-        public MvcTreeNode(Int32 id, String title)
+        public MvcTreeNode(Int64 id, String title)
             : this(title)
         {
             Id = id;

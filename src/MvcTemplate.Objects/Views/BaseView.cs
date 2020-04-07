@@ -4,7 +4,7 @@ namespace MvcTemplate.Objects
 {
     public abstract class BaseView
     {
-        public virtual Int32 Id
+        public virtual Int64 Id
         {
             get;
             set;
