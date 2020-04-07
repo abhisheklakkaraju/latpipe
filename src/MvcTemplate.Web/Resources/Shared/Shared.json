@@ -3,8 +3,8 @@
         "Administration": "Administration"
     },
     "Controllers": {
-        "AdministrationAccounts": "Accounts",
-        "AdministrationRoles": "Roles"
+        "Administration/Accounts": "Accounts",
+        "Administration/Roles": "Roles"
     },
     "Actions": {
         "Copy": "Copy",

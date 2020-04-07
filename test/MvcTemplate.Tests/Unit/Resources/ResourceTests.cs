@@ -53,8 +53,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForController_IsCaseInsensitive()
         {
-            String expected = ResourceFor("Shared/Shared", "Controllers", "AdministrationRoles");
-            String actual = Resource.ForController("administrationroles");
+            String expected = ResourceFor("Shared/Shared", "Controllers", "Administration/Roles");
+            String actual = Resource.ForController("administration/roles");
 
             Assert.Equal(expected, actual);
         }
@@ -122,8 +122,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForPage_Path_IsCaseInsensitive()
         {
-            String expected = ResourceFor("Shared/Page", "Titles", "AdministrationRolesDetails");
-            String actual = Resource.ForPage("administrationrolesdetails");
+            String expected = ResourceFor("Shared/Page", "Titles", "Administration/Roles/Details");
+            String actual = Resource.ForPage("administration/roles/details");
 
             Assert.Equal(expected, actual);
         }
@@ -144,7 +144,7 @@ namespace MvcTemplate.Resources.Tests
                 ["action"] = "details"
             };
 
-            String expected = ResourceFor("Shared/Page", "Titles", "AdministrationRolesDetails");
+            String expected = ResourceFor("Shared/Page", "Titles", "Administration/Roles/Details");
             String actual = Resource.ForPage(values);
 
             Assert.Equal(expected, actual);
@@ -162,7 +162,7 @@ namespace MvcTemplate.Resources.Tests
                 ["area"] = area
             };
 
-            String expected = ResourceFor("Shared/Page", "Titles", "ProfileEdit");
+            String expected = ResourceFor("Shared/Page", "Titles", "/Profile/Edit");
             String actual = Resource.ForPage(values);
 
             Assert.Equal(expected, actual);
@@ -184,8 +184,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForSiteMap_IsCaseInsensitive()
         {
-            String expected = ResourceFor("Shared/SiteMap", "Titles", "AdministrationRolesIndex");
-            String actual = Resource.ForSiteMap("administration", "roles", "index");
+            String expected = ResourceFor("Shared/SiteMap", "Titles", "Administration/Roles/Index");
+            String actual = Resource.ForSiteMap("administration/roles/index");
 
             Assert.Equal(expected, actual);
         }
@@ -193,8 +193,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForSiteMap_WithoutControllerAndAction()
         {
-            String expected = ResourceFor("Shared/SiteMap", "Titles", "Administration");
-            String actual = Resource.ForSiteMap("administration", null, null);
+            String expected = ResourceFor("Shared/SiteMap", "Titles", "Administration//");
+            String actual = Resource.ForSiteMap("administration//");
 
             Assert.Equal(expected, actual);
         }
@@ -202,7 +202,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForSiteMap_NotFound_Empty()
         {
-            Assert.Empty(Resource.ForSiteMap("Test", "Test", "Test"));
+            Assert.Empty(Resource.ForSiteMap("Test/Test/Test"));
         }
 
         [Fact]

@@ -122,7 +122,7 @@ namespace MvcTemplate.Components.Mvc
                 node.Area = (String)element.Attribute("area") ?? parent?.Area;
                 node.Controller = (String)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
 
-                node.Title = Resource.ForSiteMap(node.Area, node.Controller, node.Action);
+                node.Title = Resource.ForSiteMap($"{node.Area}/{node.Controller}/{node.Action}");
                 node.Children = Parse(element, node);
                 node.Parent = parent;
 

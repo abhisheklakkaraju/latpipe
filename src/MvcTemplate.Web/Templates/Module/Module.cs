@@ -101,24 +101,26 @@ namespace MvcTemplate.Web.Templates
                     AddPermissionTests("Edit");
                     AddPermissionTests("Delete");
 
-                    AddResource("Page", "Headers", Model, Model.Humanize());
+                    AddResource("Page", "Headers", Model!, Model.Humanize());
                     AddResource("Page", "Headers", Model.Pluralize(), Model.Pluralize().Humanize());
 
-                    AddResource("Page", "Titles", $"{Area}{Controller}Create", $"{Model.Humanize()} creation");
-                    AddResource("Page", "Titles", $"{Area}{Controller}Delete", $"{Model.Humanize()} deletion");
-                    AddResource("Page", "Titles", $"{Area}{Controller}Details", $"{Model.Humanize()} details");
-                    AddResource("Page", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
-                    AddResource("Page", "Titles", $"{Area}{Controller}Edit", $"{Model.Humanize()} edit");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Create", $"{Model.Humanize()} creation");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Delete", $"{Model.Humanize()} deletion");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Details", $"{Model.Humanize()} details");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Index", Model.Pluralize().Humanize());
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Edit", $"{Model.Humanize()} edit");
 
-                    AddResource("Shared", "Areas", Area, Area?.Humanize());
-                    AddResource("Shared", "Controllers", $"{Area}{Controller}", Model.Pluralize().Humanize());
+                    if (Area != null)
+                        AddResource("Shared", "Areas", Area, Area.Humanize());
+                    AddResource("Shared", "Controllers", $"{Area}/{Controller}", Model.Pluralize().Humanize());
 
-                    AddResource("SiteMap", "Titles", Area, Area?.Humanize());
-                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Create", "Create");
-                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Delete", "Delete");
-                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Details", "Details");
-                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Index", Model.Pluralize().Humanize());
-                    AddResource("SiteMap", "Titles", $"{Area}{Controller}Edit", "Edit");
+                    if (Area != null)
+                        AddResource("SiteMap", "Titles", $"{Area}//", Area.Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Create", "Create");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Delete", "Delete");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Details", "Details");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Index", Model.Pluralize().Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Edit", "Edit");
 
                     Logger.WriteLine("");
                     Logger.WriteLine("Scaffolded successfully!", ConsoleColor.Green);
@@ -267,18 +269,18 @@ namespace MvcTemplate.Web.Templates
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
         }
-        private void AddResource(String resource, String group, String? key, String? value)
+        private void AddResource(String resource, String group, String key, String value)
         {
             Logger.Write($"../MvcTemplate.Web/Resources/Shared/{resource}.json - ");
 
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
             Dictionary<String, SortedDictionary<String, String?>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String?>>>(page);
 
-            if (key != null && resources[group].ContainsKey(key))
+            if (resources[group].ContainsKey(key))
             {
                 Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
             }
-            else if (key != null)
+            else
             {
                 resources[group][key] = value;
 

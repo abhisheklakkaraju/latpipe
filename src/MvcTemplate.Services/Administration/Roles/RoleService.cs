@@ -110,7 +110,7 @@ namespace MvcTemplate.Services
                     Id = permission.Id,
                     Action = Resource.ForAction(permission.Action),
                     Area = permission.Area == null ? null : Resource.ForArea(permission.Area),
-                    Controller = Resource.ForController(permission.Area + permission.Controller)
+                    Controller = Resource.ForController($"{permission.Area}/{permission.Controller}")
                 })
                 .OrderBy(permission => permission.Area ?? permission.Controller)
                 .ThenBy(permission => permission.Controller)

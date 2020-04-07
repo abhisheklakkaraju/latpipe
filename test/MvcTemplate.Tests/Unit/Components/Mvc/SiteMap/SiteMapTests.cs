@@ -50,7 +50,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", null, null), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -63,14 +63,14 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", "Accounts", "Index"), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
 
             Assert.Null(actual[1].Action);
             Assert.Equal("#", actual[1].Url);
             Assert.Equal("Roles", actual[1].Controller);
             Assert.Equal("Administration", actual[1].Area);
             Assert.Equal("fa fa-users", actual[1].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", "Roles", null), actual[1].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration/Roles/"), actual[1].Title);
 
             actual = actual[1].Children.ToArray();
 
@@ -82,7 +82,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Roles", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("far fa-file", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", "Roles", "Create"), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration/Roles/Create"), actual[0].Title);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", null, null), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -112,7 +112,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", "Accounts", "Index"), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
         }
 
         [Fact]
@@ -158,7 +158,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", null, null), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -171,7 +171,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
-            Assert.Equal(Resource.ForSiteMap("Administration", "Accounts", "Index"), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
         }
 
         [Fact]
@@ -185,21 +185,21 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Equal(3, actual.Length);
 
-            Assert.Equal(Resource.ForSiteMap(null, "Home", "Index"), actual[0].Title);
+            Assert.Equal(Resource.ForSiteMap("/Home/Index"), actual[0].Title);
             Assert.Equal("fa fa-home", actual[0].IconClass);
             Assert.Equal("Home", actual[0].Controller);
             Assert.Equal("Index", actual[0].Action);
             Assert.Equal("/test", actual[0].Url);
             Assert.Null(actual[0].Area);
 
-            Assert.Equal(Resource.ForSiteMap(null, "Profile", null), actual[1].Title);
+            Assert.Equal(Resource.ForSiteMap("/Profile/"), actual[1].Title);
             Assert.Equal("fa fa-user", actual[1].IconClass);
             Assert.Equal("Profile", actual[1].Controller);
             Assert.Equal("#", actual[1].Url);
             Assert.Null(actual[1].Action);
             Assert.Null(actual[1].Area);
 
-            Assert.Equal(Resource.ForSiteMap(null, "Profile", "Edit"), actual[2].Title);
+            Assert.Equal(Resource.ForSiteMap("/Profile/Edit"), actual[2].Title);
             Assert.Equal("fa fa-pencil-alt", actual[2].IconClass);
             Assert.Equal("Profile", actual[2].Controller);
             Assert.Equal("Edit", actual[2].Action);

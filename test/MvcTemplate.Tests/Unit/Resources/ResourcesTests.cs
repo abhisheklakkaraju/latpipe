@@ -19,9 +19,9 @@ namespace MvcTemplate.Resources.Tests
 
             foreach (SiteMapNode node in Flatten(sitemap.Elements()).Where(node => node.Action != null))
             {
-                String path = $"{node.Area}{node.Controller}{node.Action}";
+                String path = $"{node.Area}/{node.Controller}/{node.Action}";
 
-                Assert.True(!String.IsNullOrEmpty(Resource.ForPage(path)), $"'{path}' page, does not have a title.");
+                Assert.True(!String.IsNullOrEmpty(Resource.ForPage(path)), $"'{path}' page does not have a title.");
             }
         }
 
@@ -30,9 +30,8 @@ namespace MvcTemplate.Resources.Tests
         {
             XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap");
 
-            foreach (SiteMapNode node in Flatten(sitemap.Elements()))
-                Assert.True(!String.IsNullOrEmpty(Resource.ForSiteMap(node.Area, node.Controller, node.Action)),
-                    $"Sitemap node '{node}' page, does not have a title.");
+            foreach (String path in Flatten(sitemap.Elements()).Select(node => $"{node.Area}/{node.Controller}/{node.Action}"))
+                Assert.True(!String.IsNullOrEmpty(Resource.ForSiteMap(path)), $"'{path}' page does not have a sitemap title.");
         }
 
         [Fact]
@@ -44,8 +43,7 @@ namespace MvcTemplate.Resources.Tests
             configuration.Seed();
 
             foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
-                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area!)),
-                    $"'{permission.Area}' permission, does not have a title.");
+                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area!)), $"'{permission.Area}' area does not have a title.");
         }
 
         [Fact]
@@ -56,9 +54,8 @@ namespace MvcTemplate.Resources.Tests
 
             configuration.Seed();
 
-            foreach (Permission permission in context.Set<Permission>())
-                Assert.True(!String.IsNullOrEmpty(Resource.ForController(permission.Area + permission.Controller)),
-                    $"'{permission.Area}{permission.Controller}' permission, does not have a title.");
+            foreach (String path in context.Set<Permission>().Select(permission => $"{permission.Area}/{permission.Controller}").Distinct())
+                Assert.True(!String.IsNullOrEmpty(Resource.ForController(path)), $"'{path}' permission does not have a title.");
         }
 
         [Fact]
@@ -69,9 +66,8 @@ namespace MvcTemplate.Resources.Tests
 
             configuration.Seed();
 
-            foreach (Permission permission in context.Set<Permission>())
-                Assert.True(!String.IsNullOrEmpty(Resource.ForAction(permission.Action)),
-                    $"'{permission.Area}{permission.Controller}{permission.Action} permission', does not have a title.");
+            foreach (String name in context.Set<Permission>().Select(permission => permission.Action).Distinct())
+                Assert.True(!String.IsNullOrEmpty(Resource.ForAction(name)), $"'{name}' action does not have a title.");
         }
 
         private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode? parent = null)

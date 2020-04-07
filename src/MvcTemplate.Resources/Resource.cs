@@ -80,12 +80,12 @@ namespace MvcTemplate.Resources
             String? action = path["action"] as String;
             String? controller = path["controller"] as String;
 
-            return ForPage($"{area}{controller}{action}");
+            return ForPage($"{area}/{controller}/{action}");
         }
 
-        public static String ForSiteMap(String? area, String? controller, String? action)
+        public static String ForSiteMap(String path)
         {
-            return Localized("SiteMap", "Titles", $"{area}{controller}{action}");
+            return Localized("SiteMap", "Titles", path);
         }
 
         public static String ForProperty<TView, TProperty>(Expression<Func<TView, TProperty>> expression)
