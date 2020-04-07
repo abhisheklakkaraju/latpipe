@@ -32,6 +32,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
             account = ObjectsFactory.CreateAccountView();
 
             controller = Substitute.ForPartsOf<Accounts>(validator, service);
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }
         public override void Dispose()
@@ -84,12 +85,11 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void Create_RefreshesAuthorization()
         {
-            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             validator.CanCreate(accountCreate).Returns(true);
 
             controller.Create(accountCreate);
 
-            controller.Authorization!.Received().Refresh();
+            controller.Authorization.Received().Refresh();
         }
 
         [Fact]
@@ -149,12 +149,11 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void Edit_RefreshesAuthorization()
         {
-            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             validator.CanEdit(accountEdit).Returns(true);
 
             controller.Edit(accountEdit);
 
-            controller.Authorization!.Received().Refresh();
+            controller.Authorization.Received().Refresh();
         }
 
         [Fact]

@@ -16,10 +16,10 @@ namespace MvcTemplate.Components.Mvc
     public class SiteMap : ISiteMap
     {
         private List<SiteMapNode> Tree { get; }
-        private IAuthorization? Authorization { get; }
+        private IAuthorization Authorization { get; }
         private Dictionary<String, SiteMapNode> Lookup { get; }
 
-        public SiteMap(String map, IAuthorization? authorization)
+        public SiteMap(String map, IAuthorization authorization)
         {
             Authorization = authorization;
             Tree = Parse(XElement.Parse(map));
@@ -106,7 +106,7 @@ namespace MvcTemplate.Components.Mvc
 
         private Boolean IsAuthorizedFor(Int64? accountId, String? area, String? controller, String? action)
         {
-            return action == null || Authorization?.IsGrantedFor(accountId, $"{area}/{controller}/{action}") != false;
+            return action == null || Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}");
         }
         private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
         {

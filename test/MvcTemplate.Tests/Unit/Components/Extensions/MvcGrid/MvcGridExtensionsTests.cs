@@ -8,7 +8,6 @@ using MvcTemplate.Resources;
 using MvcTemplate.Tests;
 using NonFactors.Mvc.Grid;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using System;
 using System.IO;
 using System.Linq.Expressions;
@@ -21,6 +20,7 @@ namespace MvcTemplate.Components.Extensions.Tests
     {
         private IGridColumnsOf<AllTypesView> columns;
         private IHtmlGrid<AllTypesView> html;
+        private ViewContext context;
 
         public MvcGridExtensionsTests()
         {
@@ -28,6 +28,7 @@ namespace MvcTemplate.Components.Extensions.Tests
             IHtmlHelper htmlHelper = HtmlHelperFactory.CreateHtmlHelper();
             html = new HtmlGrid<AllTypesView>(htmlHelper, grid);
             columns = new GridColumns<AllTypesView>(grid);
+            context = html.Grid.ViewContext!;
         }
 
         [Fact]
@@ -44,36 +45,11 @@ namespace MvcTemplate.Components.Extensions.Tests
         {
             AllTypesView view = new AllTypesView();
             StringWriter writer = new StringWriter();
-            IUrlHelper url = Substitute.For<IUrlHelper>();
-            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
+            IUrlHelper url = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>().GetUrlHelper(context);
             IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetService<IAuthorization>();
 
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
             authorization.IsGrantedFor(Arg.Any<Int64?>(), "//Details").Returns(true);
-            factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
-            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
-
-            IGridColumn<AllTypesView, IHtmlContent> column = columns.AddAction("Details", "fa fa-info");
-            column.ValueFor(new GridRow<AllTypesView>(view, 0)).WriteTo(writer, HtmlEncoder.Default);
-
-            String expected = $"<a class=\"fa fa-info\" href=\"/test\" title=\"{Resource.ForAction("Details")}\"></a>";
-            String actual = writer.ToString();
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void AddAction_NoAuthorization_Renders()
-        {
-            AllTypesView view = new AllTypesView();
-            StringWriter writer = new StringWriter();
-            IUrlHelper url = Substitute.For<IUrlHelper>();
-            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
-
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
-            factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
-            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
             IGridColumn<AllTypesView, IHtmlContent> column = columns.AddAction("Details", "fa fa-info");
             column.ValueFor(new GridRow<AllTypesView>(view, 0)).WriteTo(writer, HtmlEncoder.Default);
@@ -87,12 +63,9 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_NoId_Throws()
         {
-            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
+            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetService<IAuthorization>();
             IGridColumnsOf<Object> gridColumns = new GridColumns<Object>(new Grid<Object>(Array.Empty<Object>()));
-
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
-            factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
             gridColumns.Grid.ViewContext = html.Grid.ViewContext;
 
             IGridColumn<Object, IHtmlContent> column = gridColumns.AddAction("Delete", "fa fa-times");
@@ -101,21 +74,6 @@ namespace MvcTemplate.Components.Extensions.Tests
             String expected = "Object type does not have an id.";
 
             Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void AddAction_Column()
-        {
-            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
-
-            factory.GetUrlHelper(html.Grid.ViewContext).Returns(Substitute.For<IUrlHelper>());
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IAuthorization)).ReturnsNull();
-            html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-
-            IGridColumn<AllTypesView, IHtmlContent> actual = columns.AddAction("Edit", "fa fa-pencil-alt");
-
-            Assert.Equal("action-cell edit", actual.CssClasses);
-            Assert.Single(columns);
         }
 
         [Fact]

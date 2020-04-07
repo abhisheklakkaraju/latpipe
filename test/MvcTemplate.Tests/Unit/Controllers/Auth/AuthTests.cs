@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Mail;
 using MvcTemplate.Components.Notifications;
+using MvcTemplate.Components.Security;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
 using MvcTemplate.Services;
@@ -35,6 +36,7 @@ namespace MvcTemplate.Controllers.Tests
             validator = Substitute.For<IAccountValidator>();
             controller = Substitute.ForPartsOf<Auth>(validator, service, mail);
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.TempData = Substitute.For<ITempDataDictionary>();
             controller.ControllerContext.RouteData = new RouteData();
             controller.Url = Substitute.For<IUrlHelper>();

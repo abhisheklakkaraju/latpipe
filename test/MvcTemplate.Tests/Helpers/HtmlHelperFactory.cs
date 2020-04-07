@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
 using NSubstitute;
@@ -16,16 +18,23 @@ namespace MvcTemplate.Tests
         }
         public static IHtmlHelper<T?> CreateHtmlHelper<T>(T? model) where T : class
         {
+            ViewContext context = new ViewContext();
+            IUrlHelper url = Substitute.For<IUrlHelper>();
             IHtmlHelper<T?> html = Substitute.For<IHtmlHelper<T?>>();
+            IAuthorization authorization = Substitute.For<IAuthorization>();
+            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
 
-            html.ViewContext.Returns(new ViewContext());
-            html.ViewContext.RouteData = new RouteData();
-            html.ViewContext.HttpContext = Substitute.For<HttpContext>();
+            context.ViewData.Model = model;
+            html.ViewContext.Returns(context);
+            context.RouteData = new RouteData();
+            context.HttpContext = Substitute.For<HttpContext>();
             html.MetadataProvider.Returns(new EmptyModelMetadataProvider());
-            html.ViewContext.HttpContext.RequestServices
-                .GetService(typeof(IAuthorization))
-                .Returns(Substitute.For<IAuthorization>());
-            html.ViewContext.ViewData.Model = model;
+            url.ActionContext.Returns(new ActionContext { RouteData = context.RouteData });
+            context.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            context.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(authorization);
+
+            url.ActionContext.HttpContext = html.ViewContext.HttpContext;
+            factory.GetUrlHelper(html.ViewContext).Returns(url);
 
             return html;
         }

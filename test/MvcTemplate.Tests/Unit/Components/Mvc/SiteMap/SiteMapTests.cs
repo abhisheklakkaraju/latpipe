@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Resources;
@@ -22,24 +23,19 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public SiteMapTests()
         {
-            IUrlHelper url = Substitute.For<IUrlHelper>();
             authorization = Substitute.For<IAuthorization>();
             siteMap = new SiteMap(CreateSiteMap(), authorization);
             context = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
-            IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
+            IUrlHelper url = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>().GetUrlHelper(context);
 
-            context.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
-            url.ActionContext.Returns(new ActionContext { RouteData = context.RouteData });
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
-            url.ActionContext.HttpContext = context.HttpContext;
-            factory.GetUrlHelper(context).Returns(url);
             route = context.RouteData.Values;
         }
 
         [Fact]
         public void For_NoAuthorization_ReturnsAllNodes()
         {
-            siteMap = new SiteMap(CreateSiteMap(), null);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
 
@@ -122,7 +118,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             route["controller"] = "Roles";
             route["area"] = "Administration";
 
-            siteMap = new SiteMap(CreateSiteMap(), null);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
 

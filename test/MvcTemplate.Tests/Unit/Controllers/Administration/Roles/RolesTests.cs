@@ -28,6 +28,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
             role = ObjectsFactory.CreateRoleView();
 
             controller = Substitute.ForPartsOf<Roles>(validator, service);
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }
         public override void Dispose()
@@ -168,7 +169,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(role);
 
-            controller.Authorization!.Received().Refresh();
+            controller.Authorization.Received().Refresh();
         }
 
         [Fact]
@@ -204,11 +205,9 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void DeleteConfirmed_RefreshesAuthorization()
         {
-            controller.Authorization.Returns(Substitute.For<IAuthorization>());
-
             controller.DeleteConfirmed(role.Id);
 
-            controller.Authorization!.Received().Refresh();
+            controller.Authorization.Received().Refresh();
         }
 
         [Fact]

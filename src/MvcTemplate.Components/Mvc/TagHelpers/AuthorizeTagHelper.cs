@@ -18,9 +18,9 @@ namespace MvcTemplate.Components.Mvc
         [HtmlAttributeNotBound]
         public ViewContext? ViewContext { get; set; }
 
-        private IAuthorization? Authorization { get; }
+        private IAuthorization Authorization { get; }
 
-        public AuthorizeTagHelper(IAuthorization? authorization)
+        public AuthorizeTagHelper(IAuthorization authorization)
         {
             Authorization = authorization;
         }
@@ -34,7 +34,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = Action ?? ViewContext?.RouteData.Values["action"] as String;
             String? controller = Controller ?? ViewContext?.RouteData.Values["controller"] as String;
 
-            if (Authorization?.IsGrantedFor(accountId, $"{area}/{controller}/{action}") == false)
+            if (!Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}"))
                 output.SuppressOutput();
         }
     }

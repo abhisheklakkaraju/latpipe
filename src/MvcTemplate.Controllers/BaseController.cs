@@ -17,13 +17,14 @@ namespace MvcTemplate.Controllers
     [AutoValidateAntiforgeryToken]
     public abstract class BaseController : Controller
     {
-        public virtual IAuthorization? Authorization { get; protected set; }
+        public virtual IAuthorization Authorization { get; protected set; }
         public virtual Int64 CurrentAccountId { get; protected set; }
         public Alerts Alerts { get; protected set; }
 
         protected BaseController()
         {
             Alerts = new Alerts();
+            Authorization = Authorization!;
         }
 
         public virtual ViewResult NotFoundView()
@@ -53,7 +54,7 @@ namespace MvcTemplate.Controllers
 
         public virtual Boolean IsAuthorizedFor(String permission)
         {
-            return Authorization?.IsGrantedFor(CurrentAccountId, permission) != false;
+            return Authorization.IsGrantedFor(CurrentAccountId, permission);
         }
 
         public override RedirectToActionResult RedirectToAction(String? action, String? controller, Object? route)

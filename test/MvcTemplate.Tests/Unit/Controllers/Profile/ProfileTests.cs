@@ -31,6 +31,7 @@ namespace MvcTemplate.Controllers.Tests
             profileEdit = ObjectsFactory.CreateProfileEditView();
 
             controller = Substitute.ForPartsOf<Profile>(validator, service);
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
             controller.CurrentAccountId.Returns(1);
         }
@@ -211,13 +212,12 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void DeleteConfirmed_RefreshesAuthorization()
         {
-            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             service.IsActive(controller.CurrentAccountId).Returns(true);
             validator.CanDelete(profileDelete).Returns(true);
 
             controller.DeleteConfirmed(profileDelete);
 
-            controller.Authorization!.Received().Refresh();
+            controller.Authorization.Received().Refresh();
         }
 
         [Fact]

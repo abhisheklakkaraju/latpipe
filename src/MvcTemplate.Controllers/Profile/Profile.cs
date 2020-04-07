@@ -67,7 +67,7 @@ namespace MvcTemplate.Controllers
 
             Service.Delete(CurrentAccountId);
 
-            Authorization?.Refresh();
+            Authorization.Refresh();
 
             return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
         }

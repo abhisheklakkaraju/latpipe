@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
+using MvcTemplate.Components.Security;
 using MvcTemplate.Services;
 using NSubstitute;
 using System;
@@ -20,6 +21,7 @@ namespace MvcTemplate.Controllers.Tests
             controller = Substitute.ForPartsOf<Home>(service);
 
             ActionContext context = new ActionContext(new DefaultHttpContext(), new RouteData(), new ControllerActionDescriptor());
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext = new ControllerContext(context);
             controller.CurrentAccountId.Returns(1);
         }

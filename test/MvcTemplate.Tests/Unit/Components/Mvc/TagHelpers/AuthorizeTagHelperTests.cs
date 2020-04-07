@@ -21,29 +21,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             helper.ViewContext = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
         }
 
-        [Fact]
-        public void Process_NoAuthorization_RemovedWrappingTag()
-        {
-            helper = new AuthorizeTagHelper(null);
-            helper.ViewContext = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
-
-            output.PostContent.SetContent("PostContent");
-            output.PostElement.SetContent("PostElement");
-            output.PreContent.SetContent("PreContent");
-            output.PreElement.SetContent("PreElement");
-            output.Content.SetContent("Content");
-            output.TagName = "TagName";
-
-            helper.Process(null, output);
-
-            Assert.Equal("PostContent", output.PostContent.GetContent());
-            Assert.Equal("PostElement", output.PostElement.GetContent());
-            Assert.Equal("PreContent", output.PreContent.GetContent());
-            Assert.Equal("PreElement", output.PreElement.GetContent());
-            Assert.Equal("Content", output.Content.GetContent());
-            Assert.Null(output.TagName);
-        }
-
         [Theory]
         [InlineData("A/B/C", "A", "B", "C", "D", "E", "F")]
         [InlineData("//", null, null, null, null, null, null)]

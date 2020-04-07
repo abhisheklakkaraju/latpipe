@@ -21,8 +21,8 @@ namespace MvcTemplate.Components.Extensions
             if (!IsAuthorizedFor(columns.Grid.ViewContext!, action))
                 return new GridColumn<T, IHtmlContent>(columns.Grid, model => HtmlString.Empty);
 
-            IUrlHelperFactory? factory = columns.Grid.ViewContext?.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-            IUrlHelper? url = factory?.GetUrlHelper(columns.Grid.ViewContext);
+            IUrlHelperFactory factory = columns.Grid.ViewContext!.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            IUrlHelper url = factory.GetUrlHelper(columns.Grid.ViewContext);
 
             return columns
                 .Add(model => GenerateLink(model, url, action, iconClass))
@@ -96,13 +96,10 @@ namespace MvcTemplate.Components.Extensions
         }
         private static Boolean IsAuthorizedFor(ActionContext context, String action)
         {
-            IAuthorization authorization = context.HttpContext.RequestServices.GetService<IAuthorization>();
-            if (authorization == null)
-                return true;
-
             Int64? account = context.HttpContext.User.Id();
             String? area = context.RouteData.Values["area"] as String;
             String? controller = context.RouteData.Values["controller"] as String;
+            IAuthorization authorization = context.HttpContext.RequestServices.GetService<IAuthorization>();
 
             return authorization.IsGrantedFor(account, $"{area}/{controller}/{action}");
         }

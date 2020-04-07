@@ -1,6 +1,7 @@
 @model ModuleModel
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using MvcTemplate.Components.Security;
 using MvcTemplate.Controllers.Tests;
 using MvcTemplate.Objects;
 using MvcTemplate.Services;
@@ -28,6 +29,7 @@ namespace @Model.ControllerTestsNamespace
             @Model.ModelVarName = ObjectsFactory.Create@(Model.View)();
 
             controller = Substitute.ForPartsOf<@Model.Controller>(validator, service);
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }
         public override void Dispose()

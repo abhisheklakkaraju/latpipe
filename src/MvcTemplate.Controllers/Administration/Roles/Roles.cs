@@ -68,7 +68,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Service.Edit(role);
 
-            Authorization?.Refresh();
+            Authorization.Refresh();
 
             return RedirectToAction(nameof(Index));
         }
@@ -85,7 +85,7 @@ namespace MvcTemplate.Controllers.Administration
         {
             Service.Delete(id);
 
-            Authorization?.Refresh();
+            Authorization.Refresh();
 
             return RedirectToAction(nameof(Index));
         }

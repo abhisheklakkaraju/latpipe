@@ -158,13 +158,13 @@ namespace MvcTemplate.Web.Templates
             }
             else
             {
-                String newAreas = String.Join($",\n        ",
+                String newAreas = String.Join(",\n        ",
                     Regex.Matches(areas, "        (\\w+),?")
                         .Select(match => match.Groups[1].Value)
                         .Append(Area)
                         .OrderBy(name => name));
 
-                areas = Regex.Replace(areas, "    {\\r?\\n( +\\w+,?\\r?\\n)+    }", $"    {{\n        {newAreas}\n    }}");
+                areas = Regex.Replace(areas, @"    {\r?\n( +\w+,?\r?\n)+    }", $"    {{\n        {newAreas}\n    }}");
 
                 File.WriteAllText("../MvcTemplate.Controllers/Area.cs", areas);
 
@@ -232,7 +232,7 @@ namespace MvcTemplate.Web.Templates
 
             if (matches.Count > 0)
             {
-                String newPermissions = String.Join($",\n                ",
+                String newPermissions = String.Join(",\n                ",
                     new[] { "Index", "Create", "Edit", "Details", "Delete" }
                         .Select(action => $"new Permission {{ Area = \"{Area}\", Controller = \"{Controller}\", Action = \"{action}\" }}")
                         .Where(permission => !configuration.Contains(permission)));
@@ -270,7 +270,7 @@ namespace MvcTemplate.Web.Templates
             }
             else
             {
-                String newImports = String.Join($"\n",
+                String newImports = String.Join("\n",
                     Regex.Matches(imports, "@using (.+);")
                         .Select(match => match.Value)
                         .Append($"@using MvcTemplate.Controllers.{Area};")

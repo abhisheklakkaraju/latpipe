@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -33,7 +32,6 @@ namespace MvcTemplate.Controllers.Tests
             controller.TempData = Substitute.For<ITempDataDictionary>();
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
             action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
 
@@ -112,17 +110,9 @@ namespace MvcTemplate.Controllers.Tests
         }
 
         [Fact]
-        public void IsAuthorizedFor_NoAuthorization_ReturnsTrue()
-        {
-            controller.Authorization.ReturnsNull();
-
-            Assert.True(controller.IsAuthorizedFor("TestArea/TestController/TestAction"));
-        }
-
-        [Fact]
         public void IsAuthorizedFor_ReturnsAuthorizationResult()
         {
-            controller.Authorization?.IsGrantedFor(controller.CurrentAccountId, "Area/Controller/Action").Returns(true);
+            controller.Authorization.IsGrantedFor(controller.CurrentAccountId, "Area/Controller/Action").Returns(true);
 
             Assert.True(controller.IsAuthorizedFor("Area/Controller/Action"));
         }
