@@ -1,4 +1,4 @@
-﻿@model AccountEditView
+@model AccountEditView
 
 <div class="col">
     <div class="widget-box">
@@ -6,9 +6,9 @@
             <span class="icon fa fa-th-list"></span>
             <h5>@Resource.ForHeader("Account")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Details">
-                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn">
-                        <span class="fa fa-info"></span><span class="text">@Resource.ForAction("Details")</span>
+                <authorize action="@nameof(Accounts.Details)">
+                    <a asp-action="@nameof(Accounts.Details)" asp-route-id="@Model.Id" class="btn">
+                        <span class="fa fa-info"></span><span class="text">@Resource.ForAction(nameof(Accounts.Details))</span>
                     </a>
                 </authorize>
             </div>
@@ -55,7 +55,7 @@
                         <label asp-for="RoleId"></label>
                     </div>
                     <div class="control-content col-md-9 col-lg-5">
-                        <div mvc-lookup-for="RoleId" url="~/Lookup/Role" title="@Resource.ForLookup("Role")"></div>
+                        <div mvc-lookup-for="RoleId" url="~/@(nameof(Lookup))/@(nameof(Lookup.Role))" title="@Resource.ForLookup(nameof(Lookup.Role))"></div>
                     </div>
                     <div class="control-validation col">
                         <span asp-validation-for="RoleId"></span>

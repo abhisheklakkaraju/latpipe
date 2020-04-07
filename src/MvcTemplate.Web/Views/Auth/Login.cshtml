@@ -1,4 +1,4 @@
-﻿@model AccountLoginView
+@model AccountLoginView
 
 <div class="title text-right">@Resource.ForPage(ViewContext.RouteData.Values)</div>
 
@@ -37,7 +37,7 @@
                 @foreach (Language language in languages.Supported)
                 {
                     <li>
-                        <a class="dropdown-item" href="@Url.Action("Login", new { language = language == languages.Default ? "" : language.Abbreviation })">
+                        <a class="dropdown-item" href="@Url.Action(nameof(Auth.Login), new { language = language == languages.Default ? "" : language.Abbreviation })">
                             <img src="@Url.Content($"~/img/flags/{language.Abbreviation}.gif")" width="16" height="11" alt="">
                             @language.Name
                         </a>
@@ -47,11 +47,11 @@
         </div>
     }
 
-    <button class="btn btn-block btn-primary mt-3 mb-3">@Resource.ForAction("Login")</button>
+    <button class="btn btn-block btn-primary mt-3 mb-3">@Resource.ForAction(nameof(Auth.Login))</button>
 </form>
 
 <hr />
 
 <div class="actions text-right">
-    <a asp-action="Recover" class="title fa fa-unlock" data-toggle="tooltip" data-original-title="@Resource.ForString("LostPassword")" data-placement="bottom" data-delay="1"></a>
+    <a asp-action="@nameof(Auth.Recover)" class="title fa fa-unlock" data-toggle="tooltip" data-original-title="@Resource.ForString("LostPassword")" data-placement="bottom" data-delay="1"></a>
 </div>

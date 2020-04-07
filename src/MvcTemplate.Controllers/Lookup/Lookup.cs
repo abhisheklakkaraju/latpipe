@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Lookups;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Components.Security;
@@ -10,11 +10,11 @@ using System;
 namespace MvcTemplate.Controllers
 {
     [AllowUnauthorized]
-    public class LookupController : BaseController
+    public class Lookup : BaseController
     {
         private IUnitOfWork UnitOfWork { get; }
 
-        public LookupController(IUnitOfWork unitOfWork)
+        public Lookup(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
         }

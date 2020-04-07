@@ -1,6 +1,5 @@
-﻿@model ModuleModel
+@model ModuleModel
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Controllers.Tests;
 using MvcTemplate.Objects;
@@ -16,9 +15,9 @@ namespace @Model.ControllerTestsNamespace
 {
     public class @Model.ControllerTests : ControllerTests
     {
-        private @Model.Controller controller;
         private @Model.IValidator validator;
         private @Model.IService service;
+        private @Model.Controller controller;
         private @Model.View @Model.ModelVarName;
 
         public @(Model.ControllerTests)()
@@ -83,7 +82,7 @@ namespace @Model.ControllerTestsNamespace
         {
             validator.CanCreate(@Model.ModelVarName).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(@(Model.Controller).Index));
             Object actual = controller.Create(@Model.ModelVarName);
 
             Assert.Same(expected, actual);
@@ -137,7 +136,7 @@ namespace @Model.ControllerTestsNamespace
         {
             validator.CanEdit(@Model.ModelVarName).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(@(Model.Controller).Index));
             Object actual = controller.Edit(@Model.ModelVarName);
 
             Assert.Same(expected, actual);
@@ -163,9 +162,9 @@ namespace @Model.ControllerTestsNamespace
         }
 
         [Fact]
-        public void Delete_RedirectsToIndex()
+        public void DeleteConfirmed_RedirectsToIndex()
         {
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(@(Model.Controller).Index));
             Object actual = controller.DeleteConfirmed(@(Model.ModelVarName).Id);
 
             Assert.Same(expected, actual);

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MvcTemplate.Components.Extensions;
@@ -9,7 +9,7 @@ namespace MvcTemplate.Components.Mvc
 {
     public class AuthorizationFilter : IResourceFilter
     {
-        private IAuthorization Authorization { get; }
+        private IAuthorization? Authorization { get; }
 
         public AuthorizationFilter(IAuthorization authorization)
         {
@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = context.RouteData.Values["action"] as String;
             String? controller = context.RouteData.Values["controller"] as String;
 
-            if (Authorization?.IsGrantedFor(accountId, area, controller, action) == false)
+            if (Authorization?.IsGrantedFor(accountId, $"{area}/{controller}/{action}") == false)
                 context.Result = new ViewResult
                 {
                     StatusCode = StatusCodes.Status404NotFound,

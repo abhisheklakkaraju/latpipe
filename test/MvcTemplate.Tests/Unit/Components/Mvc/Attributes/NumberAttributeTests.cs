@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Resources;
+using MvcTemplate.Resources;
 using System;
 using Xunit;
 

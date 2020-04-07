@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Objects;
 using MvcTemplate.Services;
 using MvcTemplate.Validators;
@@ -6,10 +6,10 @@ using System;
 
 namespace MvcTemplate.Controllers.Administration
 {
-    [Area("Administration")]
-    public class AccountsController : ValidatedController<IAccountValidator, IAccountService>
+    [Area(nameof(Area.Administration))]
+    public class Accounts : ValidatedController<IAccountValidator, IAccountService>
     {
-        public AccountsController(IAccountValidator validator, IAccountService service)
+        public Accounts(IAccountValidator validator, IAccountService service)
             : base(validator, service)
         {
         }
@@ -36,7 +36,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Authorization?.Refresh();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -61,7 +61,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Authorization?.Refresh();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

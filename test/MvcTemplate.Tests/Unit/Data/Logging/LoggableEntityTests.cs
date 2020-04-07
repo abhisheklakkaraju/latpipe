@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
@@ -118,7 +118,7 @@ namespace MvcTemplate.Data.Logging.Tests
             StringBuilder changes = new StringBuilder();
             LoggableEntity loggableEntity = new LoggableEntity(entry);
             foreach (LoggableProperty property in loggableEntity.Properties)
-                changes.AppendFormat("{0}{1}", property, Environment.NewLine);
+                changes.AppendFormat("{0}{1}", property, "\n");
 
             String actual = loggableEntity.ToString();
             String expected = changes.ToString();

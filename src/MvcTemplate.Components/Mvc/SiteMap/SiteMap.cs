@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
@@ -106,7 +106,7 @@ namespace MvcTemplate.Components.Mvc
 
         private Boolean IsAuthorizedFor(Int64? accountId, String? area, String? controller, String? action)
         {
-            return action == null || Authorization?.IsGrantedFor(accountId, area, controller, action) != false;
+            return action == null || Authorization?.IsGrantedFor(accountId, $"{area}/{controller}/{action}") != false;
         }
         private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
         {

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -44,9 +44,11 @@ namespace MvcTemplate.Data.Core
         public void InsertRange<TModel>(IEnumerable<TModel> models) where TModel : BaseModel
         {
             foreach (TModel model in models)
+            {
                 model.Id = 0;
 
-            Context.AddRange(models);
+                Context.Add(model);
+            }
         }
         public void Insert<TModel>(TModel model) where TModel : BaseModel
         {

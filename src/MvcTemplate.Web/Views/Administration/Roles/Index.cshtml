@@ -1,4 +1,4 @@
-﻿@model IQueryable<RoleView>
+@model IQueryable<RoleView>
 
 <div class="col">
     <div class="widget-box">
@@ -6,9 +6,9 @@
             <span class="icon fa fa-th"></span>
             <h5>@Resource.ForHeader("Roles")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Create">
-                    <a asp-action="Create" class="btn">
-                        <span class="far fa-file"></span><span class="text">@Resource.ForAction("Create")</span>
+                <authorize action="@nameof(Roles.Create)">
+                    <a asp-action="@nameof(Roles.Create)" class="btn">
+                        <span class="far fa-file"></span><span class="text">@Resource.ForAction(nameof(Roles.Create))</span>
                     </a>
                 </authorize>
             </div>
@@ -18,9 +18,9 @@
                 .Grid(Model)
                 .Build(columns =>
                 {
-                    columns.AddAction("Details", "fa fa-info");
-                    columns.AddAction("Edit", "fa fa-pencil-alt");
-                    columns.AddAction("Delete", "fa fa-times");
+                    columns.AddAction(nameof(Roles.Details), "fa fa-info");
+                    columns.AddAction(nameof(Roles.Edit), "fa fa-pencil-alt");
+                    columns.AddAction(nameof(Roles.Delete), "fa fa-times");
 
                     columns.AddProperty(model => model.Title);
                 })

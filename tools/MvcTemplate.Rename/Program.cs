@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,7 +30,6 @@ namespace MvcTemplate.Rename
             Regex applicationUrl = new Regex("(\"applicationUrl\": .*:)\\d+(.*\")");
             Regex version = new Regex("<Version>\\d+\\.\\d+\\.\\d+</Version>");
             Regex sslConfig = new Regex("(\"sslPort\": )\\d+");
-            Regex newLine = new Regex("\\r?\\n");
 
             Console.WriteLine();
             Console.WriteLine();
@@ -51,7 +50,6 @@ namespace MvcTemplate.Rename
                 {
                     String content = File.ReadAllText(files[i]);
                     content = content.Replace(templateName, project);
-                    content = newLine.Replace(content, Environment.NewLine);
                     content = sslConfig.Replace(content, $"${{1}}{sslPort}");
                     content = version.Replace(content, "<Version>0.1.0</Version>");
                     content = applicationUrl.Replace(content, $"${{1}}{port}${{2}}");

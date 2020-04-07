@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Data.Mapping;
@@ -44,7 +44,7 @@ namespace MvcTemplate.Data.Core
                         if (property.GetCustomAttribute<NumberAttribute>(false) is NumberAttribute number)
                             builder.Entity(entity.ClrType).Property(property.Name).HasColumnType($"decimal({number.Precision},{number.Scale})");
                         else
-                            throw new Exception($"Decimal property has to have {nameof(NumberAttribute)} specified. Default [{nameof(NumberAttribute)[0..^9]}(18, 2)]");
+                            throw new Exception($"Decimal property has to have {nameof(NumberAttribute)} specified. Default [{nameof(NumberAttribute)[..^9]}(18, 2)]");
 
                     if (property.GetCustomAttribute<IndexAttribute>(false) is IndexAttribute index)
                         builder.Entity(entity.ClrType).HasIndex(property.Name).IsUnique(index.IsUnique);

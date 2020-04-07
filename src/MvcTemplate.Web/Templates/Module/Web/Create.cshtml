@@ -1,4 +1,4 @@
-﻿@model ModuleModel
+@model ModuleModel
 @@model @Model.View
 
 <div class="col">
@@ -26,7 +26,7 @@
                         }
                         else if (Model.Relations[property] is String relation)
                         {
-                        <div mvc-lookup-for="@property.Name" url="~/Lookup/@relation" title="@@Resource.ForLookup("@relation")"></div>
+                        <div mvc-lookup-for="@property.Name" url="~/@@(nameof(Lookup))/@@(nameof(Lookup.@relation))" title="@@Resource.ForLookup(nameof(Lookup.@relation))"></div>
                         }
                         else if (property.PropertyType == typeof(String))
                         {

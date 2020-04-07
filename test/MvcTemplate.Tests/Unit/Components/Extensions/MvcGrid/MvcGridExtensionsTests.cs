@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -46,10 +46,10 @@ namespace MvcTemplate.Components.Extensions.Tests
             StringWriter writer = new StringWriter();
             IUrlHelper url = Substitute.For<IUrlHelper>();
             IUrlHelperFactory factory = Substitute.For<IUrlHelperFactory>();
-            IAuthorization? authorization = html.Grid.ViewContext?.HttpContext.RequestServices.GetService<IAuthorization>();
+            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetService<IAuthorization>();
 
-            authorization?.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), "Details").Returns(true);
             html.Grid.ViewContext?.HttpContext.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(factory);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), "//Details").Returns(true);
             factory.GetUrlHelper(html.Grid.ViewContext).Returns(url);
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
 
@@ -470,7 +470,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [InlineData(" test", "test table-hover")]
         [InlineData("test ", "test  table-hover")]
         [InlineData(" test ", "test  table-hover")]
-        public void ApplyDefaults_Values(String cssClasses, String expectedClasses)
+        public void ApplyDefaults_Values(String? cssClasses, String expectedClasses)
         {
             IGridColumn column = html.Grid.Columns.Add(model => model.ByteField);
             html.Grid.Attributes["class"] = cssClasses;

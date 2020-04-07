@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using Xunit;
@@ -19,9 +19,10 @@ namespace MvcTemplate.Data.Mapping.Tests
             RoleView actual = Mapper.Map<RoleView>(expected);
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
+            Assert.Empty(actual.Permissions.SelectedIds);
             Assert.Equal(expected.Title, actual.Title);
+            Assert.Empty(actual.Permissions.Nodes);
             Assert.Equal(expected.Id, actual.Id);
-            Assert.NotNull(actual.Permissions);
         }
 
         [Fact]

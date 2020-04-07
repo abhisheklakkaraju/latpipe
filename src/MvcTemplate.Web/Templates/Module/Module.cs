@@ -1,4 +1,4 @@
-﻿using Genny;
+using Genny;
 using Humanizer;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -41,8 +41,8 @@ namespace MvcTemplate.Web.Templates
 
             Dictionary<String, GennyScaffoldingResult> results = new Dictionary<String, GennyScaffoldingResult>
             {
-                { $"../MvcTemplate.Controllers/{path}/{Controller}Controller.cs", Scaffold("Controllers/Controller") },
-                { $"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}ControllerTests.cs", Scaffold("Tests/ControllerTests") },
+                { $"../MvcTemplate.Controllers/{path}/{Controller}.cs", Scaffold("Controllers/Controller") },
+                { $"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}Tests.cs", Scaffold("Tests/ControllerTests") },
 
                 { $"../MvcTemplate.Services/{path}/{Model}Service.cs", Scaffold("Services/Service") },
                 { $"../MvcTemplate.Services/{path}/I{Model}Service.cs", Scaffold("Services/IService") },
@@ -91,8 +91,10 @@ namespace MvcTemplate.Web.Templates
 
                 if (results.Count > 2)
                 {
+                    AddArea();
                     AddSiteMap();
                     AddPermissions();
+                    AddViewImports();
                     AddObjectFactory();
 
                     AddPermissionTests("Index");
@@ -141,6 +143,34 @@ namespace MvcTemplate.Web.Templates
             Logger.WriteLine("    2 - Scaffolded area (optional).");
         }
 
+        private void AddArea()
+        {
+            if (Area == null)
+                return;
+
+            Logger.Write("../MvcTemplate.Controllers/Area.cs - ");
+
+            String areas = File.ReadAllText("../MvcTemplate.Controllers/Area.cs");
+
+            if (areas.Contains($"        {Area}"))
+            {
+                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
+            }
+            else
+            {
+                String newAreas = String.Join($",\n        ",
+                    Regex.Matches(areas, "        (\\w+),?")
+                        .Select(match => match.Groups[1].Value)
+                        .Append(Area)
+                        .OrderBy(name => name));
+
+                areas = Regex.Replace(areas, "    {\\r?\\n( +\\w+,?\\r?\\n)+    }", $"    {{\n        {newAreas}\n    }}");
+
+                File.WriteAllText("../MvcTemplate.Controllers/Area.cs", areas);
+
+                Logger.WriteLine("Succeeded", ConsoleColor.Green);
+            }
+        }
         private void AddSiteMap()
         {
             Logger.Write("../MvcTemplate.Web/mvc.sitemap - ");
@@ -188,7 +218,7 @@ namespace MvcTemplate.Web.Templates
                     </siteMapNode>"
                 ));
 
-                File.WriteAllText("mvc.sitemap", $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{Environment.NewLine}{sitemap.ToString().Replace("  ", "    ")}{Environment.NewLine}");
+                File.WriteAllText("mvc.sitemap", $"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n{sitemap.ToString().Replace("  ", "    ")}\n");
 
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
@@ -202,15 +232,15 @@ namespace MvcTemplate.Web.Templates
 
             if (matches.Count > 0)
             {
-                String newPermissions = String.Join($",{Environment.NewLine}                ",
+                String newPermissions = String.Join($",\n                ",
                     new[] { "Index", "Create", "Edit", "Details", "Delete" }
                         .Select(action => $"new Permission {{ Area = \"{Area}\", Controller = \"{Controller}\", Action = \"{action}\" }}")
                         .Where(permission => !configuration.Contains(permission)));
 
                 if (newPermissions.Length > 0)
                 {
+                    newPermissions = $",\n\n                {newPermissions}";
                     Int32 lastPermission = matches.Last().Index + matches.Last().Length;
-                    newPermissions = $",{Environment.NewLine}{Environment.NewLine}                {newPermissions}";
 
                     configuration = configuration.Insert(lastPermission, newPermissions);
 
@@ -226,6 +256,31 @@ namespace MvcTemplate.Web.Templates
             else
             {
                 Logger.WriteLine("Missing, skipping", ConsoleColor.Yellow);
+            }
+        }
+        private void AddViewImports()
+        {
+            Logger.Write("../MvcTemplate.Web/Views/_ViewImports.cshtml - ");
+
+            String imports = File.ReadAllText("../MvcTemplate.Web/Views/_ViewImports.cshtml");
+
+            if (Area == null || imports.Contains($"@using MvcTemplate.Controllers.{Area};"))
+            {
+                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
+            }
+            else
+            {
+                String newImports = String.Join($"\n",
+                    Regex.Matches(imports, "@using (.+);")
+                        .Select(match => match.Value)
+                        .Append($"@using MvcTemplate.Controllers.{Area};")
+                        .OrderBy(definition => definition.TrimEnd(';')));
+
+                imports = Regex.Replace(imports, "(@using (.+);\\r?\\n)+", $"{newImports}\n");
+
+                File.WriteAllText("../MvcTemplate.Web/Views/_ViewImports.cshtml", imports);
+
+                Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
         }
         private void AddObjectFactory()
@@ -245,7 +300,7 @@ namespace MvcTemplate.Web.Templates
                 String fakeModel = FakeObjectCreation(model.Model, model.AllModelProperties);
                 SyntaxNode last = tree.DescendantNodes().OfType<MethodDeclarationSyntax>().Last();
                 ClassDeclarationSyntax factory = tree.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
-                SyntaxNode modelCreation = CSharpSyntaxTree.ParseText($"{fakeModel}{fakeView}{Environment.NewLine}").GetRoot();
+                SyntaxNode modelCreation = CSharpSyntaxTree.ParseText($"{fakeModel}{fakeView}\n").GetRoot();
 
                 tree = tree.ReplaceNode(factory, factory.InsertNodesAfter(last, modelCreation.ChildNodes()));
 
@@ -267,8 +322,7 @@ namespace MvcTemplate.Web.Templates
             }
             else
             {
-                testData += $"{Environment.NewLine}        ";
-                tests = tests.Insert(tests.IndexOf("public void Seed_Permissions"), testData);
+                tests = tests.Insert(tests.IndexOf("public void Seed_Permissions"), $"{testData}\n        ");
 
                 File.WriteAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs", tests);
 
@@ -295,7 +349,7 @@ namespace MvcTemplate.Web.Templates
                     WriteIndented = true
                 }), "(^ +)", "$1$1", RegexOptions.Multiline);
 
-                File.WriteAllText($"Resources/Shared/{resource}.json", $"{text}{Environment.NewLine}");
+                File.WriteAllText($"Resources/Shared/{resource}.json", $"{text}\n");
 
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
@@ -332,7 +386,7 @@ namespace MvcTemplate.Web.Templates
             creation += "            };\n";
             creation += "        }";
 
-            return creation.Replace("\n", Environment.NewLine);
+            return creation;
         }
     }
 }

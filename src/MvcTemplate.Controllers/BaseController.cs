@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -17,8 +17,8 @@ namespace MvcTemplate.Controllers
     [AutoValidateAntiforgeryToken]
     public abstract class BaseController : Controller
     {
+        public virtual IAuthorization? Authorization { get; protected set; }
         public virtual Int64 CurrentAccountId { get; protected set; }
-        public IAuthorization? Authorization { get; protected set; }
         public Alerts Alerts { get; protected set; }
 
         protected BaseController()
@@ -30,7 +30,7 @@ namespace MvcTemplate.Controllers
         {
             Response.StatusCode = StatusCodes.Status404NotFound;
 
-            return View("~/Views/Home/NotFound.cshtml");
+            return View($"~/Views/{nameof(Home)}/{nameof(Home.NotFound)}.cshtml");
         }
         public virtual ViewResult NotEmptyView(Object? model)
         {
@@ -48,8 +48,14 @@ namespace MvcTemplate.Controllers
         }
         public virtual RedirectToActionResult RedirectToDefault()
         {
-            return base.RedirectToAction("Index", "Home", new { area = "" });
+            return base.RedirectToAction(nameof(Home.Index), nameof(Home), new { area = "" });
         }
+
+        public virtual Boolean IsAuthorizedFor(String permission)
+        {
+            return Authorization?.IsGrantedFor(CurrentAccountId, permission) != false;
+        }
+
         public override RedirectToActionResult RedirectToAction(String? action, String? controller, Object? route)
         {
             IDictionary<String, Object> values = HtmlHelper.AnonymousObjectToHtmlAttributes(route);
@@ -59,15 +65,10 @@ namespace MvcTemplate.Controllers
             action ??= RouteData.Values["action"] as String;
             area ??= RouteData.Values["area"] as String;
 
-            if (!IsAuthorizedFor(action, controller, area))
+            if (!IsAuthorizedFor($"{area}/{controller}/{action}"))
                 return RedirectToDefault();
 
             return base.RedirectToAction(action, controller, route);
-        }
-
-        public virtual Boolean IsAuthorizedFor(String? action, String? controller, String? area)
-        {
-            return Authorization?.IsGrantedFor(CurrentAccountId, area, controller, action) != false;
         }
 
         public override void OnActionExecuting(ActionExecutingContext? context)

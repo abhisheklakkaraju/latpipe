@@ -1,4 +1,4 @@
-﻿@model ModuleModel
+@model ModuleModel
 @@model @Model.View
 
 <div class="col">
@@ -7,14 +7,14 @@
             <span class="icon fa fa-th-list"></span>
             <h5>@@Resource.ForHeader("@(Model.Model)")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Details">
-                    <a asp-action="Details" asp-route-id="@@Model.Id" class="btn">
-                        <span class="fa fa-info"></span><span class="text">@@Resource.ForAction("Details")</span>
+                <authorize action="@@nameof(@(Model.Controller).Details)">
+                    <a asp-action="@@nameof(@(Model.Controller).Details)" asp-route-id="@@Model.Id" class="btn">
+                        <span class="fa fa-info"></span><span class="text">@@Resource.ForAction(nameof(@(Model.Controller).Details))</span>
                     </a>
                 </authorize>
-                <authorize action="Delete">
-                    <a asp-action="Delete" asp-route-id="@@Model.Id" class="btn">
-                        <span class="fa fa-times"></span><span class="text">@@Resource.ForAction("Delete")</span>
+                <authorize action="@@nameof(@(Model.Controller).Delete)">
+                    <a asp-action="@@nameof(@(Model.Controller).Delete)" asp-route-id="@@Model.Id" class="btn">
+                        <span class="fa fa-times"></span><span class="text">@@Resource.ForAction(nameof(@(Model.Controller).Delete))</span>
                     </a>
                 </authorize>
             </div>
@@ -38,7 +38,7 @@
                         }
                         else if (Model.Relations[property] is String relation)
                         {
-                        <div mvc-lookup-for="@property.Name" url="~/Lookup/@relation" title="@@Resource.ForLookup("@relation")"></div>
+                        <div mvc-lookup-for="@property.Name" url="~/@@(nameof(Lookup))/@@(nameof(Lookup.@relation))" title="@@Resource.ForLookup(nameof(Lookup.@relation))"></div>
                         }
                         else if (property.PropertyType == typeof(String))
                         {

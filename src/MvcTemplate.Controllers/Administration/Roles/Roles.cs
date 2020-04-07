@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Objects;
 using MvcTemplate.Services;
 using MvcTemplate.Validators;
@@ -6,10 +6,10 @@ using System;
 
 namespace MvcTemplate.Controllers.Administration
 {
-    [Area("Administration")]
-    public class RolesController : ValidatedController<IRoleValidator, IRoleService>
+    [Area(nameof(Area.Administration))]
+    public class Roles : ValidatedController<IRoleValidator, IRoleService>
     {
-        public RolesController(IRoleValidator validator, IRoleService service)
+        public Roles(IRoleValidator validator, IRoleService service)
             : base(validator, service)
         {
         }
@@ -41,7 +41,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Service.Create(role);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -70,7 +70,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Authorization?.Refresh();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -87,7 +87,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Authorization?.Refresh();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

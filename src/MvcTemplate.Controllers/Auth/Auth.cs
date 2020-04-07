@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Mail;
 using MvcTemplate.Objects;
@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace MvcTemplate.Controllers
 {
     [AllowAnonymous]
-    public class AuthController : ValidatedController<IAccountValidator, IAccountService>
+    public class Auth : ValidatedController<IAccountValidator, IAccountService>
     {
         public IMailClient MailClient { get; }
 
-        public AuthController(IAccountValidator validator, IAccountService service, IMailClient mailClient)
+        public Auth(IAccountValidator validator, IAccountService service, IMailClient mailClient)
             : base(validator, service)
         {
             MailClient = mailClient;
@@ -41,7 +41,7 @@ namespace MvcTemplate.Controllers
 
             if (Service.Recover(account) is String token)
             {
-                String url = Url.Action("Reset", "Auth", new { token }, Request.Scheme);
+                String url = Url.Action(nameof(Reset), nameof(Auth), new { token }, Request.Scheme);
 
                 await MailClient.SendAsync(account.Email!,
                     Message.For<AccountView>("RecoveryEmailSubject"),
@@ -50,7 +50,7 @@ namespace MvcTemplate.Controllers
 
             Alerts.AddInfo(Message.For<AccountView>("RecoveryInformation"));
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace MvcTemplate.Controllers
                 return RedirectToDefault();
 
             if (!Validator.CanReset(new AccountResetView { Token = token }))
-                return RedirectToAction("Recover");
+                return RedirectToAction(nameof(Recover));
 
             return View();
         }
@@ -72,13 +72,13 @@ namespace MvcTemplate.Controllers
                 return RedirectToDefault();
 
             if (!Validator.CanReset(account))
-                return RedirectToAction("Recover");
+                return RedirectToAction(nameof(Recover));
 
             Service.Reset(account);
 
             Alerts.AddSuccess(Message.For<AccountView>("SuccessfulReset"), 4000);
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]
@@ -109,7 +109,7 @@ namespace MvcTemplate.Controllers
         {
             await Service.Logout(HttpContext);
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
     }
 }

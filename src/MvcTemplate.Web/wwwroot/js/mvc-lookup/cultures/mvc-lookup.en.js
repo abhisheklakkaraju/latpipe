@@ -1,4 +1,4 @@
-﻿if (document.documentElement.lang == "en") {
+if (document.documentElement.lang == "en") {
     MvcLookup.prototype.lang = {
         error: "Error while retrieving records",
         noData: "No data found",

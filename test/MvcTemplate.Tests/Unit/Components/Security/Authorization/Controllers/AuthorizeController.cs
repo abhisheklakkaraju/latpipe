@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Security.Tests
 {
     [Authorize]
     [ExcludeFromCodeCoverage]
-    public class AuthorizedController : Controller
+    public class AuthorizeController : Controller
     {
         [HttpGet]
         public ViewResult Action()

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
@@ -8,9 +8,9 @@ using MvcTemplate.Validators;
 namespace MvcTemplate.Controllers
 {
     [AllowUnauthorized]
-    public class ProfileController : ValidatedController<IAccountValidator, IAccountService>
+    public class Profile : ValidatedController<IAccountValidator, IAccountService>
     {
-        public ProfileController(IAccountValidator validator, IAccountService service)
+        public Profile(IAccountValidator validator, IAccountService service)
             : base(validator, service)
         {
         }
@@ -19,7 +19,7 @@ namespace MvcTemplate.Controllers
         public ActionResult Edit()
         {
             if (!Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             return View(Service.Get<ProfileEditView>(CurrentAccountId));
         }
@@ -28,7 +28,7 @@ namespace MvcTemplate.Controllers
         public ActionResult Edit(ProfileEditView profile)
         {
             if (!Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             if (!Validator.CanEdit(profile))
                 return View(profile);
@@ -37,14 +37,14 @@ namespace MvcTemplate.Controllers
 
             Alerts.AddSuccess(Message.For<AccountView>("ProfileUpdated"), 4000);
 
-            return RedirectToAction("Edit");
+            return RedirectToAction(nameof(Edit));
         }
 
         [HttpGet]
         public ActionResult Delete()
         {
             if (!Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             Alerts.AddWarning(Message.For<AccountView>("ProfileDeleteDisclaimer"));
 
@@ -56,7 +56,7 @@ namespace MvcTemplate.Controllers
         public ActionResult DeleteConfirmed(ProfileDeleteView profile)
         {
             if (!Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             if (!Validator.CanDelete(profile))
             {
@@ -69,7 +69,7 @@ namespace MvcTemplate.Controllers
 
             Authorization?.Refresh();
 
-            return RedirectToAction("Logout", "Auth");
+            return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ModuleModel
+@model ModuleModel
 using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
 @if (Model.Indexes.Any())
@@ -26,7 +26,7 @@ namespace MvcTemplate.Validators.Tests
             context = new TestingContext();
             validator = new @(Model.Validator)(new UnitOfWork(new TestingContext(context)));
 
-            context.Set<@Model.Model>().Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)());
+            context.Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)());
             context.SaveChanges();
         }
         public void Dispose()

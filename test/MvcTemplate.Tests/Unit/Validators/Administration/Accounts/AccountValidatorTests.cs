@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Components.Notifications;
+using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
@@ -169,7 +169,7 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanCreate(ObjectsFactory.CreateAccountCreateView()));
+            Assert.False(validator.CanCreate(ObjectsFactory.CreateAccountCreateView(2)));
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-﻿@model ModuleModel
+@model ModuleModel
 @@model IQueryable<@Model.View>
 
 <div class="col">
@@ -7,9 +7,9 @@
             <span class="icon fa fa-th"></span>
             <h5>@@Resource.ForHeader("@(Model.Models)")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Create">
-                    <a asp-action="Create" class="btn">
-                        <span class="far fa-file"></span><span class="text">@@Resource.ForAction("Create")</span>
+                <authorize action="@@nameof(@(Model.Controller).Create)">
+                    <a asp-action="@@nameof(@(Model.Controller).Create)" class="btn">
+                        <span class="far fa-file"></span><span class="text">@@Resource.ForAction(nameof(@(Model.Controller).Create))</span>
                     </a>
                 </authorize>
             </div>
@@ -19,9 +19,9 @@
                 .Grid(Model)
                 .Build(columns =>
                 {
-                    columns.AddAction("Details", "fa fa-info");
-                    columns.AddAction("Edit", "fa fa-pencil-alt");
-                    columns.AddAction("Delete", "fa fa-times");
+                    columns.AddAction(nameof(@(Model.Controller).Details), "fa fa-info");
+                    columns.AddAction(nameof(@(Model.Controller).Edit), "fa fa-pencil-alt");
+                    columns.AddAction(nameof(@(Model.Controller).Delete), "fa fa-times");
 
                     @foreach (PropertyInfo property in Model.ViewProperties)
                     {

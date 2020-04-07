@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -104,7 +104,7 @@ namespace MvcTemplate.Components.Extensions
             String? area = context.RouteData.Values["area"] as String;
             String? controller = context.RouteData.Values["controller"] as String;
 
-            return authorization.IsGrantedFor(account, area, controller, action);
+            return authorization.IsGrantedFor(account, $"{area}/{controller}/{action}");
         }
         private static IDictionary<String, Object?> RouteFor<T>(T model)
         {

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using MvcTemplate.Components.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MvcTemplate.Components.Mvc
 {
@@ -55,14 +56,17 @@ namespace MvcTemplate.Components.Mvc
         }
         private TagBuilder ViewFor(MvcTree model)
         {
-            TagBuilder root = new TagBuilder("ul");
-            root.AddCssClass("mvc-tree-view");
+            TagBuilder view = new TagBuilder("ul");
+            view.AddCssClass("mvc-tree-view");
 
-            return Build(model, root, model.Nodes, 1);
+            foreach (TagBuilder node in Build(model, model.Nodes, 1))
+                view.InnerHtml.AppendHtml(node);
+
+            return view;
         }
-        private TagBuilder Build(MvcTree model, TagBuilder branch, List<MvcTreeNode> nodes, Int32 depth)
+        private IEnumerable<TagBuilder> Build(MvcTree model, List<MvcTreeNode> nodes, Int32 depth)
         {
-            foreach (MvcTreeNode node in nodes)
+            return nodes.Select(node =>
             {
                 TagBuilder item = new TagBuilder("li");
                 item.InnerHtml.AppendHtml("<i></i>");
@@ -88,13 +92,16 @@ namespace MvcTemplate.Components.Mvc
                     if (HideDepth <= depth)
                         item.AddCssClass("mvc-tree-collapsed");
 
-                    item.InnerHtml.AppendHtml(Build(model, new TagBuilder("ul"), node.Children, depth + 1));
+                    TagBuilder branch = new TagBuilder("ul");
+
+                    foreach (TagBuilder leaf in Build(model, node.Children, depth + 1))
+                        branch.InnerHtml.AppendHtml(leaf);
+
+                    item.InnerHtml.AppendHtml(branch);
                 }
 
-                branch.InnerHtml.AppendHtml(item);
-            }
-
-            return branch;
+                return item;
+            });
         }
     }
 }

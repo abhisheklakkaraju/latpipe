@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -28,7 +28,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("on", "on")]
         [InlineData(null, null)]
         [InlineData("off", "off")]
-        public void Process_Autocomplete(String value, String expectedValue)
+        public void Process_Autocomplete(String? value, String? expectedValue)
         {
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
             TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (useCache, encoder) => null);

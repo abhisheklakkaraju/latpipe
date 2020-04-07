@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Controllers.Tests;
@@ -15,25 +13,22 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Administration.Tests
 {
-    public class RolesControllerTests : ControllerTests
+    public class RolesTests : ControllerTests
     {
-        private RolesController controller;
         private IRoleValidator validator;
         private IRoleService service;
+        private Roles controller;
         private RoleView role;
 
-        public RolesControllerTests()
+        public RolesTests()
         {
             validator = Substitute.For<IRoleValidator>();
             service = Substitute.For<IRoleService>();
 
             role = ObjectsFactory.CreateRoleView();
 
-            controller = Substitute.ForPartsOf<RolesController>(validator, service);
-            controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
-            controller.TempData = Substitute.For<ITempDataDictionary>();
+            controller = Substitute.ForPartsOf<Roles>(validator, service);
             controller.ControllerContext.RouteData = new RouteData();
-            controller.Url = Substitute.For<IUrlHelper>();
         }
         public override void Dispose()
         {
@@ -106,7 +101,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             validator.CanCreate(role).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(Roles.Index));
             Object actual = controller.Create(role);
 
             Assert.Same(expected, actual);
@@ -168,9 +163,8 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void Edit_RefreshesAuthorization()
         {
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             validator.CanEdit(role).Returns(true);
-            controller.OnActionExecuting(null);
 
             controller.Edit(role);
 
@@ -182,7 +176,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             validator.CanEdit(role).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(Roles.Index));
             Object actual = controller.Edit(role);
 
             Assert.Same(expected, actual);
@@ -210,8 +204,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void DeleteConfirmed_RefreshesAuthorization()
         {
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
-            controller.OnActionExecuting(null);
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
 
             controller.DeleteConfirmed(role.Id);
 
@@ -221,7 +214,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void DeleteConfirmed_RedirectsToIndex()
         {
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(Roles.Index));
             Object actual = controller.DeleteConfirmed(role.Id);
 
             Assert.Same(expected, actual);

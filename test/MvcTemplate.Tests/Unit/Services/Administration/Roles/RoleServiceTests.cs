@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Components.Extensions;
@@ -29,8 +29,8 @@ namespace MvcTemplate.Services.Tests
         }
         public void Dispose()
         {
-            context.Dispose();
             service.Dispose();
+            context.Dispose();
         }
 
         [Fact]
@@ -142,8 +142,6 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void GetView_ReturnsViewById()
         {
-            service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
-
             RoleView expected = Mapper.Map<RoleView>(role);
             RoleView actual = service.GetView(role.Id)!;
 
@@ -156,8 +154,6 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void GetView_SetsSelectedIds()
         {
-            service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
-
             IEnumerable<Int64> expected = role.Permissions.Select(rolePermission => rolePermission.PermissionId).OrderBy(id => id);
             IEnumerable<Int64> actual = service.GetView(role.Id)!.Permissions.SelectedIds.OrderBy(id => id);
 
@@ -167,8 +163,6 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void GetView_SeedsPermissions()
         {
-            service.When(sub => sub.SeedPermissions(Arg.Any<RoleView>())).DoNotCallBase();
-
             RoleView view = service.GetView(role.Id)!;
 
             service.Received().SeedPermissions(view);
@@ -269,13 +263,14 @@ namespace MvcTemplate.Services.Tests
         private Role SetUpData()
         {
             Role role = ObjectsFactory.CreateRole();
-            foreach (String controller in new[] { "Roles", "Profile" })
-                foreach (String action in new[] { "Edit", "Delete" })
+
+            foreach (String controller in new[] { "TestController1", "TestController2" })
+                foreach (String action in new[] { "Action1", "Action2" })
                     role.Permissions.Add(new RolePermission
                     {
                         Permission = new Permission
                         {
-                            Area = controller == "Roles" ? "Administration" : "",
+                            Area = controller == "TestController1" ? "TestingArea" : "",
                             Controller = controller,
                             Action = action
                         }
@@ -330,6 +325,7 @@ namespace MvcTemplate.Services.Tests
         private IEnumerable<MvcTreeNode> GetLeafNodes(IEnumerable<MvcTreeNode> nodes)
         {
             List<MvcTreeNode> leafs = nodes.Where(node => node.Children.Count == 0).ToList();
+
             foreach (MvcTreeNode branch in nodes.Where(node => node.Children.Count > 0))
                 leafs.AddRange(GetLeafNodes(branch.Children));
 

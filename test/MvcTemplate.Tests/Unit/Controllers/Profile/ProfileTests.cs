@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
@@ -16,15 +14,15 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
 {
-    public class ProfileControllerTests : ControllerTests
+    public class ProfileTests : ControllerTests
     {
         private ProfileDeleteView profileDelete;
-        private ProfileController controller;
         private ProfileEditView profileEdit;
         private IAccountValidator validator;
         private IAccountService service;
+        private Profile controller;
 
-        public ProfileControllerTests()
+        public ProfileTests()
         {
             validator = Substitute.For<IAccountValidator>();
             service = Substitute.For<IAccountService>();
@@ -32,12 +30,9 @@ namespace MvcTemplate.Controllers.Tests
             profileDelete = ObjectsFactory.CreateProfileDeleteView();
             profileEdit = ObjectsFactory.CreateProfileEditView();
 
-            controller = Substitute.ForPartsOf<ProfileController>(validator, service);
-            controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
-            controller.TempData = Substitute.For<ITempDataDictionary>();
+            controller = Substitute.ForPartsOf<Profile>(validator, service);
             controller.ControllerContext.RouteData = new RouteData();
-            controller.Url = Substitute.For<IUrlHelper>();
-            ReturnCurrentAccountId(controller, 1);
+            controller.CurrentAccountId.Returns(1);
         }
         public override void Dispose()
         {
@@ -216,10 +211,9 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void DeleteConfirmed_RefreshesAuthorization()
         {
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             service.IsActive(controller.CurrentAccountId).Returns(true);
             validator.CanDelete(profileDelete).Returns(true);
-            controller.OnActionExecuting(null);
 
             controller.DeleteConfirmed(profileDelete);
 

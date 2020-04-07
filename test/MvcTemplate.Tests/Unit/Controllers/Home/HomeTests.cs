@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
@@ -9,20 +9,19 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
 {
-    public class HomeControllerTests : ControllerTests
+    public class HomeTests : ControllerTests
     {
-        private HomeController controller;
+        private Home controller;
         private IAccountService service;
 
-        public HomeControllerTests()
+        public HomeTests()
         {
             service = Substitute.For<IAccountService>();
-            controller = Substitute.ForPartsOf<HomeController>(service);
+            controller = Substitute.ForPartsOf<Home>(service);
 
             ActionContext context = new ActionContext(new DefaultHttpContext(), new RouteData(), new ControllerActionDescriptor());
             controller.ControllerContext = new ControllerContext(context);
-
-            ReturnCurrentAccountId(controller, 1);
+            controller.CurrentAccountId.Returns(1);
         }
         public override void Dispose()
         {

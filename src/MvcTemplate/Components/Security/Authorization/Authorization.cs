@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Data.Core;
@@ -36,9 +36,8 @@ namespace MvcTemplate.Components.Security
             Refresh();
         }
 
-        public Boolean IsGrantedFor(Int64? accountId, String? area, String? controller, String? action)
+        public Boolean IsGrantedFor(Int64? accountId, String permission)
         {
-            String permission = $"{area}/{controller}/{action}".ToLower();
             if (!Required.ContainsKey(permission))
                 return true;
 
@@ -114,7 +113,7 @@ namespace MvcTemplate.Components.Security
         {
             String action = method.GetCustomAttribute<ActionNameAttribute>(false)?.Name ?? method.Name;
             String? area = method.DeclaringType?.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;
-            String? controller = method.DeclaringType?.Name[..^10];
+            String? controller = method.DeclaringType?.Name;
 
             return $"{area}/{controller}/{action}";
         }
@@ -124,8 +123,7 @@ namespace MvcTemplate.Components.Security
         }
         private Boolean IsController(Type type)
         {
-            return type.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) &&
-                !type.IsDefined(typeof(NonControllerAttribute)) &&
+            return !type.IsDefined(typeof(NonControllerAttribute)) &&
                 typeof(Controller).IsAssignableFrom(type) &&
                 !type.ContainsGenericParameters &&
                 !type.IsAbstract &&

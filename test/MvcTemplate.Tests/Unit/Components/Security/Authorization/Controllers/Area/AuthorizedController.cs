@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MvcTemplate.Components.Security.Tests;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -64,21 +65,21 @@ namespace MvcTemplate.Components.Security.Area.Tests
         }
 
         [HttpGet]
-        [AuthorizeAs("Action")]
+        [AuthorizeAs(nameof(Action))]
         public ViewResult AuthorizedAsAction()
         {
             return View();
         }
 
         [HttpGet]
-        [AuthorizeAs("AuthorizedAsSelf")]
+        [AuthorizeAs(nameof(AuthorizedAsSelf))]
         public ViewResult AuthorizedAsSelf()
         {
             return View();
         }
 
         [HttpGet]
-        [AuthorizeAs("InheritanceAction", Controller = "InheritedAuthorized", Area = "")]
+        [AuthorizeAs(nameof(InheritedAuthorizedController.InheritanceAction), Controller = nameof(InheritedAuthorizedController), Area = "")]
         public ViewResult AuthorizedAsOtherAction()
         {
             return View();

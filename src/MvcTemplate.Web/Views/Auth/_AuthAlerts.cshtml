@@ -1,4 +1,4 @@
-﻿<div class="alerts">
+<div class="alerts">
     @if (TempData["Alerts"] is String alerts)
     {
         foreach (Alert alert in JsonSerializer.Deserialize<Alerts>(alerts))

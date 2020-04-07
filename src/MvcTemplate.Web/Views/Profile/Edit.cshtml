@@ -1,4 +1,4 @@
-﻿@model ProfileEditView
+@model ProfileEditView
 
 <div class="col">
     <div class="widget-box">
@@ -6,9 +6,9 @@
             <span class="icon fa fa-th-list"></span>
             <h5>@Resource.ForHeader("Profile")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Delete">
-                    <a asp-action="Delete" class="btn">
-                        <span class="fa fa-times"></span><span class="text">@Resource.ForAction("Delete")</span>
+                <authorize action="@nameof(Profile.Delete)">
+                    <a asp-action="@nameof(Profile.Delete)" class="btn">
+                        <span class="fa fa-times"></span><span class="text">@Resource.ForAction(nameof(Profile.Delete))</span>
                     </a>
                 </authorize>
             </div>

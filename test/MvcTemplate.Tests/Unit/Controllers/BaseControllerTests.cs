@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -30,6 +31,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.Url = Substitute.For<IUrlHelper>();
             controller.ControllerContext.RouteData = new RouteData();
             controller.TempData = Substitute.For<ITempDataDictionary>();
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
@@ -54,8 +56,8 @@ namespace MvcTemplate.Controllers.Tests
         {
             ViewResult actual = controller.NotFoundView();
 
-            Assert.Equal("~/Views/Home/NotFound.cshtml", actual.ViewName);
             Assert.Equal(StatusCodes.Status404NotFound, controller.Response.StatusCode);
+            Assert.Equal($"~/Views/{nameof(Home)}/{nameof(Home.NotFound)}.cshtml", actual.ViewName);
         }
 
         [Fact]
@@ -103,16 +105,32 @@ namespace MvcTemplate.Controllers.Tests
         {
             RedirectToActionResult actual = controller.RedirectToDefault();
 
+            Assert.Equal(nameof(Home.Index), actual.ActionName);
+            Assert.Equal(nameof(Home), actual.ControllerName);
             Assert.Equal("", actual.RouteValues["area"]);
-            Assert.Equal("Home", actual.ControllerName);
-            Assert.Equal("Index", actual.ActionName);
             Assert.Single(actual.RouteValues);
+        }
+
+        [Fact]
+        public void IsAuthorizedFor_NoAuthorization_ReturnsTrue()
+        {
+            controller.Authorization.ReturnsNull();
+
+            Assert.True(controller.IsAuthorizedFor("TestArea/TestController/TestAction"));
+        }
+
+        [Fact]
+        public void IsAuthorizedFor_ReturnsAuthorizationResult()
+        {
+            controller.Authorization?.IsGrantedFor(controller.CurrentAccountId, "Area/Controller/Action").Returns(true);
+
+            Assert.True(controller.IsAuthorizedFor("Area/Controller/Action"));
         }
 
         [Fact]
         public void RedirectToAction_Action_Controller_Route_NotAuthorized_RedirectsToDefault()
         {
-            controller.IsAuthorizedFor("Action", "Controller", areaName).Returns(false);
+            controller.IsAuthorizedFor($"{areaName}/Controller/Action").Returns(false);
 
             Object expected = RedirectToDefault(controller);
             Object actual = controller.RedirectToAction("Action", "Controller", new { id = 1 });
@@ -123,7 +141,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void RedirectToAction_Action_NullController_NullRoute_RedirectsToAction()
         {
-            controller.IsAuthorizedFor("Action", controllerName, areaName).Returns(true);
+            controller.IsAuthorizedFor($"{areaName}/{controllerName}/Action").Returns(true);
 
             RedirectToActionResult actual = controller.RedirectToAction("Action", null, null);
 
@@ -135,7 +153,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void RedirectToAction_Action_Controller_NullRoute_RedirectsToAction()
         {
-            controller.IsAuthorizedFor("Action", "Controller", areaName).Returns(true);
+            controller.IsAuthorizedFor($"{areaName}/Controller/Action").Returns(true);
 
             RedirectToActionResult actual = controller.RedirectToAction("Action", "Controller", null);
 
@@ -147,7 +165,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void RedirectToAction_Action_Controller_Route_RedirectsToAction()
         {
-            controller.IsAuthorizedFor("Action", "Controller", "Area").Returns(true);
+            controller.IsAuthorizedFor("Area/Controller/Action").Returns(true);
 
             RedirectToActionResult actual = controller.RedirectToAction("Action", "Controller", new { area = "Area", id = 1 });
 
@@ -159,35 +177,16 @@ namespace MvcTemplate.Controllers.Tests
         }
 
         [Fact]
-        public void IsAuthorizedFor_NoAuthorization_ReturnsTrue()
-        {
-            controller = Substitute.ForPartsOf<BaseController>();
-
-            Assert.Null(controller.Authorization);
-            Assert.True(controller.IsAuthorizedFor("TestArea", "TestController", "TestAction"));
-        }
-
-        [Fact]
-        public void IsAuthorizedFor_ReturnsAuthorizationResult()
-        {
-            IAuthorization authorization = controller.HttpContext.RequestServices.GetService<IAuthorization>();
-            authorization.IsGrantedFor(controller.CurrentAccountId, "Area", "Controller", "Action").Returns(true);
-
-            controller.OnActionExecuting(null);
-
-            Assert.True(controller.IsAuthorizedFor("Action", "Controller", "Area"));
-            Assert.Same(authorization, controller.Authorization);
-        }
-
-        [Fact]
         public void OnActionExecuting_SetsAuthorization()
         {
-            IAuthorization authorization = controller.HttpContext.RequestServices.GetService<IAuthorization>();
+            controller = Substitute.ForPartsOf<BaseController>();
+            controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
+            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
             controller.OnActionExecuting(null);
 
+            Object? expected = controller.HttpContext.RequestServices.GetService<IAuthorization>();
             Object? actual = controller.Authorization;
-            Object? expected = authorization;
 
             Assert.Same(expected, actual);
         }

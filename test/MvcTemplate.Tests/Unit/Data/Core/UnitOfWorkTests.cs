@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MvcTemplate.Data.Logging;
@@ -105,16 +105,16 @@ namespace MvcTemplate.Data.Core.Tests
         [Fact]
         public void InsertRange_AddsModelsToDbSet()
         {
-            IEnumerable<TestModel> models = new[] { ObjectsFactory.CreateTestModel(1), ObjectsFactory.CreateTestModel(2) };
+            IEnumerable<TestModel> models = new[] { ObjectsFactory.CreateTestModel(2), ObjectsFactory.CreateTestModel(3) };
             TestingContext testingContext = Substitute.For<TestingContext>();
-            testingContext.When(sub => sub.AddRange(models)).DoNotCallBase();
 
             unitOfWork.Dispose();
 
             unitOfWork = new UnitOfWork(testingContext);
             unitOfWork.InsertRange(models);
 
-            testingContext.Received().AddRange(models);
+            foreach (TestModel model in models)
+                testingContext.Received().Add(model);
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace MvcTemplate.Data.Core.Tests
         [Fact]
         public void DeleteRange_Models()
         {
-            IEnumerable<TestModel> models = new[] { ObjectsFactory.CreateTestModel(1), ObjectsFactory.CreateTestModel(2) };
+            IEnumerable<TestModel> models = new[] { ObjectsFactory.CreateTestModel(2), ObjectsFactory.CreateTestModel(3) };
 
             context.AddRange(models);
             context.SaveChanges();
@@ -210,7 +210,7 @@ namespace MvcTemplate.Data.Core.Tests
         public void Commit_Failed_DoesNotSaveLogs()
         {
             logger.When(sub => sub.Log(Arg.Any<IEnumerable<EntityEntry<BaseModel>>>())).Do(call => throw new Exception());
-            Exception exception = Record.Exception(() => unitOfWork.Commit());
+            Exception? exception = Record.Exception(() => unitOfWork.Commit());
 
             logger.Received().Log(Arg.Any<IEnumerable<EntityEntry<BaseModel>>>());
             logger.DidNotReceive().Save();

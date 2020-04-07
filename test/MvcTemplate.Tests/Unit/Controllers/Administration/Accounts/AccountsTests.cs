@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Controllers.Tests;
@@ -15,16 +13,16 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Administration.Tests
 {
-    public class AccountsControllerTests : ControllerTests
+    public class AccountsTests : ControllerTests
     {
         private AccountCreateView accountCreate;
-        private AccountsController controller;
         private IAccountValidator validator;
         private AccountEditView accountEdit;
         private IAccountService service;
         private AccountView account;
+        private Accounts controller;
 
-        public AccountsControllerTests()
+        public AccountsTests()
         {
             validator = Substitute.For<IAccountValidator>();
             service = Substitute.For<IAccountService>();
@@ -33,11 +31,8 @@ namespace MvcTemplate.Controllers.Administration.Tests
             accountEdit = ObjectsFactory.CreateAccountEditView();
             account = ObjectsFactory.CreateAccountView();
 
-            controller = Substitute.ForPartsOf<AccountsController>(validator, service);
-            controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
-            controller.TempData = Substitute.For<ITempDataDictionary>();
+            controller = Substitute.ForPartsOf<Accounts>(validator, service);
             controller.ControllerContext.RouteData = new RouteData();
-            controller.Url = Substitute.For<IUrlHelper>();
         }
         public override void Dispose()
         {
@@ -89,9 +84,8 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void Create_RefreshesAuthorization()
         {
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             validator.CanCreate(accountCreate).Returns(true);
-            controller.OnActionExecuting(null);
 
             controller.Create(accountCreate);
 
@@ -103,7 +97,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             validator.CanCreate(accountCreate).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(Accounts.Index));
             Object actual = controller.Create(accountCreate);
 
             Assert.Same(expected, actual);
@@ -155,9 +149,8 @@ namespace MvcTemplate.Controllers.Administration.Tests
         [Fact]
         public void Edit_RefreshesAuthorization()
         {
-            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
+            controller.Authorization.Returns(Substitute.For<IAuthorization>());
             validator.CanEdit(accountEdit).Returns(true);
-            controller.OnActionExecuting(null);
 
             controller.Edit(accountEdit);
 
@@ -169,7 +162,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             validator.CanEdit(accountEdit).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Index");
+            Object expected = RedirectToAction(controller, nameof(Accounts.Index));
             Object actual = controller.Edit(accountEdit);
 
             Assert.Same(expected, actual);

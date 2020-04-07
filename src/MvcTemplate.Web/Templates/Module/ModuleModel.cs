@@ -1,4 +1,4 @@
-﻿using Humanizer;
+using Humanizer;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Objects;
 using System;
@@ -44,7 +44,7 @@ namespace MvcTemplate.Web.Templates
         {
             ModelShortName = Regex.Split(model, "(?=[A-Z])").Last();
             ModelVarName = ModelShortName.ToLower();
-            Models = model.Pluralize(false);
+            Models = model.Pluralize();
             Model = model;
 
             View = $"{Model}View";
@@ -59,8 +59,8 @@ namespace MvcTemplate.Web.Templates
 
             ControllerTestsNamespace = $"MvcTemplate.Controllers.{(!String.IsNullOrWhiteSpace(area) ? $"{area}." : "")}Tests";
             ControllerNamespace = $"MvcTemplate.Controllers{(!String.IsNullOrWhiteSpace(area) ? $".{area}" : "")}";
-            ControllerTests = $"{controller}ControllerTests";
-            Controller = $"{controller}Controller";
+            ControllerTests = $"{controller}Tests";
+            Controller = controller;
 
             Area = area;
 

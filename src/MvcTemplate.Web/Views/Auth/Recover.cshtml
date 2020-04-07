@@ -1,4 +1,4 @@
-﻿@model AccountRecoveryView
+@model AccountRecoveryView
 
 <div class="title text-right">@Resource.ForPage(ViewContext.RouteData.Values)</div>
 
@@ -13,11 +13,11 @@
         <span class="input-error fa fa-exclamation-triangle"></span>
     </div>
 
-    <button class="btn btn-block btn-primary mt-3 mb-3">@Resource.ForAction("Recover")</button>
+    <button class="btn btn-block btn-primary mt-3 mb-3">@Resource.ForAction(nameof(Auth.Recover))</button>
 </form>
 
 <hr />
 
 <div class="actions text-right">
-    <a asp-action="Login" class="title fa fa-sign-in-alt" data-toggle="tooltip" data-original-title="@Resource.ForAction("Login")" data-placement="bottom" data-delay="1"></a>
+    <a asp-action="@nameof(Auth.Login)" class="title fa fa-sign-in-alt" data-toggle="tooltip" data-original-title="@Resource.ForAction(nameof(Auth.Login))" data-placement="bottom" data-delay="1"></a>
 </div>

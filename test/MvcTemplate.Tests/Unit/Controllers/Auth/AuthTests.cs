@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
@@ -18,22 +18,22 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
 {
-    public class AuthControllerTests : ControllerTests
+    public class AuthTests : ControllerTests
     {
         private AccountRecoveryView accountRecovery;
         private AccountResetView accountReset;
         private AccountLoginView accountLogin;
         private IAccountValidator validator;
-        private AuthController controller;
         private IAccountService service;
         private IMailClient mail;
+        private Auth controller;
 
-        public AuthControllerTests()
+        public AuthTests()
         {
             mail = Substitute.For<IMailClient>();
             service = Substitute.For<IAccountService>();
             validator = Substitute.For<IAccountValidator>();
-            controller = Substitute.ForPartsOf<AuthController>(validator, service, mail);
+            controller = Substitute.ForPartsOf<Auth>(validator, service, mail);
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.TempData = Substitute.For<ITempDataDictionary>();
             controller.ControllerContext.RouteData = new RouteData();
@@ -115,7 +115,7 @@ namespace MvcTemplate.Controllers.Tests
 
             await controller.Recover(accountRecovery);
 
-            String url = controller.Url.Action("Reset", "Auth", new { token = "TestToken" }, controller.Request.Scheme);
+            String url = controller.Url.Action(nameof(Auth.Reset), nameof(Auth), new { token = "TestToken" }, controller.Request.Scheme);
             String subject = Message.For<AccountView>("RecoveryEmailSubject");
             String body = Message.For<AccountView>("RecoveryEmailBody", url);
             String email = accountRecovery.Email!;
@@ -158,7 +158,7 @@ namespace MvcTemplate.Controllers.Tests
             validator.CanRecover(accountRecovery).Returns(true);
             service.Recover(accountRecovery).Returns("UmVjb3Zlcnk=");
 
-            Object expected = RedirectToAction(controller, "Login");
+            Object expected = RedirectToAction(controller, nameof(Auth.Login));
             Object actual = await controller.Recover(accountRecovery);
 
             Assert.Same(expected, actual);
@@ -181,7 +181,7 @@ namespace MvcTemplate.Controllers.Tests
             service.IsLoggedIn(controller.User).Returns(false);
             validator.CanReset(Arg.Any<AccountResetView>()).Returns(false);
 
-            Object expected = RedirectToAction(controller, "Recover");
+            Object expected = RedirectToAction(controller, nameof(Auth.Recover));
             Object actual = controller.Reset("Token");
 
             Assert.Same(expected, actual);
@@ -215,7 +215,7 @@ namespace MvcTemplate.Controllers.Tests
             service.IsLoggedIn(controller.User).Returns(false);
             validator.CanReset(accountReset).Returns(false);
 
-            Object expected = RedirectToAction(controller, "Recover");
+            Object expected = RedirectToAction(controller, nameof(Auth.Recover));
             Object actual = controller.Reset(accountReset);
 
             Assert.Same(expected, actual);
@@ -253,7 +253,7 @@ namespace MvcTemplate.Controllers.Tests
             service.IsLoggedIn(controller.User).Returns(false);
             validator.CanReset(accountReset).Returns(true);
 
-            Object expected = RedirectToAction(controller, "Login");
+            Object expected = RedirectToAction(controller, nameof(Auth.Login));
             Object actual = controller.Reset(accountReset);
 
             Assert.Same(expected, actual);
@@ -262,9 +262,8 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void Login_IsLoggedIn_RedirectsToUrl()
         {
+            controller.RedirectToLocal(Arg.Is("/")).Returns(new RedirectResult("/"));
             service.IsLoggedIn(controller.User).Returns(true);
-            controller.When(sub => sub.RedirectToLocal("/")).DoNotCallBase();
-            controller.RedirectToLocal("/").Returns(new RedirectResult("/"));
 
             Object expected = controller.RedirectToLocal("/");
             Object actual = controller.Login("/");
@@ -285,12 +284,11 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public async Task Login_Post_IsLoggedIn_RedirectsToUrl()
         {
+            controller.RedirectToLocal(Arg.Is("/")).Returns(new RedirectResult("/"));
             service.IsLoggedIn(controller.User).Returns(true);
-            controller.When(sub => sub.RedirectToLocal("/")).DoNotCallBase();
-            controller.RedirectToLocal("/").Returns(new RedirectResult("/"));
 
-            Object expected = controller.RedirectToLocal("/");
             Object actual = await controller.Login(new AccountLoginView(), "/");
+            Object expected = controller.RedirectToLocal("/");
 
             Assert.Same(expected, actual);
         }
@@ -312,8 +310,7 @@ namespace MvcTemplate.Controllers.Tests
         public async Task Login_Account()
         {
             validator.CanLogin(accountLogin).Returns(true);
-            controller.When(sub => sub.RedirectToLocal(null)).DoNotCallBase();
-            controller.RedirectToLocal(null).Returns(new RedirectResult("/"));
+            controller.RedirectToLocal(Arg.Is("/")).Returns(new RedirectResult("/"));
 
             await controller.Login(accountLogin, null);
 
@@ -324,8 +321,7 @@ namespace MvcTemplate.Controllers.Tests
         public async Task Login_RedirectsToUrl()
         {
             validator.CanLogin(accountLogin).Returns(true);
-            controller.When(sub => sub.RedirectToLocal("/")).DoNotCallBase();
-            controller.RedirectToLocal("/").Returns(new RedirectResult("/"));
+            controller.RedirectToLocal(Arg.Is("/")).Returns(new RedirectResult("/"));
 
             Object actual = await controller.Login(accountLogin, "/");
             Object expected = controller.RedirectToLocal("/");
@@ -344,7 +340,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public async Task Logout_RedirectsToLogin()
         {
-            Object expected = RedirectToAction(controller, "Login");
+            Object expected = RedirectToAction(controller, nameof(Auth.Login));
             Object actual = await controller.Logout();
 
             Assert.Same(expected, actual);

@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Objects;
+using MvcTemplate.Objects;
 using System;
 using System.Linq;
 

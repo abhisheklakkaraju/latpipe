@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Lookups;
 using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
@@ -9,17 +9,17 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
 {
-    public class LookupControllerTests : ControllerTests
+    public class LookupTests : ControllerTests
     {
-        private LookupController controller;
+        private Lookup controller;
         private IUnitOfWork unitOfWork;
         private LookupFilter filter;
         private ALookup lookup;
 
-        public LookupControllerTests()
+        public LookupTests()
         {
             unitOfWork = Substitute.For<IUnitOfWork>();
-            controller = Substitute.ForPartsOf<LookupController>(unitOfWork);
+            controller = Substitute.ForPartsOf<Lookup>(unitOfWork);
 
             lookup = Substitute.For<ALookup>();
             filter = new LookupFilter();
@@ -76,11 +76,10 @@ namespace MvcTemplate.Controllers.Tests
             controller.Dispose();
         }
 
-        private JsonResult GetData<TLookup>(LookupController lookupController) where TLookup : ALookup
+        private JsonResult GetData<TLookup>(Lookup lookupController) where TLookup : ALookup
         {
             JsonResult result = new JsonResult("Test");
             lookupController.GetData(Arg.Any<TLookup>(), filter).Returns(result);
-            lookupController.When(sub => sub.GetData(Arg.Any<TLookup>(), filter)).DoNotCallBase();
 
             return result;
         }

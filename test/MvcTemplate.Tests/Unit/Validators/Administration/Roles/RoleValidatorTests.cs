@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Data.Core;
+using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
 using MvcTemplate.Tests;
@@ -33,7 +33,7 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanCreate(ObjectsFactory.CreateRoleView()));
+            Assert.False(validator.CanCreate(ObjectsFactory.CreateRoleView(2)));
         }
 
         [Fact]

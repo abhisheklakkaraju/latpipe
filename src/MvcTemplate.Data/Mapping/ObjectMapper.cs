@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.Configuration;
 using MvcTemplate.Objects;
 using System.Collections.Generic;

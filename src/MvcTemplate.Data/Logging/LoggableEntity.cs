@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MvcTemplate.Objects;
 using System;
@@ -41,8 +41,9 @@ namespace MvcTemplate.Data.Logging
         public override String ToString()
         {
             StringBuilder changes = new StringBuilder();
+
             foreach (LoggableProperty property in Properties)
-                changes.Append($"{property}{Environment.NewLine}");
+                changes.Append($"{property}\n");
 
             return changes.ToString();
         }

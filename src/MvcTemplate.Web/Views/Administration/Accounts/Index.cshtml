@@ -1,4 +1,4 @@
-﻿@model IQueryable<AccountView>
+@model IQueryable<AccountView>
 
 <div class="col">
     <div class="widget-box">
@@ -6,9 +6,9 @@
             <span class="icon fa fa-th"></span>
             <h5>@Resource.ForHeader("Accounts")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Create">
-                    <a asp-action="Create" class="btn">
-                        <span class="far fa-file"></span><span class="text">@Resource.ForAction("Create")</span>
+                <authorize action="@nameof(Accounts.Create)">
+                    <a asp-action="@nameof(Accounts.Create)" class="btn">
+                        <span class="far fa-file"></span><span class="text">@Resource.ForAction(nameof(Accounts.Create))</span>
                     </a>
                 </authorize>
             </div>
@@ -18,8 +18,8 @@
                 .Grid(Model)
                 .Build(columns =>
                 {
-                    columns.AddAction("Details", "fa fa-info");
-                    columns.AddAction("Edit", "fa fa-pencil-alt");
+                    columns.AddAction(nameof(Accounts.Details), "fa fa-info");
+                    columns.AddAction(nameof(Accounts.Edit), "fa fa-pencil-alt");
 
                     columns.AddProperty(model => model.Username);
                     columns.AddProperty(model => model.Email);

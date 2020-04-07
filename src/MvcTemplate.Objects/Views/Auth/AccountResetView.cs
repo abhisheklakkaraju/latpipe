@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Components.Mvc;
+using MvcTemplate.Components.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 

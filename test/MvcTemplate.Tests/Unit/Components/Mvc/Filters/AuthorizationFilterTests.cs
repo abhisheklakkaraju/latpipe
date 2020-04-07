@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -58,7 +58,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             context.RouteData.Values["action"] = "Action";
             context.RouteData.Values["area"] = "Area";
 
-            authorization.IsGrantedFor(11000, "Area", "Controller", "Action").Returns(true);
+            authorization.IsGrantedFor(11000, "Area/Controller/Action").Returns(true);
 
             filter.OnResourceExecuting(context);
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
@@ -46,6 +46,7 @@ namespace MvcTemplate.Services
         public String? Recover(AccountRecoveryView view)
         {
             Account account = UnitOfWork.Select<Account>().SingleOrDefault(model => model.Email.ToLower() == view.Email!.ToLower());
+
             if (account == null)
                 return null;
 

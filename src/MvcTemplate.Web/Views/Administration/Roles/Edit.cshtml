@@ -1,4 +1,4 @@
-﻿@model RoleView
+@model RoleView
 
 <div class="col">
     <div class="widget-box">
@@ -6,14 +6,14 @@
             <span class="icon fa fa-th-list"></span>
             <h5>@Resource.ForHeader("Role")</h5>
             <div class="widget-header-buttons">
-                <authorize action="Details">
-                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn">
-                        <span class="fa fa-info"></span><span class="text">@Resource.ForAction("Details")</span>
+                <authorize action="@nameof(Roles.Details)">
+                    <a asp-action="@nameof(Roles.Details)" asp-route-id="@Model.Id" class="btn">
+                        <span class="fa fa-info"></span><span class="text">@Resource.ForAction(nameof(Roles.Details))</span>
                     </a>
                 </authorize>
-                <authorize action="Delete">
-                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn">
-                        <span class="fa fa-times"></span><span class="text">@Resource.ForAction("Delete")</span>
+                <authorize action="@nameof(Roles.Delete)">
+                    <a asp-action="@nameof(Roles.Delete)" asp-route-id="@Model.Id" class="btn">
+                        <span class="fa fa-times"></span><span class="text">@Resource.ForAction(nameof(Roles.Delete))</span>
                     </a>
                 </authorize>
             </div>

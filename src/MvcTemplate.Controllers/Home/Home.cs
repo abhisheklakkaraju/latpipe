@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Notifications;
@@ -9,9 +9,9 @@ using MvcTemplate.Services;
 namespace MvcTemplate.Controllers
 {
     [AllowUnauthorized]
-    public class HomeController : ServicedController<IAccountService>
+    public class Home : ServicedController<IAccountService>
     {
-        public HomeController(IAccountService service)
+        public Home(IAccountService service)
             : base(service)
         {
         }
@@ -20,7 +20,7 @@ namespace MvcTemplate.Controllers
         public ActionResult Index()
         {
             if (!Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             return View();
         }
@@ -52,7 +52,7 @@ namespace MvcTemplate.Controllers
         public new ActionResult NotFound()
         {
             if (Service.IsLoggedIn(User) && !Service.IsActive(CurrentAccountId))
-                return RedirectToAction("Logout", "Auth");
+                return RedirectToAction(nameof(Auth.Logout), nameof(Auth));
 
             Response.StatusCode = StatusCodes.Status404NotFound;
 

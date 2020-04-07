@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Services;
@@ -40,7 +40,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void OnActionExecuting_SetsServiceCurrentAccountId()
         {
-            ReturnCurrentAccountId(controller, 1);
+            controller.CurrentAccountId.Returns(1);
 
             controller.OnActionExecuting(null);
 

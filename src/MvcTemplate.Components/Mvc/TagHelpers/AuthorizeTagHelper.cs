@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using MvcTemplate.Components.Extensions;
@@ -34,7 +34,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = Action ?? ViewContext?.RouteData.Values["action"] as String;
             String? controller = Controller ?? ViewContext?.RouteData.Values["controller"] as String;
 
-            if (Authorization?.IsGrantedFor(accountId, area, controller, action) == false)
+            if (Authorization?.IsGrantedFor(accountId, $"{area}/{controller}/{action}") == false)
                 output.SuppressOutput();
         }
     }

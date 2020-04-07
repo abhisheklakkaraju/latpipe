@@ -1,4 +1,4 @@
-﻿@model ModuleModel
+@model ModuleModel
 using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Objects;
 using MvcTemplate.Services;
@@ -9,7 +9,7 @@ namespace @Model.ControllerNamespace
 {
     @if (!String.IsNullOrWhiteSpace(Model.Area))
     {
-    @:[Area("@Model.Area")]
+    @:[Area(nameof(Area.@(Model.Area)))]
     }
     public class @Model.Controller : ValidatedController<@Model.IValidator, @Model.IService>
     {
@@ -38,7 +38,7 @@ namespace @Model.ControllerNamespace
 
             Service.Create(@Model.ModelVarName);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -61,7 +61,7 @@ namespace @Model.ControllerNamespace
 
             Service.Edit(@Model.ModelVarName);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -76,7 +76,7 @@ namespace @Model.ControllerNamespace
         {
             Service.Delete(id);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }

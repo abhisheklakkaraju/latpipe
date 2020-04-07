@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MvcTemplate.Components.Security.Tests
 {
     [ExcludeFromCodeCoverage]
-    public class InheritedAuthorizedController : AuthorizedController
+    public class InheritedAuthorizedController : AuthorizeController
     {
         [HttpGet]
         public ViewResult InheritanceAction()

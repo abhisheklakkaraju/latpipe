@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 
@@ -6,7 +6,7 @@ namespace MvcTemplate.Components.Security.Tests
 {
     [AllowAnonymous]
     [ExcludeFromCodeCoverage]
-    public class AllowAnonymousController : AuthorizedController
+    public class AllowAnonymousController : AuthorizeController
     {
         [HttpGet]
         [Authorize]

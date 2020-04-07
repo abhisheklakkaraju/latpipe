@@ -1,4 +1,4 @@
-﻿@{ String? action = ViewContext.RouteData.Values["action"] as String; }
+@{ String? action = ViewContext.RouteData.Values["action"] as String; }
 
 <!doctype html>
 <html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
@@ -42,9 +42,9 @@
 
     <div class="header">
         <div class="btn">
-            <a asp-action="Edit" asp-controller="Profile" asp-area="">
+            <a asp-action="@nameof(Profile.Edit)" asp-controller="@nameof(Profile)" asp-area="">
                 <span class="fa fa-user"></span>
-                <span class="text">@Resource.ForAction("Profile")</span>
+                <span class="text">@Resource.ForAction(nameof(Profile))</span>
             </a>
         </div>
         @{ ILanguages languages = Context.RequestServices.GetService<ILanguages>(); }
@@ -59,7 +59,7 @@
                 <div class="dropdown-menu">
                     @foreach (Language language in languages.Supported)
                     {
-                        <a class="dropdown-item" href="@Url.Action("Index", "Home", new { area = "", language = language == languages.Default ? "" : language.Abbreviation })">
+                        <a class="dropdown-item" href="@Url.Action(nameof(Home.Index), nameof(Home), new { area = "", language = language == languages.Default ? "" : language.Abbreviation })">
                             <img src="@Url.Content($"~/img/flags/{language.Abbreviation}.gif")" width="16" height="11" alt="">
                             @language.Name
                         </a>
@@ -68,9 +68,9 @@
             </div>
         }
         <div class="btn">
-            <a asp-action="Logout" asp-controller="Auth" asp-area="">
+            <a asp-action="@nameof(Auth.Logout)" asp-controller="@nameof(Auth)" asp-area="">
                 <span class="fa fa-share"></span>
-                <span class="text">@Resource.ForAction("Logout")</span>
+                <span class="text">@Resource.ForAction(nameof(Auth.Logout))</span>
             </a>
         </div>
     </div>

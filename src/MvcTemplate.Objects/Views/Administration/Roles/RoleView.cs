@@ -1,4 +1,4 @@
-﻿using MvcTemplate.Components.Extensions;
+using MvcTemplate.Components.Extensions;
 using NonFactors.Mvc.Lookup;
 using System;
 using System.ComponentModel.DataAnnotations;

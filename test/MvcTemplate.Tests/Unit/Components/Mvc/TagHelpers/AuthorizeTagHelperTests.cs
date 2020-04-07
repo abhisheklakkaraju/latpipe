@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Tests;
 using NSubstitute;
@@ -45,16 +45,16 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Theory]
-        [InlineData("A", "B", "C", "D", "E", "F", "A", "B", "C")]
-        [InlineData(null, null, null, "A", "B", "C", "A", "B", "C")]
-        [InlineData(null, null, null, null, null, null, null, null, null)]
+        [InlineData("A/B/C", "A", "B", "C", "D", "E", "F")]
+        [InlineData("//", null, null, null, null, null, null)]
+        [InlineData("A/B/C", null, null, null, "A", "B", "C")]
         public void Process_NotAuthorized_SurpressesOutput(
-            String area, String controller, String action,
-            String routeArea, String routeController, String routeAction,
-            String authArea, String authController, String authAction)
+            String permission,
+            String? area, String? controller, String? action,
+            String? routeArea, String? routeController, String? routeAction)
         {
-            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
-            authorization.IsGrantedFor(1, authArea, authController, authAction).Returns(false);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
+            authorization.IsGrantedFor(1, permission).Returns(false);
 
             helper.ViewContext!.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
             helper.ViewContext.RouteData.Values["controller"] = routeController;
@@ -83,16 +83,16 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Theory]
-        [InlineData("A", "B", "C", "D", "E", "F", "A", "B", "C")]
-        [InlineData(null, null, null, "A", "B", "C", "A", "B", "C")]
-        [InlineData(null, null, null, null, null, null, null, null, null)]
+        [InlineData("A/B/C", "A", "B", "C", "D", "E", "F")]
+        [InlineData("//", null, null, null, null, null, null)]
+        [InlineData("A/B/C", null, null, null, "A", "B", "C")]
         public void Process_RemovesWrappingTag(
-            String area, String controller, String action,
-            String routeArea, String routeController, String routeAction,
-            String authArea, String authController, String authAction)
+            String permission,
+            String? area, String? controller, String? action,
+            String? routeArea, String? routeController, String? routeAction)
         {
-            authorization.IsGrantedFor(1, Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(false);
-            authorization.IsGrantedFor(1, authArea, authController, authAction).Returns(true);
+            authorization.IsGrantedFor(1, Arg.Any<String>()).Returns(false);
+            authorization.IsGrantedFor(1, permission).Returns(true);
 
             helper.ViewContext!.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "1"));
             helper.ViewContext.RouteData.Values["controller"] = routeController;

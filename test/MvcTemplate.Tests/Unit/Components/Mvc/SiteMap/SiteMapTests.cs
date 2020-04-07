@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using MvcTemplate.Components.Extensions;
@@ -88,7 +88,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_ReturnsAuthorizedNodes()
         {
-            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration", "Accounts", "Index").Returns(true);
+            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration/Accounts/Index").Returns(true);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
 
@@ -146,8 +146,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_RemovesEmptyNodes()
         {
-            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>(), Arg.Any<String>(), Arg.Any<String>()).Returns(true);
-            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration", "Roles", "Create").Returns(false);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
+            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration/Roles/Create").Returns(false);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
 
