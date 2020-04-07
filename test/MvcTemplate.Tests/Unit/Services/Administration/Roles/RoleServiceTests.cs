@@ -275,7 +275,7 @@ namespace MvcTemplate.Services.Tests
                     {
                         Permission = new Permission
                         {
-                            Area = controller == "Roles" ? "Administration" : null,
+                            Area = controller == "Roles" ? "Administration" : "",
                             Controller = controller,
                             Action = action
                         }

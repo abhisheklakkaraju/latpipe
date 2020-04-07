@@ -6,7 +6,7 @@ namespace MvcTemplate.Objects
     public class Permission : BaseModel
     {
         [StringLength(64)]
-        public String? Area { get; set; }
+        public String Area { get; set; }
 
         [Required]
         [StringLength(64)]

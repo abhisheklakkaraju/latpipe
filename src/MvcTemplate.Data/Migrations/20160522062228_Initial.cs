@@ -32,7 +32,7 @@ namespace MvcTemplate.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    Area = table.Column<string>(maxLength: 64, nullable: true),
+                    Area = table.Column<string>(maxLength: 64, nullable: false),
                     Controller = table.Column<string>(maxLength: 64, nullable: false),
                     Action = table.Column<string>(maxLength: 64, nullable: false)
                 },

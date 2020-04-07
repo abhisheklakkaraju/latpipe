@@ -42,8 +42,8 @@ namespace MvcTemplate.Resources.Tests
 
             configuration.Seed();
 
-            foreach (Permission permission in context.Set<Permission>().Where(permission => permission.Area != null))
-                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(permission.Area!)), $"'{permission.Area}' area does not have a title.");
+            foreach (String area in context.Set<Permission>().Select(permission => permission.Area).Where(area => area != "").Distinct())
+                Assert.True(!String.IsNullOrEmpty(Resource.ForArea(area)), $"'{area}' area does not have a title.");
         }
 
         [Fact]

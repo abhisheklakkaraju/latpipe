@@ -61,7 +61,7 @@ namespace MvcTemplate.Components.Security
                         .Role!
                         .Permissions
                         .Select(role => role.Permission)
-                        .Select(permission => (permission.Area ?? "") + "/" + permission.Controller + "/" + permission.Action)
+                        .Select(permission => permission.Area + "/" + permission.Controller + "/" + permission.Action)
                 })
                 .ToDictionary(
                     account => account.Id,

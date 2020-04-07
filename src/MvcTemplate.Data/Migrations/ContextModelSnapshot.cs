@@ -118,6 +118,7 @@ namespace MvcTemplate.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("Area")
+                        .IsRequired()
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
