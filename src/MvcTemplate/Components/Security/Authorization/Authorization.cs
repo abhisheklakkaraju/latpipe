@@ -46,7 +46,8 @@ namespace MvcTemplate.Components.Security
 
         public void Refresh()
         {
-            using IUnitOfWork unitOfWork = Services.GetRequiredService<IUnitOfWork>();
+            using IServiceScope scope = Services.CreateScope();
+            using IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
             Permissions = unitOfWork
                 .Select<Account>()

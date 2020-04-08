@@ -121,7 +121,7 @@ namespace MvcTemplate.Web
             services.AddDbContext<Context>(options => options.UseSqlServer(Config["Data:Connection"]));
 
             services.AddTransient<IAuditLogger>(provider =>
-                new AuditLogger(provider.GetService<DbContext>(),
+                new AuditLogger(provider.GetRequiredService<DbContext>(),
                 provider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User?.Id()));
 
             services.AddSingleton<IHasher, BCrypter>();
@@ -137,7 +137,7 @@ namespace MvcTemplate.Web
             services.AddSingleton<ILanguages>(new Languages(Config["Languages:Default"], supported));
 
             String map = File.ReadAllText(Path.Combine(Config["Application:Path"], Config["SiteMap:Path"]));
-            services.AddSingleton<ISiteMap>(provider => new SiteMap(map, provider.GetService<IAuthorization>()));
+            services.AddSingleton<ISiteMap>(provider => new SiteMap(map, provider.GetRequiredService<IAuthorization>()));
 
             services.AddTransientImplementations<IService>();
             services.AddTransientImplementations<IValidator>();
@@ -206,8 +206,10 @@ namespace MvcTemplate.Web
 
         private void SeedDatabase(IApplicationBuilder app)
         {
-            using (Configuration configuration = app.ApplicationServices.GetService<Configuration>())
-                configuration.Migrate();
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            using Configuration configuration = scope.ServiceProvider.GetRequiredService<Configuration>();
+
+            configuration.Migrate();
         }
     }
 }

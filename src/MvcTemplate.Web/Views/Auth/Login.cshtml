@@ -18,7 +18,7 @@
         <span class="input-error fa fa-exclamation-triangle"></span>
     </div>
 
-    @{ ILanguages languages = Context.RequestServices.GetService<ILanguages>(); }
+    @{ ILanguages languages = Context.RequestServices.GetRequiredService<ILanguages>(); }
     @{ String returnPath = ViewContext.HttpContext.Request.Query["returnUrl"]; }
     @{ String rootPath = Context.Request.PathBase.Value.Trim('/'); }
     @{ returnPath = (returnPath ?? rootPath).Trim('/'); }

@@ -74,7 +74,7 @@ namespace MvcTemplate.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext? context)
         {
-            Authorization = HttpContext.RequestServices.GetService<IAuthorization>();
+            Authorization = HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
             CurrentAccountId = User.Id() ?? 0;
         }

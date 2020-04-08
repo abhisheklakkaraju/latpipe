@@ -45,8 +45,8 @@ namespace MvcTemplate.Components.Extensions.Tests
         {
             AllTypesView view = new AllTypesView();
             StringWriter writer = new StringWriter();
-            IUrlHelper url = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>().GetUrlHelper(context);
-            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetService<IAuthorization>();
+            IUrlHelper url = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(context);
+            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
             authorization.IsGrantedFor(Arg.Any<Int64?>(), "//Details").Returns(true);
@@ -63,7 +63,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_NoId_Throws()
         {
-            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetService<IAuthorization>();
+            IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
             IGridColumnsOf<Object> gridColumns = new GridColumns<Object>(new Grid<Object>(Array.Empty<Object>()));
             authorization.IsGrantedFor(Arg.Any<Int64?>(), Arg.Any<String>()).Returns(true);
             gridColumns.Grid.ViewContext = html.Grid.ViewContext;

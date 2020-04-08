@@ -47,7 +47,7 @@
                 <span class="text">@Resource.ForAction(nameof(Profile))</span>
             </a>
         </div>
-        @{ ILanguages languages = Context.RequestServices.GetService<ILanguages>(); }
+        @{ ILanguages languages = Context.RequestServices.GetRequiredService<ILanguages>(); }
         @if (languages.Supported.Length > 1)
         {
             <div class="btn dropdown">

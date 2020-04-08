@@ -10,7 +10,7 @@ namespace MvcTemplate.Components.Security
     {
         public override Task RedirectToLogin(RedirectContext<CookieAuthenticationOptions> context)
         {
-            LinkGenerator link = context.HttpContext.RequestServices.GetService<LinkGenerator>();
+            LinkGenerator link = context.HttpContext.RequestServices.GetRequiredService<LinkGenerator>();
             context.RedirectUri = link.GetUriByAction(context.HttpContext, "Login", "Auth", new { area = "", returnUrl = $"{context.Request.PathBase}{context.Request.Path}" });
 
             return base.RedirectToLogin(context);

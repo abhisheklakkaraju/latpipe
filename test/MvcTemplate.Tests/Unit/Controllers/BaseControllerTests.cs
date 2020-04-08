@@ -32,6 +32,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.TempData = Substitute.For<ITempDataDictionary>();
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
+            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
             action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
 
@@ -175,7 +176,7 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuting(null);
 
-            Object? expected = controller.HttpContext.RequestServices.GetService<IAuthorization>();
+            Object? expected = controller.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
             Object? actual = controller.Authorization;
 
             Assert.Same(expected, actual);

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security.Area.Tests;
 using MvcTemplate.Data.Core;
 using MvcTemplate.Objects;
@@ -17,8 +18,16 @@ namespace MvcTemplate.Components.Security.Tests
         public AuthorizationTests()
         {
             context = new TestingContext();
+            IServiceScope scope = Substitute.For<IServiceScope>();
             IServiceProvider services = Substitute.For<IServiceProvider>();
+            IServiceScopeFactory factory = Substitute.For<IServiceScopeFactory>();
+
+            factory.CreateScope().Returns(scope);
+            scope.ServiceProvider.Returns(services);
+            services.GetService(typeof(IServiceScopeFactory)).Returns(factory);
+            services.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
             services.GetService(typeof(IUnitOfWork)).Returns(info => new UnitOfWork(new TestingContext(context)));
+
 
             authorization = new Authorization(Assembly.GetExecutingAssembly(), services);
         }

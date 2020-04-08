@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             authorization = Substitute.For<IAuthorization>();
             siteMap = new SiteMap(CreateSiteMap(), authorization);
             context = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
-            IUrlHelper url = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>().GetUrlHelper(context);
+            IUrlHelper url = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(context);
 
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
             route = context.RouteData.Values;

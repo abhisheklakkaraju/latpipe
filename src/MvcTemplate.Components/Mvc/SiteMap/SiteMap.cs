@@ -29,14 +29,14 @@ namespace MvcTemplate.Components.Mvc
         public IEnumerable<SiteMapNode> For(ViewContext context)
         {
             Int64? account = context.HttpContext.User.Id();
-            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
             List<SiteMapNode> nodes = SetState(null, Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
 
             return Authorize(account, nodes);
         }
         public IEnumerable<SiteMapNode> BreadcrumbFor(ViewContext context)
         {
-            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
             SiteMapNode? current = CurrentNodeFor(context.RouteData.Values);
             List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
             IUrlHelper url = factory.GetUrlHelper(context);

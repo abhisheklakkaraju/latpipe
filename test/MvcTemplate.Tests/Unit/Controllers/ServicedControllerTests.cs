@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Mvc;
+using MvcTemplate.Components.Security;
 using MvcTemplate.Services;
 using NSubstitute;
 using System;
@@ -21,6 +22,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.ControllerContext.RouteData = new RouteData();
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.HttpContext.RequestServices.GetService(typeof(ILanguages)).Returns(Substitute.For<ILanguages>());
+            controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
         }
         public override void Dispose()
         {
