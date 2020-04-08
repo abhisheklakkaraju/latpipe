@@ -207,7 +207,7 @@ namespace MvcTemplate.Web
         private void SeedDatabase(IApplicationBuilder app)
         {
             using (Configuration configuration = app.ApplicationServices.GetService<Configuration>())
-                configuration.Seed();
+                configuration.Migrate();
         }
     }
 }
