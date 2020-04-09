@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -9,20 +9,20 @@ namespace MvcTemplate.Components.Mail
 {
     public class SmtpMailClient : IMailClient
     {
-        private IConfiguration Config { get; }
+        private MailConfiguration Config { get; }
 
-        public SmtpMailClient(IConfiguration config)
+        public SmtpMailClient(IOptions<MailConfiguration> config, IOptions<Microsoft.AspNetCore.Builder.SessionOptions> a)
         {
-            Config = config.GetSection("Mail");
+            Config = config.Value;
         }
 
         public async Task SendAsync(String email, String subject, String body)
         {
-            using SmtpClient client = new SmtpClient(Config["Host"], Int32.Parse(Config["Port"]));
-            using MailMessage mail = new MailMessage(Config["Sender"], email, subject, body);
+            using SmtpClient client = new SmtpClient(Config.Host, Config.Port);
+            using MailMessage mail = new MailMessage(Config.Sender, email, subject, body);
 
-            client.Credentials = new NetworkCredential(Config["Sender"], Config["Password"]);
-            client.EnableSsl = Boolean.Parse(Config["EnableSsl"]);
+            client.Credentials = new NetworkCredential(Config.Sender, Config.Password);
+            client.EnableSsl = Config.EnableSsl;
 
             mail.SubjectEncoding = Encoding.UTF8;
             mail.BodyEncoding = Encoding.UTF8;

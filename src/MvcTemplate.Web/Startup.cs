@@ -24,7 +24,6 @@ using MvcTemplate.Services;
 using MvcTemplate.Validators;
 using NonFactors.Mvc.Grid;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace MvcTemplate.Web
@@ -32,21 +31,16 @@ namespace MvcTemplate.Web
     public class Startup
     {
         private IConfiguration Config { get; }
+        private IHostEnvironment Environment { get; }
 
-        public Startup(IHostEnvironment env)
+        public Startup(IHostEnvironment host)
         {
-            Dictionary<String, String> config = new Dictionary<String, String>
-            {
-                { "Application:Path", env.ContentRootPath },
-                { "Application:Env", env.EnvironmentName }
-            };
-
+            Environment = host;
             Config = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(host.ContentRootPath)
                 .AddEnvironmentVariables("ASPNETCORE_")
-                .AddInMemoryCollection(config)
                 .AddJsonFile("configuration.json")
-                .AddJsonFile($"configuration.{env.EnvironmentName.ToLower()}.json", optional: true)
+                .AddJsonFile($"configuration.{host.EnvironmentName.ToLower()}.json", optional: true)
                 .Build();
         }
 
@@ -92,10 +86,11 @@ namespace MvcTemplate.Web
             {
                 builder.AddConfiguration(Config.GetSection("Logging"));
 
-                if (Config["Application:Env"] == Environments.Development)
+                if (!Environment.IsDevelopment())
                     builder.AddConsole();
                 else
-                    builder.AddProvider(new FileLoggerProvider(Config));
+                    builder.AddProvider(new FileLoggerProvider(
+                        Config["Logging:File:Path"], Config.GetValue<Int64>("Logging:File:RollSize")));
             });
         }
         private void ConfigureOptions(IServiceCollection services)
@@ -103,6 +98,7 @@ namespace MvcTemplate.Web
             services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData:Name"]);
             services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session:Name"]);
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            services.Configure<MailConfiguration>(Config.GetSection("Mail"));
             services.Configure<AntiforgeryOptions>(antiforgery =>
             {
                 antiforgery.Cookie.Name = Config["Cookies:Antiforgery:Name"];
@@ -112,7 +108,6 @@ namespace MvcTemplate.Web
         private void ConfigureDependencies(IServiceCollection services)
         {
             services.AddSession();
-            services.AddSingleton(Config);
 
             services.AddTransient<Configuration>();
             services.AddTransient<DbContext, Context>();
@@ -133,8 +128,8 @@ namespace MvcTemplate.Web
             Language[] supported = Config.GetSection("Languages:Supported").Get<Language[]>();
             services.AddSingleton<ILanguages>(new Languages(Config["Languages:Default"], supported));
 
-            String map = File.ReadAllText(Path.Combine(Config["Application:Path"], Config["SiteMap:Path"]));
-            services.AddSingleton<ISiteMap>(provider => new SiteMap(map, provider.GetRequiredService<IAuthorization>()));
+            services.AddSingleton<ISiteMap>(provider => new SiteMap(
+                File.ReadAllText(Config["SiteMap:Path"]), provider.GetRequiredService<IAuthorization>()));
 
             services.AddTransientImplementations<IService>();
             services.AddTransientImplementations<IValidator>();
@@ -144,10 +139,9 @@ namespace MvcTemplate.Web
         {
             if (Config["Resources:Path"] is String path)
             {
-                String directory = Path.Combine(Config["Application:Path"], path);
-                if (Directory.Exists(directory))
+                if (Directory.Exists(path))
                 {
-                    foreach (String resource in Directory.GetFiles(directory, "*.json", SearchOption.AllDirectories))
+                    foreach (String resource in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
                     {
                         String type = Path.GetFileNameWithoutExtension(resource);
                         String language = Path.GetExtension(type).TrimStart('.');
@@ -172,7 +166,7 @@ namespace MvcTemplate.Web
         }
         private void RegisterMiddleware(IApplicationBuilder app)
         {
-            if (Config["Application:Env"] == Environments.Development)
+            if (Environment.IsDevelopment())
                 app.UseMiddleware<DeveloperExceptionPageMiddleware>();
             else
                 app.UseMiddleware<ErrorPagesMiddleware>();

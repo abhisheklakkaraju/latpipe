@@ -1,7 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 
 namespace MvcTemplate.Components.Logging
 {
@@ -10,11 +8,8 @@ namespace MvcTemplate.Components.Logging
     {
         private ILogger Logger { get; }
 
-        public FileLoggerProvider(IConfiguration config)
+        public FileLoggerProvider(String path, Int64 rollSize)
         {
-            String path = Path.Combine(config["Application:Path"], config["Logging:File:Path"]);
-            Int64 rollSize = Int64.Parse(config["Logging:File:RollSize"]);
-
             Logger = new FileLogger(path, rollSize);
         }
 
