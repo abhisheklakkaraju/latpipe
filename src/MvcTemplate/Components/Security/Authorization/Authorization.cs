@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;

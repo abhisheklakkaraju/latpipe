@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MvcTemplate.Data.Core;
-using MvcTemplate.Data.Logging;
 using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
@@ -10,12 +8,12 @@ namespace MvcTemplate.Data.Migrations
 {
     public sealed class Configuration : IDisposable
     {
-        private IUnitOfWork UnitOfWork { get; }
         private DbContext Context { get; }
+        private IUnitOfWork UnitOfWork { get; }
 
-        public Configuration(DbContext context, DbContext? audit)
+        public Configuration(DbContext context)
         {
-            UnitOfWork = new UnitOfWork(context, audit == null ? null : new AuditLogger(audit, 0));
+            UnitOfWork = new AuditedUnitOfWork(context, 0);
             Context = context;
         }
 

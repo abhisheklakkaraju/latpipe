@@ -16,8 +16,7 @@ using MvcTemplate.Components.Mail;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Controllers;
-using MvcTemplate.Data.Core;
-using MvcTemplate.Data.Logging;
+using MvcTemplate.Data;
 using MvcTemplate.Data.Migrations;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
@@ -117,11 +116,9 @@ namespace MvcTemplate.Web
 
             services.AddTransient<Configuration>();
             services.AddTransient<DbContext, Context>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<Context>(options => options.UseSqlServer(Config["Data:Connection"]));
-
-            services.AddTransient<IAuditLogger>(provider =>
-                new AuditLogger(provider.GetRequiredService<DbContext>(),
+            services.AddTransient<IUnitOfWork>(provider => new AuditedUnitOfWork(
+                provider.GetRequiredService<DbContext>(),
                 provider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User?.Id()));
 
             services.AddSingleton<IHasher, BCrypter>();

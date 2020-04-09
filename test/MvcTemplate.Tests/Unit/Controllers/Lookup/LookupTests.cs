@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MvcTemplate.Components.Lookups;
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using NonFactors.Mvc.Lookup;
 using NSubstitute;

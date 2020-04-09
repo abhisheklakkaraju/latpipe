@@ -1,4 +1,4 @@
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
 using NonFactors.Mvc.Lookup;

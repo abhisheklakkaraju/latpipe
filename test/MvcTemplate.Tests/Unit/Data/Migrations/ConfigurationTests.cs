@@ -16,7 +16,7 @@ namespace MvcTemplate.Data.Migrations.Tests
         public ConfigurationTests()
         {
             context = new TestingContext();
-            configuration = new Configuration(context, null);
+            configuration = new Configuration(context);
         }
         public void Dispose()
         {

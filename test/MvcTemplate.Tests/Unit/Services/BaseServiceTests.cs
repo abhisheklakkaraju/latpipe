@@ -1,4 +1,4 @@
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using NSubstitute;
 using System;
 using Xunit;

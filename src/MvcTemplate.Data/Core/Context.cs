@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace MvcTemplate.Data.Core
+namespace MvcTemplate.Data
 {
     public class Context : DbContext
     {

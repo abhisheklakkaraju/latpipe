@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MvcTemplate.Data.Core
+namespace MvcTemplate.Data
 {
     public class Query<TModel> : IQuery<TModel>
     {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security.Area.Tests;
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using NSubstitute;

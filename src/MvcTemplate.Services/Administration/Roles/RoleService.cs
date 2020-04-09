@@ -1,5 +1,5 @@
 using MvcTemplate.Components.Extensions;
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
 using System;

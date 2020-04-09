@@ -8,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace MvcTemplate.Data.Core.Tests
+namespace MvcTemplate.Data.Tests
 {
     public class QueryTests : IDisposable
     {

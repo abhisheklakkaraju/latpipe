@@ -2,23 +2,20 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MvcTemplate.Data.Logging;
 using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MvcTemplate.Data.Core
+namespace MvcTemplate.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private DbContext Context { get; }
-        private IAuditLogger? Logger { get; }
+        protected DbContext Context { get; }
 
-        public UnitOfWork(DbContext context, IAuditLogger? logger = null)
+        public UnitOfWork(DbContext context)
         {
             Context = context;
-            Logger = logger;
         }
 
         public TDestination? GetAs<TModel, TDestination>(Int64? id) where TModel : BaseModel where TDestination : class
@@ -78,18 +75,13 @@ namespace MvcTemplate.Data.Core
             Delete(Context.Find<TModel>(id));
         }
 
-        public void Commit()
+        public virtual void Commit()
         {
-            Logger?.Log(Context.ChangeTracker.Entries<BaseModel>());
-
             Context.SaveChanges();
-
-            Logger?.Save();
         }
 
         public void Dispose()
         {
-            Logger?.Dispose();
             Context.Dispose();
         }
     }

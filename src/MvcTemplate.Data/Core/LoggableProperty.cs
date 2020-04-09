@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Text.Json;
 
-namespace MvcTemplate.Data.Logging
+namespace MvcTemplate.Data
 {
     public class LoggableProperty
     {

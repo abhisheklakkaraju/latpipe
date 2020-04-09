@@ -2,20 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MvcTemplate.Objects;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
-namespace MvcTemplate.Data.Logging
+namespace MvcTemplate.Data
 {
     public class LoggableEntity
     {
         public String Name { get; }
         public String Action { get; }
         public Func<Int64> Id { get; }
+        public Boolean IsModified { get; }
         private static String IdName { get; }
-        public IEnumerable<LoggableProperty> Properties { get; }
+        private LoggableProperty[] Properties { get; }
 
         static LoggableEntity()
         {
@@ -24,17 +24,22 @@ namespace MvcTemplate.Data.Logging
 
         public LoggableEntity(EntityEntry<BaseModel> entry)
         {
+            Type type = entry.Entity.GetType();
             PropertyValues values =
                 entry.State == EntityState.Modified || entry.State == EntityState.Deleted
                     ? entry.GetDatabaseValues()
                     : entry.CurrentValues;
 
-            Properties = values.Properties.Where(property => property.Name != IdName).Select(property => new LoggableProperty(entry.Property(property.Name), values[property]));
-            Properties = entry.State == EntityState.Modified ? Properties.Where(property => property.IsModified) : Properties;
-            Properties = Properties.ToArray();
+            Properties = values
+                .Properties
+                .Where(property => property.Name != IdName)
+                .Select(property => new LoggableProperty(entry.Property(property.Name), values[property]))
+                .Where(property => entry.State != EntityState.Modified || property.IsModified)
+                .ToArray();
 
-            Name = entry.Entity.GetType().Name;
+            Name = type.AssemblyQualifiedName?.StartsWith("Castle.Proxies") == true ? type.BaseType!.Name : type.Name;
             Action = entry.State.ToString();
+            IsModified = Properties.Any();
             Id = () => entry.Entity.Id;
         }
 

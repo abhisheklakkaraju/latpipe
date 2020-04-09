@@ -1,4 +1,4 @@
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using System;
 
 namespace MvcTemplate.Services

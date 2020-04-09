@@ -4,7 +4,7 @@ using MvcTemplate.Tests;
 using System;
 using Xunit;
 
-namespace MvcTemplate.Data.Logging.Tests
+namespace MvcTemplate.Data.Tests
 {
     public class LoggablePropertyTests
     {

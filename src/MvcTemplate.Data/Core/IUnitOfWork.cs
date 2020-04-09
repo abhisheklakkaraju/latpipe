@@ -2,7 +2,7 @@ using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
 
-namespace MvcTemplate.Data.Core
+namespace MvcTemplate.Data
 {
     public interface IUnitOfWork : IDisposable
     {

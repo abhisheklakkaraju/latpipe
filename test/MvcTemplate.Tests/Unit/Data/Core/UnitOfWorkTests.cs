@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MvcTemplate.Data.Logging;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using NSubstitute;
@@ -10,27 +9,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace MvcTemplate.Data.Core.Tests
+namespace MvcTemplate.Data.Tests
 {
     public class UnitOfWorkTests : IDisposable
     {
-        private TestingContext context;
-        private UnitOfWork unitOfWork;
-        private IAuditLogger logger;
         private TestModel model;
+        private UnitOfWork unitOfWork;
+        private TestingContext context;
 
         public UnitOfWorkTests()
         {
             context = new TestingContext();
-            logger = Substitute.For<IAuditLogger>();
+            unitOfWork = new UnitOfWork(context);
             model = ObjectsFactory.CreateTestModel();
-            unitOfWork = new UnitOfWork(context, logger);
         }
         public void Dispose()
         {
             unitOfWork.Dispose();
             context.Dispose();
-            logger.Dispose();
         }
 
         [Fact]
@@ -195,34 +191,6 @@ namespace MvcTemplate.Data.Core.Tests
             testingUnitOfWork.Commit();
 
             testingContext.Received().SaveChanges();
-        }
-
-        [Fact]
-        public void Commit_Logs()
-        {
-            unitOfWork.Commit();
-
-            logger.Received().Log(Arg.Any<IEnumerable<EntityEntry<BaseModel>>>());
-            logger.Received().Save();
-        }
-
-        [Fact]
-        public void Commit_Failed_DoesNotSaveLogs()
-        {
-            logger.When(sub => sub.Log(Arg.Any<IEnumerable<EntityEntry<BaseModel>>>())).Do(call => throw new Exception());
-            Exception? exception = Record.Exception(() => unitOfWork.Commit());
-
-            logger.Received().Log(Arg.Any<IEnumerable<EntityEntry<BaseModel>>>());
-            logger.DidNotReceive().Save();
-            Assert.NotNull(exception);
-        }
-
-        [Fact]
-        public void Dispose_Logger()
-        {
-            unitOfWork.Dispose();
-
-            logger.Received().Dispose();
         }
 
         [Fact]

@@ -1,6 +1,6 @@
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
-using MvcTemplate.Data.Core;
+using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
 using MvcTemplate.Tests;

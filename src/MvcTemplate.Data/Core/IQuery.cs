@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MvcTemplate.Data.Core
+namespace MvcTemplate.Data
 {
     public interface IQuery<TModel> : IQueryable<TModel>
     {
