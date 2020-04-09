@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Linq;
 
@@ -9,7 +10,8 @@ namespace MvcTemplate.Components.Extensions
         public static void AddTransientImplementations<T>(this IServiceCollection services)
         {
             foreach (Type type in typeof(T).Assembly.GetTypes().Where(Implements<T>))
-                services.AddTransient(type.GetInterface($"I{type.Name}"), type);
+                if (type.GetInterface($"I{type.Name}") is Type typeInterface)
+                    services.TryAddTransient(typeInterface, type);
         }
         private static Boolean Implements<T>(Type type)
         {
