@@ -175,7 +175,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            Role actual = context.Set<Role>().AsNoTracking().Single(model => model.Id != role.Id);
+            Role actual = Assert.Single(context.Set<Role>().AsNoTracking(), model => model.Id != role.Id);
             RoleView expected = view;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
@@ -209,7 +209,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(view);
 
-            Role actual = context.Set<Role>().AsNoTracking().Single();
+            Role actual = Assert.Single(context.Set<Role>().AsNoTracking());
             Role expected = role;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);

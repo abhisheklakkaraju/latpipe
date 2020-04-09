@@ -49,7 +49,7 @@
                         <label asp-for="RoleId"></label>
                     </div>
                     <div class="control-content col-md-9 col-lg-5">
-                        <div mvc-lookup-for="RoleId" url="~/@(nameof(Lookup))/@(nameof(Lookup.Role))" title="@Resource.ForLookup(nameof(Lookup.Role))"></div>
+                        <div mvc-lookup-for="RoleId" handler="@nameof(Lookup.Role)"></div>
                     </div>
                     <div class="control-validation col">
                         <span asp-validation-for="RoleId"></span>

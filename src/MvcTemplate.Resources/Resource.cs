@@ -53,9 +53,9 @@ namespace MvcTemplate.Resources
             return Localized("Shared", "Controllers", name);
         }
 
-        public static String ForLookup(String type)
+        public static String ForLookup(String handler)
         {
-            return Localized("Lookup", "Titles", type);
+            return Localized("Lookup", "Titles", handler);
         }
 
         public static String ForString(String key, params Object[] args)

@@ -19,18 +19,10 @@ namespace MvcTemplate.Controllers
             UnitOfWork = unitOfWork;
         }
 
-        [NonAction]
-        public virtual JsonResult GetData(ALookup lookup, LookupFilter filter)
-        {
-            lookup.Filter = filter;
-
-            return Json(lookup.GetData());
-        }
-
         [AjaxOnly]
         public JsonResult Role(LookupFilter filter)
         {
-            return GetData(new MvcLookup<Role, RoleView>(UnitOfWork), filter);
+            return Json(new MvcLookup<Role, RoleView>(UnitOfWork) { Filter = filter }.GetData());
         }
 
         protected override void Dispose(Boolean disposing)

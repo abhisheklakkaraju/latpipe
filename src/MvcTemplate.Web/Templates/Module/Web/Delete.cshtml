@@ -37,7 +37,7 @@
                     }
                     else if (Model.Relations[property] is String relation)
                     {
-                    <div mvc-lookup-for="@property.Name" url="~/@@(nameof(Lookup))/@@(nameof(Lookup.@relation))" title="@@Resource.ForLookup(nameof(Lookup.@relation))"></div>
+                    <div mvc-lookup-for="@property.Name" handler="@@nameof(Lookup.@relation)"></div>
                     }
                     else if (property.PropertyType == typeof(String))
                     {

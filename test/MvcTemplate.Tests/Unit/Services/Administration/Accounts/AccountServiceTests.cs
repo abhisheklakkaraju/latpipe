@@ -134,7 +134,7 @@ namespace MvcTemplate.Services.Tests
 
             account.RecoveryToken = service.Recover(view);
 
-            Account actual = context.Set<Account>().AsNoTracking().Single();
+            Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
             Assert.InRange(actual.RecoveryTokenExpirationDate!.Value.Ticks,
@@ -159,7 +159,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Reset(view);
 
-            Account actual = context.Set<Account>().AsNoTracking().Single();
+            Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
             Assert.Equal(hasher.HashPassword(view.NewPassword!), actual.Passhash);
@@ -182,7 +182,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            Account actual = context.Set<Account>().AsNoTracking().Single(model => model.Id != account.Id);
+            Account actual = Assert.Single(context.Set<Account>().AsNoTracking(), model => model.Id != account.Id);
             AccountCreateView expected = view;
 
             Assert.Equal(hasher.HashPassword(expected.Password!), actual.Passhash);
@@ -206,7 +206,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(view);
 
-            Account actual = context.Set<Account>().AsNoTracking().Single();
+            Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
             Assert.Equal(expected.RecoveryTokenExpirationDate, actual.RecoveryTokenExpirationDate);
@@ -230,7 +230,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(httpContext.User, view);
 
-            Account actual = context.Set<Account>().AsNoTracking().Single();
+            Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
             Assert.Equal(expected.RecoveryTokenExpirationDate, actual.RecoveryTokenExpirationDate);
@@ -255,7 +255,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(httpContext.User, view);
 
-            String actual = context.Set<Account>().AsNoTracking().Single().Passhash;
+            String actual = Assert.Single(context.Set<Account>().AsNoTracking()).Passhash;
             String expected = account.Passhash;
 
             Assert.Equal(expected, actual);

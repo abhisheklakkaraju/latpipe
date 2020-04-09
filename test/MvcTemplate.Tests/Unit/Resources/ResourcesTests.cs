@@ -1,10 +1,12 @@
 using MvcTemplate.Components.Mvc;
+using MvcTemplate.Controllers;
 using MvcTemplate.Data.Migrations;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using Xunit;
 
@@ -68,6 +70,15 @@ namespace MvcTemplate.Resources.Tests
 
             foreach (String name in context.Set<Permission>().Select(permission => permission.Action).Distinct())
                 Assert.True(Resource.ForAction(name) != "", $"'{name}' action does not have a title.");
+        }
+
+        [Fact]
+        public void Resources_HasAllLookupTitles()
+        {
+            BindingFlags actions = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
+
+            foreach (String handler in typeof(Lookup).GetMethods(actions).Select(action => action.Name))
+                Assert.True(Resource.ForLookup(handler) != "", $"'{handler}' lookup does not have a title.");
         }
 
         private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode? parent = null)

@@ -81,7 +81,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            @Model.Model actual = context.Set<@Model.Model>().AsNoTracking().Single(model => model.Id != @(Model.ModelVarName).Id);
+            @Model.Model actual = Assert.Single(context.Set<@Model.Model>().AsNoTracking(), model => model.Id != @(Model.ModelVarName).Id);
             @Model.View expected = view;
 
             @if (Model.ModelProperties.Length == 0)
@@ -132,7 +132,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Edit(view);
 
-            @Model.Model actual = context.Set<@Model.Model>().AsNoTracking().Single();
+            @Model.Model actual = Assert.Single(context.Set<@Model.Model>().AsNoTracking());
             @Model.Model expected = @Model.ModelVarName;
 
             @if (Model.ModelProperties.Length == 0)
