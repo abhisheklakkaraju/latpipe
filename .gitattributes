@@ -1,16 +1,5 @@
 * text=auto
 
-*.js eol=lf
-*.md eol=lf
-*.css eol=lf
-*.svg eol=lf
-*.png binary
-*.jpg binary
-*.woff binary
-*.json eol=lf
-*.cshtml eol=lf
-*.gitignore eol=lf
-*.gitattributes eol=lf
-*.cs eol=lf diff=csharp
-*.sln eol=lf merge=union
-*.csproj eol=lf merge=union
+*.cs diff=csharp
+*.sln merge=union
+*.csproj merge=union
