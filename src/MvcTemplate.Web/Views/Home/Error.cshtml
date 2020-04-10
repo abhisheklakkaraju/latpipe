@@ -1,9 +1,9 @@
 @{
     Layout = "_PublicLayout";
-    ViewBag.Title = Resource.ForPage($"/nameof(Home)/nameof(Home.Error)");
+    ViewBag.Title = Resource.ForPage($"/{nameof(Home)}/{nameof(Home.Error)}");
 }
 
-<div class="title text-right">@Resource.ForPage($"/nameof(Home)/nameof(Home.Error)")</div>
+<div class="title text-right">@Resource.ForPage($"/{nameof(Home)}/{nameof(Home.Error)}")</div>
 
 <hr />
 
@@ -13,6 +13,6 @@
 
 <div class="description">@Resource.ForString("SystemError", Context.TraceIdentifier)</div>
 
-<a asp-action="@nameof(Home.Index)" asp-controller="nameof(Home)" asp-area="" class="btn btn-block btn-primary mt-3">
+<a asp-action="@nameof(Home.Index)" asp-controller="@nameof(Home)" asp-area="" class="btn btn-block btn-primary mt-3">
     @Resource.ForAction("Home")
 </a>

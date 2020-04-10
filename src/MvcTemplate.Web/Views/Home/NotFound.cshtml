@@ -1,9 +1,9 @@
 @{
     Layout = "_PublicLayout";
-    ViewBag.Title = Resource.ForPage($"/nameof(Home)/nameof(Home.NotFound)");
+    ViewBag.Title = Resource.ForPage($"/{nameof(Home)}/{nameof(Home.NotFound)}");
 }
 
-<div class="title text-right">@Resource.ForPage($"/nameof(Home)/nameof(Home.NotFound)")</div>
+<div class="title text-right">@Resource.ForPage($"/{nameof(Home)}/{nameof(Home.NotFound)}")</div>
 
 <hr />
 
