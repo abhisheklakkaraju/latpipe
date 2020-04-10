@@ -86,7 +86,7 @@ namespace MvcTemplate.Web
             {
                 builder.AddConfiguration(Config.GetSection("Logging"));
 
-                if (!Environment.IsDevelopment())
+                if (Environment.IsDevelopment())
                     builder.AddConsole();
                 else
                     builder.AddProvider(new FileLoggerProvider(
