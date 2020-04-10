@@ -7,7 +7,7 @@ using System;
 
 namespace MvcTemplate.Components.Mvc
 {
-    public class AuthorizationFilter : IResourceFilter
+    public class AuthorizationFilter : IAuthorizationFilter
     {
         private IAuthorization Authorization { get; }
 
@@ -16,7 +16,7 @@ namespace MvcTemplate.Components.Mvc
             Authorization = authorization;
         }
 
-        public void OnResourceExecuting(ResourceExecutingContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (!context.HttpContext.User.Identity.IsAuthenticated)
                 return;
@@ -32,9 +32,6 @@ namespace MvcTemplate.Components.Mvc
                     StatusCode = StatusCodes.Status404NotFound,
                     ViewName = "~/Views/Home/NotFound.cshtml"
                 };
-        }
-        public void OnResourceExecuted(ResourceExecutedContext context)
-        {
         }
     }
 }

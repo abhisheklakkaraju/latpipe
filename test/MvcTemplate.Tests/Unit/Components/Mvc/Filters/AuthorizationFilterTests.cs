@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
 using NSubstitute;
@@ -14,34 +13,34 @@ namespace MvcTemplate.Components.Mvc.Tests
 {
     public class AuthorizationFilterTests
     {
-        private ResourceExecutingContext context;
-        private IAuthorization authorization;
         private AuthorizationFilter filter;
+        private IAuthorization authorization;
+        private AuthorizationFilterContext context;
 
         public AuthorizationFilterTests()
         {
             ActionContext action = new ActionContext(Substitute.For<HttpContext>(), new RouteData(), new ActionDescriptor());
-            context = new ResourceExecutingContext(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
+            context = new AuthorizationFilterContext(action, Array.Empty<IFilterMetadata>());
             authorization = Substitute.For<IAuthorization>();
             filter = new AuthorizationFilter(authorization);
         }
 
         [Fact]
-        public void OnResourceExecuting_NotAuthenticated_SetsNullResult()
+        public void OnAuthorization_NotAuthenticated_SetsNullResult()
         {
             context.HttpContext.User.Identity.IsAuthenticated.Returns(false);
 
-            filter.OnResourceExecuting(context);
+            filter.OnAuthorization(context);
 
             Assert.Null(context.Result);
         }
 
         [Fact]
-        public void OnResourceExecuting_NotAuthorized_ReturnsNotFoundView()
+        public void OnAuthorization_NotAuthorized_ReturnsNotFoundView()
         {
             context.HttpContext.User.Identity.IsAuthenticated.Returns(true);
 
-            filter.OnResourceExecuting(context);
+            filter.OnAuthorization(context);
 
             ViewResult actual = Assert.IsType<ViewResult>(context.Result);
 
@@ -50,7 +49,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
-        public void OnResourceExecuting_IsAuthorized_SetsNullResult()
+        public void OnAuthorization_IsAuthorized_SetsNullResult()
         {
             context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "11000"));
             context.HttpContext.User.Identity.IsAuthenticated.Returns(true);
@@ -60,7 +59,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             authorization.IsGrantedFor(11000, "Area/Controller/Action").Returns(true);
 
-            filter.OnResourceExecuting(context);
+            filter.OnAuthorization(context);
 
             Assert.Null(context.Result);
         }
