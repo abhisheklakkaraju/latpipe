@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MvcTemplate.Data
 {
-    public class Program
+    public static class Program
     {
         public static void Main()
         {

@@ -119,7 +119,6 @@ namespace MvcTemplate.Services.Tests
             RoleView[] actual = service.GetViews().ToArray();
             RoleView[] expected = context
                 .Set<Role>()
-                .AsNoTracking()
                 .ProjectTo<RoleView>()
                 .OrderByDescending(view => view.Id)
                 .ToArray();
@@ -175,7 +174,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            Role actual = Assert.Single(context.Set<Role>().AsNoTracking(), model => model.Id != role.Id);
+            Role actual = Assert.Single(context.Set<Role>(), model => model.Id != role.Id);
             RoleView expected = view;
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
@@ -193,7 +192,6 @@ namespace MvcTemplate.Services.Tests
             IEnumerable<Int64> expected = view.Permissions.SelectedIds.OrderBy(permissionId => permissionId);
             IEnumerable<Int64> actual = context
                 .Set<RolePermission>()
-                .AsNoTracking()
                 .Where(rolePermission => rolePermission.RoleId != role.Id)
                 .Select(rolePermission => rolePermission.PermissionId)
                 .OrderBy(permissionId => permissionId);
@@ -257,7 +255,7 @@ namespace MvcTemplate.Services.Tests
         {
             service.Delete(role.Id);
 
-            Assert.Empty(context.Set<Role>().AsNoTracking());
+            Assert.Empty(context.Set<Role>());
         }
 
         private Role SetUpData()
@@ -301,12 +299,14 @@ namespace MvcTemplate.Services.Tests
                     Controller = Resource.ForController($"{permission.Area}/{permission.Controller}")
                 });
 
-            foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault().Controller))
+            foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault()?.Controller))
             {
                 List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+
                 foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
                 {
                     MvcTreeNode node = new MvcTreeNode(controller.Key);
+
                     foreach (PermissionView permission in controller)
                         node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
 
@@ -334,6 +334,7 @@ namespace MvcTemplate.Services.Tests
         private IEnumerable<MvcTreeNode> GetBranchNodes(IEnumerable<MvcTreeNode> nodes)
         {
             List<MvcTreeNode> branches = nodes.Where(node => node.Children.Count > 0).ToList();
+
             foreach (MvcTreeNode branch in branches.ToArray())
                 branches.AddRange(GetBranchNodes(branch.Children));
 

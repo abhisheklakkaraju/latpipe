@@ -38,8 +38,8 @@ namespace MvcTemplate.Data
                 .ToArray();
 
             Name = type.AssemblyQualifiedName?.StartsWith("Castle.Proxies") == true ? type.BaseType!.Name : type.Name;
+            IsModified = Properties.Length > 0;
             Action = entry.State.ToString();
-            IsModified = Properties.Any();
             Id = () => entry.Entity.Id;
         }
 
@@ -48,7 +48,7 @@ namespace MvcTemplate.Data
             StringBuilder changes = new StringBuilder();
 
             foreach (LoggableProperty property in Properties)
-                changes.Append($"{property}\n");
+                changes.Append(property).Append('\n');
 
             return changes.ToString();
         }

@@ -91,6 +91,7 @@ namespace MvcTemplate.Components.Mvc
         private List<SiteMapNode> Authorize(Int64? accountId, IEnumerable<SiteMapNode> nodes)
         {
             List<SiteMapNode> authorized = new List<SiteMapNode>();
+
             foreach (SiteMapNode node in nodes)
             {
                 node.Children = Authorize(accountId, node.Children);
@@ -111,6 +112,7 @@ namespace MvcTemplate.Components.Mvc
         private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
+
             foreach (XElement element in root.Elements("siteMapNode"))
             {
                 SiteMapNode node = new SiteMapNode();
@@ -134,6 +136,7 @@ namespace MvcTemplate.Components.Mvc
         private List<SiteMapNode> Flatten(IEnumerable<SiteMapNode> branches)
         {
             List<SiteMapNode> list = new List<SiteMapNode>();
+
             foreach (SiteMapNode branch in branches)
             {
                 list.Add(branch);

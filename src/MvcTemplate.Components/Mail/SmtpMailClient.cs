@@ -11,7 +11,7 @@ namespace MvcTemplate.Components.Mail
     {
         private MailConfiguration Config { get; }
 
-        public SmtpMailClient(IOptions<MailConfiguration> config, IOptions<Microsoft.AspNetCore.Builder.SessionOptions> a)
+        public SmtpMailClient(IOptions<MailConfiguration> config)
         {
             Config = config.Value;
         }

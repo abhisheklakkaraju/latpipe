@@ -20,7 +20,7 @@ namespace MvcTemplate.Components.Security.Area.Tests
         [HttpPost]
         public ViewResult Action(Object obj)
         {
-            return View();
+            return View(obj);
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace MvcTemplate.Components.Security.Area.Tests
         [HttpPost]
         public ViewResult AuthorizedGetAction(Object obj)
         {
-            return View();
+            return View(obj);
         }
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace MvcTemplate.Components.Security.Area.Tests
         [ActionName("AuthorizedNamedGetAction")]
         public ViewResult GetActionWithName(Object obj)
         {
-            return View();
+            return View(obj);
         }
 
         [HttpPost]

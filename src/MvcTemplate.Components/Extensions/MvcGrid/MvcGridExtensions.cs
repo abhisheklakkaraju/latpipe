@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Extensions
             ViewContext context = columns.Grid.ViewContext!;
 
             if (!IsAuthorizedFor(context, action))
-                return new GridColumn<T, IHtmlContent>(columns.Grid, model => HtmlString.Empty);
+                return new GridColumn<T, IHtmlContent>(columns.Grid, _ => HtmlString.Empty);
 
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
             IUrlHelper url = factory.GetUrlHelper(context);
@@ -80,7 +80,7 @@ namespace MvcTemplate.Components.Extensions
         public static IHtmlGrid<T> ApplyDefaults<T>(this IHtmlGrid<T> grid)
         {
             return grid
-                .Pageable(pager => { pager.RowsPerPage = 16; })
+                .Pageable(pager => pager.RowsPerPage = 16)
                 .Empty(Resource.ForString("NoDataFound"))
                 .AppendCss("table-hover")
                 .Filterable()
@@ -122,6 +122,7 @@ namespace MvcTemplate.Components.Extensions
         private static String CssClassFor<TProperty>()
         {
             Type type = Nullable.GetUnderlyingType(typeof(TProperty)) ?? typeof(TProperty);
+
             if (type.IsEnum)
                 return "text-left";
 

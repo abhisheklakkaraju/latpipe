@@ -18,7 +18,7 @@ namespace MvcTemplate.Components.Security.Tests
         [HttpPost]
         public ViewResult Action(Object obj)
         {
-            return View();
+            return View(obj);
         }
 
         [HttpGet]

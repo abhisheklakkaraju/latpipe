@@ -62,7 +62,7 @@ namespace MvcTemplate.Resources
         {
             String value = Localized("Shared", "Strings", key);
 
-            return value == "" || args.Length == 0 ? value : String.Format(value, args);
+            return String.IsNullOrEmpty(value) || args.Length == 0 ? value : String.Format(value, args);
         }
 
         public static String ForHeader(String model)

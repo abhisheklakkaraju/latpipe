@@ -13,8 +13,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Process_Placeholder()
         {
+            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => null);
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (useCache, encoder) => null);
             PlaceholderTagHelper helper = new PlaceholderTagHelper { For = new ModelExpression("Total", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
 
             metadata.DisplayName.Returns("Test");

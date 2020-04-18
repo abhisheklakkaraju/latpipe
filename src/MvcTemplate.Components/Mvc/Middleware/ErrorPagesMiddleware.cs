@@ -53,6 +53,7 @@ namespace MvcTemplate.Components.Mvc
                 if (abbreviation.Success)
                 {
                     Language language = Languages[abbreviation.Groups[1].Value];
+
                     if (language != Languages.Default)
                         context.Request.Path = $"/{language.Abbreviation}{path}";
                 }

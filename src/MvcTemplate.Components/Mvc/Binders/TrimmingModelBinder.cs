@@ -16,6 +16,7 @@ namespace MvcTemplate.Components.Mvc
         private ModelBindingResult BindModel(ModelBindingContext context)
         {
             ValueProviderResult result = context.ValueProvider.GetValue(context.ModelName);
+
             if (result == ValueProviderResult.None)
                 return context.Result;
 

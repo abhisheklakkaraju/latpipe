@@ -375,8 +375,10 @@ namespace MvcTemplate.Web.Templates
 
                     if (property.PropertyType == typeof(String))
                         return $"{set}$\"{property.Name}{{id}}\"";
+
                     if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
                         return $"{set}true";
+
                     if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
                         return $"{set}DateTime.Now.AddDays(id)";
 

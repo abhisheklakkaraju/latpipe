@@ -56,7 +56,6 @@ namespace MvcTemplate.Services.Tests
             @(Model.View)[] actual = service.GetViews().ToArray();
             @(Model.View)[] expected = context
                 .Set<@Model.Model>()
-                .AsNoTracking()
                 .ProjectTo<@Model.View>()
                 .OrderByDescending(view => view.Id)
                 .ToArray();
@@ -81,7 +80,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            @Model.Model actual = Assert.Single(context.Set<@Model.Model>().AsNoTracking(), model => model.Id != @(Model.ModelVarName).Id);
+            @Model.Model actual = Assert.Single(context.Set<@Model.Model>(), model => model.Id != @(Model.ModelVarName).Id);
             @Model.View expected = view;
 
             @if (Model.ModelProperties.Length == 0)
@@ -108,27 +107,30 @@ namespace MvcTemplate.Services.Tests
         public void Edit_@(Model.ModelShortName)()
         {
             @Model.View view = ObjectsFactory.Create@(Model.View)();
-            @foreach (PropertyInfo property in Model.ViewProperties.OrderByDescending(prop => prop.Name.Length).ThenBy(prop => prop.Name))
+            @{ IEnumerable<String> changes = Model.ViewProperties.Select(property =>
             {
                 if (property.PropertyType == typeof(String))
                 {
-            @:view.@property.Name = @(Model.ModelVarName).@property.Name += "Test";
+                    return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} += \"Test\"";
                 }
                 else if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
                 {
-            @:view.@property.Name = @(Model.ModelVarName).@property.Name = !@(Model.ModelVarName).@property.Name;
+                    return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} = !{Model.ModelVarName}.{property.Name}";
                 }
                 else if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
                 {
-            @:view.@property.Name = @(Model.ModelVarName).@(property.Name) = @(Model.ModelVarName).@(property.Name).AddDays(1);
+                    return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} = {Model.ModelVarName}.{property.Name}.AddDays(1)";
                 }
                 else
                 {
-            @:view.@property.Name = @(Model.ModelVarName).@property.Name += 1;
+                    return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} += 1";
                 }
+            }).OrderByDescending(change => change.Length);
             }
-
-            Assert.True(false, "Above properties were not sanity checked");
+@foreach(String change in changes)
+{
+            @:@change;
+}
 
             service.Edit(view);
 

@@ -24,10 +24,12 @@ namespace MvcTemplate.Components.Mvc
         protected override ValidationResult IsValid(Object? value, ValidationContext context)
         {
             PropertyInfo? other = context.ObjectType.GetProperty(OtherPropertyName);
+
             if (other != null && Equals(value, other.GetValue(context.ObjectInstance)))
                 return ValidationResult.Success;
 
             OtherPropertyDisplayName = Resource.ForProperty(context.ObjectType, OtherPropertyName);
+
             if (String.IsNullOrEmpty(OtherPropertyDisplayName))
                 OtherPropertyDisplayName = OtherPropertyName;
 

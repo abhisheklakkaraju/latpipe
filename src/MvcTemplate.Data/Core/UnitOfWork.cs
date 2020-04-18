@@ -56,6 +56,7 @@ namespace MvcTemplate.Data
         public void Update<TModel>(TModel model) where TModel : BaseModel
         {
             EntityEntry<TModel> entry = Context.Entry(model);
+
             if (entry.State != EntityState.Modified && entry.State != EntityState.Unchanged)
                 entry.State = EntityState.Modified;
 

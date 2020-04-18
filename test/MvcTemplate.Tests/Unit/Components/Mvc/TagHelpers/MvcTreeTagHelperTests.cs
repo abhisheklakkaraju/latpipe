@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             helper = new MvcTreeTagHelper();
             helper.For = new ModelExpression("MvcTree", explorer);
-            output = new TagHelperOutput("div", new TagHelperAttributeList(), (useCachedResult, encoder) => null);
+            output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => null);
         }
 
         [Fact]

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -22,11 +23,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData(typeof(Boolean), true, false, "")]
         public void Process_Label(Type type, Boolean metadataRequired, Boolean? required, String require)
         {
-            ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(type));
-            TagHelperAttribute[] attributes = { new TagHelperAttribute("for", "Test") };
             FormLabelTagHelper helper = new FormLabelTagHelper();
+            TagHelperAttribute[] attributes = { new TagHelperAttribute("for", "Test") };
+            ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(type));
+            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
+            TagHelperOutput output = new TagHelperOutput("label", new TagHelperAttributeList(attributes), (_, __) => content);
 
-            TagHelperOutput output = new TagHelperOutput("label", new TagHelperAttributeList(attributes), (useCache, encoder) => null);
             helper.For = new ModelExpression("Total.Sum", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null));
             metadata.IsRequired.Returns(metadataRequired);
             metadata.DisplayName.Returns("Progix");

@@ -11,7 +11,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             HttpContext context = new DefaultHttpContext();
 
-            await new SecureHeadersMiddleware(next => Task.CompletedTask).Invoke(context);
+            await new SecureHeadersMiddleware(_ => Task.CompletedTask).Invoke(context);
 
             IHeaderDictionary actual = context.Response.Headers;
 

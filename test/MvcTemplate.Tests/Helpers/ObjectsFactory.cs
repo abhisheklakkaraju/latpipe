@@ -109,7 +109,6 @@ namespace MvcTemplate.Tests
 
                 Password = $"Password{id}",
                 NewPassword = $"NewPassword{id}"
-
             };
         }
         public static ProfileDeleteView CreateProfileDeleteView(Int64 id = 1)

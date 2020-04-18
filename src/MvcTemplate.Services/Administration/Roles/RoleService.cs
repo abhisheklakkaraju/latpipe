@@ -23,9 +23,11 @@ namespace MvcTemplate.Services
             foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
             {
                 List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+
                 foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
                 {
                     MvcTreeNode node = new MvcTreeNode(controller.Key);
+
                     foreach (PermissionView permission in controller)
                         node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
 
@@ -48,8 +50,7 @@ namespace MvcTemplate.Services
         }
         public RoleView? GetView(Int64 id)
         {
-            RoleView? role = UnitOfWork.GetAs<Role, RoleView>(id);
-            if (role != null)
+            if (UnitOfWork.GetAs<Role, RoleView>(id) is RoleView role)
             {
                 role.Permissions.SelectedIds = new HashSet<Int64>(UnitOfWork
                     .Select<RolePermission>()
@@ -57,14 +58,17 @@ namespace MvcTemplate.Services
                     .Select(rolePermission => rolePermission.PermissionId));
 
                 SeedPermissions(role);
+
+                return role;
             }
 
-            return role;
+            return null;
         }
 
         public void Create(RoleView view)
         {
             Role role = UnitOfWork.To<Role>(view);
+
             foreach (Int64 permissionId in view.Permissions.SelectedIds)
                 role.Permissions.Add(new RolePermission
                 {

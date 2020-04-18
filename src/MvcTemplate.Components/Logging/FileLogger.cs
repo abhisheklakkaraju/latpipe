@@ -42,20 +42,20 @@ namespace MvcTemplate.Components.Logging
                 return;
 
             StringBuilder log = new StringBuilder();
-            log.AppendLine($"Id         : {Accessor.HttpContext?.TraceIdentifier} [{Accessor.HttpContext?.User.Id()}]");
-            log.AppendLine($"Time       : {DateTime.Now:yyyy-MM-dd HH:mm:ss.ffffff}");
-            log.AppendLine($"{logLevel.ToString().PadRight(11)}: {formatter(state, exception)}");
+            log.Append("Id         : ").Append(Accessor.HttpContext?.TraceIdentifier).Append(" [").Append(Accessor.HttpContext?.User.Id()).AppendLine("]");
+            log.Append("Time       : ").AppendFormat("{0:yyyy-MM-dd HH:mm:ss.ffffff}", DateTime.Now).AppendLine();
+            log.AppendFormat("{0,11}", logLevel).Append(": ").AppendLine(formatter(state, exception));
 
             if (exception != null)
                 log.AppendLine("Stack trace:");
 
             while (exception != null)
             {
-                log.AppendLine($"    {exception.GetType()}: {exception.Message}");
+                log.Append("    ").Append(exception.GetType()).Append(": ").AppendLine(exception.Message);
 
                 if (exception.StackTrace is String stackTrace)
                     foreach (String line in stackTrace.Split('\n'))
-                        log.AppendLine($"     {line.TrimEnd('\r')}");
+                        log.Append("     ").AppendLine(line.TrimEnd('\r'));
 
                 exception = exception.InnerException;
             }

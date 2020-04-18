@@ -89,8 +89,7 @@ namespace MvcTemplate.Web
                 if (Environment.IsDevelopment())
                     builder.AddConsole();
                 else
-                    builder.AddProvider(new FileLoggerProvider(
-                        Config["Logging:File:Path"], Config.GetValue<Int64>("Logging:File:RollSize")));
+                    builder.AddProvider(new FileLoggerProvider(Config["Logging:File:Path"], Config.GetValue<Int64>("Logging:File:RollSize")));
             });
         }
         private void ConfigureOptions(IServiceCollection services)

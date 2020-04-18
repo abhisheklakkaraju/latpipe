@@ -26,6 +26,7 @@ namespace MvcTemplate.Components.Lookups
         public override String GetColumnCssClass(PropertyInfo property)
         {
             Type type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+
             if (type.IsEnum)
                 return "text-left";
 

@@ -29,7 +29,7 @@ namespace MvcTemplate.Data
                 .Assembly
                 .GetTypes()
                 .Where(type =>
-                    type.IsAbstract == false &&
+                    !type.IsAbstract &&
                     typeof(BaseModel).IsAssignableFrom(type))
                 .ToArray();
 

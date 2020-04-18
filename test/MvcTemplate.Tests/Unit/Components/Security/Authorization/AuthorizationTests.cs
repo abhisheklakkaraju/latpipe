@@ -26,8 +26,7 @@ namespace MvcTemplate.Components.Security.Tests
             scope.ServiceProvider.Returns(services);
             services.GetService(typeof(IServiceScopeFactory)).Returns(factory);
             services.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
-            services.GetService(typeof(IUnitOfWork)).Returns(info => new UnitOfWork(new TestingContext(context)));
-
+            services.GetService(typeof(IUnitOfWork)).Returns(_ => new UnitOfWork(new TestingContext(context)));
 
             authorization = new Authorization(Assembly.GetExecutingAssembly(), services);
         }

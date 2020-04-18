@@ -4,6 +4,7 @@ using MvcTemplate.Tests;
 using NSubstitute;
 using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -16,7 +17,8 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public AuthorizeTagHelperTests()
         {
-            output = new TagHelperOutput("authorize", new TagHelperAttributeList(), (useCachedResult, encoder) => null);
+            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
+            output = new TagHelperOutput("authorize", new TagHelperAttributeList(), (_, __) => content);
             helper = new AuthorizeTagHelper(authorization = Substitute.For<IAuthorization>());
             helper.ViewContext = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
         }

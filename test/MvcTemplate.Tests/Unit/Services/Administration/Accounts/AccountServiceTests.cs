@@ -64,7 +64,6 @@ namespace MvcTemplate.Services.Tests
             AccountView[] actual = service.GetViews().ToArray();
             AccountView[] expected = context
                 .Set<Account>()
-                .AsNoTracking()
                 .ProjectTo<AccountView>()
                 .OrderByDescending(view => view.Id)
                 .ToArray();
@@ -182,7 +181,7 @@ namespace MvcTemplate.Services.Tests
 
             service.Create(view);
 
-            Account actual = Assert.Single(context.Set<Account>().AsNoTracking(), model => model.Id != account.Id);
+            Account actual = Assert.Single(context.Set<Account>(), model => model.Id != account.Id);
             AccountCreateView expected = view;
 
             Assert.Equal(hasher.HashPassword(expected.Password!), actual.Passhash);
@@ -288,7 +287,7 @@ namespace MvcTemplate.Services.Tests
         {
             service.Delete(account.Id);
 
-            Assert.Empty(context.Set<Account>().AsNoTracking());
+            Assert.Empty(context.Set<Account>());
         }
 
         [Fact]

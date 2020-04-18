@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Mvc
     {
         public static void Set(DefaultModelBindingMessageProvider messages)
         {
-            messages.SetAttemptedValueIsInvalidAccessor((value, field) => Validation.For("InvalidField", field));
+            messages.SetAttemptedValueIsInvalidAccessor((_, field) => Validation.For("InvalidField", field));
             messages.SetUnknownValueIsInvalidAccessor(field => Validation.For("InvalidField", field));
             messages.SetMissingBindRequiredValueAccessor(field => Validation.For("Required", field));
             messages.SetValueMustNotBeNullAccessor(field => Validation.For("Required", field));

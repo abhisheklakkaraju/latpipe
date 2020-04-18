@@ -32,8 +32,8 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void ElementType_IsModelType()
         {
-            Object actual = (select as IQueryable).ElementType;
             Object expected = typeof(TestModel);
+            Object actual = select.ElementType;
 
             Assert.Same(expected, actual);
         }
@@ -48,8 +48,8 @@ namespace MvcTemplate.Data.Tests
 
             select = new Query<TestModel>(testingContext.Set<TestModel>());
 
-            Object actual = ((IQueryable)select).Expression;
             Object expected = ((IQueryable)set).Expression;
+            Object actual = select.Expression;
 
             Assert.Same(expected, actual);
         }
@@ -58,7 +58,7 @@ namespace MvcTemplate.Data.Tests
         public void Provider_IsSetsProvider()
         {
             Object expected = ((IQueryable)context.Set<TestModel>()).Provider;
-            Object actual = ((IQueryable)select).Provider;
+            Object actual = select.Provider;
 
             Assert.Same(expected, actual);
         }
@@ -77,8 +77,8 @@ namespace MvcTemplate.Data.Tests
         [InlineData(false)]
         public void Where_Filters(Boolean predicate)
         {
-            IEnumerable<TestModel> expected = context.Set<TestModel>().Where(model => predicate);
-            IEnumerable<TestModel> actual = select.Where(model => predicate);
+            IEnumerable<TestModel> expected = context.Set<TestModel>().Where(_ => predicate);
+            IEnumerable<TestModel> actual = select.Where(_ => predicate);
 
             Assert.Equal(expected, actual);
         }

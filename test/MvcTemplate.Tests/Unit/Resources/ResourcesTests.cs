@@ -84,6 +84,7 @@ namespace MvcTemplate.Resources.Tests
         private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode? parent = null)
         {
             List<SiteMapNode> list = new List<SiteMapNode>();
+
             foreach (XElement element in elements)
             {
                 SiteMapNode node = new SiteMapNode

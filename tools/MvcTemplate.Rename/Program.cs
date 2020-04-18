@@ -40,6 +40,7 @@ namespace MvcTemplate.Rename
                 Console.WriteLine($"Renaming content...     {((i + 1) * 100 / files.Length).ToString().PadLeft(3)}%");
 
                 String extension = Path.GetExtension(files[i]);
+
                 if (extension == ".cs" ||
                     extension == ".cshtml" ||
                     extension == ".config" ||
@@ -62,6 +63,7 @@ namespace MvcTemplate.Rename
 
             String[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory(), $"*{templateName}*", SearchOption.AllDirectories);
             directories = directories.Where(directory => !directory.StartsWith(Path.Combine(Directory.GetCurrentDirectory(), "tools"))).ToArray();
+
             for (Int32 i = 0; i < directories.Length; i++)
             {
                 Console.CursorLeft = 0;
@@ -75,6 +77,7 @@ namespace MvcTemplate.Rename
 
             files = Directory.GetFiles(Directory.GetCurrentDirectory(), $"*{templateName}*", SearchOption.AllDirectories);
             files = files.Where(file => !file.Contains($"{templateName}.Rename.cmd")).ToArray();
+
             for (Int32 i = 0; i < files.Length; i++)
             {
                 Console.CursorLeft = 0;
