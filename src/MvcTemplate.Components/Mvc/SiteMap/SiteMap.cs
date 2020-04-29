@@ -45,9 +45,9 @@ namespace MvcTemplate.Components.Mvc
             {
                 breadcrumb.Insert(0, new SiteMapNode
                 {
-                    Title = current.Title,
                     Url = FormUrl(url, current),
                     IconClass = current.IconClass,
+                    Title = Resource.ForSiteMap(current.Title!),
 
                     Controller = current.Controller,
                     Action = current.Action,
@@ -70,9 +70,9 @@ namespace MvcTemplate.Components.Mvc
                 copy.IconClass = node.IconClass;
                 copy.Url = FormUrl(url, node);
                 copy.IsMenu = node.IsMenu;
-                copy.Title = node.Title;
                 copy.Parent = parent;
 
+                copy.Title = Resource.ForSiteMap(node.Title!);
                 copy.Controller = node.Controller;
                 copy.Action = node.Action;
                 copy.Area = node.Area;
@@ -124,7 +124,7 @@ namespace MvcTemplate.Components.Mvc
                 node.Area = (String)element.Attribute("area") ?? parent?.Area;
                 node.Controller = (String)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
 
-                node.Title = Resource.ForSiteMap($"{node.Area}/{node.Controller}/{node.Action}");
+                node.Title = $"{node.Area}/{node.Controller}/{node.Action}";
                 node.Children = Parse(element, node);
                 node.Parent = parent;
 
