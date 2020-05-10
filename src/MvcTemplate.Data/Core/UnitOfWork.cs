@@ -57,7 +57,7 @@ namespace MvcTemplate.Data
         {
             EntityEntry<TModel> entry = Context.Entry(model);
 
-            if (entry.State != EntityState.Modified && entry.State != EntityState.Unchanged)
+            if (entry.State == EntityState.Detached)
                 entry.State = EntityState.Modified;
 
             entry.Property(property => property.CreationDate).IsModified = false;

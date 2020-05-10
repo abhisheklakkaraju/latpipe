@@ -128,7 +128,8 @@ namespace MvcTemplate.Data.Tests
         }
 
         [Theory]
-        [InlineData(EntityState.Deleted, EntityState.Modified)]
+        [InlineData(EntityState.Added, EntityState.Added)]
+        [InlineData(EntityState.Deleted, EntityState.Deleted)]
         [InlineData(EntityState.Detached, EntityState.Modified)]
         [InlineData(EntityState.Modified, EntityState.Modified)]
         [InlineData(EntityState.Unchanged, EntityState.Unchanged)]
