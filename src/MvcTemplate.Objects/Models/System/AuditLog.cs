@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class AuditLog : BaseModel
+    public class AuditLog : AModel
     {
         public Int64? AccountId { get; set; }
 

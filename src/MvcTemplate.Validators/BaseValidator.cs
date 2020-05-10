@@ -23,7 +23,7 @@ namespace MvcTemplate.Validators
             Alerts = new Alerts();
         }
 
-        protected Boolean IsSpecified<TView>(TView view, Expression<Func<TView, Object?>> property) where TView : BaseView
+        protected Boolean IsSpecified<TView>(TView view, Expression<Func<TView, Object?>> property) where TView : AView
         {
             Boolean isSpecified = property.Compile().Invoke(view) != null;
 

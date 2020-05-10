@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class AccountResetView : BaseView
+    public class AccountResetView : AView
     {
         [Required]
         [StringLength(36)]

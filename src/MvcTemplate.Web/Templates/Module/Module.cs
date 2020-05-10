@@ -394,7 +394,7 @@ namespace MvcTemplate.Web.Templates
             creation += "            {\n";
 
             creation += String.Join(",\n", properties
-                .Where(property => property.Name != nameof(BaseModel.CreationDate))
+                .Where(property => property.Name != nameof(AModel.CreationDate))
                 .OrderBy(property => property.Name.Length)
                 .Select(property =>
                 {

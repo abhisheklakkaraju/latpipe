@@ -22,7 +22,7 @@ namespace MvcTemplate.Services
             Hasher = hasher;
         }
 
-        public TView? Get<TView>(Int64 id) where TView : BaseView
+        public TView? Get<TView>(Int64 id) where TView : AView
         {
             return UnitOfWork.GetAs<Account, TView>(id);
         }

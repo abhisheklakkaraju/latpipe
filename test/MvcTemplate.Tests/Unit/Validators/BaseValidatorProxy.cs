@@ -12,7 +12,7 @@ namespace MvcTemplate.Validators.Tests
         {
         }
 
-        public Boolean BaseIsSpecified<TView>(TView view, Expression<Func<TView, Object?>> property) where TView : BaseView
+        public Boolean BaseIsSpecified<TView>(TView view, Expression<Func<TView, Object?>> property) where TView : AView
         {
             return IsSpecified(view, property);
         }

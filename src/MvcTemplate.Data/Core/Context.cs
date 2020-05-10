@@ -25,12 +25,12 @@ namespace MvcTemplate.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            Type[] models = typeof(BaseModel)
+            Type[] models = typeof(AModel)
                 .Assembly
                 .GetTypes()
                 .Where(type =>
                     !type.IsAbstract &&
-                    typeof(BaseModel).IsAssignableFrom(type))
+                    typeof(AModel).IsAssignableFrom(type))
                 .ToArray();
 
             foreach (Type model in models)

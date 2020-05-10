@@ -120,8 +120,8 @@ namespace MvcTemplate.Data.Tests
         {
             unitOfWork.Insert(model);
 
-            BaseModel actual = context.ChangeTracker.Entries<TestModel>().Single().Entity;
-            BaseModel expected = model;
+            AModel actual = context.ChangeTracker.Entries<TestModel>().Single().Entity;
+            AModel expected = model;
 
             Assert.Equal(EntityState.Added, context.Entry(model).State);
             Assert.Same(expected, actual);

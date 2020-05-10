@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class ProfileEditView : BaseView
+    public class ProfileEditView : AView
     {
         [Required]
         [StringLength(32)]

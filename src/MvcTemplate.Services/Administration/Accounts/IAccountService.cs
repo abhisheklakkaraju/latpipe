@@ -10,7 +10,7 @@ namespace MvcTemplate.Services
 {
     public interface IAccountService : IService
     {
-        TView? Get<TView>(Int64 id) where TView : BaseView;
+        TView? Get<TView>(Int64 id) where TView : AView;
         IQueryable<AccountView> GetViews();
 
         Boolean IsLoggedIn(IPrincipal user);

@@ -9,8 +9,8 @@ using System.Reflection;
 namespace MvcTemplate.Components.Lookups
 {
     public class MvcLookup<TModel, TView> : ALookup<TView>
-        where TModel : BaseModel
-        where TView : BaseView
+        where TModel : AModel
+        where TView : AView
     {
         protected IUnitOfWork UnitOfWork { get; }
 

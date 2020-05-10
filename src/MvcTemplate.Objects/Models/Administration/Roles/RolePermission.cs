@@ -2,7 +2,7 @@ using System;
 
 namespace MvcTemplate.Objects
 {
-    public class RolePermission : BaseModel
+    public class RolePermission : AModel
     {
         public Int64 RoleId { get; set; }
         public virtual Role Role { get; set; }

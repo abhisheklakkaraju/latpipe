@@ -72,33 +72,6 @@ namespace MvcTemplate.Validators
             return isValid;
         }
 
-        private Boolean IsUniqueUsername(Int64 accountId, String? username)
-        {
-            Boolean isUnique = !UnitOfWork
-                .Select<Account>()
-                .Any(account =>
-                    account.Id != accountId &&
-                    account.Username.ToLower() == (username ?? "").ToLower());
-
-            if (!isUnique)
-                ModelState.AddModelError<AccountView>(model => model.Username, Validation.For<AccountView>("UniqueUsername"));
-
-            return isUnique;
-        }
-        private Boolean IsUniqueEmail(Int64 accountId, String? email)
-        {
-            Boolean isUnique = !UnitOfWork
-                .Select<Account>()
-                .Any(account =>
-                    account.Id != accountId &&
-                    account.Email.ToLower() == (email ?? "").ToLower());
-
-            if (!isUnique)
-                ModelState.AddModelError<AccountView>(account => account.Email, Validation.For<AccountView>("UniqueEmail"));
-
-            return isUnique;
-        }
-
         private Boolean IsAuthenticated(String? username, String? password)
         {
             String? passhash = UnitOfWork
@@ -114,11 +87,11 @@ namespace MvcTemplate.Validators
 
             return isCorrect;
         }
-        private Boolean IsCorrectPassword(Int64 accountId, String? password)
+        private Boolean IsCorrectPassword(Int64 id, String? password)
         {
             String passhash = UnitOfWork
                 .Select<Account>()
-                .Where(account => account.Id == accountId)
+                .Where(account => account.Id == id)
                 .Select(account => account.Passhash)
                 .Single();
 
@@ -128,6 +101,32 @@ namespace MvcTemplate.Validators
                 ModelState.AddModelError<ProfileEditView>(account => account.Password, Validation.For<AccountView>("IncorrectPassword"));
 
             return isCorrect;
+        }
+        private Boolean IsUniqueUsername(Int64 id, String? username)
+        {
+            Boolean isUnique = !UnitOfWork
+                .Select<Account>()
+                .Any(account =>
+                    account.Id != id &&
+                    account.Username.ToLower() == (username ?? "").ToLower());
+
+            if (!isUnique)
+                ModelState.AddModelError<AccountView>(account => account.Username, Validation.For<AccountView>("UniqueUsername"));
+
+            return isUnique;
+        }
+        private Boolean IsUniqueEmail(Int64 id, String? email)
+        {
+            Boolean isUnique = !UnitOfWork
+                .Select<Account>()
+                .Any(account =>
+                    account.Id != id &&
+                    account.Email.ToLower() == (email ?? "").ToLower());
+
+            if (!isUnique)
+                ModelState.AddModelError<AccountView>(account => account.Email, Validation.For<AccountView>("UniqueEmail"));
+
+            return isUnique;
         }
 
         private Boolean IsValidResetToken(String? token)

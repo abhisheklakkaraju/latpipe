@@ -19,7 +19,7 @@ namespace MvcTemplate.Data
         {
             LoggableEntity[] entities = Context
                 .ChangeTracker
-                .Entries<BaseModel>()
+                .Entries<AModel>()
                 .Where(entry =>
                     entry.State == EntityState.Added ||
                     entry.State == EntityState.Deleted ||

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class ProfileDeleteView : BaseView
+    public class ProfileDeleteView : AView
     {
         [Required]
         [NotTrimmed]

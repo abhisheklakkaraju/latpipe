@@ -6,7 +6,7 @@ using System;
 
 namespace MvcTemplate.Tests
 {
-    public class AllTypesView : BaseView
+    public class AllTypesView : AView
     {
         public AlertType EnumField { get; set; }
         public SByte SByteField { get; set; }

@@ -19,10 +19,10 @@ namespace MvcTemplate.Data
 
         static LoggableEntity()
         {
-            IdName = typeof(BaseModel).GetProperties().Single(property => property.IsDefined(typeof(KeyAttribute), false)).Name;
+            IdName = typeof(AModel).GetProperties().Single(property => property.IsDefined(typeof(KeyAttribute), false)).Name;
         }
 
-        public LoggableEntity(EntityEntry<BaseModel> entry)
+        public LoggableEntity(EntityEntry<AModel> entry)
         {
             Type type = entry.Entity.GetType();
             PropertyValues values =

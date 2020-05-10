@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class Role : BaseModel
+    public class Role : AModel
     {
         [Required]
         [StringLength(128)]

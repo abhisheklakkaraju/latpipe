@@ -18,13 +18,13 @@ namespace MvcTemplate.Data
             Context = context;
         }
 
-        public TDestination? GetAs<TModel, TDestination>(Int64? id) where TModel : BaseModel where TDestination : class
+        public TDestination? GetAs<TModel, TDestination>(Int64? id) where TModel : AModel where TDestination : class
         {
             return id == null
                 ? default
                 : Context.Set<TModel>().Where(model => model.Id == id).ProjectTo<TDestination>().FirstOrDefault();
         }
-        public TModel? Get<TModel>(Int64? id) where TModel : BaseModel
+        public TModel? Get<TModel>(Int64? id) where TModel : AModel
         {
             return id == null ? null : Context.Find<TModel>(id);
         }
@@ -33,12 +33,12 @@ namespace MvcTemplate.Data
             return Mapper.Map<TDestination>(source);
         }
 
-        public IQuery<TModel> Select<TModel>() where TModel : BaseModel
+        public IQuery<TModel> Select<TModel>() where TModel : AModel
         {
             return new Query<TModel>(Context.Set<TModel>());
         }
 
-        public void InsertRange<TModel>(IEnumerable<TModel> models) where TModel : BaseModel
+        public void InsertRange<TModel>(IEnumerable<TModel> models) where TModel : AModel
         {
             foreach (TModel model in models)
             {
@@ -47,13 +47,13 @@ namespace MvcTemplate.Data
                 Context.Add(model);
             }
         }
-        public void Insert<TModel>(TModel model) where TModel : BaseModel
+        public void Insert<TModel>(TModel model) where TModel : AModel
         {
             model.Id = 0;
 
             Context.Add(model);
         }
-        public void Update<TModel>(TModel model) where TModel : BaseModel
+        public void Update<TModel>(TModel model) where TModel : AModel
         {
             EntityEntry<TModel> entry = Context.Entry(model);
 
@@ -63,15 +63,15 @@ namespace MvcTemplate.Data
             entry.Property(property => property.CreationDate).IsModified = false;
         }
 
-        public void DeleteRange<TModel>(IEnumerable<TModel> models) where TModel : BaseModel
+        public void DeleteRange<TModel>(IEnumerable<TModel> models) where TModel : AModel
         {
             Context.RemoveRange(models);
         }
-        public void Delete<TModel>(TModel model) where TModel : BaseModel
+        public void Delete<TModel>(TModel model) where TModel : AModel
         {
             Context.Remove(model);
         }
-        public void Delete<TModel>(Int64 id) where TModel : BaseModel
+        public void Delete<TModel>(Int64 id) where TModel : AModel
         {
             Delete(Context.Find<TModel>(id));
         }

@@ -64,8 +64,8 @@ namespace MvcTemplate.Web.Templates
 
             Area = area;
 
-            Type modelType = typeof(BaseModel).Assembly.GetType($"MvcTemplate.Objects.{Model}") ?? typeof(BaseModel);
-            Type viewType = typeof(BaseView).Assembly.GetType($"MvcTemplate.Objects.{View}") ?? typeof(BaseModel);
+            Type modelType = typeof(AModel).Assembly.GetType($"MvcTemplate.Objects.{Model}") ?? typeof(AModel);
+            Type viewType = typeof(AView).Assembly.GetType($"MvcTemplate.Objects.{View}") ?? typeof(AModel);
             PropertyInfo[] modelProperties = modelType.GetProperties();
 
             AllModelProperties = modelProperties.Where(property => property.PropertyType.Namespace == "System").ToArray();

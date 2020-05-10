@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class RoleView : BaseView
+    public class RoleView : AView
     {
         [Required]
         [LookupColumn]

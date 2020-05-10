@@ -4,20 +4,20 @@ using Xunit;
 
 namespace MvcTemplate.Objects.Tests
 {
-    public class BaseViewTests
+    public class AModelTests
     {
-        private BaseView view;
+        private AModel model;
 
-        public BaseViewTests()
+        public AModelTests()
         {
-            view = Substitute.For<BaseView>();
+            model = Substitute.For<AModel>();
         }
 
         [Fact]
         public void CreationDate_ReturnsSameValue()
         {
-            DateTime expected = view.CreationDate;
-            DateTime actual = view.CreationDate;
+            DateTime expected = model.CreationDate;
+            DateTime actual = model.CreationDate;
 
             Assert.Equal(expected, actual);
         }

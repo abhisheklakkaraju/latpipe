@@ -13,7 +13,7 @@ namespace MvcTemplate.Data.Tests
     {
         private TestModel model;
         private TestingContext context;
-        private EntityEntry<BaseModel> entry;
+        private EntityEntry<AModel> entry;
 
         public LoggableEntityTests()
         {
@@ -24,7 +24,7 @@ namespace MvcTemplate.Data.Tests
             }
 
             context = new TestingContext(context);
-            entry = context.Entry<BaseModel>(model);
+            entry = context.Entry<AModel>(model);
         }
         public void Dispose()
         {
@@ -55,7 +55,7 @@ namespace MvcTemplate.Data.Tests
         public void LoggableEntity_Proxy_SetsName()
         {
             model = context.Set<TestModel>().Single();
-            entry = context.ChangeTracker.Entries<BaseModel>().Single();
+            entry = context.ChangeTracker.Entries<AModel>().Single();
 
             String actual = new LoggableEntity(entry).Name;
             String expected = typeof(TestModel).Name;

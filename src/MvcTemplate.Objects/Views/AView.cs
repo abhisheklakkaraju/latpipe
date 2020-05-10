@@ -1,11 +1,9 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public abstract class BaseModel
+    public abstract class AView
     {
-        [Key]
         public virtual Int64 Id
         {
             get;

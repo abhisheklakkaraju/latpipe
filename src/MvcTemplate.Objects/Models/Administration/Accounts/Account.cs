@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class Account : BaseModel
+    public class Account : AModel
     {
         [Required]
         [StringLength(32)]

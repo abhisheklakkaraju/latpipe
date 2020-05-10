@@ -148,11 +148,11 @@ namespace MvcTemplate.Web
                 }
             }
 
-            foreach (Type view in typeof(BaseView).Assembly.GetTypes())
+            foreach (Type view in typeof(AView).Assembly.GetTypes())
             {
                 Type type = view;
 
-                while (typeof(BaseView).IsAssignableFrom(type.BaseType))
+                while (typeof(AView).IsAssignableFrom(type.BaseType))
                 {
                     Resource.Set(view.Name).Inherit(Resource.Set(type.BaseType!.Name));
 

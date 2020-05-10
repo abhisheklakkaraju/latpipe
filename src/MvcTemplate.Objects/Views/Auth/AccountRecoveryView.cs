@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
-    public class AccountRecoveryView : BaseView
+    public class AccountRecoveryView : AView
     {
         [Required]
         [EmailAddress]
