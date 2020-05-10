@@ -26,7 +26,7 @@ namespace MvcTemplate.Validators.Tests
             context = new TestingContext();
             validator = new @(Model.Validator)(new UnitOfWork(new TestingContext(context)));
 
-            context.Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)());
+            context.Drop().Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)(0));
             context.SaveChanges();
         }
         public void Dispose()
@@ -40,7 +40,8 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(2)));
+            Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
+            Assert.Single(validator.ModelState);
         }
         @foreach (PropertyInfo index in Model.Indexes)
         {
@@ -48,7 +49,7 @@ namespace MvcTemplate.Validators.Tests
         @:[Fact]
         @:public void CanCreate_Used@(index.Name)_ReturnsFalse()
         @:{
-        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(2);
+        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1);
             if (index.PropertyType == typeof(String))
             {
         @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name).ToLower();
@@ -70,7 +71,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void CanCreate_Valid@(Model.ModelShortName)()
         {
-            Assert.True(validator.CanCreate(ObjectsFactory.Create@(Model.View)(2)));
+            Assert.True(validator.CanCreate(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
             Assert.Empty(validator.ModelState);
             Assert.Empty(validator.Alerts);
         }
@@ -80,7 +81,8 @@ namespace MvcTemplate.Validators.Tests
         {
             validator.ModelState.AddModelError("Test", "Test");
 
-            Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)()));
+            Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
+            Assert.Single(validator.ModelState);
         }
         @foreach (PropertyInfo index in Model.Indexes)
         {
@@ -88,7 +90,7 @@ namespace MvcTemplate.Validators.Tests
         @:[Fact]
         @:public void CanEdit_Used@(index.Name)_ReturnsFalse()
         @:{
-        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(2);
+        @:    @Model.View view = ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1);
             if (index.PropertyType == typeof(String))
             {
         @:    view.@(index.Name) = @(Model.ModelVarName).@(index.Name).ToLower();
@@ -109,7 +111,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void CanEdit_Valid@(Model.ModelShortName)()
         {
-            Assert.True(validator.CanEdit(ObjectsFactory.Create@(Model.View)()));
+            Assert.True(validator.CanEdit(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
             Assert.Empty(validator.ModelState);
             Assert.Empty(validator.Alerts);
         }

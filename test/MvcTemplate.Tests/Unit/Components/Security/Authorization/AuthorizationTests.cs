@@ -22,6 +22,7 @@ namespace MvcTemplate.Components.Security.Tests
             IServiceProvider services = Substitute.For<IServiceProvider>();
             IServiceScopeFactory factory = Substitute.For<IServiceScopeFactory>();
 
+            context.Drop();
             factory.CreateScope().Returns(scope);
             scope.ServiceProvider.Returns(services);
             services.GetService(typeof(IServiceScopeFactory)).Returns(factory);
@@ -358,7 +359,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), nameof(AuthorizeController.Action));
 
-            context.Database.EnsureDeleted();
+            context.Drop();
 
             Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
@@ -369,7 +370,7 @@ namespace MvcTemplate.Components.Security.Tests
             Int64 accountId = CreateAccountWithPermissionFor("Area", nameof(AuthorizedController), nameof(AuthorizedController.Action));
             Assert.True(authorization.IsGrantedFor(accountId, $"Area/{nameof(AuthorizedController)}/{nameof(AuthorizedController.Action)}"));
 
-            context.Database.EnsureDeleted();
+            context.Drop();
 
             authorization.Refresh();
 
@@ -378,12 +379,12 @@ namespace MvcTemplate.Components.Security.Tests
 
         private Int64 CreateAccountWithPermissionFor(String area, String controller, String action, Boolean isLocked = false)
         {
-            RolePermission rolePermission = ObjectsFactory.CreateRolePermission();
+            RolePermission rolePermission = ObjectsFactory.CreateRolePermission(0);
             rolePermission.Permission.Controller = controller;
             rolePermission.Permission.Action = action;
             rolePermission.Permission.Area = area;
 
-            Account account = ObjectsFactory.CreateAccount();
+            Account account = ObjectsFactory.CreateAccount(0);
             account.Role = rolePermission.Role;
             account.IsLocked = isLocked;
 

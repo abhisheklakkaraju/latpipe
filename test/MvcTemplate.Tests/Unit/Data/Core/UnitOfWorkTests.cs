@@ -21,7 +21,9 @@ namespace MvcTemplate.Data.Tests
         {
             context = new TestingContext();
             unitOfWork = new UnitOfWork(context);
-            model = ObjectsFactory.CreateTestModel();
+            model = ObjectsFactory.CreateTestModel(0);
+
+            context.Drop();
         }
         public void Dispose()
         {
@@ -126,7 +128,6 @@ namespace MvcTemplate.Data.Tests
         }
 
         [Theory]
-        [InlineData(EntityState.Added, EntityState.Modified)]
         [InlineData(EntityState.Deleted, EntityState.Modified)]
         [InlineData(EntityState.Detached, EntityState.Modified)]
         [InlineData(EntityState.Modified, EntityState.Modified)]

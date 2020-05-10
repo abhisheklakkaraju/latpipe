@@ -17,6 +17,8 @@ namespace MvcTemplate.Data.Migrations.Tests
         {
             context = new TestingContext();
             configuration = new Configuration(context);
+
+            context.Drop();
         }
         public void Dispose()
         {
@@ -63,7 +65,7 @@ namespace MvcTemplate.Data.Migrations.Tests
         [Fact]
         public void Seed_RemovesUnusedPermissions()
         {
-            Role role = ObjectsFactory.CreateRole();
+            Role role = ObjectsFactory.CreateRole(0);
             role.Permissions.Add(new RolePermission
             {
                 Permission = new Permission { Area = "Test", Controller = "Test", Action = "Test" }
@@ -74,7 +76,6 @@ namespace MvcTemplate.Data.Migrations.Tests
 
             configuration.Seed();
 
-            Assert.Empty(role.Permissions);
             Assert.Empty(context.Set<Permission>().Where(permission =>
                 permission.Controller == "Test" &&
                 permission.Action == "Test" &&

@@ -15,7 +15,7 @@ namespace MvcTemplate.Data.Mapping.Tests
         [Fact]
         public void MapRoles_Role_RoleView()
         {
-            Role expected = ObjectsFactory.CreateRole();
+            Role expected = ObjectsFactory.CreateRole(0);
             RoleView actual = Mapper.Map<RoleView>(expected);
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);
@@ -28,7 +28,7 @@ namespace MvcTemplate.Data.Mapping.Tests
         [Fact]
         public void MapRoles_RoleView_Role()
         {
-            RoleView expected = ObjectsFactory.CreateRoleView();
+            RoleView expected = ObjectsFactory.CreateRoleView(0);
             Role actual = Mapper.Map<Role>(expected);
 
             Assert.Equal(expected.CreationDate, actual.CreationDate);

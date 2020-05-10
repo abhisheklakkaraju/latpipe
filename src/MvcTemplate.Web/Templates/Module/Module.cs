@@ -96,6 +96,7 @@ namespace MvcTemplate.Web.Templates
                     AddPermissions();
                     AddViewImports();
                     AddObjectFactory();
+                    AddTestinContextDrops();
 
                     AddPermissionTests("Index");
                     AddPermissionTests("Create");
@@ -297,14 +298,40 @@ namespace MvcTemplate.Web.Templates
             else
             {
                 String fakeView = FakeObjectCreation(model.View, model.AllViewProperties);
-                String fakeModel = FakeObjectCreation(model.Model, model.AllModelProperties);
+                String fakeModel = FakeObjectCreation(model.Model, model.ModelProperties);
                 SyntaxNode last = tree.DescendantNodes().OfType<MethodDeclarationSyntax>().Last();
-                ClassDeclarationSyntax factory = tree.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
                 SyntaxNode modelCreation = CSharpSyntaxTree.ParseText($"{fakeModel}{fakeView}\n").GetRoot();
+                ClassDeclarationSyntax factory = tree.DescendantNodes().OfType<ClassDeclarationSyntax>().First();
 
                 tree = tree.ReplaceNode(factory, factory.InsertNodesAfter(last, modelCreation.ChildNodes()));
 
                 File.WriteAllText("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs", tree.ToString());
+
+                Logger.WriteLine("Succeeded", ConsoleColor.Green);
+            }
+        }
+        private void AddTestinContextDrops()
+        {
+            Logger.Write("../../test/MvcTemplate.Tests/Data/TestingContext.cs - ");
+
+            String drops = File.ReadAllText("../../test/MvcTemplate.Tests/Data/TestingContext.cs");
+
+            if (drops.Contains($"RemoveRange(Set<{Model}>());"))
+            {
+                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
+            }
+            else
+            {
+                String newDrops = String.Join("\n",
+                    Regex.Matches(drops, "RemoveRange\\(Set<(.+)>\\(\\)\\);")
+                        .Select(match => $"            {match.Value}")
+                        .Append($"            RemoveRange(Set<{Model}>());")
+                        .OrderByDescending(drop => drop.Length)
+                        .ThenByDescending(drop => drop));
+
+                drops = Regex.Replace(drops, "( +RemoveRange\\(Set<(.+)>\\(\\)\\);\\r?\\n)+", $"{newDrops}\n");
+
+                File.WriteAllText("../../test/MvcTemplate.Tests/Data/TestingContext.cs", drops);
 
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
@@ -361,7 +388,7 @@ namespace MvcTemplate.Web.Templates
         }
         private String FakeObjectCreation(String name, PropertyInfo[] properties)
         {
-            String creation = $"\n        public static {name} Create{name}(Int32 id = 1)\n";
+            String creation = $"\n        public static {name} Create{name}(Int64 id)\n";
             creation += "        {\n";
             creation += $"            return new {name}\n";
             creation += "            {\n";
@@ -371,7 +398,7 @@ namespace MvcTemplate.Web.Templates
                 .OrderBy(property => property.Name.Length)
                 .Select(property =>
                 {
-                    String set = $"                 {property.Name} = ";
+                    String set = $"                {property.Name} = ";
 
                     if (property.PropertyType == typeof(String))
                         return $"{set}$\"{property.Name}{{id}}\"";

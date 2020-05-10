@@ -1,20 +1,48 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MvcTemplate.Data;
+using MvcTemplate.Objects;
 using System;
+using System.Linq;
 
 namespace MvcTemplate.Tests
 {
     public class TestingContext : Context
     {
-        private String DatabaseName { get; }
-
-        public TestingContext()
+        static TestingContext()
         {
-            DatabaseName = Guid.NewGuid().ToString();
+            using (TestingContext context = new TestingContext())
+                context.Database.Migrate();
         }
         public TestingContext(TestingContext context)
         {
-            DatabaseName = context.DatabaseName;
+        }
+        public TestingContext()
+        {
+        }
+
+        public TestingContext Drop()
+        {
+            RemoveRange(Set<RolePermission>());
+            RemoveRange(Set<Permission>());
+            RemoveRange(Set<TestModel>());
+            RemoveRange(Set<AuditLog>());
+            RemoveRange(Set<Account>());
+            RemoveRange(Set<Role>());
+
+            SaveChanges();
+
+            return this;
+        }
+
+        public override Int32 SaveChanges()
+        {
+            Int32 affected = base.SaveChanges();
+
+            foreach (EntityEntry entry in ChangeTracker.Entries().ToArray())
+                entry.State = EntityState.Detached;
+
+            return affected;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -25,8 +53,9 @@ namespace MvcTemplate.Tests
         }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseInMemoryDatabase(DatabaseName);
-            builder.UseLazyLoadingProxies();
+            base.OnConfiguring(builder);
+
+            builder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MvcTemplateTest;Trusted_Connection=True;MultipleActiveResultSets=True");
         }
     }
 }

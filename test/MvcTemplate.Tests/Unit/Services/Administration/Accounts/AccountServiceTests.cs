@@ -33,7 +33,7 @@ namespace MvcTemplate.Services.Tests
             service = new AccountService(new UnitOfWork(new TestingContext(context)), hasher);
             hasher.HashPassword(Arg.Any<String>()).Returns(info => $"{info.Arg<String>()}Hashed");
 
-            context.Add(account = ObjectsFactory.CreateAccount());
+            context.Drop().Add(account = ObjectsFactory.CreateAccount(0));
             context.SaveChanges();
 
             service.CurrentAccountId = account.Id;
@@ -117,7 +117,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Recover_NoEmail_ReturnsNull()
         {
-            AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView();
+            AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView(account.Id + 1);
             view.Email = "not@existing.email";
 
             Assert.Null(service.Recover(view));
@@ -126,7 +126,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Recover_Information()
         {
-            AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView();
+            AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView(0);
             account.RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(30);
             String? oldToken = account.RecoveryToken;
             view.Email = view.Email?.ToUpper();
@@ -154,7 +154,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Reset_Account()
         {
-            AccountResetView view = ObjectsFactory.CreateAccountResetView();
+            AccountResetView view = ObjectsFactory.CreateAccountResetView(0);
 
             service.Reset(view);
 
@@ -175,7 +175,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_Account()
         {
-            AccountCreateView view = ObjectsFactory.CreateAccountCreateView(2);
+            AccountCreateView view = ObjectsFactory.CreateAccountCreateView(account.Id + 1);
             view.Email = view.Email?.ToUpper();
             view.RoleId = account.RoleId;
 
@@ -197,7 +197,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_Account()
         {
-            AccountEditView view = ObjectsFactory.CreateAccountEditView();
+            AccountEditView view = ObjectsFactory.CreateAccountEditView(account.Id);
             view.IsLocked = account.IsLocked = !account.IsLocked;
             view.Username = $"{account.Username}Test";
             view.RoleId = account.RoleId = null;
@@ -222,7 +222,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_Profile()
         {
-            ProfileEditView view = ObjectsFactory.CreateProfileEditView();
+            ProfileEditView view = ObjectsFactory.CreateProfileEditView(account.Id + 1);
             account.Passhash = hasher.HashPassword(view.NewPassword!);
             view.Username = account.Username += "Test";
             view.Email = account.Email += "Test";
@@ -249,7 +249,7 @@ namespace MvcTemplate.Services.Tests
         [InlineData("   ")]
         public void Edit_NullOrEmptyNewPassword_DoesNotEditPassword(String newPassword)
         {
-            ProfileEditView view = ObjectsFactory.CreateProfileEditView();
+            ProfileEditView view = ObjectsFactory.CreateProfileEditView(account.Id + 1);
             view.NewPassword = newPassword;
 
             service.Edit(httpContext.User, view);
@@ -269,7 +269,7 @@ namespace MvcTemplate.Services.Tests
                 new Claim(ClaimTypes.Name, "TestName")
             }));
 
-            ProfileEditView view = ObjectsFactory.CreateProfileEditView();
+            ProfileEditView view = ObjectsFactory.CreateProfileEditView(account.Id + 1);
             view.Username = account.Username += "Test";
             view.Email = account.Email += "Test";
 

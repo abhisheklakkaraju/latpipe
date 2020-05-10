@@ -41,9 +41,9 @@ namespace MvcTemplate.Controllers.Tests
             controller.ControllerContext.RouteData = new RouteData();
             controller.Url = Substitute.For<IUrlHelper>();
 
-            accountRecovery = ObjectsFactory.CreateAccountRecoveryView();
-            accountReset = ObjectsFactory.CreateAccountResetView();
-            accountLogin = ObjectsFactory.CreateAccountLoginView();
+            accountRecovery = ObjectsFactory.CreateAccountRecoveryView(0);
+            accountReset = ObjectsFactory.CreateAccountResetView(0);
+            accountLogin = ObjectsFactory.CreateAccountLoginView(0);
         }
         public override void Dispose()
         {

@@ -19,7 +19,7 @@ namespace MvcTemplate.Data.Tests
         {
             using (context = new TestingContext())
             {
-                context.Add(model = ObjectsFactory.CreateTestModel());
+                context.Drop().Add(model = ObjectsFactory.CreateTestModel(0));
                 context.SaveChanges();
             }
 

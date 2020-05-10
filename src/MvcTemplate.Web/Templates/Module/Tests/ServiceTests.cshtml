@@ -22,7 +22,7 @@ namespace MvcTemplate.Services.Tests
             context = new TestingContext();
             service = new @(Model.Service)(new UnitOfWork(new TestingContext(context)));
 
-            context.Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)());
+            context.Drop().Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)(0));
             context.SaveChanges();
         }
         public void Dispose()
@@ -76,7 +76,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_@(Model.ModelShortName)()
         {
-            @Model.View view = ObjectsFactory.Create@(Model.View)(2);
+            @Model.View view = ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1);
 
             service.Create(view);
 
@@ -106,7 +106,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_@(Model.ModelShortName)()
         {
-            @Model.View view = ObjectsFactory.Create@(Model.View)();
+            @Model.View view = ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id);
             @{ IEnumerable<String> changes = Model.ViewProperties.Select(property =>
             {
                 if (property.PropertyType == typeof(String))

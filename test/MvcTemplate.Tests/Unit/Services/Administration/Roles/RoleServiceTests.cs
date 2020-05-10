@@ -36,7 +36,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void SeedPermissions_FirstDepth()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.SeedPermissions(view);
 
@@ -54,7 +54,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void SeedPermissions_SecondDepth()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.SeedPermissions(view);
 
@@ -72,7 +72,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void SeedPermissions_ThirdDepth()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.SeedPermissions(view);
 
@@ -90,7 +90,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void SeedPermissions_BranchesWithoutId()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.SeedPermissions(view);
 
@@ -103,7 +103,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void SeedPermissions_LeafsWithId()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.SeedPermissions(view);
 
@@ -170,7 +170,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_Role()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
 
             service.Create(view);
 
@@ -184,7 +184,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Create_RolePermissions()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
             view.Permissions = CreatePermissions();
 
             service.Create(view);
@@ -202,7 +202,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_Role()
         {
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id);
             view.Title = role.Title += "Test";
 
             service.Edit(view);
@@ -218,11 +218,11 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Edit_RolePermissions()
         {
-            Permission permission = ObjectsFactory.CreatePermission(100);
+            Permission permission = ObjectsFactory.CreatePermission(0);
             context.Add(permission);
             context.SaveChanges();
 
-            RoleView view = ObjectsFactory.CreateRoleView();
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id);
             view.Permissions = CreatePermissions();
             view.Permissions.SelectedIds.Remove(view.Permissions.SelectedIds.First());
             view.Permissions.SelectedIds.Add(permission.Id);
@@ -238,7 +238,7 @@ namespace MvcTemplate.Services.Tests
         [Fact]
         public void Delete_NullsAccountRoles()
         {
-            Account account = ObjectsFactory.CreateAccount();
+            Account account = ObjectsFactory.CreateAccount(0);
             account.RoleId = role.Id;
             account.Role = null;
 
@@ -260,7 +260,7 @@ namespace MvcTemplate.Services.Tests
 
         private Role SetUpData()
         {
-            Role role = ObjectsFactory.CreateRole();
+            Role role = ObjectsFactory.CreateRole(0);
 
             foreach (String controller in new[] { "TestController1", "TestController2" })
                 foreach (String action in new[] { "Action1", "Action2" })
@@ -274,7 +274,7 @@ namespace MvcTemplate.Services.Tests
                         }
                     });
 
-            context.Add(role);
+            context.Drop().Add(role);
             context.SaveChanges();
 
             return role;

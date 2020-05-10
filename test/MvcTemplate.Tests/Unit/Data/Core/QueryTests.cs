@@ -21,7 +21,7 @@ namespace MvcTemplate.Data.Tests
             select = new Query<TestModel>(context.Set<TestModel>());
 
             context.RemoveRange(context.Set<TestModel>());
-            context.Add(ObjectsFactory.CreateTestModel());
+            context.Add(ObjectsFactory.CreateTestModel(0));
             context.SaveChanges();
         }
         public void Dispose()

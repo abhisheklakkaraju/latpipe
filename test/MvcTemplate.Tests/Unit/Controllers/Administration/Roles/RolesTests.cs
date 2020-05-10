@@ -25,7 +25,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
             validator = Substitute.For<IRoleValidator>();
             service = Substitute.For<IRoleService>();
 
-            role = ObjectsFactory.CreateRoleView();
+            role = ObjectsFactory.CreateRoleView(0);
 
             controller = Substitute.ForPartsOf<Roles>(validator, service);
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
