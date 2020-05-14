@@ -1,12 +1,8 @@
-/src/MvcTemplate.Web/wwwroot/js/application/**/*.min.js
-/src/MvcTemplate.Web/wwwroot/js/private/
-/src/MvcTemplate.Web/wwwroot/js/public/
+/src/MvcTemplate.Web/wwwroot/css/**/*.min.css
+/src/MvcTemplate.Web/wwwroot/js/**/*.min.js
+/src/MvcTemplate.Web/node_modules/
 
-/src/MvcTemplate.Web/wwwroot/css/application/**/*.min.css
-/src/MvcTemplate.Web/wwwroot/css/private/
-/src/MvcTemplate.Web/wwwroot/css/public/
 /src/MvcTemplate.Web/Logs/
-node_modules/
 .vscode/
 .vs/
 bin/

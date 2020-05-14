@@ -4,11 +4,11 @@ Navigation = {
         const navigation = this;
 
         navigation.element = document.querySelector(".navigation");
-        navigation.nodes = navigation.element.querySelectorAll("li");
-        navigation.activeSubmenus = navigation.element.querySelectorAll(".active.submenu");
 
         if (navigation.element) {
+            navigation.nodes = navigation.element.querySelectorAll("li");
             navigation.search = navigation.element.querySelector("input");
+            navigation.activeSubmenus = navigation.element.querySelectorAll(".active.submenu");
 
             navigation.search.addEventListener("input", function () {
                 navigation.filter(this.value);

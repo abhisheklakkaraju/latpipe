@@ -22,13 +22,9 @@
 
     <Content Update="wwwroot\js\**" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot\css\**" CopyToPublishDirectory="Never" />
-    <Content Update="wwwroot\js\public\**" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\js\private\**" CopyToPublishDirectory="Always" />
     <Content Update="wwwroot\css\**\*.woff" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\css\public\**" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\css\private\**" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\js\application\**\*.min.js" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\css\application\**\*.min.css" CopyToPublishDirectory="Always" />
+    <Content Update="wwwroot\js\**\*.min.js" CopyToPublishDirectory="Always" />
+    <Content Update="wwwroot\css\**\*.min.css" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

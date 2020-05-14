@@ -13,7 +13,7 @@ gulp.task("clean", gulp.series([
     "clean.js"
 ]));
 
-gulp.task("vendor.private.css", () => gulp
+gulp.task("vendor.css", () => gulp
     .src([
         "./wwwroot/css/rome/*.css",
         "./wwwroot/css/bootstrap/*.css",
@@ -22,11 +22,11 @@ gulp.task("vendor.private.css", () => gulp
         "./wwwroot/css/mvc-tree/*.css",
         "./wwwroot/css/mvc-lookup/*.css"
     ])
-    .pipe(concat("./wwwroot/css/private/vendor.min.css"))
+    .pipe(concat("./wwwroot/css/site/vendor.min.css"))
     .pipe(uglifycss())
     .pipe(gulp.dest(".")));
 
-gulp.task("site.private.css", () => gulp
+gulp.task("site.css", () => gulp
     .src([
         "./wwwroot/css/shared/alerts.css",
         "./wwwroot/css/shared/content.css",
@@ -34,30 +34,9 @@ gulp.task("site.private.css", () => gulp
         "./wwwroot/css/shared/navigation.css",
         "./wwwroot/css/shared/overrides.css",
         "./wwwroot/css/shared/table.css",
-        "./wwwroot/css/shared/widget-box.css",
-        "./wwwroot/css/shared/private.css"
+        "./wwwroot/css/shared/widget-box.css"
     ])
-    .pipe(concat("./wwwroot/css/private/site.min.css"))
-    .pipe(uglifycss())
-    .pipe(gulp.dest(".")));
-
-gulp.task("vendor.public.css", () => gulp
-    .src([
-        "./wwwroot/css/bootstrap/*.css",
-        "./wwwroot/css/font-awesome/*.css"
-    ])
-    .pipe(concat("./wwwroot/css/public/vendor.min.css"))
-    .pipe(uglifycss())
-    .pipe(gulp.dest(".")));
-
-gulp.task("site.public.css", () => gulp
-    .src([
-        "./wwwroot/css/shared/alerts.css",
-        "./wwwroot/css/shared/content.css",
-        "./wwwroot/css/shared/overrides.css",
-        "./wwwroot/css/shared/public.css"
-    ])
-    .pipe(concat("./wwwroot/css/public/site.min.css"))
+    .pipe(concat("./wwwroot/css/site/bundle.min.css"))
     .pipe(uglifycss())
     .pipe(gulp.dest(".")));
 
@@ -73,7 +52,7 @@ gulp.task("app.css", () => gulp
         return file.base;
     })));
 
-gulp.task("vendor.private.js", () => gulp
+gulp.task("vendor.js", () => gulp
     .src([
         "./wwwroot/js/numbro/numbro.js",
         "./wwwroot/js/numbro/**/*.js",
@@ -87,7 +66,7 @@ gulp.task("vendor.private.js", () => gulp
         "./wwwroot/js/wellidate/*.js",
         "./wwwroot/js/shared/widgets/*.js"
     ])
-    .pipe(concat("./wwwroot/js/private/vendor.min.js"))
+    .pipe(concat("./wwwroot/js/site/vendor.min.js"))
     .pipe(uglifyjs({
         output: {
             comments: /^!/
@@ -95,34 +74,9 @@ gulp.task("vendor.private.js", () => gulp
     }))
     .pipe(gulp.dest(".")));
 
-gulp.task("site.private.js", () => gulp
-    .src(["./wwwroot/js/shared/private.js"])
-    .pipe(concat("./wwwroot/js/private/site.min.js"))
-    .pipe(uglifyjs({
-        output: {
-            comments: /^!/
-        }
-    }))
-    .pipe(gulp.dest(".")));
-
-gulp.task("vendor.public.js", () => gulp
-    .src([
-        "./wwwroot/js/bootstrap/*.js",
-        "./wwwroot/js/wellidate/*.js",
-        "./wwwroot/js/shared/widgets/validator.js",
-        "./wwwroot/js/shared/widgets/alerts.js"
-    ])
-    .pipe(concat("./wwwroot/js/public/vendor.min.js"))
-    .pipe(uglifyjs({
-        output: {
-            comments: /^!/
-        }
-    }))
-    .pipe(gulp.dest(".")));
-
-gulp.task("site.public.js", () => gulp
-    .src(["./wwwroot/js/shared/public.js"])
-    .pipe(concat("./wwwroot/js/public/site.min.js"))
+gulp.task("site.js", () => gulp
+    .src(["./wwwroot/js/shared/site.js"])
+    .pipe(concat("./wwwroot/js/site/bundle.min.js"))
     .pipe(uglifyjs({
         output: {
             comments: /^!/
@@ -149,15 +103,11 @@ gulp.task("app.js", () => gulp
 gulp.task("minify", gulp.series([
     "clean.css",
     "clean.js",
-    "vendor.private.css",
-    "vendor.public.css",
-    "site.private.css",
-    "site.public.css",
+    "vendor.css",
+    "site.css",
     "app.css",
-    "vendor.private.js",
-    "vendor.public.js",
-    "site.private.js",
-    "site.public.js",
+    "vendor.js",
+    "site.js",
     "app.js"
 ]));
 

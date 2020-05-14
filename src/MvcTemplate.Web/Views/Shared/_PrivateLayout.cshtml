@@ -24,20 +24,19 @@
         <link rel="stylesheet" href="~/css/shared/header.css">
         <link rel="stylesheet" href="~/css/shared/navigation.css">
         <link rel="stylesheet" href="~/css/shared/overrides.css">
-        <link rel="stylesheet" href="~/css/shared/private.css">
         <link rel="stylesheet" href="~/css/shared/table.css">
         <link rel="stylesheet" href="~/css/shared/widget-box.css">
         <link rel="stylesheet" action="shared">
         <link rel="stylesheet" action="@action">
     </environment>
     <environment names="Staging,Production">
-        <link asp-append-version="true" rel="stylesheet" href="~/css/private/vendor.min.css">
-        <link asp-append-version="true" rel="stylesheet" href="~/css/private/site.min.css">
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site/vendor.min.css">
+        <link asp-append-version="true" rel="stylesheet" href="~/css/site/bundle.min.css">
         <link asp-append-version="true" action="shared" rel="stylesheet">
         <link asp-append-version="true" action="@action" rel="stylesheet">
     </environment>
 </head>
-<body>
+<body class="private">
     <partial name="MvcLookup/_Dialog" />
 
     <div class="header">
@@ -159,13 +158,13 @@
         <script src="~/js/shared/widgets/validator.js"></script>
         <script action="shared"></script>
         <script action="@action"></script>
-        <script src="~/js/shared/private.js"></script>
+        <script src="~/js/shared/site.js"></script>
     </environment>
     <environment names="Staging,Production">
-        <script asp-append-version="true" src="~/js/private/vendor.min.js"></script>
+        <script asp-append-version="true" src="~/js/site/vendor.min.js"></script>
         <script asp-append-version="true" action="shared"></script>
         <script asp-append-version="true" action="@action"></script>
-        <script asp-append-version="true" src="~/js/private/site.min.js"></script>
+        <script asp-append-version="true" src="~/js/site/bundle.min.js"></script>
     </environment>
 </body>
 </html>
