@@ -95,7 +95,7 @@ body.private {
 
 .control-validation .field-validation-error {
     display: inline-table;
-    padding-top: 7px;
+    padding-top: 8px;
 }
 
 @media (max-width: 1199px) {
