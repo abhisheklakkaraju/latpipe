@@ -19,7 +19,7 @@
                     <div class="control-label col-md-3 col-lg-2">
                         <label asp-for="Username"></label>
                     </div>
-                    <div class="control-content col-md-9 col-lg-5">
+                    <div class="control-content col-md-9 col-lg-4">
                         <input asp-for="Username" readonly />
                     </div>
                     <div class="control-validation col">
@@ -30,7 +30,7 @@
                     <div class="control-label col-md-3 col-lg-2">
                         <label asp-for="Email"></label>
                     </div>
-                    <div class="control-content col-md-9 col-lg-5">
+                    <div class="control-content col-md-9 col-lg-4">
                         <input asp-for="Email" readonly />
                     </div>
                     <div class="control-validation col">
@@ -41,7 +41,7 @@
                     <div class="control-label col-md-3 col-lg-2">
                         <label asp-for="IsLocked"></label>
                     </div>
-                    <div class="control-content col-md-9 col-lg-5">
+                    <div class="control-content col-md-9 col-lg-4">
                         <input asp-for="IsLocked" />
                     </div>
                     <div class="control-validation col">
@@ -54,7 +54,7 @@
                     <div class="control-label col-md-3 col-lg-2">
                         <label asp-for="RoleId"></label>
                     </div>
-                    <div class="control-content col-md-9 col-lg-5">
+                    <div class="control-content col-md-9 col-lg-4">
                         <div mvc-lookup-for="RoleId" handler="@nameof(Lookup.Role)"></div>
                     </div>
                     <div class="control-validation col">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="form-actions col-lg-7">
+                    <div class="form-actions col-lg-6">
                         <button class="btn btn-primary">@Resource.ForAction("Submit")</button>
                     </div>
                 </div>

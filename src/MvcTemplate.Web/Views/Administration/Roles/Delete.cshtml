@@ -23,7 +23,7 @@
                 <div class="control-label col-md-3 col-lg-2">
                     <label asp-for="Title"></label>
                 </div>
-                <div class="control-content col-md-9 col-lg-5">
+                <div class="control-content col-md-9 col-lg-4">
                     <input asp-for="Title" />
                 </div>
             </div>
@@ -31,13 +31,13 @@
                 <div class="control-label col-md-3 col-lg-2">
                     <label asp-for="Permissions"></label>
                 </div>
-                <div class="control-content col-md-9 col-lg-5">
+                <div class="control-content col-md-9 col-lg-4">
                     <div mvc-tree-for="Permissions" hide-depth="2"></div>
                 </div>
             </div>
             <form asp-antiforgery="true">
                 <div class="form-group">
-                    <div class="form-actions col-lg-7">
+                    <div class="form-actions col-lg-6">
                         <button class="btn btn-primary">@Resource.ForAction("Submit")</button>
                     </div>
                 </div>
