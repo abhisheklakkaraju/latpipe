@@ -123,9 +123,7 @@ namespace MvcTemplate.Web
 
             Language[] supported = Config.GetSection("Languages:Supported").Get<Language[]>();
             services.AddSingleton<ILanguages>(new Languages(Config["Languages:Default"], supported));
-
-            services.AddSingleton<ISiteMap>(provider => new SiteMap(
-                File.ReadAllText(Config["SiteMap:Path"]), provider.GetRequiredService<IAuthorization>()));
+            services.AddSingleton<ISiteMap>(provider => new SiteMap(File.ReadAllText(Config["SiteMap:Path"])));
 
             services.AddScopedImplementations<IService>();
             services.AddScopedImplementations<IValidator>();
