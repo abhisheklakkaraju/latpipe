@@ -17,7 +17,7 @@ else
 
 namespace MvcTemplate.Validators
 {
-    public class @Model.Validator : BaseValidator, @Model.IValidator
+    public class @Model.Validator : AValidator, @Model.IValidator
     {
         public @(Model.Validator)(IUnitOfWork unitOfWork)
             : base(unitOfWork)

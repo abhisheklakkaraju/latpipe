@@ -16,14 +16,14 @@ namespace MvcTemplate.Services.Tests
 {
     public class RoleServiceTests : IDisposable
     {
-        private TestingContext context;
         private RoleService service;
+        private DbContext context;
         private Role role;
 
         public RoleServiceTests()
         {
-            context = new TestingContext();
-            service = Substitute.ForPartsOf<RoleService>(new UnitOfWork(new TestingContext(context)));
+            context = TestingContext.Create();
+            service = Substitute.ForPartsOf<RoleService>(new UnitOfWork(TestingContext.Create()));
 
             role = SetUpData();
         }
@@ -324,10 +324,13 @@ namespace MvcTemplate.Services.Tests
 
         private IEnumerable<MvcTreeNode> GetLeafNodes(IEnumerable<MvcTreeNode> nodes)
         {
-            List<MvcTreeNode> leafs = nodes.Where(node => node.Children.Count == 0).ToList();
+            List<MvcTreeNode> leafs = new List<MvcTreeNode>();
 
-            foreach (MvcTreeNode branch in nodes.Where(node => node.Children.Count > 0))
-                leafs.AddRange(GetLeafNodes(branch.Children));
+            foreach (MvcTreeNode node in nodes.Where(node => node.Children.Count > 0))
+                if (node.Children.Count > 0)
+                    leafs.AddRange(GetLeafNodes(node.Children));
+                else
+                    leafs.Add(node);
 
             return leafs;
         }

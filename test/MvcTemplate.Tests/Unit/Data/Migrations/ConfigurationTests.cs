@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using System;
@@ -11,11 +12,11 @@ namespace MvcTemplate.Data.Migrations.Tests
     public class ConfigurationTests : IDisposable
     {
         private Configuration configuration;
-        private TestingContext context;
+        private DbContext context;
 
         public ConfigurationTests()
         {
-            context = new TestingContext();
+            context = TestingContext.Create();
             configuration = new Configuration(context);
 
             context.Drop();
@@ -43,15 +44,15 @@ namespace MvcTemplate.Data.Migrations.Tests
         }
 
         [Theory]
-        [InlineData("Administration", "Accounts", "Index")]
         [InlineData("Administration", "Accounts", "Create")]
         [InlineData("Administration", "Accounts", "Details")]
         [InlineData("Administration", "Accounts", "Edit")]
-        [InlineData("Administration", "Roles", "Index")]
+        [InlineData("Administration", "Accounts", "Index")]
         [InlineData("Administration", "Roles", "Create")]
+        [InlineData("Administration", "Roles", "Delete")]
         [InlineData("Administration", "Roles", "Details")]
         [InlineData("Administration", "Roles", "Edit")]
-        [InlineData("Administration", "Roles", "Delete")]
+        [InlineData("Administration", "Roles", "Index")]
         public void Seed_Permissions(String area, String controller, String action)
         {
             configuration.Seed();

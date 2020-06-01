@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace MvcTemplate.Validators.Tests
 {
-    public class BaseValidatorProxy : BaseValidator
+    public class AValidatorProxy : AValidator
     {
-        public BaseValidatorProxy(IUnitOfWork unitOfWork)
+        public AValidatorProxy(IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
         }

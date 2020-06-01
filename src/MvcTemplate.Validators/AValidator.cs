@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace MvcTemplate.Validators
 {
-    public abstract class BaseValidator : IValidator
+    public abstract class AValidator : IValidator
     {
         public ModelStateDictionary ModelState { get; set; }
         public Int64 CurrentAccountId { get; set; }
@@ -16,7 +16,7 @@ namespace MvcTemplate.Validators
 
         protected IUnitOfWork UnitOfWork { get; }
 
-        protected BaseValidator(IUnitOfWork unitOfWork)
+        protected AValidator(IUnitOfWork unitOfWork)
         {
             ModelState = new ModelStateDictionary();
             UnitOfWork = unitOfWork;

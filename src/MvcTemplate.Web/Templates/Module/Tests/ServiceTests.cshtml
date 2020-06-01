@@ -14,13 +14,13 @@ namespace MvcTemplate.Services.Tests
     public class @Model.ServiceTests : IDisposable
     {
         private @Model.Service service;
-        private TestingContext context;
+        private DbContext context;
         private @Model.Model @Model.ModelVarName;
 
         public @(Model.ServiceTests)()
         {
-            context = new TestingContext();
-            service = new @(Model.Service)(new UnitOfWork(new TestingContext(context)));
+            context = TestingContext.Create();
+            service = new @(Model.Service)(new UnitOfWork(TestingContext.Create()));
 
             context.Drop().Add(@Model.ModelVarName = ObjectsFactory.Create@(Model.Model)(0));
             context.SaveChanges();

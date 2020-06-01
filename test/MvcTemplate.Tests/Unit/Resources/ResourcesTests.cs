@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Components.Mvc;
 using MvcTemplate.Controllers;
 using MvcTemplate.Data.Migrations;
@@ -39,7 +40,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllPermissionAreaTitles()
         {
-            using TestingContext context = new TestingContext();
+            using DbContext context = TestingContext.Create();
             using Configuration configuration = new Configuration(context);
 
             configuration.Seed();
@@ -51,7 +52,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllPermissionControllerTitles()
         {
-            using TestingContext context = new TestingContext();
+            using DbContext context = TestingContext.Create();
             using Configuration configuration = new Configuration(context);
 
             configuration.Seed();
@@ -63,7 +64,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllPermissionActionTitles()
         {
-            using TestingContext context = new TestingContext();
+            using DbContext context = TestingContext.Create();
             using Configuration configuration = new Configuration(context);
 
             configuration.Seed();

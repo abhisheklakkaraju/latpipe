@@ -5,15 +5,15 @@ using Xunit;
 
 namespace MvcTemplate.Services.Tests
 {
-    public class BaseServiceTests : IDisposable
+    public class AServiceTests : IDisposable
     {
         private IUnitOfWork unitOfWork;
-        private BaseService service;
+        private AService service;
 
-        public BaseServiceTests()
+        public AServiceTests()
         {
             unitOfWork = Substitute.For<IUnitOfWork>();
-            service = Substitute.ForPartsOf<BaseService>(unitOfWork);
+            service = Substitute.ForPartsOf<AService>(unitOfWork);
         }
         public void Dispose()
         {

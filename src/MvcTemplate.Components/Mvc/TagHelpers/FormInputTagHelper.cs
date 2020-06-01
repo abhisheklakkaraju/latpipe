@@ -12,9 +12,6 @@ namespace MvcTemplate.Components.Mvc
 
         public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
-            if (For?.Metadata.ModelType == typeof(Boolean))
-                return;
-
             if (output.Attributes["autocomplete"] == null)
                 output.Attributes.Add("autocomplete", "off");
 

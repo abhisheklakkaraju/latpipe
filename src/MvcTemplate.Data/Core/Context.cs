@@ -15,9 +15,6 @@ namespace MvcTemplate.Data
         {
             ObjectMapper.MapObjects();
         }
-        protected Context()
-        {
-        }
         public Context(DbContextOptions options)
             : base(options)
         {

@@ -21,16 +21,16 @@ namespace MvcTemplate.Services.Tests
     {
         private HttpContext httpContext;
         private AccountService service;
-        private TestingContext context;
+        private DbContext context;
         private Account account;
         private IHasher hasher;
 
         public AccountServiceTests()
         {
-            context = new TestingContext();
+            context = TestingContext.Create();
             hasher = Substitute.For<IHasher>();
             httpContext = new DefaultHttpContext();
-            service = new AccountService(new UnitOfWork(new TestingContext(context)), hasher);
+            service = new AccountService(new UnitOfWork(TestingContext.Create()), hasher);
             hasher.HashPassword(Arg.Any<String>()).Returns(info => $"{info.Arg<String>()}Hashed");
 
             context.Drop().Add(account = ObjectsFactory.CreateAccount(0));

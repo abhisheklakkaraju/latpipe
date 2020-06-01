@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MvcTemplate.Services
 {
-    public class AccountService : BaseService, IAccountService
+    public class AccountService : AService, IAccountService
     {
         private IHasher Hasher { get; }
 

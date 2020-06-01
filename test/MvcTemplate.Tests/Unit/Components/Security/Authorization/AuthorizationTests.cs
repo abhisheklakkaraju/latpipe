@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security.Area.Tests;
 using MvcTemplate.Data;
@@ -12,12 +13,12 @@ namespace MvcTemplate.Components.Security.Tests
 {
     public class AuthorizationTests : IDisposable
     {
-        private TestingContext context;
+        private DbContext context;
         private Authorization authorization;
 
         public AuthorizationTests()
         {
-            context = new TestingContext();
+            context = TestingContext.Create();
             IServiceScope scope = Substitute.For<IServiceScope>();
             IServiceProvider services = Substitute.For<IServiceProvider>();
             IServiceScopeFactory factory = Substitute.For<IServiceScopeFactory>();
@@ -27,7 +28,7 @@ namespace MvcTemplate.Components.Security.Tests
             scope.ServiceProvider.Returns(services);
             services.GetService(typeof(IServiceScopeFactory)).Returns(factory);
             services.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
-            services.GetService(typeof(IUnitOfWork)).Returns(_ => new UnitOfWork(new TestingContext(context)));
+            services.GetService(typeof(IUnitOfWork)).Returns(_ => new UnitOfWork(TestingContext.Create()));
 
             authorization = new Authorization(Assembly.GetExecutingAssembly(), services);
         }

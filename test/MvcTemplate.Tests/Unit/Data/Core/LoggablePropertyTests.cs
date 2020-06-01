@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using System;
 using Xunit;
@@ -13,10 +14,10 @@ namespace MvcTemplate.Data.Tests
 
         public LoggablePropertyTests()
         {
-            TestModel model = new TestModel { Id = 1 };
-            using TestingContext context = new TestingContext();
+            Role model = new Role { Id = 1 };
+            using DbContext context = TestingContext.Create();
 
-            context.Set<TestModel>().Attach(model);
+            context.Set<Role>().Attach(model);
             context.Entry(model).State = EntityState.Modified;
             textProperty = context.Entry(model).Property(prop => prop.Title);
             dateProperty = context.Entry(model).Property(prop => prop.CreationDate);

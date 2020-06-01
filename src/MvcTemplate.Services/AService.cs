@@ -3,12 +3,12 @@ using System;
 
 namespace MvcTemplate.Services
 {
-    public abstract class BaseService : IService
+    public abstract class AService : IService
     {
         public Int64 CurrentAccountId { get; set; }
         protected IUnitOfWork UnitOfWork { get; }
 
-        protected BaseService(IUnitOfWork unitOfWork)
+        protected AService(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
         }

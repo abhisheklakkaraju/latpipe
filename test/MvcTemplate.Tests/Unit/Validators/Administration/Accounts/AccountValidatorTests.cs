@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Components.Notifications;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Data;
@@ -14,16 +15,16 @@ namespace MvcTemplate.Validators.Tests
     public class AccountValidatorTests : IDisposable
     {
         private AccountValidator validator;
-        private TestingContext context;
+        private DbContext context;
         private Account account;
         private IHasher hasher;
 
         public AccountValidatorTests()
         {
-            context = new TestingContext();
+            context = TestingContext.Create();
             hasher = Substitute.For<IHasher>();
             hasher.VerifyPassword(Arg.Any<String>(), Arg.Any<String>()).Returns(true);
-            validator = new AccountValidator(new UnitOfWork(new TestingContext(context)), hasher);
+            validator = new AccountValidator(new UnitOfWork(TestingContext.Create()), hasher);
 
             context.Drop().Add(account = ObjectsFactory.CreateAccount(0));
             context.SaveChanges();

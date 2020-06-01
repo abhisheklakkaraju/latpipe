@@ -159,13 +159,5 @@ namespace MvcTemplate.Tests
                 Permission = CreatePermission(id)
             };
         }
-
-        public static TestModel CreateTestModel(Int64 id)
-        {
-            return new TestModel
-            {
-                Title = $"Title{id}"
-            };
-        }
     }
 }

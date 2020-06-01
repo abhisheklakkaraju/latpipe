@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MvcTemplate.Validators
 {
-    public class AccountValidator : BaseValidator, IAccountValidator
+    public class AccountValidator : AValidator, IAccountValidator
     {
         private IHasher Hasher { get; }
 

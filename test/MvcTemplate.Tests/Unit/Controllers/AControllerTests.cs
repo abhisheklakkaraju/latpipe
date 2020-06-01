@@ -16,16 +16,16 @@ using Xunit;
 
 namespace MvcTemplate.Controllers.Tests
 {
-    public class BaseControllerTests : ControllerTests
+    public class AControllerTests : ControllerTests
     {
-        private BaseController controller;
+        private AController controller;
         private String controllerName;
         private ActionContext action;
         private String? areaName;
 
-        public BaseControllerTests()
+        public AControllerTests()
         {
-            controller = Substitute.ForPartsOf<BaseController>();
+            controller = Substitute.ForPartsOf<AController>();
 
             controller.Url = Substitute.For<IUrlHelper>();
             controller.ControllerContext.RouteData = new RouteData();
@@ -45,7 +45,7 @@ namespace MvcTemplate.Controllers.Tests
         }
 
         [Fact]
-        public void BaseController_CreatesEmptyAlerts()
+        public void AController_CreatesEmptyAlerts()
         {
             Assert.Empty(controller.Alerts);
         }
@@ -170,7 +170,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void OnActionExecuting_SetsAuthorization()
         {
-            controller = Substitute.ForPartsOf<BaseController>();
+            controller = Substitute.ForPartsOf<AController>();
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 

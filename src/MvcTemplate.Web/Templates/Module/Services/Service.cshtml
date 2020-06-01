@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MvcTemplate.Services
 {
-    public class @Model.Service : BaseService, @Model.IService
+    public class @Model.Service : AService, @Model.IService
     {
         public @(Model.Service)(IUnitOfWork unitOfWork)
             : base(unitOfWork)

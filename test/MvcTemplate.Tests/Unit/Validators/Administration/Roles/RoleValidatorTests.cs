@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Data;
 using MvcTemplate.Objects;
 using MvcTemplate.Resources;
@@ -11,13 +12,13 @@ namespace MvcTemplate.Validators.Tests
     public class RoleValidatorTests : IDisposable
     {
         private RoleValidator validator;
-        private TestingContext context;
+        private DbContext context;
         private Role role;
 
         public RoleValidatorTests()
         {
-            context = new TestingContext();
-            validator = new RoleValidator(new UnitOfWork(new TestingContext(context)));
+            context = TestingContext.Create();
+            validator = new RoleValidator(new UnitOfWork(TestingContext.Create()));
 
             context.Drop().Add(role = ObjectsFactory.CreateRole(0));
             context.SaveChanges();

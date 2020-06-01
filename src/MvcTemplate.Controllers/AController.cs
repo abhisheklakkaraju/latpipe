@@ -15,13 +15,13 @@ namespace MvcTemplate.Controllers
 {
     [Authorize]
     [AutoValidateAntiforgeryToken]
-    public abstract class BaseController : Controller
+    public abstract class AController : Controller
     {
         public virtual IAuthorization Authorization { get; protected set; }
         public virtual Int64 CurrentAccountId { get; protected set; }
         public Alerts Alerts { get; protected set; }
 
-        protected BaseController()
+        protected AController()
         {
             Alerts = new Alerts();
             Authorization = Authorization!;

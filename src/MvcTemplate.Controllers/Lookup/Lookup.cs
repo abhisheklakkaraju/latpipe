@@ -10,7 +10,7 @@ using System;
 namespace MvcTemplate.Controllers
 {
     [AllowUnauthorized]
-    public class Lookup : BaseController
+    public class Lookup : AController
     {
         private IUnitOfWork UnitOfWork { get; }
 

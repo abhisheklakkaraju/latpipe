@@ -119,7 +119,7 @@ namespace MvcTemplate.Web
             services.AddSingleton<IHasher, BCrypter>();
             services.AddSingleton<IMailClient, SmtpMailClient>();
             services.AddSingleton<IValidationAttributeAdapterProvider, ValidationAdapterProvider>();
-            services.AddSingleton<IAuthorization>(provider => new Authorization(typeof(BaseController).Assembly, provider));
+            services.AddSingleton<IAuthorization>(provider => new Authorization(typeof(AController).Assembly, provider));
 
             Language[] supported = Config.GetSection("Languages:Supported").Get<Language[]>();
             services.AddSingleton<ILanguages>(new Languages(Config["Languages:Default"], supported));

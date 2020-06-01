@@ -4,7 +4,7 @@ using System;
 
 namespace MvcTemplate.Controllers
 {
-    public abstract class ServicedController<TService> : BaseController
+    public abstract class ServicedController<TService> : AController
         where TService : IService
     {
         public TService Service { get; }

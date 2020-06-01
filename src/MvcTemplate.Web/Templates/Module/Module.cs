@@ -96,13 +96,8 @@ namespace MvcTemplate.Web.Templates
                     AddPermissions();
                     AddViewImports();
                     AddObjectFactory();
-                    AddTestinContextDrops();
-
-                    AddPermissionTests("Index");
-                    AddPermissionTests("Create");
-                    AddPermissionTests("Details");
-                    AddPermissionTests("Edit");
-                    AddPermissionTests("Delete");
+                    AddPermissionTests();
+                    AddTestingContextDrops();
 
                     AddResource("Page", "Headers", Model!, Model.Humanize());
                     AddResource("Page", "Headers", Model.Pluralize(), Model.Pluralize().Humanize());
@@ -152,25 +147,18 @@ namespace MvcTemplate.Web.Templates
             Logger.Write("../MvcTemplate.Controllers/Area.cs - ");
 
             String areas = File.ReadAllText("../MvcTemplate.Controllers/Area.cs");
+            String newAreas = String.Join(",\n        ",
+                Regex.Matches(areas, @"        (\w+),?")
+                    .Select(match => match.Groups[1].Value)
+                    .Append(Area)
+                    .Distinct()
+                    .OrderBy(name => name));
 
-            if (areas.Contains($"        {Area}"))
-            {
-                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
-            }
-            else
-            {
-                String newAreas = String.Join(",\n        ",
-                    Regex.Matches(areas, "        (\\w+),?")
-                        .Select(match => match.Groups[1].Value)
-                        .Append(Area)
-                        .OrderBy(name => name));
+            areas = Regex.Replace(areas, @"    {\r?\n( +\w+,?\r?\n)+    }", $"    {{\n        {newAreas}\n    }}");
 
-                areas = Regex.Replace(areas, @"    {\r?\n( +\w+,?\r?\n)+    }", $"    {{\n        {newAreas}\n    }}");
+            File.WriteAllText("../MvcTemplate.Controllers/Area.cs", areas);
 
-                File.WriteAllText("../MvcTemplate.Controllers/Area.cs", areas);
-
-                Logger.WriteLine("Succeeded", ConsoleColor.Green);
-            }
+            Logger.WriteLine("Succeeded", ConsoleColor.Green);
         }
         private void AddSiteMap()
         {
@@ -228,61 +216,41 @@ namespace MvcTemplate.Web.Templates
         {
             Logger.Write("../MvcTemplate.Data/Migrations/Configuration.cs - ");
 
-            String configuration = File.ReadAllText("../MvcTemplate.Data/Migrations/Configuration.cs");
-            MatchCollection matches = Regex.Matches(configuration, "new Permission {[^}]+}");
+            String permissions = File.ReadAllText("../MvcTemplate.Data/Migrations/Configuration.cs");
+            String newPermissions = String.Join(",\n",
+                Regex.Matches(permissions, "new Permission {[^}]+}")
+                    .Select(match => $"                {match.Value}")
+                    .Append($@"                new Permission {{ Area = ""{Area}"", Controller = ""{Controller}"", Action = ""Create"" }}")
+                    .Append($@"                new Permission {{ Area = ""{Area}"", Controller = ""{Controller}"", Action = ""Delete"" }}")
+                    .Append($@"                new Permission {{ Area = ""{Area}"", Controller = ""{Controller}"", Action = ""Details"" }}")
+                    .Append($@"                new Permission {{ Area = ""{Area}"", Controller = ""{Controller}"", Action = ""Edit"" }}")
+                    .Append($@"                new Permission {{ Area = ""{Area}"", Controller = ""{Controller}"", Action = ""Index"" }}")
+                    .Distinct()
+                    .OrderBy(permission => permission));
 
-            if (matches.Count > 0)
-            {
-                String newPermissions = String.Join(",\n                ",
-                    new[] { "Index", "Create", "Edit", "Details", "Delete" }
-                        .Select(action => $"new Permission {{ Area = \"{Area}\", Controller = \"{Controller}\", Action = \"{action}\" }}")
-                        .Where(permission => !configuration.Contains(permission)));
+            permissions = Regex.Replace(permissions, @"( +new Permission {[^}]+},?\r?\n+)+", $"{newPermissions}\n");
 
-                if (newPermissions.Length > 0)
-                {
-                    newPermissions = $",\n\n                {newPermissions}";
-                    Int32 lastPermission = matches.Last().Index + matches.Last().Length;
+            File.WriteAllText("../MvcTemplate.Data/Migrations/Configuration.cs", permissions);
 
-                    configuration = configuration.Insert(lastPermission, newPermissions);
-
-                    File.WriteAllText("../MvcTemplate.Data/Migrations/Configuration.cs", configuration);
-
-                    Logger.WriteLine("Success", ConsoleColor.Green);
-                }
-                else
-                {
-                    Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
-                }
-            }
-            else
-            {
-                Logger.WriteLine("Missing, skipping", ConsoleColor.Yellow);
-            }
+            Logger.WriteLine("Succeeded", ConsoleColor.Green);
         }
         private void AddViewImports()
         {
             Logger.Write("../MvcTemplate.Web/Views/_ViewImports.cshtml - ");
 
             String imports = File.ReadAllText("../MvcTemplate.Web/Views/_ViewImports.cshtml");
+            String newImports = String.Join("\n",
+                Regex.Matches(imports, "@using (.+);")
+                    .Select(match => match.Value)
+                    .Append(Area == null ? "@using MvcTemplate.Controllers;" : $"@using MvcTemplate.Controllers.{Area};")
+                    .Distinct()
+                    .OrderBy(definition => definition.TrimEnd(';')));
 
-            if (Area == null || imports.Contains($"@using MvcTemplate.Controllers.{Area};"))
-            {
-                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
-            }
-            else
-            {
-                String newImports = String.Join("\n",
-                    Regex.Matches(imports, "@using (.+);")
-                        .Select(match => match.Value)
-                        .Append($"@using MvcTemplate.Controllers.{Area};")
-                        .OrderBy(definition => definition.TrimEnd(';')));
+            imports = Regex.Replace(imports, @"(@using (.+);\r?\n)+", $"{newImports}\n");
 
-                imports = Regex.Replace(imports, "(@using (.+);\\r?\\n)+", $"{newImports}\n");
+            File.WriteAllText("../MvcTemplate.Web/Views/_ViewImports.cshtml", imports);
 
-                File.WriteAllText("../MvcTemplate.Web/Views/_ViewImports.cshtml", imports);
-
-                Logger.WriteLine("Succeeded", ConsoleColor.Green);
-            }
+            Logger.WriteLine("Succeeded", ConsoleColor.Green);
         }
         private void AddObjectFactory()
         {
@@ -310,58 +278,53 @@ namespace MvcTemplate.Web.Templates
                 Logger.WriteLine("Succeeded", ConsoleColor.Green);
             }
         }
-        private void AddTestinContextDrops()
-        {
-            Logger.Write("../../test/MvcTemplate.Tests/Data/TestingContext.cs - ");
-
-            String drops = File.ReadAllText("../../test/MvcTemplate.Tests/Data/TestingContext.cs");
-
-            if (drops.Contains($"RemoveRange(Set<{Model}>());"))
-            {
-                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
-            }
-            else
-            {
-                String newDrops = String.Join("\n",
-                    Regex.Matches(drops, "RemoveRange\\(Set<(.+)>\\(\\)\\);")
-                        .Select(match => $"            {match.Value}")
-                        .Append($"            RemoveRange(Set<{Model}>());")
-                        .OrderByDescending(drop => drop.Length)
-                        .ThenByDescending(drop => drop));
-
-                drops = Regex.Replace(drops, "( +RemoveRange\\(Set<(.+)>\\(\\)\\);\\r?\\n)+", $"{newDrops}\n");
-
-                File.WriteAllText("../../test/MvcTemplate.Tests/Data/TestingContext.cs", drops);
-
-                Logger.WriteLine("Succeeded", ConsoleColor.Green);
-            }
-        }
-        private void AddPermissionTests(String action)
+        private void AddPermissionTests()
         {
             Logger.Write("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs - ");
 
-            String testData = $"[InlineData(\"{Area}\", \"{Controller}\", \"{action}\")]";
             String tests = File.ReadAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs");
+            String newTests = String.Join("\n",
+                Regex.Matches(tests, @"\[InlineData\(.*, ""\w+"", ""\w+""\)\]")
+                    .Select(match => $"        {match.Value}")
+                    .Append($@"        [InlineData(""{Area}"", ""{Controller}"", ""Create"")]")
+                    .Append($@"        [InlineData(""{Area}"", ""{Controller}"", ""Delete"")]")
+                    .Append($@"        [InlineData(""{Area}"", ""{Controller}"", ""Details"")]")
+                    .Append($@"        [InlineData(""{Area}"", ""{Controller}"", ""Edit"")]")
+                    .Append($@"        [InlineData(""{Area}"", ""{Controller}"", ""Index"")]")
+                    .Distinct()
+                    .OrderBy(test => test));
 
-            if (tests.Contains(testData))
-            {
-                Logger.WriteLine("Already exists, skipping...", ConsoleColor.Yellow);
-            }
-            else
-            {
-                tests = tests.Insert(tests.IndexOf("public void Seed_Permissions"), $"{testData}\n        ");
+            tests = Regex.Replace(tests, @"( +\[InlineData\(.*, ""\w+"", ""\w+""\)\]\r?\n)+", $"{newTests}\n");
 
-                File.WriteAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs", tests);
+            File.WriteAllText("../../test/MvcTemplate.Tests/Unit/Data/Migrations/ConfigurationTests.cs", tests);
 
-                Logger.WriteLine("Succeeded", ConsoleColor.Green);
-            }
+            Logger.WriteLine("Succeeded", ConsoleColor.Green);
+        }
+        private void AddTestingContextDrops()
+        {
+            Logger.Write("../../test/MvcTemplate.Tests/Helpers/TestingContext.cs - ");
+
+            String drops = File.ReadAllText("../../test/MvcTemplate.Tests/Helpers/TestingContext.cs");
+            String newDrops = String.Join("\n",
+                Regex.Matches(drops, @"context.RemoveRange\(context.Set<(.+)>\(\)\);")
+                    .Select(match => $"            {match.Value}")
+                    .Append($"            context.RemoveRange(context.Set<{Model}>());")
+                    .Distinct()
+                    .OrderByDescending(drop => drop.Length)
+                    .ThenByDescending(drop => drop));
+
+            drops = Regex.Replace(drops, @"( +context.RemoveRange\(context.Set<(.+)>\(\)\);\r?\n)+", $"{newDrops}\n");
+
+            File.WriteAllText("../../test/MvcTemplate.Tests/Helpers/TestingContext.cs", drops);
+
+            Logger.WriteLine("Succeeded", ConsoleColor.Green);
         }
         private void AddResource(String resource, String group, String key, String value)
         {
             Logger.Write($"../MvcTemplate.Web/Resources/Shared/{resource}.json - ");
 
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
-            Dictionary<String, SortedDictionary<String, String?>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String?>>>(page);
+            Dictionary<String, SortedDictionary<String, String>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String>>>(page);
 
             if (resources[group].ContainsKey(key))
             {

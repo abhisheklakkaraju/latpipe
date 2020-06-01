@@ -1,5 +1,6 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using MvcTemplate.Objects;
 using MvcTemplate.Tests;
 using NSubstitute;
 using System;
@@ -12,16 +13,15 @@ namespace MvcTemplate.Data.Tests
 {
     public class QueryTests : IDisposable
     {
-        private TestingContext context;
-        private Query<TestModel> select;
+        private DbContext context;
+        private Query<Role> select;
 
         public QueryTests()
         {
-            context = new TestingContext();
-            select = new Query<TestModel>(context.Set<TestModel>());
+            context = TestingContext.Create();
+            select = new Query<Role>(context.Set<Role>());
 
-            context.RemoveRange(context.Set<TestModel>());
-            context.Add(ObjectsFactory.CreateTestModel(0));
+            context.Drop().Add(ObjectsFactory.CreateRole(0));
             context.SaveChanges();
         }
         public void Dispose()
@@ -32,7 +32,7 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void ElementType_IsModelType()
         {
-            Object expected = typeof(TestModel);
+            Object expected = typeof(Role);
             Object actual = select.ElementType;
 
             Assert.Same(expected, actual);
@@ -41,12 +41,12 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void Expression_IsSetsExpression()
         {
-            DbSet<TestModel> set = Substitute.For<DbSet<TestModel>, IQueryable>();
-            TestingContext testingContext = Substitute.For<TestingContext>();
+            DbSet<Role> set = Substitute.For<DbSet<Role>, IQueryable>();
+            DbContext testingContext = Substitute.For<DbContext>();
             ((IQueryable)set).Expression.Returns(Expression.Empty());
-            testingContext.Set<TestModel>().Returns(set);
+            testingContext.Set<Role>().Returns(set);
 
-            select = new Query<TestModel>(testingContext.Set<TestModel>());
+            select = new Query<Role>(testingContext.Set<Role>());
 
             Object expected = ((IQueryable)set).Expression;
             Object actual = select.Expression;
@@ -57,7 +57,7 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void Provider_IsSetsProvider()
         {
-            Object expected = ((IQueryable)context.Set<TestModel>()).Provider;
+            Object expected = ((IQueryable)context.Set<Role>()).Provider;
             Object actual = select.Provider;
 
             Assert.Same(expected, actual);
@@ -66,7 +66,7 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void Select_Selects()
         {
-            IEnumerable<Int64> expected = context.Set<TestModel>().Select(model => model.Id);
+            IEnumerable<Int64> expected = context.Set<Role>().Select(model => model.Id);
             IEnumerable<Int64> actual = select.Select(model => model.Id);
 
             Assert.Equal(expected, actual);
@@ -77,8 +77,8 @@ namespace MvcTemplate.Data.Tests
         [InlineData(false)]
         public void Where_Filters(Boolean predicate)
         {
-            IEnumerable<TestModel> expected = context.Set<TestModel>().Where(_ => predicate);
-            IEnumerable<TestModel> actual = select.Where(_ => predicate);
+            IEnumerable<Role> expected = context.Set<Role>().Where(_ => predicate);
+            IEnumerable<Role> actual = select.Where(_ => predicate);
 
             Assert.Equal(expected, actual);
         }
@@ -86,8 +86,8 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void To_ProjectsSet()
         {
-            IEnumerable<Int64> expected = context.Set<TestModel>().ProjectTo<TestView>().Select(view => view.Id).ToArray();
-            IEnumerable<Int64> actual = select.To<TestView>().Select(view => view.Id).ToArray();
+            IEnumerable<Int64> expected = context.Set<Role>().ProjectTo<RoleView>().Select(view => view.Id).ToArray();
+            IEnumerable<Int64> actual = select.To<RoleView>().Select(view => view.Id).ToArray();
 
             Assert.Equal(expected, actual);
         }
@@ -95,8 +95,8 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void GetEnumerator_ReturnsSetEnumerator()
         {
-            IEnumerable<TestModel> expected = context.Set<TestModel>();
-            IEnumerable<TestModel> actual = select.ToArray();
+            IEnumerable<Role> expected = context.Set<Role>();
+            IEnumerable<Role> actual = select.ToArray();
 
             Assert.Equal(expected, actual);
         }
@@ -104,8 +104,8 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void GetEnumerator_ReturnsSameEnumerator()
         {
-            IEnumerable<TestModel> expected = context.Set<TestModel>();
-            IEnumerable<TestModel> actual = select;
+            IEnumerable<Role> expected = context.Set<Role>();
+            IEnumerable<Role> actual = select;
 
             Assert.Equal(expected, actual);
         }

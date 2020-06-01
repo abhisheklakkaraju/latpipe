@@ -11,19 +11,19 @@ namespace MvcTemplate.Data.Tests
 {
     public class LoggableEntityTests : IDisposable
     {
-        private TestModel model;
-        private TestingContext context;
+        private Role model;
+        private DbContext context;
         private EntityEntry<AModel> entry;
 
         public LoggableEntityTests()
         {
-            using (context = new TestingContext())
+            using (context = TestingContext.Create())
             {
-                context.Drop().Add(model = ObjectsFactory.CreateTestModel(0));
+                context.Drop().Add(model = ObjectsFactory.CreateRole(0));
                 context.SaveChanges();
             }
 
-            context = new TestingContext(context);
+            context = TestingContext.Create();
             entry = context.Entry<AModel>(model);
         }
         public void Dispose()
@@ -46,7 +46,7 @@ namespace MvcTemplate.Data.Tests
         public void LoggableEntity_SetsName()
         {
             String actual = new LoggableEntity(entry).Name;
-            String expected = typeof(TestModel).Name;
+            String expected = typeof(Role).Name;
 
             Assert.Equal(expected, actual);
         }
@@ -54,11 +54,11 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void LoggableEntity_Proxy_SetsName()
         {
-            model = context.Set<TestModel>().Single();
+            model = context.Set<Role>().Single();
             entry = context.ChangeTracker.Entries<AModel>().Single();
 
             String actual = new LoggableEntity(entry).Name;
-            String expected = typeof(TestModel).Name;
+            String expected = typeof(Role).Name;
 
             Assert.IsAssignableFrom<IProxyTargetAccessor>(model);
             Assert.Equal(expected, actual);

@@ -9,15 +9,15 @@ using Xunit;
 
 namespace MvcTemplate.Validators.Tests
 {
-    public class BaseValidatorTests : IDisposable
+    public class AValidatorTests : IDisposable
     {
-        private BaseValidatorProxy validator;
+        private AValidatorProxy validator;
         private IUnitOfWork unitOfWork;
 
-        public BaseValidatorTests()
+        public AValidatorTests()
         {
             unitOfWork = Substitute.For<IUnitOfWork>();
-            validator = new BaseValidatorProxy(unitOfWork);
+            validator = new AValidatorProxy(unitOfWork);
         }
         public void Dispose()
         {
@@ -26,13 +26,13 @@ namespace MvcTemplate.Validators.Tests
         }
 
         [Fact]
-        public void BaseValidator_CreatesEmptyModelState()
+        public void AValidator_CreatesEmptyModelState()
         {
             Assert.Empty(validator.ModelState);
         }
 
         [Fact]
-        public void BaseValidator_CreatesEmptyAlerts()
+        public void AValidator_CreatesEmptyAlerts()
         {
             Assert.Empty(validator.Alerts);
         }

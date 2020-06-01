@@ -11,20 +11,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 {
     public class FormInputTagHelperTests
     {
-        [Fact]
-        public void Process_Boolean()
-        {
-            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
-            ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(Boolean)));
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => content);
-            FormInputTagHelper helper = new FormInputTagHelper { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
-
-            helper.Process(null, output);
-
-            Assert.Empty(output.Attributes);
-            Assert.Empty(output.Content.GetContent());
-        }
-
         [Theory]
         [InlineData("", "")]
         [InlineData("on", "on")]

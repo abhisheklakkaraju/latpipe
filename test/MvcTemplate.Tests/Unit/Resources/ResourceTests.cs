@@ -210,7 +210,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotMemberLambdaExpression_ReturnNull()
         {
-            Assert.Empty(Resource.ForProperty<TestView, String?>(view => view.ToString()));
+            Assert.Empty(Resource.ForProperty<RoleView, String?>(view => view.ToString()));
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundLambdaType_Empty()
         {
-            Assert.Empty(Resource.ForProperty<TestView, String?>(test => test.Title));
+            Assert.Empty(Resource.ForProperty<Object, String?>(test => test.ToString()));
         }
 
         [Fact]
@@ -288,13 +288,13 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundTypeProperty_Empty()
         {
-            Assert.Empty(Resource.ForProperty(typeof(TestView), nameof(TestView.Title)));
+            Assert.Empty(Resource.ForProperty(typeof(Object), nameof(Object.ToString)));
         }
 
         [Fact]
         public void ForProperty_NotMemberExpression_ReturnNull()
         {
-            Expression<Func<TestView, String?>> lambda = (view) => view.ToString();
+            Expression<Func<RoleView, String?>> lambda = (view) => view.ToString();
 
             Assert.Empty(Resource.ForProperty(lambda.Body));
         }
@@ -332,7 +332,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundType_Empty()
         {
-            Expression<Func<TestView, String?>> lambda = (test) => test.Title;
+            Expression<Func<Object, String?>> lambda = (test) => test.ToString();
 
             Assert.Empty(Resource.ForProperty(lambda.Body));
         }

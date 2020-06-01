@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MvcTemplate.Services
 {
-    public class RoleService : BaseService, IRoleService
+    public class RoleService : AService, IRoleService
     {
         public RoleService(IUnitOfWork unitOfWork)
             : base(unitOfWork)

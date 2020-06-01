@@ -14,15 +14,15 @@ namespace MvcTemplate.Components.Mvc.Tests
             {
                 new Language
                 {
-                    Name = "English",
+                    Name = "English GB",
                     Abbreviation = "en",
                     Culture = new CultureInfo("en-GB")
                 },
                 new Language
                 {
-                    Name = "Lietuvių",
-                    Abbreviation = "lt",
-                    Culture = new CultureInfo("lt-LT")
+                    Name = "English US",
+                    Abbreviation = "us",
+                    Culture = new CultureInfo("en-US")
                 }
             });
         }
@@ -30,7 +30,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Default_Language()
         {
-            CultureInfo.CurrentUICulture = languages["lt"].Culture!;
+            CultureInfo.CurrentUICulture = languages["us"].Culture!;
 
             Language actual = languages.Default;
             Language expected = languages["en"];
@@ -67,12 +67,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             Language[] actual = languages.Supported;
 
-            Assert.Equal(new CultureInfo("lt-LT"), actual[1].Culture);
+            Assert.Equal(new CultureInfo("en-US"), actual[1].Culture);
             Assert.Equal(new CultureInfo("en-GB"), actual[0].Culture);
-            Assert.Equal("lt", actual[1].Abbreviation);
+            Assert.Equal("us", actual[1].Abbreviation);
             Assert.Equal("en", actual[0].Abbreviation);
-            Assert.Equal("Lietuvių", actual[1].Name);
-            Assert.Equal("English", actual[0].Name);
+            Assert.Equal("English US", actual[1].Name);
+            Assert.Equal("English GB", actual[0].Name);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Equal(new CultureInfo("en-GB"), actual.Culture);
             Assert.Equal("en", actual.Abbreviation);
-            Assert.Equal("English", actual.Name);
+            Assert.Equal("English GB", actual.Name);
         }
     }
 }

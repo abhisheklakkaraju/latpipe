@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
-using NSubstitute;
 using System;
+using System.Globalization;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -17,14 +17,13 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             ResourceExecutingContext context = new ResourceExecutingContext(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
-            ILanguages languages = Substitute.For<ILanguages>();
-            context.RouteData.Values["language"] = "lt";
-            languages["lt"].Returns(new Language());
+            Languages languages = new Languages("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") }, new Language { Abbreviation = "us", Culture = new CultureInfo("en-us") } });
 
+            context.RouteData.Values["language"] = "us";
             new LanguageFilter(languages).OnResourceExecuting(context);
 
+            Language expected = languages["us"];
             Language actual = languages.Current;
-            Language expected = languages["lt"];
 
             Assert.Equal(expected, actual);
         }
@@ -34,8 +33,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             ResourceExecutingContext context = new ResourceExecutingContext(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
-            ILanguages languages = Substitute.For<ILanguages>();
-            languages.Default.Returns(new Language());
+            Languages languages = new Languages("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") } });
 
             new LanguageFilter(languages).OnResourceExecuting(context);
 
