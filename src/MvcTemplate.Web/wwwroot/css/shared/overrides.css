@@ -202,6 +202,11 @@ hr {
     border-color: #dc3545;
 }
 
+.mvc-lookup-browser:active {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
 /* mvc.grid */
 .mvc-grid {
     line-height: 1.5;
