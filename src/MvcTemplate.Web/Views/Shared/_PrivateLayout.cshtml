@@ -87,7 +87,7 @@
 
             <div class="breadcrumb">
                 @{ IAuthorization authorization = Context.RequestServices.GetRequiredService<IAuthorization>(); }
-                @{ SiteMapNode[] breadcrumb = siteMap.BreadcrumbFor(ViewContext).ToArray(); }
+                @{ SiteMapNode[] breadcrumb = siteMap.BreadcrumbFor(ViewContext); }
                 @{ Int64? accountId = User.Id(); }
 
                 @for (Int32 i = 0; i < breadcrumb.Length; i++)
@@ -98,14 +98,14 @@
                     {
                         <a href="@node.Url">
                             <span class="icon @node.IconClass"></span>
-                            <span class="text">@node.Title</span>
+                            <span class="text">@Resource.ForSiteMap(node.Path!)</span>
                         </a>
                     }
                     else
                     {
                         <a>
                             <span class="icon @node.IconClass"></span>
-                            <span class="text">@node.Title</span>
+                            <span class="text">@Resource.ForSiteMap(node.Path!)</span>
                         </a>
                     }
                 }

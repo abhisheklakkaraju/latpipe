@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
-using MvcTemplate.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace MvcTemplate.Components.Mvc
 {
     public class SiteMap : ISiteMap
     {
-        private List<SiteMapNode> Tree { get; }
+        private SiteMapNode[] Tree { get; }
         private IAuthorization Authorization { get; }
         private Dictionary<String, SiteMapNode> Lookup { get; }
 
@@ -26,15 +25,15 @@ namespace MvcTemplate.Components.Mvc
             Lookup = Flatten(Tree).ToDictionary(node => node.Path!, StringComparer.OrdinalIgnoreCase);
         }
 
-        public IEnumerable<SiteMapNode> For(ViewContext context)
+        public SiteMapNode[] For(ViewContext context)
         {
             Int64? account = context.HttpContext.User.Id();
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
-            List<SiteMapNode> nodes = SetState(null, Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
+            SiteMapNode[] nodes = SetState(null, Tree, factory.GetUrlHelper(context), CurrentNodeFor(context.RouteData.Values));
 
             return Authorize(account, nodes);
         }
-        public IEnumerable<SiteMapNode> BreadcrumbFor(ViewContext context)
+        public SiteMapNode[] BreadcrumbFor(ViewContext context)
         {
             IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
             SiteMapNode? current = CurrentNodeFor(context.RouteData.Values);
@@ -48,21 +47,16 @@ namespace MvcTemplate.Components.Mvc
                     {
                         Path = current.Path,
                         Url = FormUrl(url, current),
-                        IconClass = current.IconClass,
-                        Title = Resource.ForSiteMap(current.Title!),
-
-                        Controller = current.Controller,
-                        Action = current.Action,
-                        Area = current.Area
+                        IconClass = current.IconClass
                     });
 
                 current = current.Parent;
             }
 
-            return breadcrumb;
+            return breadcrumb.ToArray();
         }
 
-        private List<SiteMapNode> SetState(SiteMapNode? parent, IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode? current)
+        private SiteMapNode[] SetState(SiteMapNode? parent, IEnumerable<SiteMapNode> nodes, IUrlHelper url, SiteMapNode? current)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
 
@@ -75,7 +69,6 @@ namespace MvcTemplate.Components.Mvc
                 copy.Path = node.Path;
                 copy.Parent = parent;
 
-                copy.Title = Resource.ForSiteMap(node.Title!);
                 copy.Controller = node.Controller;
                 copy.Action = node.Action;
                 copy.Area = node.Area;
@@ -89,9 +82,9 @@ namespace MvcTemplate.Components.Mvc
                 copies.Add(copy);
             }
 
-            return copies;
+            return copies.ToArray();
         }
-        private List<SiteMapNode> Authorize(Int64? accountId, IEnumerable<SiteMapNode> nodes)
+        private SiteMapNode[] Authorize(Int64? accountId, IEnumerable<SiteMapNode> nodes)
         {
             List<SiteMapNode> authorized = new List<SiteMapNode>();
 
@@ -105,10 +98,10 @@ namespace MvcTemplate.Components.Mvc
                     authorized.AddRange(node.Children);
             }
 
-            return authorized;
+            return authorized.ToArray();
         }
 
-        private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
+        private SiteMapNode[] Parse(XContainer root, SiteMapNode? parent = null)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
 
@@ -123,17 +116,16 @@ namespace MvcTemplate.Components.Mvc
                 node.Area = (String)element.Attribute("area") ?? parent?.Area;
                 node.Controller = (String)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
 
-                node.Title = $"{node.Area}/{node.Controller}/{node.Action}";
+                node.Path = $"{node.Area}/{node.Controller}/{node.Action}";
                 node.Children = Parse(element, node);
-                node.Path = node.Title;
                 node.Parent = parent;
 
                 nodes.Add(node);
             }
 
-            return nodes;
+            return nodes.ToArray();
         }
-        private List<SiteMapNode> Flatten(IEnumerable<SiteMapNode> branches)
+        private List<SiteMapNode> Flatten(SiteMapNode[] branches)
         {
             List<SiteMapNode> list = new List<SiteMapNode>();
 
@@ -176,7 +168,7 @@ namespace MvcTemplate.Components.Mvc
         }
         private Boolean IsEmpty(SiteMapNode node)
         {
-            return node.Action == null && !node.Children.Any();
+            return node.Action == null && node.Children.Length == 0;
         }
     }
 }

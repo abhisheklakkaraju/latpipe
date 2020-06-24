@@ -47,7 +47,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
             Assert.Equal("Administration//", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -61,7 +60,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
             Assert.Equal("Administration/Accounts/Index", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
 
             Assert.Null(actual[1].Action);
             Assert.Equal("#", actual[1].Url);
@@ -69,7 +67,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[1].Area);
             Assert.Equal("fa fa-users", actual[1].IconClass);
             Assert.Equal("Administration/Roles/", actual[1].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration/Roles/"), actual[1].Title);
 
             actual = actual[1].Children.ToArray();
 
@@ -82,7 +79,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("far fa-file", actual[0].IconClass);
             Assert.Equal("Administration/Roles/Create", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration/Roles/Create"), actual[0].Title);
         }
 
         [Fact]
@@ -101,7 +97,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
             Assert.Equal("Administration//", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -115,7 +110,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
             Assert.Equal("Administration/Accounts/Index", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
         }
 
         [Fact]
@@ -162,7 +156,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
             Assert.Equal("Administration//", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration//"), actual[0].Title);
 
             actual = actual[0].Children.ToArray();
 
@@ -176,7 +169,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-user", actual[0].IconClass);
             Assert.Equal("Administration/Accounts/Index", actual[0].Path);
-            Assert.Equal(Resource.ForSiteMap("Administration/Accounts/Index"), actual[0].Title);
         }
 
         [Fact]
@@ -190,21 +182,13 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Equal(2, actual.Length);
 
-            Assert.Equal(Resource.ForSiteMap("/Home/Index"), actual[0].Title);
             Assert.Equal("fa fa-home", actual[0].IconClass);
             Assert.Equal("/Home/Index", actual[0].Path);
-            Assert.Equal("Home", actual[0].Controller);
-            Assert.Equal("Index", actual[0].Action);
             Assert.Equal("/test", actual[0].Url);
-            Assert.Null(actual[0].Area);
 
-            Assert.Equal(Resource.ForSiteMap("/Profile/Edit"), actual[1].Title);
             Assert.Equal("fa fa-pencil-alt", actual[1].IconClass);
             Assert.Equal("/Profile/Edit", actual[1].Path);
-            Assert.Equal("Profile", actual[1].Controller);
-            Assert.Equal("Edit", actual[1].Action);
             Assert.Equal("/test", actual[1].Url);
-            Assert.Null(actual[1].Area);
         }
 
         [Fact]

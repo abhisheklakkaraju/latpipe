@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -13,8 +14,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Process_Placeholder()
         {
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => null);
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
+            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => Task.FromResult<TagHelperContent?>(null));
             PlaceholderTagHelper helper = new PlaceholderTagHelper { For = new ModelExpression("Total", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
 
             metadata.DisplayName.Returns("Test");

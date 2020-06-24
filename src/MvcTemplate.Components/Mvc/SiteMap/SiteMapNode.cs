@@ -7,7 +7,6 @@ namespace MvcTemplate.Components.Mvc
     {
         public String? Url { get; set; }
         public String? Path { get; set; }
-        public String? Title { get; set; }
         public Boolean IsMenu { get; set; }
         public Boolean IsActive { get; set; }
         public String? IconClass { get; set; }
@@ -18,7 +17,7 @@ namespace MvcTemplate.Components.Mvc
         public Dictionary<String, String> Route { get; set; }
 
         public SiteMapNode? Parent { get; set; }
-        public IEnumerable<SiteMapNode> Children { get; set; }
+        public SiteMapNode[] Children { get; set; }
 
         public SiteMapNode()
         {

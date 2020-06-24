@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Extensions.Tests;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
@@ -26,7 +27,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             helper = new MvcTreeTagHelper();
             helper.For = new ModelExpression("MvcTree", explorer);
-            output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => null);
+            output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => Task.FromResult<TagHelperContent?>(null));
         }
 
         [Fact]
