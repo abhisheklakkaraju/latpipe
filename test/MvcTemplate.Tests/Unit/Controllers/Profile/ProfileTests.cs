@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Notifications;
@@ -24,13 +25,13 @@ namespace MvcTemplate.Controllers.Tests
 
         public ProfileTests()
         {
-            validator = Substitute.For<IAccountValidator>();
             service = Substitute.For<IAccountService>();
-
-            profileDelete = ObjectsFactory.CreateProfileDeleteView(0);
+            validator = Substitute.For<IAccountValidator>();
             profileEdit = ObjectsFactory.CreateProfileEditView(0);
-
+            profileDelete = ObjectsFactory.CreateProfileDeleteView(0);
             controller = Substitute.ForPartsOf<Profile>(validator, service);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
             controller.CurrentAccountId.Returns(1);
@@ -217,7 +218,7 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.DeleteConfirmed(profileDelete);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization.Received().Refresh(controller.HttpContext.RequestServices);
         }
 
         [Fact]

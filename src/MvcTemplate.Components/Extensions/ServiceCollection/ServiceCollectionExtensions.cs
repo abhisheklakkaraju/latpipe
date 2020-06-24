@@ -7,11 +7,11 @@ namespace MvcTemplate.Components.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddTransientImplementations<T>(this IServiceCollection services)
+        public static void AddScopedImplementations<T>(this IServiceCollection services)
         {
             foreach (Type type in typeof(T).Assembly.GetTypes().Where(Implements<T>))
                 if (type.GetInterface($"I{type.Name}") is Type typeInterface)
-                    services.TryAddTransient(typeInterface, type);
+                    services.TryAddScoped(typeInterface, type);
         }
         private static Boolean Implements<T>(Type type)
         {

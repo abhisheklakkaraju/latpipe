@@ -6,6 +6,6 @@ namespace MvcTemplate.Components.Security
     {
         Boolean IsGrantedFor(Int64? accountId, String permission);
 
-        void Refresh();
+        void Refresh(IServiceProvider services);
     }
 }

@@ -63,6 +63,7 @@ namespace MvcTemplate.Web
             services
                 .AddMvc()
                 .AddMvcOptions(options => options.Filters.Add<LanguageFilter>())
+                .AddMvcOptions(options => options.Filters.Add<TransactionFilter>())
                 .AddMvcOptions(options => options.Filters.Add<AuthorizationFilter>())
                 .AddMvcOptions(options => ModelMessagesProvider.Set(options.ModelBindingMessageProvider))
                 .AddRazorOptions(options => options.ViewLocationExpanders.Add(new ViewLocationExpander()))
@@ -107,18 +108,16 @@ namespace MvcTemplate.Web
         private void ConfigureDependencies(IServiceCollection services)
         {
             services.AddSession();
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddTransient<Configuration>();
-            services.AddTransient<DbContext, Context>();
-            services.AddDbContext<Context>(options => options.UseSqlServer(Config["Data:Connection"]));
-            services.AddTransient<IUnitOfWork>(provider => new AuditedUnitOfWork(
+            services.AddScoped<Configuration>();
+            services.AddDbContext<DbContext, Context>(options => options.UseSqlServer(Config["Data:Connection"]));
+            services.AddScoped<IUnitOfWork>(provider => new AuditedUnitOfWork(
                 provider.GetRequiredService<DbContext>(),
                 provider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User?.Id()));
 
             services.AddSingleton<IHasher, BCrypter>();
             services.AddSingleton<IMailClient, SmtpMailClient>();
-
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IValidationAttributeAdapterProvider, ValidationAdapterProvider>();
             services.AddSingleton<IAuthorization>(provider => new Authorization(typeof(AController).Assembly, provider));
 
@@ -128,8 +127,8 @@ namespace MvcTemplate.Web
             services.AddSingleton<ISiteMap>(provider => new SiteMap(
                 File.ReadAllText(Config["SiteMap:Path"]), provider.GetRequiredService<IAuthorization>()));
 
-            services.AddTransientImplementations<IService>();
-            services.AddTransientImplementations<IValidator>();
+            services.AddScopedImplementations<IService>();
+            services.AddScopedImplementations<IValidator>();
         }
 
         private void RegisterResources()

@@ -34,7 +34,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Service.Create(account);
 
-            Authorization.Refresh();
+            Authorization.Refresh(HttpContext.RequestServices);
 
             return RedirectToAction(nameof(Index));
         }
@@ -59,7 +59,7 @@ namespace MvcTemplate.Controllers.Administration
 
             Service.Edit(account);
 
-            Authorization.Refresh();
+            Authorization.Refresh(HttpContext.RequestServices);
 
             return RedirectToAction(nameof(Index));
         }

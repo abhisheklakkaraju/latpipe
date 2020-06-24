@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
@@ -22,12 +23,12 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
         public RolesTests()
         {
-            validator = Substitute.For<IRoleValidator>();
-            service = Substitute.For<IRoleService>();
-
             role = ObjectsFactory.CreateRoleView(0);
-
+            service = Substitute.For<IRoleService>();
+            validator = Substitute.For<IRoleValidator>();
             controller = Substitute.ForPartsOf<Roles>(validator, service);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }
@@ -169,7 +170,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(role);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization.Received().Refresh(controller.HttpContext.RequestServices);
         }
 
         [Fact]
@@ -207,7 +208,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             controller.DeleteConfirmed(role.Id);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization.Received().Refresh(controller.HttpContext.RequestServices);
         }
 
         [Fact]

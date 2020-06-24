@@ -26,12 +26,11 @@ namespace @Model.ControllerTestsNamespace
 
         public @(Model.ControllerTests)()
         {
-            validator = Substitute.For<@Model.IValidator>();
             service = Substitute.For<@Model.IService>();
-
+            validator = Substitute.For<@Model.IValidator>();
             @Model.ModelVarName = ObjectsFactory.Create@(Model.View)(0);
-
             controller = Substitute.ForPartsOf<@Model.Controller>(validator, service);
+
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }

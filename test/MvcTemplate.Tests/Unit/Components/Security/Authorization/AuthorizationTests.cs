@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Security.Area.Tests;
 using MvcTemplate.Data;
 using MvcTemplate.Objects;
@@ -14,19 +13,14 @@ namespace MvcTemplate.Components.Security.Tests
     public class AuthorizationTests : IDisposable
     {
         private DbContext context;
+        private IServiceProvider services;
         private Authorization authorization;
 
         public AuthorizationTests()
         {
             context = TestingContext.Create();
-            IServiceScope scope = Substitute.For<IServiceScope>();
-            IServiceProvider services = Substitute.For<IServiceProvider>();
-            IServiceScopeFactory factory = Substitute.For<IServiceScopeFactory>();
+            services = Substitute.For<IServiceProvider>();
 
-            context.Drop();
-            factory.CreateScope().Returns(scope);
-            scope.ServiceProvider.Returns(services);
-            services.GetService(typeof(IServiceScopeFactory)).Returns(factory);
             services.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
             services.GetService(typeof(IUnitOfWork)).Returns(_ => new UnitOfWork(TestingContext.Create()));
 
@@ -373,7 +367,7 @@ namespace MvcTemplate.Components.Security.Tests
 
             context.Drop();
 
-            authorization.Refresh();
+            authorization.Refresh(services);
 
             Assert.False(authorization.IsGrantedFor(accountId, $"Area/{nameof(AuthorizedController)}/{nameof(AuthorizedController.Action)}"));
         }
@@ -389,12 +383,12 @@ namespace MvcTemplate.Components.Security.Tests
             account.Role = rolePermission.Role;
             account.IsLocked = isLocked;
 
-            context.Add(rolePermission);
+            context.Drop().Add(rolePermission);
             context.Add(account);
 
             context.SaveChanges();
 
-            authorization.Refresh();
+            authorization.Refresh(services);
 
             return account.Id;
         }

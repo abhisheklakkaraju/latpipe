@@ -12,7 +12,6 @@ namespace MvcTemplate.Components.Security
 {
     public class Authorization : IAuthorization
     {
-        private IServiceProvider Services { get; }
         private Dictionary<String, String> Required { get; }
         private Dictionary<String, MethodInfo> Actions { get; }
         private Dictionary<Int64, HashSet<String>> Permissions { get; set; }
@@ -23,7 +22,6 @@ namespace MvcTemplate.Components.Security
             Actions = new Dictionary<String, MethodInfo>(StringComparer.OrdinalIgnoreCase);
             Required = new Dictionary<String, String>(StringComparer.OrdinalIgnoreCase);
             Permissions = new Dictionary<Int64, HashSet<String>>();
-            Services = services;
 
             foreach (Type controller in controllers.GetTypes().Where(IsController))
                 foreach (MethodInfo method in controller.GetMethods(flags).Where(IsAction))
@@ -33,7 +31,7 @@ namespace MvcTemplate.Components.Security
                 if (RequiredPermissionFor(action) is String permission)
                     Required[action] = permission;
 
-            Refresh();
+            Refresh(services);
         }
 
         public Boolean IsGrantedFor(Int64? accountId, String permission)
@@ -44,10 +42,9 @@ namespace MvcTemplate.Components.Security
             return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId!.Value].Contains(Required[permission]);
         }
 
-        public void Refresh()
+        public void Refresh(IServiceProvider services)
         {
-            using IServiceScope scope = Services.CreateScope();
-            using IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            IUnitOfWork unitOfWork = services.GetRequiredService<IUnitOfWork>();
 
             Permissions = unitOfWork
                 .Select<Account>()

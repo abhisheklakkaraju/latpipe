@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using MvcTemplate.Components.Security;
@@ -24,14 +25,14 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
         public AccountsTests()
         {
-            validator = Substitute.For<IAccountValidator>();
             service = Substitute.For<IAccountService>();
-
-            accountCreate = ObjectsFactory.CreateAccountCreateView(0);
-            accountEdit = ObjectsFactory.CreateAccountEditView(0);
             account = ObjectsFactory.CreateAccountView(0);
-
+            validator = Substitute.For<IAccountValidator>();
+            accountEdit = ObjectsFactory.CreateAccountEditView(0);
+            accountCreate = ObjectsFactory.CreateAccountCreateView(0);
             controller = Substitute.ForPartsOf<Accounts>(validator, service);
+
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext.RouteData = new RouteData();
         }
@@ -89,7 +90,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Create(accountCreate);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization.Received().Refresh(controller.HttpContext.RequestServices);
         }
 
         [Fact]
@@ -153,7 +154,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(accountEdit);
 
-            controller.Authorization.Received().Refresh();
+            controller.Authorization.Received().Refresh(controller.HttpContext.RequestServices);
         }
 
         [Fact]
