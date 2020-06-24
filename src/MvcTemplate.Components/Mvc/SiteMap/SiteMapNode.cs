@@ -6,6 +6,7 @@ namespace MvcTemplate.Components.Mvc
     public class SiteMapNode
     {
         public String? Url { get; set; }
+        public String? Path { get; set; }
         public String? Title { get; set; }
         public Boolean IsMenu { get; set; }
         public Boolean IsActive { get; set; }

@@ -86,21 +86,24 @@
             <hr />
 
             <div class="breadcrumb">
+                @{ IAuthorization authorization = Context.RequestServices.GetRequiredService<IAuthorization>(); }
                 @{ SiteMapNode[] breadcrumb = siteMap.BreadcrumbFor(ViewContext).ToArray(); }
+                @{ Int64? accountId = User.Id(); }
+
                 @for (Int32 i = 0; i < breadcrumb.Length; i++)
                 {
                     SiteMapNode node = breadcrumb[i];
 
-                    if (i == breadcrumb.Length - 1)
+                    if (authorization.IsGrantedFor(accountId, node.Path!))
                     {
-                        <a class="current">
+                        <a href="@node.Url">
                             <span class="icon @node.IconClass"></span>
                             <span class="text">@node.Title</span>
                         </a>
                     }
-                    else if (node.Action != null)
+                    else
                     {
-                        <a href="@node.Url">
+                        <a>
                             <span class="icon @node.IconClass"></span>
                             <span class="text">@node.Title</span>
                         </a>

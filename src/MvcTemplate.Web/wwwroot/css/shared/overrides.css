@@ -21,7 +21,8 @@ hr {
     margin: 0;
 }
 
-.breadcrumb a {
+.breadcrumb a,
+.breadcrumb a:not([href]) {
     color: #999999;
 }
 
@@ -39,12 +40,6 @@ hr {
     font-weight: bold;
     content: "\f105";
     color: #777777;
-}
-
-.breadcrumb .current,
-.breadcrumb .current:hover {
-    font-weight: bold;
-    color: #555555;
 }
 
 @media (max-width: 767px) {

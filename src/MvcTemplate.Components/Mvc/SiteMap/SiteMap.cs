@@ -23,7 +23,7 @@ namespace MvcTemplate.Components.Mvc
         {
             Authorization = authorization;
             Tree = Parse(XElement.Parse(map));
-            Lookup = Flatten(Tree).ToDictionary(node => $"{node.Area}/{node.Controller}/{node.Action}", StringComparer.OrdinalIgnoreCase);
+            Lookup = Flatten(Tree).ToDictionary(node => node.Path!, StringComparer.OrdinalIgnoreCase);
         }
 
         public IEnumerable<SiteMapNode> For(ViewContext context)
@@ -43,16 +43,18 @@ namespace MvcTemplate.Components.Mvc
 
             while (current != null)
             {
-                breadcrumb.Insert(0, new SiteMapNode
-                {
-                    Url = FormUrl(url, current),
-                    IconClass = current.IconClass,
-                    Title = Resource.ForSiteMap(current.Title!),
+                if (current.Action != null)
+                    breadcrumb.Insert(0, new SiteMapNode
+                    {
+                        Path = current.Path,
+                        Url = FormUrl(url, current),
+                        IconClass = current.IconClass,
+                        Title = Resource.ForSiteMap(current.Title!),
 
-                    Controller = current.Controller,
-                    Action = current.Action,
-                    Area = current.Area
-                });
+                        Controller = current.Controller,
+                        Action = current.Action,
+                        Area = current.Area
+                    });
 
                 current = current.Parent;
             }
@@ -70,6 +72,7 @@ namespace MvcTemplate.Components.Mvc
                 copy.IconClass = node.IconClass;
                 copy.Url = FormUrl(url, node);
                 copy.IsMenu = node.IsMenu;
+                copy.Path = node.Path;
                 copy.Parent = parent;
 
                 copy.Title = Resource.ForSiteMap(node.Title!);
@@ -96,7 +99,7 @@ namespace MvcTemplate.Components.Mvc
             {
                 node.Children = Authorize(accountId, node.Children);
 
-                if (node.IsMenu && IsAuthorizedFor(accountId, node.Area, node.Controller, node.Action) && !IsEmpty(node))
+                if (node.IsMenu && !IsEmpty(node) && Authorization.IsGrantedFor(accountId, node.Path!))
                     authorized.Add(node);
                 else
                     authorized.AddRange(node.Children);
@@ -105,10 +108,6 @@ namespace MvcTemplate.Components.Mvc
             return authorized;
         }
 
-        private Boolean IsAuthorizedFor(Int64? accountId, String? area, String? controller, String? action)
-        {
-            return action == null || Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}");
-        }
         private List<SiteMapNode> Parse(XContainer root, SiteMapNode? parent = null)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
@@ -126,6 +125,7 @@ namespace MvcTemplate.Components.Mvc
 
                 node.Title = $"{node.Area}/{node.Controller}/{node.Action}";
                 node.Children = Parse(element, node);
+                node.Path = node.Title;
                 node.Parent = parent;
 
                 nodes.Add(node);
