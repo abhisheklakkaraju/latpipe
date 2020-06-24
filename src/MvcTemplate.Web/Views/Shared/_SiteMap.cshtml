@@ -1,23 +1,26 @@
-@model SiteMapNode[]
+@model IEnumerable<SiteMapNode>
 
-@for (Int32 i = 0; i < Model.Length; i++)
-{
-    SiteMapNode node = Model[i];
+<ul>
+    @foreach (SiteMapNode node in Model)
+    {
+        Boolean submenu = node.Children.Any();
+        String menu = submenu ? "submenu" : "";
+        menu += node.IsActive ? " active" : "";
+        menu += submenu && node.IsActive ? " open" : "";
 
-    <li>
-        <a href="@node.Form(Url)">
-            <span class="icon @node.IconClass"></span>
-            <span class="text">@Resource.ForSiteMap(node.Path!)</span>
-            @if (node.Children.Length > 0)
+        <li class="@menu.TrimStart()">
+            <a href="@node.Url">
+                <span class="icon @node.IconClass"></span>
+                <span class="text">@node.Title</span>
+                @if (submenu)
+                {
+                    <span class="toggle fa fa-angle-right"></span>
+                }
+            </a>
+            @if (submenu)
             {
-                <span class="toggle fa fa-angle-right"></span>
-            }
-        </a>
-        @if (node.Children.Length > 0)
-        {
-            <ul>
                 <partial name="_SiteMap" model="@node.Children" />
-            </ul>
-        }
-    </li>
-}
+            }
+        </li>
+    }
+</ul>

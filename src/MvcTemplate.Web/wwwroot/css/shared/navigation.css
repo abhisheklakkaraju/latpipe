@@ -85,6 +85,15 @@
     padding-left: 35px;
 }
 
+@media (min-width: 768px) {
+    .navigation > ul:not(:hover) .active:not(.open) > a {
+        background-image: url("../../img/shared/menu-active.png"), linear-gradient(#6f93a7, #2a4e62);
+        background-position: right center;
+        background-repeat: no-repeat;
+        color: #ffffff;
+    }
+}
+
 @media (max-width: 767px) {
     .navigation {
         margin-top: 10px;
@@ -93,6 +102,13 @@
 
     .navigation .navigation-search {
         display: none;
+    }
+
+    .navigation > ul:not(:hover) > .active > a {
+        background-image: url("../../img/shared/menu-active.png"), linear-gradient(#6f93a7, #2a4e62);
+        background-position: right center;
+        background-repeat: no-repeat;
+        color: #ffffff;
     }
 
     .navigation > ul .icon {
@@ -127,6 +143,10 @@
 
     .navigation > ul > li ul ul {
         left: 100px;
+    }
+
+    .navigation > ul > li ul ul .active > a {
+        background-image: none;
     }
 
     .navigation > ul > li ul ul a {

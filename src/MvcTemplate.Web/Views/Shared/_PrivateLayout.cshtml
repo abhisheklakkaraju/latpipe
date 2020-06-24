@@ -80,15 +80,13 @@
                 <input type="search" placeholder="@(Resource.ForAction("Search"))..." />
             </div>
             @{ ISiteMap siteMap = Context.RequestServices.GetRequiredService<ISiteMap>(); }
-            <ul>
-                <partial name="_SiteMap" model="@siteMap.Tree" />
-            </ul>
+            <partial name="_SiteMap" model="@siteMap.For(ViewContext)" />
         </div>
         <div class="main-content">
             <hr />
 
             <div class="breadcrumb">
-                @{ SiteMapNode[] breadcrumb = siteMap.BreadcrumbFor(ViewContext); }
+                @{ SiteMapNode[] breadcrumb = siteMap.BreadcrumbFor(ViewContext).ToArray(); }
                 @for (Int32 i = 0; i < breadcrumb.Length; i++)
                 {
                     SiteMapNode node = breadcrumb[i];
@@ -97,14 +95,14 @@
                     {
                         <a class="current">
                             <span class="icon @node.IconClass"></span>
-                            <span class="text">@Resource.ForSiteMap(node.Path!)</span>
+                            <span class="text">@node.Title</span>
                         </a>
                     }
                     else if (node.Action != null)
                     {
-                        <a href="@node.Form(Url)">
+                        <a href="@node.Url">
                             <span class="icon @node.IconClass"></span>
-                            <span class="text">@Resource.ForSiteMap(node.Path!)</span>
+                            <span class="text">@node.Title</span>
                         </a>
                     }
                 }
