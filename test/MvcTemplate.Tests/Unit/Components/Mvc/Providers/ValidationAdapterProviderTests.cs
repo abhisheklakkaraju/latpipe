@@ -67,6 +67,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
+        public void GetAttributeAdapter_LessThan()
+        {
+            Assert.IsType<LessThanAdapter>(provider.GetAttributeAdapter(new LessThanAttribute(45), null));
+        }
+
+        [Fact]
         public void GetAttributeAdapter_EqualTo()
         {
             Assert.IsType<EqualToAdapter>(provider.GetAttributeAdapter(new EqualToAttribute("Other"), null));
