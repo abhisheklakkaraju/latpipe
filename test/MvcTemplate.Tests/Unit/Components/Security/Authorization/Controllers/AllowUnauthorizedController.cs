@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MvcTemplate.Components.Security.Tests
 {
@@ -6,5 +7,10 @@ namespace MvcTemplate.Components.Security.Tests
     [ExcludeFromCodeCoverage]
     public class AllowUnauthorizedController : AuthorizeController
     {
+        [HttpGet]
+        public ViewResult AuthorizedAction()
+        {
+            return View();
+        }
     }
 }

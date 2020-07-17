@@ -9,6 +9,12 @@ namespace MvcTemplate.Components.Security.Tests
     public class AllowAnonymousController : AuthorizeController
     {
         [HttpGet]
+        public ViewResult SimpleAction()
+        {
+            return View();
+        }
+
+        [HttpGet]
         [Authorize]
         [AllowAnonymous]
         [AllowUnauthorized]

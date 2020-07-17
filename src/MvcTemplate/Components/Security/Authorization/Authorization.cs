@@ -36,10 +36,15 @@ namespace MvcTemplate.Components.Security
 
         public Boolean IsGrantedFor(Int64? accountId, String permission)
         {
-            if (!Required.ContainsKey(permission))
-                return true;
+            if (Actions.ContainsKey(permission))
+            {
+                if (Required.TryGetValue(permission, out String? requiredPermission))
+                    permission = requiredPermission;
+                else
+                    return true;
+            }
 
-            return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId!.Value].Contains(Required[permission]);
+            return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId!.Value].Contains(permission);
         }
 
         public void Refresh(IServiceProvider services)

@@ -84,7 +84,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_ReturnsAuthorizedNodes()
         {
-            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration//").Returns(true);
+            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration//").Returns(false);
             authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration/Accounts/Index").Returns(true);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
@@ -115,7 +115,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_SetsActiveMenu()
         {
-            route["action"] = "Create";
+            route["action"] = "Edit";
             route["controller"] = "Roles";
             route["area"] = "Administration";
 
@@ -135,9 +135,9 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             actual = actual[1].Children.ToArray();
 
-            Assert.Empty(actual[0].Children);
-            Assert.True(actual[0].IsActive);
             Assert.Single(actual);
+            Assert.Empty(actual[0].Children);
+            Assert.False(actual[0].IsActive);
         }
 
         [Fact]
