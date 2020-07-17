@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
-using MvcTemplate.Resources;
 using MvcTemplate.Tests;
 using NSubstitute;
 using System;
@@ -26,9 +22,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             authorization = Substitute.For<IAuthorization>();
             siteMap = new SiteMap(CreateSiteMap(), authorization);
             context = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
-            IUrlHelper url = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(context);
-
-            url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
             route = context.RouteData.Values;
         }
 
@@ -42,7 +35,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Single(actual);
 
             Assert.Null(actual[0].Action);
-            Assert.Equal("#", actual[0].Url);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
@@ -54,7 +46,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Empty(actual[0].Children);
 
-            Assert.Equal("/test", actual[0].Url);
             Assert.Equal("Index", actual[0].Action);
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
@@ -62,7 +53,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Administration/Accounts/Index", actual[0].Path);
 
             Assert.Null(actual[1].Action);
-            Assert.Equal("#", actual[1].Url);
             Assert.Equal("Roles", actual[1].Controller);
             Assert.Equal("Administration", actual[1].Area);
             Assert.Equal("fa fa-users", actual[1].IconClass);
@@ -73,7 +63,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Single(actual);
             Assert.Empty(actual[0].Children);
 
-            Assert.Equal("/test", actual[0].Url);
             Assert.Equal("Create", actual[0].Action);
             Assert.Equal("Roles", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
@@ -92,7 +81,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Single(actual);
 
             Assert.Null(actual[0].Action);
-            Assert.Equal("#", actual[0].Url);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
@@ -104,7 +92,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Empty(actual[0].Children);
 
-            Assert.Equal("/test", actual[0].Url);
             Assert.Equal("Index", actual[0].Action);
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
@@ -151,7 +138,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Single(actual);
 
             Assert.Null(actual[0].Action);
-            Assert.Equal("#", actual[0].Url);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
@@ -163,7 +149,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Empty(actual[0].Children);
 
-            Assert.Equal("/test", actual[0].Url);
             Assert.Equal("Index", actual[0].Action);
             Assert.Equal("Accounts", actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
@@ -184,11 +169,9 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Equal("fa fa-home", actual[0].IconClass);
             Assert.Equal("/Home/Index", actual[0].Path);
-            Assert.Equal("/test", actual[0].Url);
 
             Assert.Equal("fa fa-pencil-alt", actual[1].IconClass);
             Assert.Equal("/Profile/Edit", actual[1].Path);
-            Assert.Equal("/test", actual[1].Url);
         }
 
         [Fact]

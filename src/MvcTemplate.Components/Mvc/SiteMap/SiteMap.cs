@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
 using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Security;
 using System;
@@ -16,47 +13,29 @@ namespace MvcTemplate.Components.Mvc
     {
         private SiteMapNode[] Tree { get; }
         private IAuthorization Authorization { get; }
-        private Dictionary<String, SiteMapNode> Lookup { get; }
+        private Dictionary<String, SiteMapNode[]> Breadcrumb { get; }
 
         public SiteMap(String map, IAuthorization authorization)
         {
+            Tree = Parse(XElement.Parse(map), null);
             Authorization = authorization;
-            Tree = Parse(XElement.Parse(map));
-            Lookup = Flatten(Tree).ToDictionary(node => node.Path!, StringComparer.OrdinalIgnoreCase);
+            Breadcrumb = Flatten(Tree)
+                .ToDictionary(
+                    node => node.Path!,
+                    node => node.ToBreadcrumb(),
+                    StringComparer.OrdinalIgnoreCase);
         }
 
         public SiteMapNode[] For(ViewContext context)
         {
-            Int64? account = context.HttpContext.User.Id();
-            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
-            SiteMapNode[] nodes = SetState(null, Tree, factory.GetUrlHelper(context), GetPath(context.RouteData.Values));
-
-            return Authorize(account, nodes);
+            return Authorize(context.HttpContext.User.Id(), SetState(null, Tree, GetPath(context)));
         }
         public SiteMapNode[] BreadcrumbFor(ViewContext context)
         {
-            SiteMapNode? current = Lookup.TryGetValue(GetPath(context.RouteData.Values), out SiteMapNode? node) ? node : null;
-            IUrlHelperFactory factory = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>();
-            List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
-            IUrlHelper url = factory.GetUrlHelper(context);
-
-            while (current != null)
-            {
-                if (current.Action != null)
-                    breadcrumb.Insert(0, new SiteMapNode
-                    {
-                        Path = current.Path,
-                        Url = FormUrl(url, current),
-                        IconClass = current.IconClass
-                    });
-
-                current = current.Parent;
-            }
-
-            return breadcrumb.ToArray();
+            return Breadcrumb.TryGetValue(GetPath(context), out SiteMapNode[]? breadcrumb) ? breadcrumb : Array.Empty<SiteMapNode>();
         }
 
-        private SiteMapNode[] SetState(SiteMapNode? parent, SiteMapNode[] nodes, IUrlHelper url, String current)
+        private SiteMapNode[] SetState(SiteMapNode? parent, SiteMapNode[] nodes, String current)
         {
             List<SiteMapNode> copies = new List<SiteMapNode>();
 
@@ -64,7 +43,6 @@ namespace MvcTemplate.Components.Mvc
             {
                 SiteMapNode copy = new SiteMapNode();
                 copy.IconClass = node.IconClass;
-                copy.Url = FormUrl(url, node);
                 copy.IsMenu = node.IsMenu;
                 copy.Path = node.Path;
                 copy.Parent = parent;
@@ -74,7 +52,7 @@ namespace MvcTemplate.Components.Mvc
                 copy.Area = node.Area;
 
                 copy.IsActive = String.Equals(node.Path, current, StringComparison.OrdinalIgnoreCase);
-                copy.Children = SetState(copy, node.Children, url, current);
+                copy.Children = SetState(copy, node.Children, current);
 
                 if (parent?.IsActive == false)
                     parent.IsActive = copy.IsActive;
@@ -100,8 +78,7 @@ namespace MvcTemplate.Components.Mvc
 
             return authorized.ToArray();
         }
-
-        private SiteMapNode[] Parse(XContainer root, SiteMapNode? parent = null)
+        private SiteMapNode[] Parse(XContainer root, SiteMapNode? parent)
         {
             List<SiteMapNode> nodes = new List<SiteMapNode>();
 
@@ -144,25 +121,12 @@ namespace MvcTemplate.Components.Mvc
 
             return list;
         }
-        private String FormUrl(IUrlHelper url, SiteMapNode node)
+        private String GetPath(ViewContext context)
         {
-            if (node.Action == null)
-                return "#";
-
-            Dictionary<String, Object?> route = new Dictionary<String, Object?>();
-            ActionContext context = url.ActionContext;
-            route["area"] = node.Area;
-
-            foreach ((String key, String newKey) in node.Route)
-                route[key] = context.RouteData.Values[newKey] ?? context.HttpContext.Request.Query[newKey];
-
-            return url.Action(node.Action, node.Controller, route);
-        }
-        private String GetPath(RouteValueDictionary route)
-        {
-            String? area = route["area"] as String;
-            String? action = route["action"] as String;
+            RouteValueDictionary route = context.RouteData.Values;
             String? controller = route["controller"] as String;
+            String? action = route["action"] as String;
+            String? area = route["area"] as String;
 
             return $"{area}/{controller}/{action}";
         }

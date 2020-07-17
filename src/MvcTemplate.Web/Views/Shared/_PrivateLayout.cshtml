@@ -96,7 +96,7 @@
 
                     if (authorization.IsGrantedFor(accountId, node.Path!))
                     {
-                        <a href="@node.Url">
+                        <a href="@node.Form(Url)">
                             <span class="icon @node.IconClass"></span>
                             <span class="text">@Resource.ForSiteMap(node.Path!)</span>
                         </a>
