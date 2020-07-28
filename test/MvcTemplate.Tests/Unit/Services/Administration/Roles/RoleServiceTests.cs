@@ -34,86 +34,6 @@ namespace MvcTemplate.Services.Tests
         }
 
         [Fact]
-        public void SeedPermissions_FirstDepth()
-        {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
-
-            service.SeedPermissions(view);
-
-            List<MvcTreeNode> expected = CreatePermissions().Nodes;
-            List<MvcTreeNode> actual = view.Permissions.Nodes;
-
-            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
-            {
-                Assert.Equal(expected[i].Id, actual[i].Id);
-                Assert.Equal(expected[i].Title, actual[i].Title);
-                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
-            }
-        }
-
-        [Fact]
-        public void SeedPermissions_SecondDepth()
-        {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
-
-            service.SeedPermissions(view);
-
-            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).ToList();
-            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).ToList();
-
-            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
-            {
-                Assert.Equal(expected[i].Id, actual[i].Id);
-                Assert.Equal(expected[i].Title, actual[i].Title);
-                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
-            }
-        }
-
-        [Fact]
-        public void SeedPermissions_ThirdDepth()
-        {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
-
-            service.SeedPermissions(view);
-
-            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
-            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
-
-            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
-            {
-                Assert.Equal(expected[i].Id, actual[i].Id);
-                Assert.Equal(expected[i].Title, actual[i].Title);
-                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
-            }
-        }
-
-        [Fact]
-        public void SeedPermissions_BranchesWithoutId()
-        {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
-
-            service.SeedPermissions(view);
-
-            IEnumerable<MvcTreeNode> nodes = view.Permissions.Nodes;
-            IEnumerable<MvcTreeNode> branches = GetBranchNodes(nodes);
-
-            Assert.Empty(branches.Where(branch => branch.Id != null));
-        }
-
-        [Fact]
-        public void SeedPermissions_LeafsWithId()
-        {
-            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
-
-            service.SeedPermissions(view);
-
-            IEnumerable<MvcTreeNode> nodes = view.Permissions.Nodes;
-            IEnumerable<MvcTreeNode> leafs = GetLeafNodes(nodes);
-
-            Assert.Empty(leafs.Where(leaf => leaf.Id == null));
-        }
-
-        [Fact]
         public void GetViews_ReturnsRoleViews()
         {
             RoleView[] actual = service.GetViews().ToArray();
@@ -164,7 +84,87 @@ namespace MvcTemplate.Services.Tests
         {
             RoleView view = service.GetView(role.Id)!;
 
-            service.Received().SeedPermissions(view);
+            service.Received().Seed(view.Permissions);
+        }
+
+        [Fact]
+        public void Seed_FirstDepth()
+        {
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
+
+            service.Seed(view.Permissions);
+
+            List<MvcTreeNode> expected = CreatePermissions().Nodes;
+            List<MvcTreeNode> actual = view.Permissions.Nodes;
+
+            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
+            {
+                Assert.Equal(expected[i].Id, actual[i].Id);
+                Assert.Equal(expected[i].Title, actual[i].Title);
+                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
+            }
+        }
+
+        [Fact]
+        public void Seed_SecondDepth()
+        {
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
+
+            service.Seed(view.Permissions);
+
+            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).ToList();
+            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).ToList();
+
+            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
+            {
+                Assert.Equal(expected[i].Id, actual[i].Id);
+                Assert.Equal(expected[i].Title, actual[i].Title);
+                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
+            }
+        }
+
+        [Fact]
+        public void Seed_ThirdDepth()
+        {
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
+
+            service.Seed(view.Permissions);
+
+            List<MvcTreeNode> expected = CreatePermissions().Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
+            List<MvcTreeNode> actual = view.Permissions.Nodes.SelectMany(node => node.Children).SelectMany(node => node.Children).OrderBy(node => node.Id).ToList();
+
+            for (Int32 i = 0; i < expected.Count || i < actual.Count; i++)
+            {
+                Assert.Equal(expected[i].Id, actual[i].Id);
+                Assert.Equal(expected[i].Title, actual[i].Title);
+                Assert.Equal(expected[i].Children.Count, actual[i].Children.Count);
+            }
+        }
+
+        [Fact]
+        public void Seed_BranchesWithoutId()
+        {
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
+
+            service.Seed(view.Permissions);
+
+            IEnumerable<MvcTreeNode> nodes = view.Permissions.Nodes;
+            IEnumerable<MvcTreeNode> branches = GetBranchNodes(nodes);
+
+            Assert.Empty(branches.Where(branch => branch.Id != null));
+        }
+
+        [Fact]
+        public void Seed_LeafsWithId()
+        {
+            RoleView view = ObjectsFactory.CreateRoleView(role.Id + 1);
+
+            service.Seed(view.Permissions);
+
+            IEnumerable<MvcTreeNode> nodes = view.Permissions.Nodes;
+            IEnumerable<MvcTreeNode> leafs = GetLeafNodes(nodes);
+
+            Assert.Empty(leafs.Where(leaf => leaf.Id == null));
         }
 
         [Fact]

@@ -113,18 +113,16 @@ namespace MvcTemplate.Services.Tests
                 {
                     return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} += \"Test\"";
                 }
-                else if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
+                if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
                 {
                     return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} = !{Model.ModelVarName}.{property.Name}";
                 }
-                else if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
+                if (typeof(DateTime?).IsAssignableFrom(property.PropertyType))
                 {
                     return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} = {Model.ModelVarName}.{property.Name}.AddDays(1)";
                 }
-                else
-                {
-                    return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} += 1";
-                }
+
+                return $"view.{property.Name} = {Model.ModelVarName}.{property.Name} += 1";
             }).OrderByDescending(change => change.Length);
             }
 @foreach(String change in changes)

@@ -23,7 +23,7 @@ namespace MvcTemplate.Components.Mvc
         {
             try
             {
-                return value == null || Convert.ToDecimal(value) > Minimum;
+                return value == null || Minimum < Convert.ToDecimal(value);
             }
             catch
             {

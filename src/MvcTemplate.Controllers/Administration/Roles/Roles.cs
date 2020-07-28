@@ -24,7 +24,7 @@ namespace MvcTemplate.Controllers.Administration
         public ViewResult Create()
         {
             RoleView role = new RoleView();
-            Service.SeedPermissions(role);
+            Service.Seed(role.Permissions);
 
             return View(role);
         }
@@ -34,7 +34,7 @@ namespace MvcTemplate.Controllers.Administration
         {
             if (!Validator.CanCreate(role))
             {
-                Service.SeedPermissions(role);
+                Service.Seed(role.Permissions);
 
                 return View(role);
             }
@@ -61,7 +61,7 @@ namespace MvcTemplate.Controllers.Administration
         {
             if (!Validator.CanEdit(role))
             {
-                Service.SeedPermissions(role);
+                Service.Seed(role.Permissions);
 
                 return View(role);
             }

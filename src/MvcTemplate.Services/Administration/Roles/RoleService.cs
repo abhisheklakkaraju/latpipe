@@ -15,32 +15,6 @@ namespace MvcTemplate.Services
         {
         }
 
-        public virtual void SeedPermissions(RoleView view)
-        {
-            MvcTreeNode root = new MvcTreeNode(Resource.ForString("All"));
-            view.Permissions.Nodes.Add(root);
-
-            foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
-            {
-                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
-
-                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
-                {
-                    MvcTreeNode node = new MvcTreeNode(controller.Key);
-
-                    foreach (PermissionView permission in controller)
-                        node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
-
-                    nodes.Add(node);
-                }
-
-                if (area.Key == null)
-                    root.Children.AddRange(nodes);
-                else
-                    root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });
-            }
-        }
-
         public IQueryable<RoleView> GetViews()
         {
             return UnitOfWork
@@ -57,7 +31,7 @@ namespace MvcTemplate.Services
                     .Where(rolePermission => rolePermission.RoleId == role.Id)
                     .Select(rolePermission => rolePermission.PermissionId));
 
-                SeedPermissions(role);
+                Seed(role.Permissions);
 
                 return role;
             }
@@ -65,6 +39,29 @@ namespace MvcTemplate.Services
             return null;
         }
 
+        public virtual void Seed(MvcTree permissions)
+        {
+            MvcTreeNode root = new MvcTreeNode(Resource.ForString("All"));
+            permissions.Nodes.Add(root);
+
+            foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
+            {
+                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+
+                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
+                {
+                    MvcTreeNode node = new MvcTreeNode(controller.Key);
+                    node.Children.AddRange(controller.Select(permission => new MvcTreeNode(permission.Id, permission.Action!)));
+
+                    nodes.Add(node);
+                }
+
+                if (area.Key == null)
+                    root.Children.AddRange(nodes);
+                else
+                    root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });
+            }
+        }
         public void Create(RoleView view)
         {
             Role role = UnitOfWork.To<Role>(view);

@@ -64,7 +64,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
         {
             RoleView view = Assert.IsType<RoleView>(controller.Create().Model);
 
-            service.Received().SeedPermissions(view);
+            service.Received().Seed(view.Permissions);
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Create(role);
 
-            service.Received().SeedPermissions(role);
+            service.Received().Seed(role.Permissions);
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace MvcTemplate.Controllers.Administration.Tests
 
             controller.Edit(role);
 
-            service.Received().SeedPermissions(role);
+            service.Received().Seed(role.Permissions);
         }
 
         [Fact]

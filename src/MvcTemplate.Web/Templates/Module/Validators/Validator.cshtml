@@ -79,7 +79,7 @@ namespace MvcTemplate.Validators
             {
                 String name = Regex.Split(property.Name, "(?=[A-Z])").Last().ToLower();
 
-                if (property.PropertyType == typeof(String) || Nullable.GetUnderlyingType(property.PropertyType) is Type)
+                if (property.PropertyType == typeof(String) || Nullable.GetUnderlyingType(property.PropertyType) != null)
                 {
         @:private Boolean IsUnique@(property.Name)(Int64 id, @((Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType).Name)? @name)
                 }

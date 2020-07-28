@@ -1,7 +1,6 @@
 using MvcTemplate.Controllers;
 using MvcTemplate.Controllers.Administration;
 using MvcTemplate.Objects;
-using MvcTemplate.Tests;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -288,7 +287,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForProperty_NotFoundTypeProperty_Empty()
         {
-            Assert.Empty(Resource.ForProperty(typeof(Object), nameof(Object.ToString)));
+            Assert.Empty(Resource.ForProperty(typeof(Object), nameof(ToString)));
         }
 
         [Fact]
