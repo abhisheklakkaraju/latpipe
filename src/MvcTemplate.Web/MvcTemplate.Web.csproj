@@ -39,9 +39,9 @@
   <ItemGroup>
     <PackageReference Include="NonFactors.Grid.Mvc6" Version="6.1.0" />
     <PackageReference Include="NonFactors.Lookup.Mvc6" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.6" />
     <PackageReference Include="Genny" Version="2.4.1" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Humanizer.Core" Version="2.7.9" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Humanizer.Core" Version="2.8.26" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
 
   <ItemGroup>
