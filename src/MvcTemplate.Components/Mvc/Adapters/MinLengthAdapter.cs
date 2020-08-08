@@ -20,9 +20,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-minlength"] = GetErrorMessage(context);
             context.Attributes["data-val-minlength-min"] = Attribute.Length.ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

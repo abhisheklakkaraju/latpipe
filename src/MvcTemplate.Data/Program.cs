@@ -10,7 +10,7 @@ namespace MvcTemplate.Data
         {
         }
 
-        public static IWebHost BuildWebHost(params String[] args)
+        public static IWebHost BuildWebHost(params String[] _)
         {
             return new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())

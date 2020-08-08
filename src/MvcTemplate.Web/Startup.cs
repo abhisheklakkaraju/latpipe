@@ -133,20 +133,15 @@ namespace MvcTemplate.Web
 
         private void RegisterResources()
         {
-            if (Config["Resources:Path"] is String path)
-            {
-                if (Directory.Exists(path))
+            if (Config["Resources:Path"] is String path && Directory.Exists(path))
+                foreach (String resource in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
                 {
-                    foreach (String resource in Directory.GetFiles(path, "*.json", SearchOption.AllDirectories))
-                    {
-                        String type = Path.GetFileNameWithoutExtension(resource);
-                        String language = Path.GetExtension(type).TrimStart('.');
-                        type = Path.GetFileNameWithoutExtension(type);
+                    String type = Path.GetFileNameWithoutExtension(resource);
+                    String language = Path.GetExtension(type).TrimStart('.');
+                    type = Path.GetFileNameWithoutExtension(type);
 
-                        Resource.Set(type).Override(language, File.ReadAllText(resource));
-                    }
+                    Resource.Set(type).Override(language, File.ReadAllText(resource));
                 }
-            }
 
             foreach (Type view in typeof(AView).Assembly.GetTypes())
             {

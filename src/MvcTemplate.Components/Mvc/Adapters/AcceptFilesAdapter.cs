@@ -16,9 +16,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-accept"] = GetErrorMessage(context);
             context.Attributes["data-val-accept-types"] = Attribute.Extensions;
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

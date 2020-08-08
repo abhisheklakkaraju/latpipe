@@ -38,7 +38,7 @@ namespace MvcTemplate.Validators
                     role.Title.ToLower() == (title ?? "").ToLower());
 
             if (!isUnique)
-                ModelState.AddModelError<RoleView>(role => role.Title, Validation.For<RoleView>("UniqueTitle"));
+                ModelState.AddModelError(nameof(RoleView.Title), Validation.For<RoleView>("UniqueTitle"));
 
             return isUnique;
         }

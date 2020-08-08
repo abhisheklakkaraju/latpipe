@@ -1,62 +1,32 @@
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.Extensions.Localization;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Components.Mvc
 {
     public class ValidationAdapterProvider : IValidationAttributeAdapterProvider
     {
-        public IAttributeAdapter? GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer? localizer)
+        public IAttributeAdapter? GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer? stringLocalizer)
         {
-            Type type = attribute.GetType();
-
-            if (type == typeof(RequiredAttribute))
-                return new RequiredAdapter((RequiredAttribute)attribute);
-
-            if (type == typeof(StringLengthAttribute))
-                return new StringLengthAdapter((StringLengthAttribute)attribute);
-
-            if (type == typeof(EmailAddressAttribute))
-                return new EmailAddressAdapter((EmailAddressAttribute)attribute);
-
-            if (type == typeof(GreaterThanAttribute))
-                return new GreaterThanAdapter((GreaterThanAttribute)attribute);
-
-            if (type == typeof(AcceptFilesAttribute))
-                return new AcceptFilesAdapter((AcceptFilesAttribute)attribute);
-
-            if (type == typeof(MinLengthAttribute))
-                return new MinLengthAdapter((MinLengthAttribute)attribute);
-
-            if (type == typeof(MaxValueAttribute))
-                return new MaxValueAdapter((MaxValueAttribute)attribute);
-
-            if (type == typeof(MinValueAttribute))
-                return new MinValueAdapter((MinValueAttribute)attribute);
-
-            if (type == typeof(LessThanAttribute))
-                return new LessThanAdapter((LessThanAttribute)attribute);
-
-            if (type == typeof(FileSizeAttribute))
-                return new FileSizeAdapter((FileSizeAttribute)attribute);
-
-            if (type == typeof(EqualToAttribute))
-                return new EqualToAdapter((EqualToAttribute)attribute);
-
-            if (type == typeof(IntegerAttribute))
-                return new IntegerAdapter((IntegerAttribute)attribute);
-
-            if (type == typeof(DigitsAttribute))
-                return new DigitsAdapter((DigitsAttribute)attribute);
-
-            if (type == typeof(NumberAttribute))
-                return new NumberAdapter((NumberAttribute)attribute);
-
-            if (type == typeof(RangeAttribute))
-                return new RangeAdapter((RangeAttribute)attribute);
-
-            return null;
+            return attribute switch
+            {
+                StringLengthAttribute stringLength => new StringLengthAdapter(stringLength),
+                GreaterThanAttribute greaterThan => new GreaterThanAdapter(greaterThan),
+                AcceptFilesAttribute acceptFiles => new AcceptFilesAdapter(acceptFiles),
+                MinLengthAttribute minLength => new MinLengthAdapter(minLength),
+                EmailAddressAttribute email => new EmailAddressAdapter(email),
+                RequiredAttribute required => new RequiredAdapter(required),
+                MaxValueAttribute maxValue => new MaxValueAdapter(maxValue),
+                MinValueAttribute minValue => new MinValueAdapter(minValue),
+                LessThanAttribute lessThan => new LessThanAdapter(lessThan),
+                FileSizeAttribute fileSize => new FileSizeAdapter(fileSize),
+                EqualToAttribute equalTo => new EqualToAdapter(equalTo),
+                IntegerAttribute integer => new IntegerAdapter(integer),
+                DigitsAttribute digits => new DigitsAdapter(digits),
+                NumberAttribute number => new NumberAdapter(number),
+                RangeAttribute range => new RangeAdapter(range),
+                _ => null
+            };
         }
     }
 }

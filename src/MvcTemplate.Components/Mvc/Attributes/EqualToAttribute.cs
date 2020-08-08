@@ -21,19 +21,19 @@ namespace MvcTemplate.Components.Mvc
         {
             return String.Format(ErrorMessageString, name, OtherPropertyDisplayName);
         }
-        protected override ValidationResult IsValid(Object? value, ValidationContext context)
+        protected override ValidationResult IsValid(Object? value, ValidationContext validationContext)
         {
-            PropertyInfo? other = context.ObjectType.GetProperty(OtherPropertyName);
+            PropertyInfo? other = validationContext.ObjectType.GetProperty(OtherPropertyName);
 
-            if (other != null && Equals(value, other.GetValue(context.ObjectInstance)))
+            if (other != null && Equals(value, other.GetValue(validationContext.ObjectInstance)))
                 return ValidationResult.Success;
 
-            OtherPropertyDisplayName = Resource.ForProperty(context.ObjectType, OtherPropertyName);
+            OtherPropertyDisplayName = Resource.ForProperty(validationContext.ObjectType, OtherPropertyName);
 
             if (String.IsNullOrEmpty(OtherPropertyDisplayName))
                 OtherPropertyDisplayName = OtherPropertyName;
 
-            return new ValidationResult(FormatErrorMessage(context.DisplayName));
+            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
         }
     }
 }

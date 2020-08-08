@@ -21,9 +21,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-range-min"] = Convert.ToString(Attribute.Minimum, CultureInfo.InvariantCulture);
             context.Attributes["data-val-range-max"] = Convert.ToString(Attribute.Maximum, CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

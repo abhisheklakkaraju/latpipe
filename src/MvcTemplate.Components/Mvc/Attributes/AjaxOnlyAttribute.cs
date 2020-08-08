@@ -8,9 +8,9 @@ namespace MvcTemplate.Components.Mvc
     [AttributeUsage(AttributeTargets.Method)]
     public class AjaxOnlyAttribute : ActionMethodSelectorAttribute
     {
-        public override Boolean IsValidForRequest(RouteContext context, ActionDescriptor action)
+        public override Boolean IsValidForRequest(RouteContext routeContext, ActionDescriptor action)
         {
-            return context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            return routeContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
         }
     }
 }

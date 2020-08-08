@@ -17,9 +17,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-filesize"] = GetErrorMessage(context);
             context.Attributes["data-val-filesize-max"] = (Attribute.MaximumMB * 1024 * 1024).ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-lower"] = GetErrorMessage(context);
             context.Attributes["data-val-lower-than"] = Attribute.Maximum.ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

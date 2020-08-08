@@ -22,9 +22,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-equalto-other"] = Attribute.OtherPropertyName;
             context.Attributes["data-val-equalto"] = GetErrorMessage(context);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

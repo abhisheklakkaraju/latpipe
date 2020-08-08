@@ -18,9 +18,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-number-scale"] = Attribute.Scale.ToString(CultureInfo.InvariantCulture);
             context.Attributes["data-val-number-precision"] = Attribute.Precision.ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

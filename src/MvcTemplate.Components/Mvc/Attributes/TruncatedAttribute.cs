@@ -16,14 +16,14 @@ namespace MvcTemplate.Components.Mvc
             BinderType = GetType();
         }
 
-        public async Task BindModelAsync(ModelBindingContext context)
+        public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            ILoggerFactory logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
+            ILoggerFactory logger = bindingContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
 
-            await new SimpleTypeModelBinder(typeof(DateTime?), logger).BindModelAsync(context);
+            await new SimpleTypeModelBinder(typeof(DateTime?), logger).BindModelAsync(bindingContext);
 
-            if (context.Result.IsModelSet)
-                context.Result = ModelBindingResult.Success((context.Result.Model as DateTime?)?.Date);
+            if (bindingContext.Result.IsModelSet)
+                bindingContext.Result = ModelBindingResult.Success((bindingContext.Result.Model as DateTime?)?.Date);
         }
     }
 }

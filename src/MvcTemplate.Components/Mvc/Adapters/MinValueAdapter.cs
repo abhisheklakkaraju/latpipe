@@ -17,9 +17,9 @@ namespace MvcTemplate.Components.Mvc
             context.Attributes["data-val-range"] = GetErrorMessage(context);
             context.Attributes["data-val-range-min"] = Attribute.Minimum.ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

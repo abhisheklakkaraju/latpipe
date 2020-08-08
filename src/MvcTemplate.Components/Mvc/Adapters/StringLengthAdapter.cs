@@ -23,9 +23,9 @@ namespace MvcTemplate.Components.Mvc
             if (Attribute.MinimumLength > 0)
                 context.Attributes["data-val-length-min"] = Attribute.MinimumLength.ToString(CultureInfo.InvariantCulture);
         }
-        public override String GetErrorMessage(ModelValidationContextBase context)
+        public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {
-            return GetErrorMessage(context.ModelMetadata);
+            return GetErrorMessage(validationContext.ModelMetadata);
         }
     }
 }

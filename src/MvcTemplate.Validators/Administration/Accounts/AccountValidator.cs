@@ -98,7 +98,7 @@ namespace MvcTemplate.Validators
             Boolean isCorrect = Hasher.VerifyPassword(password, passhash);
 
             if (!isCorrect)
-                ModelState.AddModelError<ProfileEditView>(account => account.Password, Validation.For<AccountView>("IncorrectPassword"));
+                ModelState.AddModelError(nameof(ProfileEditView.Password), Validation.For<AccountView>("IncorrectPassword"));
 
             return isCorrect;
         }
@@ -111,7 +111,7 @@ namespace MvcTemplate.Validators
                     account.Username.ToLower() == (username ?? "").ToLower());
 
             if (!isUnique)
-                ModelState.AddModelError<AccountView>(account => account.Username, Validation.For<AccountView>("UniqueUsername"));
+                ModelState.AddModelError(nameof(AccountView.Username), Validation.For<AccountView>("UniqueUsername"));
 
             return isUnique;
         }
@@ -124,7 +124,7 @@ namespace MvcTemplate.Validators
                     account.Email.ToLower() == (email ?? "").ToLower());
 
             if (!isUnique)
-                ModelState.AddModelError<AccountView>(account => account.Email, Validation.For<AccountView>("UniqueEmail"));
+                ModelState.AddModelError(nameof(AccountView.Email), Validation.For<AccountView>("UniqueEmail"));
 
             return isUnique;
         }

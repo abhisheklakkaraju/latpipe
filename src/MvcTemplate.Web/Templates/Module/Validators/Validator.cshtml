@@ -102,7 +102,7 @@ namespace MvcTemplate.Validators
                 }
 @:
         @:    if (!isUnique)
-        @:        ModelState.AddModelError<@Model.View>(@Model.ModelVarName => @(Model.ModelVarName).@(property.Name), Validation.For<@Model.View>("Unique@(property.Name)"));
+        @:        ModelState.AddModelError(nameof(@(Model.View).@(property.Name)), Validation.For<@Model.View>("Unique@(property.Name)"));
 @:
         @:    return isUnique;
         @:}
