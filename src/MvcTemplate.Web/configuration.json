@@ -1,17 +1,9 @@
 {
     "Cookies": {
-        "Antiforgery": {
-            "Name": ".Web-Token"
-        },
-        "Auth": {
-            "Name": ".Web-Auth"
-        },
-        "TempData": {
-            "Name": ".Web-Temp"
-        },
-        "Session": {
-            "Name": ".Web-Session"
-        }
+        "Antiforgery": ".Web-Token",
+        "Auth": ".Web-Auth",
+        "TempData": ".Web-Temp",
+        "Session": ".Web-Session"
     },
     "Data": {
         "Connection": "Server=(localdb)\\mssqllocaldb;Database=MvcTemplate;Trusted_Connection=True;MultipleActiveResultSets=True"
@@ -20,9 +12,9 @@
         "Default": "en",
         "Supported": [
             {
-                "name": "English",
-                "culture": "en-GB",
-                "abbreviation": "en"
+                "Name": "English",
+                "Culture": "en-GB",
+                "Abbreviation": "en"
             }
         ]
     },

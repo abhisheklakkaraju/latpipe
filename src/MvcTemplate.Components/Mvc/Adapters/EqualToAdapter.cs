@@ -19,8 +19,8 @@ namespace MvcTemplate.Components.Mvc
             if (String.IsNullOrEmpty(Attribute.OtherPropertyDisplayName))
                 Attribute.OtherPropertyDisplayName = Attribute.OtherPropertyName;
 
-            context.Attributes["data-val-equalto-other"] = Attribute.OtherPropertyName;
             context.Attributes["data-val-equalto"] = GetErrorMessage(context);
+            context.Attributes["data-val-equalto-other"] = Attribute.OtherPropertyName;
         }
         public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {

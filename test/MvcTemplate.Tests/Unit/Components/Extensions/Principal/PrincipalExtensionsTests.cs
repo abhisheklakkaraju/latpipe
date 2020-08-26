@@ -35,8 +35,8 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             principal.UpdateClaim(ClaimTypes.Name, "Test");
 
-            String actual = principal.FindFirst(ClaimTypes.Name).Value;
-            String expected = "Test";
+            String? actual = principal.FindFirstValue(ClaimTypes.Name);
+            String? expected = "Test";
 
             Assert.Equal(expected, actual);
         }
@@ -50,8 +50,8 @@ namespace MvcTemplate.Components.Extensions.Tests
 
             principal.UpdateClaim(ClaimTypes.Name, "Test");
 
-            String actual = principal.FindFirst(ClaimTypes.Name).Value;
-            String expected = "Test";
+            String? actual = principal.FindFirstValue(ClaimTypes.Name);
+            String? expected = "Test";
 
             Assert.Equal(expected, actual);
         }

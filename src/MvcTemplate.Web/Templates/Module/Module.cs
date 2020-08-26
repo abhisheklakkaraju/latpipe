@@ -178,7 +178,7 @@ namespace MvcTemplate.Web.Templates
             }
             else
             {
-                XElement parent = sitemap
+                XElement? parent = sitemap
                     .Descendants("siteMapNode")
                     .FirstOrDefault(node =>
                         node.Attribute("action") == null &&

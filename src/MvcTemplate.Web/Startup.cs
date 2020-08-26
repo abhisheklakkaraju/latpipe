@@ -74,7 +74,7 @@ namespace MvcTemplate.Web
 
             services.AddAuthentication("Cookies").AddCookie(authentication =>
             {
-                authentication.Cookie.Name = Config["Cookies:Auth:Name"];
+                authentication.Cookie.Name = Config["Cookies:Auth"];
                 authentication.Events = new AuthenticationEvents();
             });
 
@@ -96,13 +96,13 @@ namespace MvcTemplate.Web
         }
         private void ConfigureOptions(IServiceCollection services)
         {
-            services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData:Name"]);
-            services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session:Name"]);
+            services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData"]);
+            services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session"]);
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.Configure<MailConfiguration>(Config.GetSection("Mail"));
             services.Configure<AntiforgeryOptions>(antiforgery =>
             {
-                antiforgery.Cookie.Name = Config["Cookies:Antiforgery:Name"];
+                antiforgery.Cookie.Name = Config["Cookies:Antiforgery"];
                 antiforgery.FormFieldName = "_Token_";
             });
         }

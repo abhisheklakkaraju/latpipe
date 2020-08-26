@@ -18,7 +18,7 @@ namespace MvcTemplate.Components.Mvc
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            if (context.HttpContext.User.Identity?.IsAuthenticated != true)
                 return;
 
             Int64? accountId = context.HttpContext.User.Id();

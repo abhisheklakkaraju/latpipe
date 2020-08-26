@@ -278,8 +278,8 @@ namespace MvcTemplate.Services.Tests
             Account expected = account;
             ClaimsPrincipal actual = httpContext.User;
 
-            Assert.Equal(expected.Username, actual.FindFirst(ClaimTypes.Name).Value);
-            Assert.Equal(expected.Email.ToLower(), actual.FindFirst(ClaimTypes.Email).Value);
+            Assert.Equal(expected.Username, actual.FindFirstValue(ClaimTypes.Name));
+            Assert.Equal(expected.Email.ToLower(), actual.FindFirstValue(ClaimTypes.Email));
         }
 
         [Fact]
@@ -300,10 +300,10 @@ namespace MvcTemplate.Services.Tests
             await service.Login(httpContext, account.Username.ToUpper());
 
             await authentication.Received().SignInAsync(httpContext, "Cookies", Arg.Is<ClaimsPrincipal>(principal =>
-                principal.FindFirst(ClaimTypes.NameIdentifier).Value == account.Id.ToString() &&
-                principal.FindFirst(ClaimTypes.Name).Value == account.Username &&
-                principal.FindFirst(ClaimTypes.Email).Value == account.Email &&
-                principal.Identity.AuthenticationType == "Password"), null);
+                principal.FindFirstValue(ClaimTypes.NameIdentifier) == account.Id.ToString() &&
+                principal.FindFirstValue(ClaimTypes.Name) == account.Username &&
+                principal.FindFirstValue(ClaimTypes.Email) == account.Email &&
+                principal.Identity!.AuthenticationType == "Password"), null);
         }
 
         [Fact]

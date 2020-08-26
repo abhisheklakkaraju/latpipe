@@ -28,7 +28,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void OnAuthorization_NotAuthenticated_SetsNullResult()
         {
-            context.HttpContext.User.Identity.IsAuthenticated.Returns(false);
+            context.HttpContext.User.Identity?.IsAuthenticated.Returns(false);
 
             filter.OnAuthorization(context);
 
@@ -38,7 +38,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void OnAuthorization_NotAuthorized_ReturnsNotFoundView()
         {
-            context.HttpContext.User.Identity.IsAuthenticated.Returns(true);
+            context.HttpContext.User.Identity?.IsAuthenticated.Returns(true);
 
             filter.OnAuthorization(context);
 
@@ -52,7 +52,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void OnAuthorization_IsAuthorized_SetsNullResult()
         {
             context.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, "11000"));
-            context.HttpContext.User.Identity.IsAuthenticated.Returns(true);
+            context.HttpContext.User.Identity?.IsAuthenticated.Returns(true);
             context.RouteData.Values["controller"] = "Controller";
             context.RouteData.Values["action"] = "Action";
             context.RouteData.Values["area"] = "Area";

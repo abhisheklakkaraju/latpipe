@@ -20,7 +20,7 @@ namespace MvcTemplate.Components.Mvc
             if (result == ValueProviderResult.None)
                 return context.Result;
 
-            String value = result.FirstValue.Trim();
+            String value = result.FirstValue?.Trim() ?? "";
             context.ModelState.SetModelValue(context.ModelName, result);
 
             if (value.Length == 0 && context.ModelMetadata.ConvertEmptyStringToNull)

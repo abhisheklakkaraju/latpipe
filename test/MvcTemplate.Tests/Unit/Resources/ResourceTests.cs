@@ -340,7 +340,7 @@ namespace MvcTemplate.Resources.Tests
         {
             String resource = File.ReadAllText(Path.Combine("Resources", $"{path}.json"));
 
-            return JsonSerializer.Deserialize<Dictionary<String, Dictionary<String, String?>>>(resource)[group][key] ?? "";
+            return JsonSerializer.Deserialize<Dictionary<String, Dictionary<String, String?>>>(resource)?[group][key] ?? "";
         }
     }
 }

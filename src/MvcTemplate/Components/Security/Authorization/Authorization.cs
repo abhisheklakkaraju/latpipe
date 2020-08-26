@@ -44,7 +44,7 @@ namespace MvcTemplate.Components.Security
                     return true;
             }
 
-            return Permissions.ContainsKey(accountId ?? 0) && Permissions[accountId!.Value].Contains(permission);
+            return accountId is Int64 id && Permissions.ContainsKey(id) && Permissions[id].Contains(permission);
         }
 
         public void Refresh(IServiceProvider services)
