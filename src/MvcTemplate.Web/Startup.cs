@@ -69,7 +69,8 @@ namespace MvcTemplate.Web
                 .AddRazorOptions(options => options.ViewLocationExpanders.Add(new ViewLocationExpander()))
                 .AddMvcOptions(options => options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider()))
                 .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new ClientValidatorProvider()))
-                .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()));
+                .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()))
+                .AddMvcOptions(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
             services.AddAuthentication("Cookies").AddCookie(authentication =>
             {
