@@ -176,8 +176,8 @@ namespace MvcTemplate.Controllers.Tests
 
             controller.OnActionExecuting(null);
 
-            Object? expected = controller.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
-            Object? actual = controller.Authorization;
+            Object expected = controller.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
+            Object actual = controller.Authorization;
 
             Assert.Same(expected, actual);
         }

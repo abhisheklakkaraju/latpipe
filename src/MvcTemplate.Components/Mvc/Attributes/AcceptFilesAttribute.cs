@@ -29,7 +29,7 @@ namespace MvcTemplate.Components.Mvc
 
             IEnumerable<IFormFile>? files = value is IFormFile formFile ? new[] { formFile } : value as IEnumerable<IFormFile>;
 
-            return files?.All(file => Extensions.Split(',').Any(ext => file.FileName?.EndsWith(ext) == true)) == true;
+            return files?.All(file => Extensions.Split(',').Any(ext => file.FileName.EndsWith(ext))) == true;
         }
     }
 }

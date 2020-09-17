@@ -48,25 +48,6 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.False(attribute.IsValid("100"));
         }
 
-        [Fact]
-        public void IsValid_FileWithoutNameReturnsFalse()
-        {
-            IFormFile file = Substitute.For<IFormFile>();
-            file.FileName.ReturnsNull();
-
-            Assert.False(attribute.IsValid(file));
-        }
-
-        [Fact]
-        public void IsValid_AnyFileWithoutNameReturnsFalse()
-        {
-            IFormFile[] files = { Substitute.For<IFormFile>(), Substitute.For<IFormFile>() };
-            files[0].FileName.Returns("File.docx");
-            files[1].FileName.ReturnsNull();
-
-            Assert.False(attribute.IsValid(files));
-        }
-
         [Theory]
         [InlineData("")]
         [InlineData(".")]

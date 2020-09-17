@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc
         {
             IEnumerable<IFormFile>? files = value is IFormFile formFile ? new[] { formFile } : value as IEnumerable<IFormFile>;
 
-            return files == null || files.Sum(file => file?.Length ?? 0) <= MaximumMB * 1024 * 1024;
+            return files == null || files.Sum(file => file.Length) <= MaximumMB * 1024 * 1024;
         }
     }
 }

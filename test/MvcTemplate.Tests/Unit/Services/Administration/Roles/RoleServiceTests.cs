@@ -294,8 +294,8 @@ namespace MvcTemplate.Services.Tests
                 .Select(permission => new PermissionView
                 {
                     Id = permission.Id,
+                    Area = Resource.ForArea(permission.Area),
                     Action = Resource.ForAction(permission.Action),
-                    Area = permission.Area == null ? null : Resource.ForArea(permission.Area),
                     Controller = Resource.ForController($"{permission.Area}/{permission.Controller}")
                 });
 

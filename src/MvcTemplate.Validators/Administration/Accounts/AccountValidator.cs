@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MvcTemplate.Components.Security;
 using MvcTemplate.Data;
 using MvcTemplate.Objects;

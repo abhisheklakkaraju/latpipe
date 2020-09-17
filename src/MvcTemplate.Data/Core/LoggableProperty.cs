@@ -29,13 +29,12 @@ namespace MvcTemplate.Data
 
         private String Format(Object? value)
         {
-            if (value is null)
-                return "null";
-
-            if (value is DateTime date)
-                return $"\"{date:yyyy-MM-dd HH:mm:ss}\"";
-
-            return JsonSerializer.Serialize(value);
+            return value switch
+            {
+                null => "null",
+                DateTime date => $"\"{date:yyyy-MM-dd HH:mm:ss}\"",
+                _ => JsonSerializer.Serialize(value)
+            };
         }
     }
 }

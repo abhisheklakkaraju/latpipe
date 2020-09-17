@@ -14,8 +14,8 @@ namespace MvcTemplate.Data.Tests
     public class UnitOfWorkTests : IDisposable
     {
         private Role model;
-        private UnitOfWork unitOfWork;
         private DbContext context;
+        private UnitOfWork unitOfWork;
 
         public UnitOfWorkTests()
         {
@@ -103,16 +103,16 @@ namespace MvcTemplate.Data.Tests
         [Fact]
         public void InsertRange_AddsModelsToDbSet()
         {
-            IEnumerable<Role> models = new[] { ObjectsFactory.CreateRole(2), ObjectsFactory.CreateRole(3) };
+            IEnumerable<Role> roles = new[] { ObjectsFactory.CreateRole(2), ObjectsFactory.CreateRole(3) };
             DbContext testingContext = Substitute.For<DbContext>();
 
             unitOfWork.Dispose();
 
             unitOfWork = new UnitOfWork(testingContext);
-            unitOfWork.InsertRange(models);
+            unitOfWork.InsertRange(roles);
 
-            foreach (Role model in models)
-                testingContext.Received().Add(model);
+            foreach (Role role in roles)
+                testingContext.Received().Add(role);
         }
 
         [Fact]

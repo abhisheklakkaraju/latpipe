@@ -15,8 +15,7 @@ namespace MvcTemplate.Components.Mvc
                     pair => pair.Key,
                     pair => pair.Value.Errors
                         .Select(model => model.ErrorMessage)
-                        .FirstOrDefault(error => error?.Length > 0)
-            );
+                        .FirstOrDefault(error => error.Length > 0));
         }
     }
 }

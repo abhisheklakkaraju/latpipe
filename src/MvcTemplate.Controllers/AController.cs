@@ -35,10 +35,7 @@ namespace MvcTemplate.Controllers
         }
         public virtual ViewResult NotEmptyView(Object? model)
         {
-            if (model == null)
-                return NotFoundView();
-
-            return View(model);
+            return model == null ? NotFoundView() : View(model);
         }
         public virtual ActionResult RedirectToLocal(String? url)
         {

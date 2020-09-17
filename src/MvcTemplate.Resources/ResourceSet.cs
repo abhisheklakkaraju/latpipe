@@ -52,8 +52,7 @@ namespace MvcTemplate.Resources
             foreach (String language in resources.Source.Keys)
                 foreach (String group in resources.Source[language].Keys)
                     foreach (String key in resources.Source[language][group].Keys)
-                        if (this[language, group, key] == null)
-                            this[language, group, key] = resources.Source[language][group][key];
+                        this[language, group, key] ??= resources.Source[language][group][key];
         }
     }
 }

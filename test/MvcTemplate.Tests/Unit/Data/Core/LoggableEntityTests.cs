@@ -46,7 +46,7 @@ namespace MvcTemplate.Data.Tests
         public void LoggableEntity_SetsName()
         {
             String actual = new LoggableEntity(entry).Name;
-            String expected = typeof(Role).Name;
+            String expected = nameof(Role);
 
             Assert.Equal(expected, actual);
         }
@@ -58,7 +58,7 @@ namespace MvcTemplate.Data.Tests
             entry = context.ChangeTracker.Entries<AModel>().Single();
 
             String actual = new LoggableEntity(entry).Name;
-            String expected = typeof(Role).Name;
+            String expected = nameof(Role);
 
             Assert.IsAssignableFrom<IProxyTargetAccessor>(model);
             Assert.Equal(expected, actual);
