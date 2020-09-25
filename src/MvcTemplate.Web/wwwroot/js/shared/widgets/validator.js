@@ -32,9 +32,9 @@ Validator = {
         };
 
         document.addEventListener("wellidate-error", e => {
-            if (event.target.classList.contains("mvc-lookup-value")) {
+            if (e.target.classList.contains("mvc-lookup-value")) {
                 const { wellidate } = e.detail.validatable;
-                const { control } = new MvcLookup(event.target);
+                const { control } = new MvcLookup(e.target);
 
                 control.classList.add(wellidate.inputErrorClass);
                 control.classList.remove(wellidate.inputValidClass);
@@ -43,9 +43,9 @@ Validator = {
         });
 
         document.addEventListener("wellidate-success", e => {
-            if (event.target.classList.contains("mvc-lookup-value")) {
+            if (e.target.classList.contains("mvc-lookup-value")) {
                 const { wellidate } = e.detail.validatable;
-                const { control } = new MvcLookup(event.target);
+                const { control } = new MvcLookup(e.target);
 
                 control.classList.add(wellidate.inputValidClass);
                 control.classList.remove(wellidate.inputErrorClass);
