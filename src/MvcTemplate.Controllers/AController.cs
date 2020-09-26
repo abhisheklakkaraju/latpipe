@@ -24,7 +24,7 @@ namespace MvcTemplate.Controllers
         protected AController()
         {
             Alerts = new Alerts();
-            Authorization = Authorization!;
+            Authorization = null!;
         }
 
         public virtual ViewResult NotFoundView()

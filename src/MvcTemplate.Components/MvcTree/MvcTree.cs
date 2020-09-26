@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MvcTemplate.Components.Extensions
+namespace MvcTemplate.Components
 {
     public class MvcTree
     {

@@ -1,4 +1,4 @@
-using MvcTemplate.Components.Extensions;
+using MvcTemplate.Components;
 using MvcTemplate.Objects;
 using System;
 using System.Linq;

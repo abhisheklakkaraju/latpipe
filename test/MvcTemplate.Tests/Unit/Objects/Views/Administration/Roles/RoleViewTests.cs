@@ -1,4 +1,4 @@
-using MvcTemplate.Components.Extensions;
+using MvcTemplate.Components;
 using Xunit;
 
 namespace MvcTemplate.Objects.Tests
