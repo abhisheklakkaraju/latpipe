@@ -1,5 +1,5 @@
 if (document.documentElement.lang == "en") {
-    MvcGrid.prototype.lang = {
+    MvcGrid.lang = {
         default: {
             "equals": "Equals",
             "not-equals": "Not equals"

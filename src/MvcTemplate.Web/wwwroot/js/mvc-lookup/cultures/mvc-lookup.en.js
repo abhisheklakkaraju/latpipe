@@ -1,5 +1,5 @@
 if (document.documentElement.lang == "en") {
-    MvcLookup.prototype.lang = {
+    MvcLookup.lang = {
         error: "Error while retrieving records",
         noData: "No data found",
         select: "Select ({0})",
