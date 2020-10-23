@@ -11,15 +11,16 @@
         "InvalidField": "'{0}' field value is invalid.",
         "InvalidValue": "Value '{0}' is not valid.",
         "LessThan": "'{0}' field must be lower than {1}.",
+        "MaxLength": "'{0}' field must specify at most {1} value(s).",
         "MaxValue": "'{0}' field must be less or equal to {1}.",
-        "MinLength": "'{0}' field must be at least {1} characters long.",
+        "MinLength": "'{0}' field must specify at least {1} value(s).",
         "MinValue": "'{0}' field must be greater or equal to {1}.",
         "Number": "'{0}' field can not exceed {1} significant and {2} fractional digits.",
         "Numeric": "'{0}' field must be numeric.",
         "Range": "'{0}' field must be between {1} and {2}.",
         "Required": "'{0}' field is required.",
         "RequiredValue": "Value is required.",
-        "StringLength": "'{0}' field must not exceed maximum length of {1}.",
+        "StringLength": "'{0}' field must not exceed a maximum length of {1}.",
         "StringLengthRange": "'{0}' field must contain between {2} and {1} symbols."
     }
 }

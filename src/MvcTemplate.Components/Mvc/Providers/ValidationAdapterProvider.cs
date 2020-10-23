@@ -14,6 +14,7 @@ namespace MvcTemplate.Components.Mvc
                 GreaterThanAttribute greaterThan => new GreaterThanAdapter(greaterThan),
                 AcceptFilesAttribute acceptFiles => new AcceptFilesAdapter(acceptFiles),
                 MinLengthAttribute minLength => new MinLengthAdapter(minLength),
+                MaxLengthAttribute maxLength => new MaxLengthAdapter(maxLength),
                 EmailAddressAttribute email => new EmailAddressAdapter(email),
                 RequiredAttribute required => new RequiredAdapter(required),
                 MaxValueAttribute maxValue => new MaxValueAdapter(maxValue),
