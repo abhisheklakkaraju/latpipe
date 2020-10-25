@@ -57,7 +57,7 @@ namespace MvcTemplate.Rename
                     content = aspNetSslConfig.Replace(content, $"${{1}}\"{sslPort}\"");
                     content = adminPassword.Replace(content, $"Passhash = \"{passhash}\",");
 
-                    File.WriteAllText(files[i], content, Encoding.UTF8);
+                    File.WriteAllText(files[i], content);
                 }
             }
 
@@ -81,7 +81,7 @@ namespace MvcTemplate.Rename
             for (Int32 i = 0; i < files.Length; i++)
             {
                 Console.CursorLeft = 0;
-                Console.Write($"Renaming files...       {((i + 1) * 100  / files.Length).ToString().PadLeft(3)}%");
+                Console.Write($"Renaming files...       {((i + 1) * 100 / files.Length).ToString().PadLeft(3)}%");
 
                 String projectFile = Path.Combine(Directory.GetParent(files[i]).FullName, files[i].Split('\\').Last().Replace(templateName, project));
                 File.Move(files[i], projectFile);
