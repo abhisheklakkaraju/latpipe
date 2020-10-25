@@ -161,7 +161,7 @@ namespace MvcTemplate.Web
             if (Environment.IsDevelopment())
                 app.UseMiddleware<DeveloperExceptionPageMiddleware>();
             else
-                app.UseMiddleware<ErrorPagesMiddleware>();
+                app.UseMiddleware<ErrorResponseMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
 

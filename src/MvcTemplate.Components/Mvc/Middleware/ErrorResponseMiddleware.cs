@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace MvcTemplate.Components.Mvc
 {
-    public class ErrorPagesMiddleware
+    public class ErrorResponseMiddleware
     {
         private ILanguages Languages { get; }
         private RequestDelegate Next { get; }
-        private ILogger<ErrorPagesMiddleware> Logger { get; }
+        private ILogger<ErrorResponseMiddleware> Logger { get; }
 
-        public ErrorPagesMiddleware(RequestDelegate next, ILanguages languages, ILogger<ErrorPagesMiddleware> logger)
+        public ErrorResponseMiddleware(RequestDelegate next, ILanguages languages, ILogger<ErrorResponseMiddleware> logger)
         {
             Next = next;
             Logger = logger;

@@ -12,24 +12,22 @@
 
   <ItemGroup>
     <None Remove="Logs\**" />
-
-    <Content Include="mvc.sitemap" CopyToPublishDirectory="Always" />
-
-    <Content Update="Templates\**" CopyToPublishDirectory="Never" />
-    <Content Update="package.json" CopyToPublishDirectory="Never" />
-    <Content Update="package-lock.json" CopyToPublishDirectory="Never" />
-    <Content Update="Resources\**\*.json" CopyToOutputDirectory="Always" />
-
-    <Content Update="wwwroot\js\**" CopyToPublishDirectory="Never" />
-    <Content Update="wwwroot\css\**" CopyToPublishDirectory="Never" />
-    <Content Update="wwwroot\css\**\*.woff" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\js\**\*.min.js" CopyToPublishDirectory="Always" />
-    <Content Update="wwwroot\css\**\*.min.css" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Templates\**" Condition="'$(Configuration)'!='Debug'" />
     <Content Remove="Templates\**" Condition="'$(Configuration)'!='Debug'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="mvc.sitemap" CopyToOutputDirectory="Always" />
+    <Content Update="wwwroot\js\**" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\css\**" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\css\**\*.woff" CopyToPublishDirectory="Always" />
+    <Content Update="wwwroot\js\**\*.min.js" CopyToPublishDirectory="Always" />
+    <Content Update="wwwroot\css\**\*.min.css" CopyToPublishDirectory="Always" />
+    <Content Update="package.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Content Update="package-lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never"  />
   </ItemGroup>
 
   <ItemGroup>
