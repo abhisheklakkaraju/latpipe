@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;
@@ -65,6 +66,9 @@ namespace MvcTemplate.Components.Mvc
                 context.Features.Get<IRouteValuesFeature>()?.RouteValues?.Clear();
                 context.Request.Method = "GET";
                 context.SetEndpoint(null);
+
+                using IServiceScope scope = context.RequestServices.CreateScope();
+                context.RequestServices = scope.ServiceProvider;
 
                 await Next(context);
             }
