@@ -64,7 +64,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void ModelMessagesProvider_SetsValueMustBeANumberAccessor()
         {
             String actual = messages.ValueMustBeANumberAccessor("Property");
-            String expected = Validation.For("Numeric", "Property");
+            String expected = Validation.For("Number", "Property");
 
             Assert.Equal(expected, actual);
         }

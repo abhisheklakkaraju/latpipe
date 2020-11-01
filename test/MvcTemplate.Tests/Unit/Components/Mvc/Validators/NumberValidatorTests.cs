@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             new NumberValidator().AddValidation(context);
 
             Assert.Single(attributes);
-            Assert.Equal(Validation.For("Numeric", "Int64"), attributes["data-val-number"]);
+            Assert.Equal(Validation.For("Number", "Int64"), attributes["data-val-number"]);
         }
 
         [Fact]

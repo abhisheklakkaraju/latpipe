@@ -73,6 +73,12 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Fact]
+        public void GetAttributeAdapter_Numeric()
+        {
+            Assert.IsType<NumericAdapter>(provider.GetAttributeAdapter(new NumericAttribute(7, 3), null));
+        }
+
+        [Fact]
         public void GetAttributeAdapter_EqualTo()
         {
             Assert.IsType<EqualToAdapter>(provider.GetAttributeAdapter(new EqualToAttribute("Other"), null));
@@ -88,12 +94,6 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void GetAttributeAdapter_Digits()
         {
             Assert.IsType<DigitsAdapter>(provider.GetAttributeAdapter(new DigitsAttribute(), null));
-        }
-
-        [Fact]
-        public void GetAttributeAdapter_Number()
-        {
-            Assert.IsType<NumberAdapter>(provider.GetAttributeAdapter(new NumberAttribute(7, 3), null));
         }
 
         [Fact]

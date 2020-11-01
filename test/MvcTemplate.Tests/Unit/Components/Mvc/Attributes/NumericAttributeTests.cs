@@ -4,20 +4,20 @@ using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
 {
-    public class NumberAttributeTests
+    public class NumericAttributeTests
     {
-        private NumberAttribute attribute;
+        private NumericAttribute attribute;
 
-        public NumberAttributeTests()
+        public NumericAttributeTests()
         {
-            attribute = new NumberAttribute(5, 2);
+            attribute = new NumericAttribute(5, 2);
         }
 
         [Fact]
         public void PrecisionAttribute_SetsErrorMessage()
         {
-            String actual = new NumberAttribute(5, 2).FormatErrorMessage("Test");
-            String expected = Validation.For("Number", "Test", 3, 2);
+            String actual = new NumericAttribute(5, 2).FormatErrorMessage("Test");
+            String expected = Validation.For("Numeric", "Test", 3, 2);
 
             Assert.Equal(expected, actual);
         }
@@ -61,7 +61,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void IsValid_DecimalPrecision()
         {
-            Assert.True(new NumberAttribute(3, 3).IsValid(0.345M));
+            Assert.True(new NumericAttribute(3, 3).IsValid(0.345M));
         }
 
         [Fact]

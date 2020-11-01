@@ -21,10 +21,10 @@ namespace MvcTemplate.Components.Mvc
                 MinValueAttribute minValue => new MinValueAdapter(minValue),
                 LessThanAttribute lessThan => new LessThanAdapter(lessThan),
                 FileSizeAttribute fileSize => new FileSizeAdapter(fileSize),
+                NumericAttribute numeric => new NumericAdapter(numeric),
                 EqualToAttribute equalTo => new EqualToAdapter(equalTo),
                 IntegerAttribute integer => new IntegerAdapter(integer),
                 DigitsAttribute digits => new DigitsAdapter(digits),
-                NumberAttribute number => new NumberAdapter(number),
                 RangeAttribute range => new RangeAdapter(range),
                 _ => null
             };

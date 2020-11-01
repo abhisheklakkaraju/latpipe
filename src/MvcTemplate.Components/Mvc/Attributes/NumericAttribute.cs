@@ -7,13 +7,13 @@ using System.Globalization;
 namespace MvcTemplate.Components.Mvc
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-    public class NumberAttribute : ValidationAttribute
+    public class NumericAttribute : ValidationAttribute
     {
         public UInt32 Scale { get; }
-        public UInt32 Precision { get; set; }
+        public UInt32 Precision { get; }
 
-        public NumberAttribute(UInt32 precision, UInt32 scale)
-            : base(() => Validation.For("Number"))
+        public NumericAttribute(UInt32 precision, UInt32 scale)
+            : base(() => Validation.For("Numeric"))
         {
             Precision = precision;
             Scale = scale;

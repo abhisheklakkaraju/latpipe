@@ -5,9 +5,9 @@ using System.Globalization;
 
 namespace MvcTemplate.Components.Mvc
 {
-    public class NumberAdapter : AttributeAdapterBase<NumberAttribute>
+    public class NumericAdapter : AttributeAdapterBase<NumericAttribute>
     {
-        public NumberAdapter(NumberAttribute attribute)
+        public NumericAdapter(NumericAttribute attribute)
             : base(attribute, null)
         {
         }

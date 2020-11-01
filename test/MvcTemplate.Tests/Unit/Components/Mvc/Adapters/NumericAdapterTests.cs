@@ -9,16 +9,16 @@ using Xunit;
 
 namespace MvcTemplate.Components.Mvc.Tests
 {
-    public class NumberAdapterTests
+    public class NumericAdapterTests
     {
-        private NumberAdapter adapter;
+        private NumericAdapter adapter;
         private ClientModelValidationContext context;
         private Dictionary<String, String> attributes;
 
-        public NumberAdapterTests()
+        public NumericAdapterTests()
         {
             attributes = new Dictionary<String, String>();
-            adapter = new NumberAdapter(new NumberAttribute(6, 2));
+            adapter = new NumericAdapter(new NumericAttribute(6, 2));
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
             ModelMetadata metadata = provider.GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.DecimalField));
 
@@ -33,13 +33,13 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal(3, attributes.Count);
             Assert.Equal("2", attributes["data-val-number-scale"]);
             Assert.Equal("6", attributes["data-val-number-precision"]);
-            Assert.Equal(Validation.For("Number", context.ModelMetadata.PropertyName, 4, 2), attributes["data-val-number"]);
+            Assert.Equal(Validation.For("Numeric", context.ModelMetadata.PropertyName, 4, 2), attributes["data-val-number"]);
         }
 
         [Fact]
         public void GetErrorMessage_Number()
         {
-            String expected = Validation.For("Number", context.ModelMetadata.PropertyName, 4 , 2);
+            String expected = Validation.For("Numeric", context.ModelMetadata.PropertyName, 4, 2);
             String actual = adapter.GetErrorMessage(context);
 
             Assert.Equal(expected, actual);

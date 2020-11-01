@@ -12,7 +12,7 @@ namespace MvcTemplate.Components.Mvc
             messages.SetMissingBindRequiredValueAccessor(field => Validation.For("Required", field));
             messages.SetValueMustNotBeNullAccessor(field => Validation.For("Required", field));
             messages.SetValueIsInvalidAccessor(value => Validation.For("InvalidValue", value));
-            messages.SetValueMustBeANumberAccessor(field => Validation.For("Numeric", field));
+            messages.SetValueMustBeANumberAccessor(field => Validation.For("Number", field));
             messages.SetMissingKeyOrValueAccessor(() => Validation.For("RequiredValue"));
         }
     }
