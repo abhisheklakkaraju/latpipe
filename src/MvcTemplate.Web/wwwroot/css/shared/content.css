@@ -78,12 +78,12 @@ body.private {
 }
 
 .control-content input[type="checkbox"] {
-    margin: 13px 0 9px;
+    margin: 12px 0;
     height: 14px;
 }
 
 .control-content input[type="radio"] {
-    margin: 11px 0;
+    margin: 13px 0;
     height: 12px;
     width: 12px;
 }
