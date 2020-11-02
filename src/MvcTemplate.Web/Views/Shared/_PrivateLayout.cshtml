@@ -1,7 +1,7 @@
 @{ String? action = ViewContext.RouteData.Values["action"] as String; }
 
 <!doctype html>
-<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<html lang="@CultureInfo.CurrentUICulture">
 <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="@Url.Content("~/favicon.ico")">
@@ -139,8 +139,6 @@
     </div>
 
     <environment names="Development">
-        <script src="~/js/numbro/numbro.js"></script>
-        <script src="~/js/numbro/cultures/numbro.en.js"></script>
         <script src="~/js/moment/moment.js"></script>
         <script src="~/js/moment/cultures/moment.en.js"></script>
         <script src="~/js/rome/rome.standalone.js"></script>
@@ -155,9 +153,10 @@
         <script src="~/js/shared/widgets/datepicker.js"></script>
         <script src="~/js/shared/widgets/grid.js"></script>
         <script src="~/js/shared/widgets/header.js"></script>
-        <script src="~/js/shared/widgets/tree.js"></script>
         <script src="~/js/shared/widgets/lookup.js"></script>
         <script src="~/js/shared/widgets/navigation.js"></script>
+        <script src="~/js/shared/widgets/number.js"></script>
+        <script src="~/js/shared/widgets/tree.js"></script>
         <script src="~/js/shared/widgets/validator.js"></script>
         <script action="shared"></script>
         <script action="@action"></script>

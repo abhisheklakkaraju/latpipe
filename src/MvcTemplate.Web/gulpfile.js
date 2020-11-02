@@ -54,8 +54,6 @@ gulp.task("app.css", () => gulp
 
 gulp.task("vendor.js", () => gulp
     .src([
-        "./wwwroot/js/numbro/numbro.js",
-        "./wwwroot/js/numbro/**/*.js",
         "./wwwroot/js/moment/moment.js",
         "./wwwroot/js/moment/**/*.js",
         "./wwwroot/js/rome/*.js",

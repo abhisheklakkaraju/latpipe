@@ -1,5 +1,6 @@
 // Widgets init
 (function () {
+    NumberConverter.init();
     Datepicker.init();
     Navigation.init();
     Validator.init();
