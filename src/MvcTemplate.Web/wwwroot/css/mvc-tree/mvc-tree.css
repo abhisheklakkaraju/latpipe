@@ -73,6 +73,7 @@
 }
 
 .mvc-tree-readonly a {
+    filter: grayscale(100%);
     cursor: default;
 }
 
