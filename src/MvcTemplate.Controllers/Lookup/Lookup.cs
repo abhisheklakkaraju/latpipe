@@ -19,6 +19,7 @@ namespace MvcTemplate.Controllers
             UnitOfWork = unitOfWork;
         }
 
+        [HttpGet]
         [AjaxOnly]
         public JsonResult Role(LookupFilter filter)
         {

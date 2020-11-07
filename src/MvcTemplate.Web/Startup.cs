@@ -62,15 +62,18 @@ namespace MvcTemplate.Web
         {
             services
                 .AddMvc()
-                .AddMvcOptions(options => options.Filters.Add<LanguageFilter>())
-                .AddMvcOptions(options => options.Filters.Add<TransactionFilter>())
-                .AddMvcOptions(options => options.Filters.Add<AuthorizationFilter>())
-                .AddMvcOptions(options => ModelMessagesProvider.Set(options.ModelBindingMessageProvider))
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.Add<LanguageFilter>();
+                    options.Filters.Add<TransactionFilter>();
+                    options.Filters.Add<AuthorizationFilter>();
+                    ModelMessagesProvider.Set(options.ModelBindingMessageProvider);
+                    options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider());
+                    options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider());
+                    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+                })
                 .AddRazorOptions(options => options.ViewLocationExpanders.Add(new ViewLocationExpander()))
-                .AddMvcOptions(options => options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider()))
-                .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new ClientValidatorProvider()))
-                .AddMvcOptions(options => options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider()))
-                .AddMvcOptions(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+                .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new ClientValidatorProvider()));
 
             services.AddAuthentication("Cookies").AddCookie(authentication =>
             {
