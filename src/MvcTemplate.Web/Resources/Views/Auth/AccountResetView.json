@@ -1,5 +1,6 @@
 {
     "Titles": {
-        "NewPassword": "New password"
+        "NewPassword": "New password",
+        "Token": "Token"
     }
 }

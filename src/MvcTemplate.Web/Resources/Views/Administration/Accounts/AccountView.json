@@ -10,7 +10,6 @@
     "Titles": {
         "Email": "Email",
         "IsLocked": "Locked",
-        "Password": "Password",
         "RoleTitle": "Role",
         "Username": "Username"
     },
