@@ -1,5 +1,5 @@
 using Humanizer;
-using MvcTemplate.Components.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MvcTemplate.Objects;
 using System;
 using System.Collections.Generic;
@@ -72,10 +72,10 @@ namespace MvcTemplate.Web.Templates
             ViewProperties = viewType.GetProperties().Where(property => property.DeclaringType?.Name == View).ToArray();
             ModelProperties = AllModelProperties.Where(property => property.DeclaringType?.Name == Model).ToArray();
             AllViewProperties = viewType.GetProperties();
-            Indexes = ModelProperties
-                .Where(property =>
-                    ViewProperties.Any(prop => prop.Name == property.Name) &&
-                    property.GetCustomAttribute<IndexAttribute>()?.IsUnique == true)
+            Indexes = modelType
+                .GetCustomAttributes<IndexAttribute>()
+                .Where(index => index.IsUnique && ViewProperties.Any(property => property.Name == index.PropertyNames[0]))
+                .Select(index => modelType.GetProperty(index.PropertyNames[0])!)
                 .OrderByDescending(property => property.Name.Length)
                 .ThenByDescending(property => property.Name)
                 .ToArray();

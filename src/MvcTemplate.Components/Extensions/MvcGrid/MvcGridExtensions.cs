@@ -114,7 +114,7 @@ namespace MvcTemplate.Components.Extensions
         private static String NameFor(LambdaExpression expression)
         {
             String text = expression.Body is MemberExpression member ? member.ToString() : "";
-            text = text.IndexOf('.') > 0 ? text.Substring(text.IndexOf('.') + 1) : text;
+            text = text.IndexOf('.') > 0 ? text[(text.IndexOf('.') + 1)..] : text;
             text = text.Replace("_", "-");
 
             return String.Join("-", Regex.Split(text, "(?<=[a-z])(?=[A-Z])|(?<!^)(?=[A-Z][a-z])")).ToLower();

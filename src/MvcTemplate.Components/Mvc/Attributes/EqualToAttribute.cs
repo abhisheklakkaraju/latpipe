@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Mvc
         {
             return String.Format(ErrorMessageString, name, OtherPropertyDisplayName);
         }
-        protected override ValidationResult IsValid(Object? value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(Object? value, ValidationContext validationContext)
         {
             PropertyInfo? other = validationContext.ObjectType.GetProperty(OtherPropertyName);
 

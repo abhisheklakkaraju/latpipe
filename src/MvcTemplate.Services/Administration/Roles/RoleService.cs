@@ -48,10 +48,10 @@ namespace MvcTemplate.Services
             {
                 List<MvcTreeNode> nodes = new List<MvcTreeNode>();
 
-                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
+                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller))
                 {
                     MvcTreeNode node = new MvcTreeNode(controller.Key);
-                    node.Children.AddRange(controller.Select(permission => new MvcTreeNode(permission.Id, permission.Action!)));
+                    node.Children.AddRange(controller.Select(permission => new MvcTreeNode(permission.Id, permission.Action)));
 
                     nodes.Add(node);
                 }

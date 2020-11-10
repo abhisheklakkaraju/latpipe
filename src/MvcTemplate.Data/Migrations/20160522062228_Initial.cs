@@ -11,14 +11,14 @@ namespace MvcTemplate.Data.Migrations
                 name: "AuditLog",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    AccountId = table.Column<long>(nullable: true),
-                    Action = table.Column<string>(maxLength: 16, nullable: false),
-                    EntityName = table.Column<string>(maxLength: 64, nullable: false),
-                    EntityId = table.Column<long>(nullable: false),
-                    Changes = table.Column<string>(nullable: false)
+                    AccountId = table.Column<long>(type: "bigint", nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
+                    EntityName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    EntityId = table.Column<long>(type: "bigint", nullable: false),
+                    Changes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,12 +29,12 @@ namespace MvcTemplate.Data.Migrations
                 name: "Permission",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    Area = table.Column<string>(maxLength: 64, nullable: false),
-                    Controller = table.Column<string>(maxLength: 64, nullable: false),
-                    Action = table.Column<string>(maxLength: 64, nullable: false)
+                    Area = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Controller = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Action = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,10 +45,10 @@ namespace MvcTemplate.Data.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    Title = table.Column<string>(maxLength: 128, nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,16 +59,16 @@ namespace MvcTemplate.Data.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    Username = table.Column<string>(maxLength: 32, nullable: false),
-                    Passhash = table.Column<string>(maxLength: 64, nullable: false),
-                    Email = table.Column<string>(maxLength: 256, nullable: false),
-                    IsLocked = table.Column<bool>(nullable: false),
-                    RecoveryToken = table.Column<string>(maxLength: 36, nullable: true),
-                    RecoveryTokenExpirationDate = table.Column<DateTime>(nullable: true),
-                    RoleId = table.Column<long>(nullable: true)
+                    Username = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Passhash = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    IsLocked = table.Column<bool>(type: "bit", nullable: false),
+                    RecoveryToken = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
+                    RecoveryTokenExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RoleId = table.Column<long>(type: "bigint", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,11 +85,11 @@ namespace MvcTemplate.Data.Migrations
                 name: "RolePermission",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(nullable: false),
-                    RoleId = table.Column<long>(nullable: false),
-                    PermissionId = table.Column<long>(nullable: false)
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    PermissionId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Mvc
 {
     public static class ModelStateDictionaryExtensions
     {
-        public static Dictionary<String, String> Errors(this ModelStateDictionary modelState)
+        public static Dictionary<String, String?> Errors(this ModelStateDictionary modelState)
         {
             return modelState
                 .Where(state => state.Value.Errors.Count > 0)

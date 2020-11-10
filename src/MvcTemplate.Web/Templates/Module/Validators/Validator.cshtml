@@ -92,14 +92,7 @@ namespace MvcTemplate.Validators
         @:        .Select<@Model.Model>()
         @:        .Any(@Model.ModelVarName =>
         @:            @(Model.ModelVarName).Id != id &&
-                if (property.PropertyType == typeof(String))
-                {
-        @:            @(Model.ModelVarName).@(property.Name).ToLower() == (@name ?? "").ToLower());
-                }
-                else
-                {
         @:            @(Model.ModelVarName).@(property.Name) == @name);
-                }
 @:
         @:    if (!isUnique)
         @:        ModelState.AddModelError(nameof(@(Model.View).@(property.Name)), Validation.For<@Model.View>("Unique@(property.Name)"));

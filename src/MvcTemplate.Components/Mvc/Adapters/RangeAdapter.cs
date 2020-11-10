@@ -18,8 +18,8 @@ namespace MvcTemplate.Components.Mvc
         public override void AddValidation(ClientModelValidationContext context)
         {
             context.Attributes["data-val-range"] = GetErrorMessage(context);
-            context.Attributes["data-val-range-min"] = Convert.ToString(Attribute.Minimum, CultureInfo.InvariantCulture);
-            context.Attributes["data-val-range-max"] = Convert.ToString(Attribute.Maximum, CultureInfo.InvariantCulture);
+            context.Attributes["data-val-range-min"] = Convert.ToString(Attribute.Minimum, CultureInfo.InvariantCulture)!;
+            context.Attributes["data-val-range-max"] = Convert.ToString(Attribute.Maximum, CultureInfo.InvariantCulture)!;
         }
         public override String GetErrorMessage(ModelValidationContextBase validationContext)
         {

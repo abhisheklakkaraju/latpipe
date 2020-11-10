@@ -75,7 +75,7 @@ namespace MvcTemplate.Validators
         {
             String? passhash = UnitOfWork
                 .Select<Account>()
-                .Where(account => account.Username.ToLower() == (username ?? "").ToLower())
+                .Where(account => account.Username == username)
                 .Select(account => account.Passhash)
                 .SingleOrDefault();
 
@@ -107,7 +107,7 @@ namespace MvcTemplate.Validators
                 .Select<Account>()
                 .Any(account =>
                     account.Id != id &&
-                    account.Username.ToLower() == (username ?? "").ToLower());
+                    account.Username == username);
 
             if (!isUnique)
                 ModelState.AddModelError(nameof(AccountView.Username), Validation.For<AccountView>("UniqueUsername"));
@@ -120,7 +120,7 @@ namespace MvcTemplate.Validators
                 .Select<Account>()
                 .Any(account =>
                     account.Id != id &&
-                    account.Email.ToLower() == (email ?? "").ToLower());
+                    account.Email == email);
 
             if (!isUnique)
                 ModelState.AddModelError(nameof(AccountView.Email), Validation.For<AccountView>("UniqueEmail"));
@@ -147,7 +147,7 @@ namespace MvcTemplate.Validators
                 .Select<Account>()
                 .Any(account =>
                     !account.IsLocked &&
-                    account.Username.ToLower() == (username ?? "").ToLower());
+                    account.Username == username);
 
             if (!isActive)
                 Alerts.AddError(Validation.For<AccountView>("LockedAccount"));

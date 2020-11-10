@@ -14,7 +14,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             DisplayMetadataProvider provider = new DisplayMetadataProvider();
             DisplayMetadataProviderContext context = new DisplayMetadataProviderContext(
-                ModelMetadataIdentity.ForProperty(typeof(RoleView).GetProperty(nameof(RoleView.Title)), typeof(String), typeof(RoleView)),
+                ModelMetadataIdentity.ForProperty(typeof(RoleView).GetProperty(nameof(RoleView.Title))!, typeof(String), typeof(RoleView)),
                 ModelAttributes.GetAttributesForType(typeof(RoleView)));
 
             provider.CreateDisplayMetadata(context);

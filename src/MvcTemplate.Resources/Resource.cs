@@ -94,7 +94,7 @@ namespace MvcTemplate.Resources
         }
         public static String ForProperty(String view, String name)
         {
-            if (Localized(view, "Titles", name) is String title && title.Length > 0)
+            if (Localized(view, "Titles", name) is String { Length: > 0 } title)
                 return title;
 
             String[] properties = SplitCamelCase(name);
@@ -107,7 +107,7 @@ namespace MvcTemplate.Resources
                     String relation = $"{String.Concat(properties.Skip(skipped).Take(viewSize))}View";
                     String property = String.Concat(properties.Skip(viewSize + skipped));
 
-                    if (Localized(relation, "Titles", property) is String relationTitle && relationTitle.Length > 0)
+                    if (Localized(relation, "Titles", property) is String { Length: > 0 } relationTitle)
                         return Set(view)[language, "Titles", name] = relationTitle;
                 }
             }
@@ -120,7 +120,7 @@ namespace MvcTemplate.Resources
         }
         public static String ForProperty(Expression expression)
         {
-            return expression is MemberExpression member ? ForProperty(member.Expression.Type, member.Member.Name) : "";
+            return expression is MemberExpression member ? ForProperty(member.Expression!.Type, member.Member.Name) : "";
         }
 
         internal static String Localized(String type, String group, String key)

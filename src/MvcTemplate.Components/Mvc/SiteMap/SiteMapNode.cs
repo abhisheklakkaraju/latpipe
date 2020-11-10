@@ -6,7 +6,7 @@ namespace MvcTemplate.Components.Mvc
 {
     public class SiteMapNode
     {
-        public String? Path { get; set; }
+        public String Path { get; set; }
         public Boolean IsMenu { get; set; }
         public Boolean IsActive { get; set; }
         public String? IconClass { get; set; }
@@ -21,6 +21,7 @@ namespace MvcTemplate.Components.Mvc
 
         public SiteMapNode()
         {
+            Path = "";
             Children = Array.Empty<SiteMapNode>();
             Route = new Dictionary<String, String>();
         }

@@ -84,7 +84,7 @@ namespace MvcTemplate.Controllers
 
             if (TempData["Alerts"] is String alertsJson)
             {
-                alerts = JsonSerializer.Deserialize<Alerts>(alertsJson);
+                alerts = JsonSerializer.Deserialize<Alerts>(alertsJson)!;
                 alerts.Merge(Alerts);
             }
 

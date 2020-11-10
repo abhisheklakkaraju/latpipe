@@ -48,8 +48,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             ValidationContext context = new ValidationContext(new AllTypesView());
 
-            String actual = attribute.GetValidationResult("Test", context).ErrorMessage;
-            String expected = Validation.For("EqualTo", context.DisplayName, attribute.OtherPropertyName);
+            String? actual = attribute.GetValidationResult("Test", context)?.ErrorMessage;
+            String? expected = Validation.For("EqualTo", context.DisplayName, attribute.OtherPropertyName);
 
             Assert.Equal(expected, actual);
         }
@@ -60,8 +60,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             attribute = new EqualToAttribute("Temp");
             ValidationContext context = new ValidationContext(new AllTypesView());
 
-            String actual = attribute.GetValidationResult("Test", context).ErrorMessage;
-            String expected = Validation.For("EqualTo", context.DisplayName, "Temp");
+            String? expected = Validation.For("EqualTo", context.DisplayName, "Temp");
+            String? actual = attribute.GetValidationResult("Test", context)?.ErrorMessage;
 
             Assert.Equal(expected, actual);
         }

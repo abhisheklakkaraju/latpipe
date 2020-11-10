@@ -1,15 +1,15 @@
-using MvcTemplate.Components.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MvcTemplate.Objects
 {
+    [Index(nameof(Title), IsUnique = true)]
     public class Role : AModel
     {
         [Required]
         [StringLength(128)]
-        [Index(IsUnique = true)]
         public String Title { get; set; }
 
         public virtual List<Account> Accounts { get; set; }

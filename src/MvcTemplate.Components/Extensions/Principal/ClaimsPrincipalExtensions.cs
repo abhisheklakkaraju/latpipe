@@ -9,10 +9,7 @@ namespace MvcTemplate.Components.Extensions
         {
             String? id = principal.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (String.IsNullOrEmpty(id))
-                return null;
-
-            return Int64.Parse(id);
+            return id?.Length > 0 ? Int64.Parse(id) : null;
         }
 
         public static void UpdateClaim(this ClaimsPrincipal principal, String type, String value)

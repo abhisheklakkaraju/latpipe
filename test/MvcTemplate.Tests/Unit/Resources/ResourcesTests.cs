@@ -18,7 +18,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllPageTitles()
         {
-            XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap");
+            XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap")!;
 
             foreach (SiteMapNode node in Flatten(sitemap.Elements()).Where(node => node.Action != null))
             {
@@ -31,7 +31,7 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Resources_HasAllSiteMapTitles()
         {
-            XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap");
+            XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap")!;
 
             foreach (String path in Flatten(sitemap.Elements()).Select(node => $"{node.Area}/{node.Controller}/{node.Action}"))
                 Assert.True(Resource.ForSiteMap(path) != "", $"'{path}' page does not have a sitemap title.");
@@ -90,9 +90,9 @@ namespace MvcTemplate.Resources.Tests
             {
                 SiteMapNode node = new SiteMapNode
                 {
-                    Action = (String)element.Attribute("action"),
-                    Area = (String)element.Attribute("area") ?? parent?.Area,
-                    Controller = (String)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null)
+                    Action = (String?)element.Attribute("action"),
+                    Area = (String?)element.Attribute("area") ?? parent?.Area,
+                    Controller = (String?)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null)
                 };
 
                 list.Add(node);

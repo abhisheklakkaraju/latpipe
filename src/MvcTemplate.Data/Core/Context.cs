@@ -38,13 +38,10 @@ namespace MvcTemplate.Data
                 foreach (PropertyInfo property in entity.ClrType.GetProperties())
                 {
                     if (typeof(Decimal?).IsAssignableFrom(property.PropertyType))
-                        if (property.GetCustomAttribute<NumericAttribute>(false) is NumericAttribute number)
-                            modelBuilder.Entity(entity.ClrType).Property(property.Name).HasColumnType($"decimal({number.Precision},{number.Scale})");
+                        if (property.GetCustomAttribute<NumericAttribute>(false) is NumericAttribute numeric)
+                            modelBuilder.Entity(entity.ClrType).Property(property.Name).HasPrecision(numeric.Precision, numeric.Scale);
                         else
                             throw new Exception($"Decimal numbers have to have {nameof(NumericAttribute)} specified. Default [{nameof(NumericAttribute)[..^9]}(18, 2)]");
-
-                    if (property.GetCustomAttribute<IndexAttribute>(false) is IndexAttribute index)
-                        modelBuilder.Entity(entity.ClrType).HasIndex(property.Name).IsUnique(index.IsUnique);
                 }
 
             foreach (IMutableForeignKey key in modelBuilder.Model.GetEntityTypes().SelectMany(entity => entity.GetForeignKeys()))

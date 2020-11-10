@@ -21,7 +21,7 @@ namespace MvcTemplate.Components.Mvc
             Authorization = authorization;
             Breadcrumb = Flatten(Tree)
                 .ToDictionary(
-                    node => node.Path!,
+                    node => node.Path,
                     node => node.ToBreadcrumb(),
                     StringComparer.OrdinalIgnoreCase);
         }
@@ -70,7 +70,7 @@ namespace MvcTemplate.Components.Mvc
             {
                 node.Children = Authorize(accountId, node.Children);
 
-                if (!IsEmpty(node) && (node.Action == null || Authorization.IsGrantedFor(accountId, node.Path!)))
+                if (!IsEmpty(node) && (node.Action == null || Authorization.IsGrantedFor(accountId, node.Path)))
                     authorized.Add(node);
                 else
                     authorized.AddRange(node.Children);
@@ -85,13 +85,13 @@ namespace MvcTemplate.Components.Mvc
             foreach (XElement element in root.Elements("siteMapNode"))
             {
                 SiteMapNode node = new SiteMapNode();
-                node.IconClass = (String)element.Attribute("icon");
+                node.IconClass = (String?)element.Attribute("icon");
                 node.IsMenu = (Boolean?)element.Attribute("menu") == true;
 
                 node.Route = ParseRoute(element);
-                node.Action = (String)element.Attribute("action");
-                node.Area = (String)element.Attribute("area") ?? parent?.Area;
-                node.Controller = (String)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
+                node.Action = (String?)element.Attribute("action");
+                node.Area = (String?)element.Attribute("area") ?? parent?.Area;
+                node.Controller = (String?)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
 
                 node.Path = $"{node.Area}/{node.Controller}/{node.Action}";
                 node.Children = Parse(element, node);
@@ -107,7 +107,7 @@ namespace MvcTemplate.Components.Mvc
             return element
                 .Attributes()
                 .Where(attribute => attribute.Name.LocalName.StartsWith("route-"))
-                .ToDictionary(attribute => attribute.Name.LocalName.Substring(6), attribute => attribute.Value);
+                .ToDictionary(attribute => attribute.Name.LocalName[6..], attribute => attribute.Value);
         }
         private List<SiteMapNode> Flatten(SiteMapNode[] branches)
         {

@@ -9,7 +9,7 @@ namespace MvcTemplate.Components.Mvc
         public void CreateDisplayMetadata(DisplayMetadataProviderContext context)
         {
             if (context.Key.ContainerType is Type view && context.Key.MetadataKind == ModelMetadataKind.Property)
-                if (Resource.ForProperty(view, context.Key.Name) is String title && title.Length > 0)
+                if (Resource.ForProperty(view, context.Key.Name!) is String { Length: > 0 } title)
                     context.DisplayMetadata.DisplayName = () => title;
         }
     }

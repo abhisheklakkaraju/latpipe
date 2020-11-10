@@ -303,12 +303,12 @@ namespace MvcTemplate.Services.Tests
             {
                 List<MvcTreeNode> nodes = new List<MvcTreeNode>();
 
-                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller!))
+                foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller))
                 {
                     MvcTreeNode node = new MvcTreeNode(controller.Key);
 
                     foreach (PermissionView permission in controller)
-                        node.Children.Add(new MvcTreeNode(permission.Id, permission.Action!));
+                        node.Children.Add(new MvcTreeNode(permission.Id, permission.Action));
 
                     nodes.Add(node);
                 }

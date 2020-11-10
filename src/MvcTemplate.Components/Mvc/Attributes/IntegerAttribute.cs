@@ -15,7 +15,7 @@ namespace MvcTemplate.Components.Mvc
 
         public override Boolean IsValid(Object? value)
         {
-            return value == null || Regex.IsMatch(value.ToString(), "^[+-]?[0-9]+$");
+            return value?.ToString() is not String input || Regex.IsMatch(input, "^[+-]?[0-9]+$");
         }
     }
 }

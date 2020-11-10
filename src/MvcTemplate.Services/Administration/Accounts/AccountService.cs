@@ -45,7 +45,7 @@ namespace MvcTemplate.Services
 
         public String? Recover(AccountRecoveryView view)
         {
-            Account? account = UnitOfWork.Select<Account>().SingleOrDefault(model => model.Email.ToLower() == view.Email!.ToLower());
+            Account? account = UnitOfWork.Select<Account>().SingleOrDefault(model => model.Email == view.Email);
 
             if (account == null)
                 return null;
@@ -111,7 +111,7 @@ namespace MvcTemplate.Services
 
         public async Task Login(HttpContext context, String username)
         {
-            Account account = UnitOfWork.Select<Account>().Single(model => model.Username.ToLower() == username.ToLower());
+            Account account = UnitOfWork.Select<Account>().Single(model => model.Username == username);
 
             await context.SignInAsync("Cookies", new ClaimsPrincipal(new ClaimsIdentity(new[]
             {

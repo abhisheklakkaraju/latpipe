@@ -324,7 +324,7 @@ namespace MvcTemplate.Web.Templates
             Logger.Write($"../MvcTemplate.Web/Resources/Shared/{resource}.json - ");
 
             String page = File.ReadAllText($"Resources/Shared/{resource}.json");
-            Dictionary<String, SortedDictionary<String, String>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String>>>(page);
+            Dictionary<String, SortedDictionary<String, String>> resources = JsonSerializer.Deserialize<Dictionary<String, SortedDictionary<String, String>>>(page)!;
 
             if (resources[group].ContainsKey(key))
             {

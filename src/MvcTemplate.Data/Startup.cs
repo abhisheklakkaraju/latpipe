@@ -14,8 +14,7 @@ namespace MvcTemplate.Data
         public Startup(IHostEnvironment host)
         {
             Connection = new ConfigurationBuilder()
-                .SetBasePath(host.ContentRootPath)
-                .SetBasePath(Directory.GetParent(host.ContentRootPath).FullName)
+                .SetBasePath(Directory.GetParent(host.ContentRootPath)!.FullName)
                 .AddJsonFile("MvcTemplate.Web/configuration.json")
                 .AddJsonFile($"MvcTemplate.Web/configuration.{host.EnvironmentName.ToLower()}.json", optional: true)
                 .Build()["Data:Connection"];

@@ -20,7 +20,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             modelState.AddModelError("Error", "Error");
             modelState.AddModelError("Empty", "");
 
-            Dictionary<String, String> actual = modelState.Errors();
+            Dictionary<String, String?> actual = modelState.Errors();
 
             Assert.Equal("           ", actual["WhitespaceErrors"]);
             Assert.Equal("Error1", actual["TwoErrors"]);

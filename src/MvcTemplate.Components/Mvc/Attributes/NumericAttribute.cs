@@ -9,10 +9,10 @@ namespace MvcTemplate.Components.Mvc
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
     public class NumericAttribute : ValidationAttribute
     {
-        public UInt32 Scale { get; }
-        public UInt32 Precision { get; }
+        public Int32 Scale { get; }
+        public Int32 Precision { get; }
 
-        public NumericAttribute(UInt32 precision, UInt32 scale)
+        public NumericAttribute(Int32 precision, Int32 scale)
             : base(() => Validation.For("Numeric"))
         {
             Precision = precision;

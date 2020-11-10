@@ -36,7 +36,7 @@ namespace MvcTemplate.Controllers.Tests
 
             action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
 
-            controllerName = (String)controller.RouteData.Values["controller"];
+            controllerName = (String)controller.RouteData.Values["controller"]!;
             areaName = controller.RouteData.Values["area"] as String;
         }
         public override void Dispose()
@@ -204,7 +204,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.TempData["Alerts"] = null;
             JsonResult result = new JsonResult("Value");
 
-            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), null) { Result = result });
+            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), controller) { Result = result });
 
             Assert.Null(controller.TempData["Alerts"]);
         }
@@ -215,7 +215,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.Alerts.AddError("Test");
             controller.TempData["Alerts"] = null;
 
-            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), null));
+            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), controller));
 
             Object expected = JsonSerializer.Serialize(controller.Alerts);
             Object actual = controller.TempData["Alerts"];
@@ -234,7 +234,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.Alerts.AddError("Test2");
             alerts.AddError("Test2");
 
-            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), null));
+            controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), controller));
 
             Object expected = JsonSerializer.Serialize(alerts);
             Object actual = controller.TempData["Alerts"];
