@@ -43,7 +43,7 @@ namespace MvcTemplate.Controllers
             {
                 String url = Url.Action(nameof(Reset), nameof(Auth), new { token }, Request.Scheme);
 
-                await MailClient.SendAsync(account.Email!,
+                await MailClient.SendAsync(account.Email,
                     Message.For<AccountView>("RecoveryEmailSubject"),
                     Message.For<AccountView>("RecoveryEmailBody", url));
             }
@@ -59,7 +59,7 @@ namespace MvcTemplate.Controllers
             if (Service.IsLoggedIn(User))
                 return RedirectToDefault();
 
-            if (!Validator.CanReset(new AccountResetView { Token = token }))
+            if (!Validator.CanReset(new AccountResetView { Token = (token ?? "") }))
                 return RedirectToAction(nameof(Recover));
 
             return View();
@@ -99,7 +99,7 @@ namespace MvcTemplate.Controllers
             if (!Validator.CanLogin(account))
                 return View(account);
 
-            await Service.Login(HttpContext, account.Username!);
+            await Service.Login(HttpContext, account.Username);
 
             return RedirectToLocal(returnUrl);
         }

@@ -61,7 +61,7 @@ namespace MvcTemplate.Services
         public void Reset(AccountResetView view)
         {
             Account account = UnitOfWork.Select<Account>().Single(model => model.RecoveryToken == view.Token);
-            account.Passhash = Hasher.HashPassword(view.NewPassword!);
+            account.Passhash = Hasher.HashPassword(view.NewPassword);
             account.RecoveryTokenExpirationDate = null;
             account.RecoveryToken = null;
 
@@ -72,8 +72,8 @@ namespace MvcTemplate.Services
         public void Create(AccountCreateView view)
         {
             Account account = UnitOfWork.To<Account>(view);
-            account.Passhash = Hasher.HashPassword(view.Password!);
-            account.Email = view.Email!.ToLower();
+            account.Passhash = Hasher.HashPassword(view.Password);
+            account.Email = view.Email.ToLower();
 
             UnitOfWork.Insert(account);
             UnitOfWork.Commit();
@@ -91,8 +91,8 @@ namespace MvcTemplate.Services
         public void Edit(ClaimsPrincipal user, ProfileEditView view)
         {
             Account account = UnitOfWork.Get<Account>(CurrentAccountId)!;
-            account.Email = view.Email!.ToLower();
-            account.Username = view.Username!;
+            account.Email = view.Email.ToLower();
+            account.Username = view.Username;
 
             if (!String.IsNullOrWhiteSpace(view.NewPassword))
                 account.Passhash = Hasher.HashPassword(view.NewPassword);

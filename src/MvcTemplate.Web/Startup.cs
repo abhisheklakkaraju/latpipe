@@ -70,7 +70,6 @@ namespace MvcTemplate.Web
                     ModelMessagesProvider.Set(options.ModelBindingMessageProvider);
                     options.ModelMetadataDetailsProviders.Add(new DisplayMetadataProvider());
                     options.ModelBinderProviders.Insert(4, new TrimmingModelBinderProvider());
-                    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
                 })
                 .AddRazorOptions(options => options.ViewLocationExpanders.Add(new ViewLocationExpander()))
                 .AddViewOptions(options => options.ClientModelValidatorProviders.Add(new ClientValidatorProvider()));

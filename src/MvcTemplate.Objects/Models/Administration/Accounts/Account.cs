@@ -8,15 +8,12 @@ namespace MvcTemplate.Objects
     [Index(nameof(Username), IsUnique = true)]
     public class Account : AModel
     {
-        [Required]
         [StringLength(32)]
         public String Username { get; set; }
 
-        [Required]
         [StringLength(64)]
         public String Passhash { get; set; }
 
-        [Required]
         [EmailAddress]
         [StringLength(256)]
         public String Email { get; set; }

@@ -23,7 +23,7 @@ namespace MvcTemplate.Components.Mvc
             String value = result.FirstValue?.Trim() ?? "";
             context.ModelState.SetModelValue(context.ModelName, result);
 
-            if (value.Length == 0 && context.ModelMetadata.ConvertEmptyStringToNull)
+            if (value.Length == 0 && !context.ModelMetadata.IsRequired && context.ModelMetadata.ConvertEmptyStringToNull)
                 return ModelBindingResult.Success(null);
 
             return ModelBindingResult.Success(value);

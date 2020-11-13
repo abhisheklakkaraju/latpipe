@@ -120,7 +120,7 @@ namespace MvcTemplate.Controllers.Tests
             String url = controller.Url.Action(nameof(Auth.Reset), nameof(Auth), new { token = "TestToken" }, controller.Request.Scheme);
             String subject = Message.For<AccountView>("RecoveryEmailSubject");
             String body = Message.For<AccountView>("RecoveryEmailBody", url);
-            String email = accountRecovery.Email!;
+            String email = accountRecovery.Email;
 
             await mail.Received().SendAsync(email, subject, body);
         }
@@ -316,7 +316,7 @@ namespace MvcTemplate.Controllers.Tests
 
             await controller.Login(accountLogin, null);
 
-            await service.Received().Login(controller.HttpContext, accountLogin.Username!);
+            await service.Received().Login(controller.HttpContext, accountLogin.Username);
         }
 
         [Fact]

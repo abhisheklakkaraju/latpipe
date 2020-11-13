@@ -8,7 +8,6 @@ namespace MvcTemplate.Objects
     [Index(nameof(Title), IsUnique = true)]
     public class Role : AModel
     {
-        [Required]
         [StringLength(128)]
         public String Title { get; set; }
 

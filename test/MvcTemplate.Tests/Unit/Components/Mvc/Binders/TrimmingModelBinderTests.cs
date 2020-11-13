@@ -41,9 +41,11 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("  ")]
         public async Task BindModelAsync_Null(String value)
         {
-            ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
             context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(value));
+            ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
             context.ModelName = nameof(AllTypesView.StringField);
+            metadata.ConvertEmptyStringToNull.Returns(true);
+            metadata.IsRequired.Returns(false);
             context.ModelMetadata = metadata;
 
             await binder.BindModelAsync(context);
@@ -56,14 +58,16 @@ namespace MvcTemplate.Components.Mvc.Tests
         }
 
         [Theory]
-        [InlineData("")]
-        [InlineData("  ")]
-        public async Task BindModelAsync_Empty(String value)
+        [InlineData(true, true, "")]
+        [InlineData(false, true, "  ")]
+        [InlineData(false, false, "  ")]
+        public async Task BindModelAsync_Empty(Boolean convertToNull, Boolean isRequired, String value)
         {
             context.ValueProvider.GetValue(nameof(AllTypesView.StringField)).Returns(new ValueProviderResult(value));
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
+            metadata.ConvertEmptyStringToNull.Returns(convertToNull);
             context.ModelName = nameof(AllTypesView.StringField);
-            metadata.ConvertEmptyStringToNull.Returns(false);
+            metadata.IsRequired.Returns(isRequired);
             context.ModelMetadata = metadata;
 
             await binder.BindModelAsync(context);

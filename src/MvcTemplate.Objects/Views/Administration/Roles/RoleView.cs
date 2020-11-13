@@ -7,10 +7,9 @@ namespace MvcTemplate.Objects
 {
     public class RoleView : AView
     {
-        [Required]
         [LookupColumn]
         [StringLength(128)]
-        public String? Title { get; set; }
+        public String Title { get; set; }
 
         public MvcTree Permissions { get; set; }
 

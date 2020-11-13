@@ -129,7 +129,7 @@ namespace MvcTemplate.Services.Tests
             AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView(0);
             account.RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(30);
             String? oldToken = account.RecoveryToken;
-            view.Email = view.Email?.ToUpper();
+            view.Email = view.Email.ToUpper();
 
             account.RecoveryToken = service.Recover(view);
 
@@ -161,7 +161,7 @@ namespace MvcTemplate.Services.Tests
             Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
-            Assert.Equal(hasher.HashPassword(view.NewPassword!), actual.Passhash);
+            Assert.Equal(hasher.HashPassword(view.NewPassword), actual.Passhash);
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.IsLocked, actual.IsLocked);
             Assert.Equal(expected.Username, actual.Username);
@@ -176,7 +176,7 @@ namespace MvcTemplate.Services.Tests
         public void Create_Account()
         {
             AccountCreateView view = ObjectsFactory.CreateAccountCreateView(account.Id + 1);
-            view.Email = view.Email?.ToUpper();
+            view.Email = view.Email.ToUpper();
             view.RoleId = account.RoleId;
 
             service.Create(view);
@@ -184,7 +184,7 @@ namespace MvcTemplate.Services.Tests
             Account actual = Assert.Single(context.Set<Account>(), model => model.Id != account.Id);
             AccountCreateView expected = view;
 
-            Assert.Equal(hasher.HashPassword(expected.Password!), actual.Passhash);
+            Assert.Equal(hasher.HashPassword(expected.Password), actual.Passhash);
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.Email?.ToLower(), actual.Email);
             Assert.Equal(expected.Username, actual.Username);

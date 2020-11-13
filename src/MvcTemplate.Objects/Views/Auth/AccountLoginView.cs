@@ -6,13 +6,11 @@ namespace MvcTemplate.Objects
 {
     public class AccountLoginView : AView
     {
-        [Required]
         [StringLength(32)]
-        public String? Username { get; set; }
+        public String Username { get; set; }
 
-        [Required]
         [NotTrimmed]
         [StringLength(32)]
-        public String? Password { get; set; }
+        public String Password { get; set; }
     }
 }
