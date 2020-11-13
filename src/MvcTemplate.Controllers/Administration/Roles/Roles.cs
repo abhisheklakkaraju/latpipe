@@ -23,7 +23,8 @@ namespace MvcTemplate.Controllers.Administration
         [HttpGet]
         public ViewResult Create()
         {
-            RoleView role = new RoleView();
+            RoleView role = new();
+
             Service.Seed(role.Permissions);
 
             return View(role);

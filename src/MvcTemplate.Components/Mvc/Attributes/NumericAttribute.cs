@@ -30,7 +30,7 @@ namespace MvcTemplate.Components.Mvc
 
             try
             {
-                SqlDecimal number = new SqlDecimal(Trim(Convert.ToDecimal(value)));
+                SqlDecimal number = new(Trim(Convert.ToDecimal(value)));
 
                 return number.Precision - number.Scale <= Precision - Scale && number.Scale <= Scale;
             }

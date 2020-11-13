@@ -71,7 +71,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void NotEmptyView_ReturnsModelView()
         {
-            Object expected = new Object();
+            Object expected = new();
             Object actual = Assert.IsType<ViewResult>(controller.NotEmptyView(expected)).Model;
 
             Assert.Same(expected, actual);
@@ -200,9 +200,9 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void OnActionExecuted_JsonResult_NoAlerts()
         {
+            JsonResult result = new("Value");
             controller.Alerts.AddError("Test");
             controller.TempData["Alerts"] = null;
-            JsonResult result = new JsonResult("Value");
 
             controller.OnActionExecuted(new ActionExecutedContext(action, new List<IFilterMetadata>(), controller) { Result = result });
 
@@ -226,7 +226,7 @@ namespace MvcTemplate.Controllers.Tests
         [Fact]
         public void OnActionExecuted_MergesTempDataAlerts()
         {
-            Alerts alerts = new Alerts();
+            Alerts alerts = new();
             alerts.AddError("Test1");
 
             controller.TempData["Alerts"] = JsonSerializer.Serialize(alerts);

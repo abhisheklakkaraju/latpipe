@@ -15,7 +15,7 @@ namespace MvcTemplate.Components.Mvc
 
         public override void Process(TagHelperContext? context, TagHelperOutput output)
         {
-            TagBuilder require = new TagBuilder("span");
+            TagBuilder require = new("span");
             require.Attributes["class"] = "require";
 
             if (Required == true)

@@ -20,7 +20,7 @@ namespace MvcTemplate.Controllers.Tests
             service = Substitute.For<IAccountService>();
             controller = Substitute.ForPartsOf<Home>(service);
 
-            ActionContext context = new ActionContext(new DefaultHttpContext(), new RouteData(), new ControllerActionDescriptor());
+            ActionContext context = new(new DefaultHttpContext(), new RouteData(), new ControllerActionDescriptor());
             controller.Authorization.Returns(Substitute.For<IAuthorization>());
             controller.ControllerContext = new ControllerContext(context);
             controller.CurrentAccountId.Returns(1);

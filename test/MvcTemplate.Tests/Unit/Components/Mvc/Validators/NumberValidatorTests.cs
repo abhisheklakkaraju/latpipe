@@ -13,10 +13,10 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void AddValidation_Number()
         {
+            Dictionary<String, String> attributes = new();
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
             ModelMetadata metadata = provider.GetMetadataForType(typeof(Int64));
-            Dictionary<String, String> attributes = new Dictionary<String, String>();
-            ClientModelValidationContext context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
+            ClientModelValidationContext context = new(new ActionContext(), metadata, provider, attributes);
 
             new NumberValidator().AddValidation(context);
 
@@ -29,8 +29,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             IModelMetadataProvider provider = new EmptyModelMetadataProvider();
             ModelMetadata metadata = provider.GetMetadataForType(typeof(Int64));
-            Dictionary<String, String> attributes = new Dictionary<String, String> { ["data-val-number"] = "Test" };
-            ClientModelValidationContext context = new ClientModelValidationContext(new ActionContext(), metadata, provider, attributes);
+            Dictionary<String, String> attributes = new() { ["data-val-number"] = "Test" };
+            ClientModelValidationContext context = new(new ActionContext(), metadata, provider, attributes);
 
             new NumberValidator().AddValidation(context);
 

@@ -25,8 +25,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         public async Task BindModelAsync_DoesNotTrimValue()
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForProperty(typeof(AllTypesView), nameof(AllTypesView.StringField));
-            DefaultModelBindingContext context = new DefaultModelBindingContext();
-            NotTrimmedAttribute attribute = new NotTrimmedAttribute();
+            DefaultModelBindingContext context = new();
+            NotTrimmedAttribute attribute = new();
 
             context.ModelMetadata = metadata;
             context.ActionContext = new ActionContext();

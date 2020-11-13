@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void MvcTreeNode_SetsTitle()
         {
-            MvcTreeNode actual = new MvcTreeNode("Nodey");
+            MvcTreeNode actual = new("Nodey");
 
             Assert.Equal("Nodey", actual.Title);
             Assert.Empty(actual.Children);
@@ -17,7 +17,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void MvcTreeNode_SetsIdAndTitle()
         {
-            MvcTreeNode actual = new MvcTreeNode(1, "Nodey");
+            MvcTreeNode actual = new(1, "Nodey");
 
             Assert.Equal("Nodey", actual.Title);
             Assert.Empty(actual.Children);

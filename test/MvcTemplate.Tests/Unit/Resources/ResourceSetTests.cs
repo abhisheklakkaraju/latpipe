@@ -63,7 +63,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void Inherit_Resources()
         {
-            ResourceSet fallbacks = new ResourceSet();
+            ResourceSet fallbacks = new();
+
             resource["Language", "Group", "Key"] = "existing resource";
             fallbacks.Override("Language", @"{ ""Group"": { ""Test"": ""test"", ""Key"": ""fallback resource"" } }");
 

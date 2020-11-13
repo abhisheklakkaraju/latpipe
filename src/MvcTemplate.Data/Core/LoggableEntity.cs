@@ -45,7 +45,7 @@ namespace MvcTemplate.Data
 
         public override String ToString()
         {
-            StringBuilder changes = new StringBuilder();
+            StringBuilder changes = new();
 
             foreach (LoggableProperty property in Properties)
                 changes.Append(property).Append('\n');

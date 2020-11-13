@@ -41,7 +41,7 @@ namespace MvcTemplate.Resources.Tests
         public void Resources_HasAllPermissionAreaTitles()
         {
             using DbContext context = TestingContext.Create();
-            using Configuration configuration = new Configuration(context);
+            using Configuration configuration = new(context);
 
             configuration.Seed();
 
@@ -53,7 +53,7 @@ namespace MvcTemplate.Resources.Tests
         public void Resources_HasAllPermissionControllerTitles()
         {
             using DbContext context = TestingContext.Create();
-            using Configuration configuration = new Configuration(context);
+            using Configuration configuration = new(context);
 
             configuration.Seed();
 
@@ -65,7 +65,7 @@ namespace MvcTemplate.Resources.Tests
         public void Resources_HasAllPermissionActionTitles()
         {
             using DbContext context = TestingContext.Create();
-            using Configuration configuration = new Configuration(context);
+            using Configuration configuration = new(context);
 
             configuration.Seed();
 
@@ -84,11 +84,11 @@ namespace MvcTemplate.Resources.Tests
 
         private List<SiteMapNode> Flatten(IEnumerable<XElement> elements, SiteMapNode? parent = null)
         {
-            List<SiteMapNode> list = new List<SiteMapNode>();
+            List<SiteMapNode> list = new();
 
             foreach (XElement element in elements)
             {
-                SiteMapNode node = new SiteMapNode
+                SiteMapNode node = new()
                 {
                     Action = (String?)element.Attribute("action"),
                     Area = (String?)element.Attribute("area") ?? parent?.Area,

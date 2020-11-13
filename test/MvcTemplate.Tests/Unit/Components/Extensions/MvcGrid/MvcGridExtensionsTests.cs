@@ -24,8 +24,8 @@ namespace MvcTemplate.Components.Extensions.Tests
 
         public MvcGridExtensionsTests()
         {
-            Grid<AllTypesView> grid = new Grid<AllTypesView>(Array.Empty<AllTypesView>());
             IHtmlHelper htmlHelper = HtmlHelperFactory.CreateHtmlHelper();
+            Grid<AllTypesView> grid = new(Array.Empty<AllTypesView>());
             html = new HtmlGrid<AllTypesView>(htmlHelper, grid);
             columns = new GridColumns<AllTypesView>(grid);
             context = html.Grid.ViewContext!;
@@ -43,8 +43,8 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_Authorized_Renders()
         {
-            AllTypesView view = new AllTypesView();
-            StringWriter writer = new StringWriter();
+            AllTypesView view = new();
+            StringWriter writer = new();
             IUrlHelper url = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(context);
             IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
@@ -123,7 +123,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddBoolean_True()
         {
-            GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { BooleanField = true }, 0);
+            GridRow<AllTypesView> row = new(new AllTypesView { BooleanField = true }, 0);
             IGridColumn<AllTypesView, Boolean> column = columns.AddBoolean(model => model.BooleanField);
 
             String? actual = column.ValueFor(row).ToString();
@@ -135,7 +135,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddBoolean_False()
         {
-            GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { BooleanField = false }, 0);
+            GridRow<AllTypesView> row = new(new AllTypesView { BooleanField = false }, 0);
             IGridColumn<AllTypesView, Boolean> column = columns.AddBoolean(model => model.BooleanField);
 
             String? actual = column.ValueFor(row).ToString();
@@ -161,7 +161,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddBoolean_Nullable()
         {
-            GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = null }, 0);
+            GridRow<AllTypesView> row = new(new AllTypesView { NullableBooleanField = null }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
             Assert.Empty(column.ValueFor(row).ToString());
@@ -170,7 +170,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddBoolean_Nullable_True()
         {
-            GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = true }, 0);
+            GridRow<AllTypesView> row = new(new AllTypesView { NullableBooleanField = true }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
             String? actual = column.ValueFor(row).ToString();
@@ -182,7 +182,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddBoolean_Nullable_False()
         {
-            GridRow<AllTypesView> row = new GridRow<AllTypesView>(new AllTypesView { NullableBooleanField = false }, 0);
+            GridRow<AllTypesView> row = new(new AllTypesView { NullableBooleanField = false }, 0);
             IGridColumn<AllTypesView, Boolean?> column = columns.AddBoolean(model => model.NullableBooleanField);
 
             String? actual = column.ValueFor(row).ToString();

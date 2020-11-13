@@ -31,7 +31,7 @@ namespace MvcTemplate.Components.Mvc
             if (Action == null)
                 return "#";
 
-            Dictionary<String, Object?> route = new Dictionary<String, Object?>();
+            Dictionary<String, Object?> route = new();
             ActionContext context = url.ActionContext;
             route["area"] = Area;
 
@@ -43,7 +43,7 @@ namespace MvcTemplate.Components.Mvc
         public SiteMapNode[] ToBreadcrumb()
         {
             SiteMapNode? node = this;
-            List<SiteMapNode> breadcrumb = new List<SiteMapNode>();
+            List<SiteMapNode> breadcrumb = new();
 
             while (node != null)
             {

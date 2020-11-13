@@ -18,10 +18,10 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("off", "off")]
         public void Process_Autocomplete(String? value, String? expectedValue)
         {
-            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
+            TagHelperContent content = new DefaultTagHelperContent();
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => content);
-            FormInputTagHelper helper = new FormInputTagHelper { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
+            TagHelperOutput output = new("input", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
+            FormInputTagHelper helper = new() { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
 
             output.Attributes.Add("autocomplete", value);
 
@@ -39,10 +39,10 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("test", "form-control test")]
         public void Process_Class(String value, String expectedValue)
         {
-            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
+            TagHelperContent content = new DefaultTagHelperContent();
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => content);
-            FormInputTagHelper helper = new FormInputTagHelper { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
+            TagHelperOutput output = new("input", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
+            FormInputTagHelper helper = new() { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
 
             output.Attributes.Add("class", value);
 
@@ -57,10 +57,10 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Process_Input()
         {
-            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
+            TagHelperContent content = new DefaultTagHelperContent();
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(typeof(String)));
-            TagHelperOutput output = new TagHelperOutput("input", new TagHelperAttributeList(), (_, __) => content);
-            FormInputTagHelper helper = new FormInputTagHelper { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
+            TagHelperOutput output = new("input", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
+            FormInputTagHelper helper = new() { For = new ModelExpression("IsChecked", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null)) };
 
             helper.Process(null, output);
 

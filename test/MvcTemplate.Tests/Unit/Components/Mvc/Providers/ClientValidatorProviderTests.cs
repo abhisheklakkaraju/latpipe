@@ -15,7 +15,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void CreateValidators_ForDate(Type type)
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForType(type);
-            ClientValidatorProviderContext context = new ClientValidatorProviderContext(metadata, new List<ClientValidatorItem>());
+            ClientValidatorProviderContext context = new(metadata, new List<ClientValidatorItem>());
 
             new ClientValidatorProvider().CreateValidators(context);
 
@@ -36,7 +36,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void CreateValidators_ForDecimal(Type type)
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForType(type);
-            ClientValidatorProviderContext context = new ClientValidatorProviderContext(metadata, new List<ClientValidatorItem>());
+            ClientValidatorProviderContext context = new(metadata, new List<ClientValidatorItem>());
 
             new ClientValidatorProvider().CreateValidators(context);
 
@@ -67,7 +67,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void CreateValidators_ForInteger(Type type)
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForType(type);
-            ClientValidatorProviderContext context = new ClientValidatorProviderContext(metadata, new List<ClientValidatorItem>());
+            ClientValidatorProviderContext context = new(metadata, new List<ClientValidatorItem>());
 
             new ClientValidatorProvider().CreateValidators(context);
 
@@ -82,7 +82,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void CreateValidators_DoesNotCreate()
         {
             ModelMetadata metadata = new EmptyModelMetadataProvider().GetMetadataForType(typeof(String));
-            ClientValidatorProviderContext context = new ClientValidatorProviderContext(metadata, new List<ClientValidatorItem>());
+            ClientValidatorProviderContext context = new(metadata, new List<ClientValidatorItem>());
 
             new ClientValidatorProvider().CreateValidators(context);
 

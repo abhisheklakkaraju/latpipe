@@ -17,8 +17,8 @@ namespace MvcTemplate.Components.Extensions.Tests
         [InlineData("", null)]
         public void Id_ReturnsNameIdentifierClaim(String identifier, Int64? id)
         {
-            ClaimsIdentity identity = new ClaimsIdentity();
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            ClaimsIdentity identity = new();
+            ClaimsPrincipal principal = new(identity);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, identifier));
 
             Int64? actual = principal.Id();
@@ -30,8 +30,8 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void UpdateClaim_New()
         {
-            ClaimsIdentity identity = new ClaimsIdentity();
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            ClaimsIdentity identity = new();
+            ClaimsPrincipal principal = new(identity);
 
             principal.UpdateClaim(ClaimTypes.Name, "Test");
 
@@ -44,8 +44,8 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void UpdateClaim_Existing()
         {
-            ClaimsIdentity identity = new ClaimsIdentity();
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            ClaimsIdentity identity = new();
+            ClaimsPrincipal principal = new(identity);
             identity.AddClaim(new Claim(ClaimTypes.Name, "ClaimTypeName"));
 
             principal.UpdateClaim(ClaimTypes.Name, "Test");

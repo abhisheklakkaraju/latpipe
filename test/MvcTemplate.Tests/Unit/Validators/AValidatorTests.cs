@@ -40,7 +40,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void IsSpecified_Null_ReturnsFalse()
         {
-            RoleView view = new RoleView();
+            RoleView view = new();
 
             Boolean isSpecified = validator.BaseIsSpecified(view, role => role.Title);
             String message = Validation.For("Required", Resource.ForProperty<RoleView, String?>(role => role.Title));
@@ -54,7 +54,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void IsSpecified_NullValue_ReturnsFalse()
         {
-            AccountEditView view = new AccountEditView();
+            AccountEditView view = new();
 
             Boolean isSpecified = validator.BaseIsSpecified(view, account => account.RoleId);
             String message = Validation.For("Required", Resource.ForProperty<AccountEditView, Int64?>(account => account.RoleId));

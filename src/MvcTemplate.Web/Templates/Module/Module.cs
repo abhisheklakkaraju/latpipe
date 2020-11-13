@@ -39,7 +39,7 @@ namespace MvcTemplate.Web.Templates
         {
             String path = $"{(Area != null ? $"{Area}/" : "")}{Controller}";
 
-            Dictionary<String, GennyScaffoldingResult> results = new Dictionary<String, GennyScaffoldingResult>
+            Dictionary<String, GennyScaffoldingResult> results = new()
             {
                 { $"../MvcTemplate.Controllers/{path}/{Controller}.cs", Scaffold("Controllers/Controller") },
                 { $"../../test/MvcTemplate.Tests/Unit/Controllers/{path}/{Controller}Tests.cs", Scaffold("Tests/ControllerTests") },
@@ -73,7 +73,7 @@ namespace MvcTemplate.Web.Templates
 
             if (results.Any(result => result.Value.Errors.Any()))
             {
-                Dictionary<String, GennyScaffoldingResult> errors = new Dictionary<String, GennyScaffoldingResult>(results.Where(x => x.Value.Errors.Any()));
+                Dictionary<String, GennyScaffoldingResult> errors = new(results.Where(x => x.Value.Errors.Any()));
 
                 Write(errors);
 
@@ -256,7 +256,7 @@ namespace MvcTemplate.Web.Templates
         {
             Logger.Write("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs - ");
 
-            ModuleModel model = new ModuleModel(Model!, Controller!, Area);
+            ModuleModel model = new(Model!, Controller!, Area);
             SyntaxNode tree = CSharpSyntaxTree.ParseText(File.ReadAllText("../../test/MvcTemplate.Tests/Helpers/ObjectsFactory.cs")).GetRoot();
 
             if (tree.DescendantNodes().OfType<MethodDeclarationSyntax>().Any(method => method.Identifier.Text == $"Create{Model}"))

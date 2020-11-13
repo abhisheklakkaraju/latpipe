@@ -15,9 +15,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void OnResourceExecuting_SetsCurrentLanguage()
         {
-            ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
-            ResourceExecutingContext context = new ResourceExecutingContext(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
-            Languages languages = new Languages("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") }, new Language { Abbreviation = "us", Culture = new CultureInfo("en-us") } });
+            ActionContext action = new(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
+            ResourceExecutingContext context = new(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
+            Languages languages = new("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") }, new Language { Abbreviation = "us", Culture = new CultureInfo("en-us") } });
 
             context.RouteData.Values["language"] = "us";
             new LanguageFilter(languages).OnResourceExecuting(context);
@@ -31,9 +31,9 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void OnResourceExecuting_SetsDefaultLanguage()
         {
-            ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
-            ResourceExecutingContext context = new ResourceExecutingContext(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
-            Languages languages = new Languages("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") } });
+            ActionContext action = new(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
+            Languages languages = new("en", new[] { new Language { Abbreviation = "en", Culture = new CultureInfo("en-gb") } });
+            ResourceExecutingContext context = new(action, Array.Empty<IFilterMetadata>(), Array.Empty<IValueProviderFactory>());
 
             new LanguageFilter(languages).OnResourceExecuting(context);
 

@@ -24,7 +24,7 @@ namespace MvcTemplate.Data.Mapping
 
         private static MapperConfigurationExpression Map()
         {
-            ObjectMapper mapper = new ObjectMapper(new MapperConfigurationExpression());
+            ObjectMapper mapper = new(new MapperConfigurationExpression());
 
             mapper.MapRoles();
 

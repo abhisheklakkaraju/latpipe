@@ -41,16 +41,16 @@ namespace MvcTemplate.Services
 
         public virtual void Seed(MvcTree permissions)
         {
-            MvcTreeNode root = new MvcTreeNode(Resource.ForString("All"));
+            MvcTreeNode root = new(Resource.ForString("All"));
             permissions.Nodes.Add(root);
 
             foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
             {
-                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+                List<MvcTreeNode> nodes = new();
 
                 foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller))
                 {
-                    MvcTreeNode node = new MvcTreeNode(controller.Key);
+                    MvcTreeNode node = new(controller.Key);
                     node.Children.AddRange(controller.Select(permission => new MvcTreeNode(permission.Id, permission.Action)));
 
                     nodes.Add(node);
@@ -80,7 +80,7 @@ namespace MvcTemplate.Services
         {
             List<Int64> permissions = view.Permissions.SelectedIds.ToList();
             Role role = UnitOfWork.Get<Role>(view.Id)!;
-            role.Title = view.Title!;
+            role.Title = view.Title;
 
             foreach (RolePermission rolePermission in role.Permissions.ToArray())
                 if (!permissions.Remove(rolePermission.PermissionId))
@@ -89,6 +89,7 @@ namespace MvcTemplate.Services
             foreach (Int64 permissionId in permissions)
                 UnitOfWork.Insert(new RolePermission { RoleId = role.Id, PermissionId = permissionId });
 
+            UnitOfWork.Update(role);
             UnitOfWork.Commit();
         }
         public void Delete(Int64 id)

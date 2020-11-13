@@ -17,8 +17,9 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public AuthorizeTagHelperTests()
         {
-            Task<TagHelperContent> content = Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
-            output = new TagHelperOutput("authorize", new TagHelperAttributeList(), (_, __) => content);
+            TagHelperContent content = new DefaultTagHelperContent();
+
+            output = new TagHelperOutput("authorize", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
             helper = new AuthorizeTagHelper(authorization = Substitute.For<IAuthorization>());
             helper.ViewContext = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
         }

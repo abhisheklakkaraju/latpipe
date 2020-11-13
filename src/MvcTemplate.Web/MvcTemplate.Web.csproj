@@ -27,7 +27,7 @@
     <Content Update="wwwroot\js\**\*.min.js" CopyToPublishDirectory="Always" />
     <Content Update="wwwroot\css\**\*.min.css" CopyToPublishDirectory="Always" />
     <Content Update="package.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
-    <Content Update="package-lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never"  />
+    <Content Update="package-lock.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <ItemGroup>

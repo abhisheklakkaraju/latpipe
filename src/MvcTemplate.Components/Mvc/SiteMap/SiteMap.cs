@@ -37,11 +37,11 @@ namespace MvcTemplate.Components.Mvc
 
         private SiteMapNode[] SetState(SiteMapNode? parent, SiteMapNode[] nodes, String current)
         {
-            List<SiteMapNode> copies = new List<SiteMapNode>();
+            List<SiteMapNode> copies = new();
 
             foreach (SiteMapNode node in nodes)
             {
-                SiteMapNode copy = new SiteMapNode();
+                SiteMapNode copy = new();
                 copy.IconClass = node.IconClass;
                 copy.IsMenu = node.IsMenu;
                 copy.Path = node.Path;
@@ -64,7 +64,7 @@ namespace MvcTemplate.Components.Mvc
         }
         private SiteMapNode[] Authorize(Int64? accountId, SiteMapNode[] menu)
         {
-            List<SiteMapNode> authorized = new List<SiteMapNode>();
+            List<SiteMapNode> authorized = new();
 
             foreach (SiteMapNode node in menu)
             {
@@ -80,11 +80,11 @@ namespace MvcTemplate.Components.Mvc
         }
         private SiteMapNode[] Parse(XContainer root, SiteMapNode? parent)
         {
-            List<SiteMapNode> nodes = new List<SiteMapNode>();
+            List<SiteMapNode> nodes = new();
 
             foreach (XElement element in root.Elements("siteMapNode"))
             {
-                SiteMapNode node = new SiteMapNode();
+                SiteMapNode node = new();
                 node.IconClass = (String?)element.Attribute("icon");
                 node.IsMenu = (Boolean?)element.Attribute("menu") == true;
 
@@ -111,7 +111,7 @@ namespace MvcTemplate.Components.Mvc
         }
         private List<SiteMapNode> Flatten(SiteMapNode[] branches)
         {
-            List<SiteMapNode> list = new List<SiteMapNode>();
+            List<SiteMapNode> list = new();
 
             foreach (SiteMapNode branch in branches)
             {

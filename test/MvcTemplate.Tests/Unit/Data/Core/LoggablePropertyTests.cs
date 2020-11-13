@@ -14,7 +14,7 @@ namespace MvcTemplate.Data.Tests
 
         public LoggablePropertyTests()
         {
-            Role model = new Role { Id = 1 };
+            Role model = new() { Id = 1 };
             using DbContext context = TestingContext.Create();
 
             context.Set<Role>().Attach(model);

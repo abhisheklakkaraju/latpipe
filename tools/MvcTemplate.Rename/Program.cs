@@ -25,11 +25,11 @@ namespace MvcTemplate.Rename
             String passhash = BCrypt.Net.BCrypt.HashPassword(password.Length <= 32 ? password : password.Substring(0, 32), 13);
 
             String[] files = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.*", SearchOption.AllDirectories);
-            Regex adminPassword = new Regex("Passhash = \"\\$2b\\$.*\", // Will be generated on project rename");
-            Regex aspNetSslConfig = new Regex("(\"ASPNETCORE_HTTPS_PORT\": )\"\\d+\"");
-            Regex applicationUrl = new Regex("(\"applicationUrl\": .*:)\\d+(.*\")");
-            Regex version = new Regex("<Version>\\d+\\.\\d+\\.\\d+</Version>");
-            Regex sslConfig = new Regex("(\"sslPort\": )\\d+");
+            Regex adminPassword = new("Passhash = \"\\$2b\\$.*\", // Will be generated on project rename");
+            Regex aspNetSslConfig = new("(\"ASPNETCORE_HTTPS_PORT\": )\"\\d+\"");
+            Regex applicationUrl = new("(\"applicationUrl\": .*:)\\d+(.*\")");
+            Regex version = new("<Version>\\d+\\.\\d+\\.\\d+</Version>");
+            Regex sslConfig = new("(\"sslPort\": )\\d+");
 
             Console.WriteLine();
             Console.WriteLine();

@@ -188,7 +188,7 @@ namespace MvcTemplate.Data.Tests
         public void Commit_SavesChanges()
         {
             using DbContext testingContext = Substitute.For<DbContext>();
-            using UnitOfWork testingUnitOfWork = new UnitOfWork(testingContext);
+            using UnitOfWork testingUnitOfWork = new(testingContext);
 
             testingUnitOfWork.Commit();
 

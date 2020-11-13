@@ -100,8 +100,8 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void CanLogin_NoAccount_ReturnsFalse()
         {
+            AccountLoginView view = new();
             hasher.VerifyPassword(null, null).Returns(false);
-            AccountLoginView view = new AccountLoginView();
 
             Boolean canLogin = validator.CanLogin(view);
             Alert alert = validator.Alerts.Single();

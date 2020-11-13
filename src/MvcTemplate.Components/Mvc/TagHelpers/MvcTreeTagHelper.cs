@@ -37,13 +37,13 @@ namespace MvcTemplate.Components.Mvc
 
         private TagBuilder IdsFor(MvcTree model)
         {
-            String name = $"{For?.Name}.SelectedIds";
-            TagBuilder ids = new TagBuilder("div");
+            TagBuilder ids = new("div");
             ids.AddCssClass("mvc-tree-ids");
+            String name = $"{For?.Name}.SelectedIds";
 
             foreach (Int64 id in model.SelectedIds)
             {
-                TagBuilder input = new TagBuilder("input");
+                TagBuilder input = new("input");
                 input.TagRenderMode = TagRenderMode.SelfClosing;
                 input.Attributes["value"] = id.ToString();
                 input.Attributes["type"] = "hidden";
@@ -56,7 +56,7 @@ namespace MvcTemplate.Components.Mvc
         }
         private TagBuilder ViewFor(MvcTree model)
         {
-            TagBuilder view = new TagBuilder("ul");
+            TagBuilder view = new("ul");
             view.AddCssClass("mvc-tree-view");
 
             foreach (TagBuilder node in Build(model, model.Nodes, 1))
@@ -68,7 +68,7 @@ namespace MvcTemplate.Components.Mvc
         {
             return nodes.Select(node =>
             {
-                TagBuilder item = new TagBuilder("li");
+                TagBuilder item = new("li");
                 item.InnerHtml.AppendHtml("<i></i>");
 
                 if (node.Id is Int64 id)
@@ -79,20 +79,19 @@ namespace MvcTemplate.Components.Mvc
                     item.Attributes["data-id"] = id.ToString();
                 }
 
-                TagBuilder anchor = new TagBuilder("a");
-                anchor.InnerHtml.Append(node.Title);
+                TagBuilder anchor = new("a");
                 anchor.Attributes["href"] = "#";
+                anchor.InnerHtml.Append(node.Title);
 
                 item.InnerHtml.AppendHtml(anchor);
 
                 if (node.Children.Count > 0)
                 {
+                    TagBuilder branch = new("ul");
                     item.AddCssClass("mvc-tree-branch");
 
                     if (HideDepth <= depth)
                         item.AddCssClass("mvc-tree-collapsed");
-
-                    TagBuilder branch = new TagBuilder("ul");
 
                     foreach (TagBuilder leaf in Build(model, node.Children, depth + 1))
                         branch.InnerHtml.AppendHtml(leaf);

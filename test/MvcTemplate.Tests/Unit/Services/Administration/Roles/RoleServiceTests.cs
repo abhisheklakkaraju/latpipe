@@ -282,8 +282,8 @@ namespace MvcTemplate.Services.Tests
 
         private MvcTree CreatePermissions()
         {
-            MvcTreeNode root = new MvcTreeNode(Resource.ForString("All"));
-            MvcTree expectedTree = new MvcTree();
+            MvcTree expectedTree = new();
+            MvcTreeNode root = new(Resource.ForString("All"));
 
             expectedTree.Nodes.Add(root);
             expectedTree.SelectedIds = new HashSet<Int64>(role.Permissions.Select(rolePermission => rolePermission.PermissionId));
@@ -301,11 +301,11 @@ namespace MvcTemplate.Services.Tests
 
             foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault()?.Controller))
             {
-                List<MvcTreeNode> nodes = new List<MvcTreeNode>();
+                List<MvcTreeNode> nodes = new();
 
                 foreach (IGrouping<String, PermissionView> controller in area.GroupBy(permission => permission.Controller))
                 {
-                    MvcTreeNode node = new MvcTreeNode(controller.Key);
+                    MvcTreeNode node = new(controller.Key);
 
                     foreach (PermissionView permission in controller)
                         node.Children.Add(new MvcTreeNode(permission.Id, permission.Action));
@@ -324,7 +324,7 @@ namespace MvcTemplate.Services.Tests
 
         private IEnumerable<MvcTreeNode> GetLeafNodes(IEnumerable<MvcTreeNode> nodes)
         {
-            List<MvcTreeNode> leafs = new List<MvcTreeNode>();
+            List<MvcTreeNode> leafs = new();
 
             foreach (MvcTreeNode node in nodes.Where(node => node.Children.Count > 0))
                 if (node.Children.Count > 0)

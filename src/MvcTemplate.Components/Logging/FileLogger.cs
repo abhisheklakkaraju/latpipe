@@ -41,7 +41,7 @@ namespace MvcTemplate.Components.Logging
             if (!IsEnabled(logLevel))
                 return;
 
-            StringBuilder log = new StringBuilder();
+            StringBuilder log = new();
             log.Append("Id         : ").Append(Accessor.HttpContext?.TraceIdentifier).Append(" [").Append(Accessor.HttpContext?.User.Id()).AppendLine("]");
             log.Append("Time       : ").AppendFormat("{0:yyyy-MM-dd HH:mm:ss.ffffff}", DateTime.Now).AppendLine();
             log.AppendFormat("{0,11}", logLevel).Append(": ").AppendLine(formatter(state, exception));

@@ -12,8 +12,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void CreateDisplayMetadata_SetsDisplayName()
         {
-            DisplayMetadataProvider provider = new DisplayMetadataProvider();
-            DisplayMetadataProviderContext context = new DisplayMetadataProviderContext(
+            DisplayMetadataProvider provider = new();
+            DisplayMetadataProviderContext context = new(
                 ModelMetadataIdentity.ForProperty(typeof(RoleView).GetProperty(nameof(RoleView.Title))!, typeof(String), typeof(RoleView)),
                 ModelAttributes.GetAttributesForType(typeof(RoleView)));
 
@@ -28,8 +28,8 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void CreateDisplayMetadata_NullContainerType_DoesNotSetDisplayName()
         {
-            DisplayMetadataProvider provider = new DisplayMetadataProvider();
-            DisplayMetadataProviderContext context = new DisplayMetadataProviderContext(
+            DisplayMetadataProvider provider = new();
+            DisplayMetadataProviderContext context = new(
                    ModelMetadataIdentity.ForType(typeof(RoleView)),
                    ModelAttributes.GetAttributesForType(typeof(RoleView)));
 

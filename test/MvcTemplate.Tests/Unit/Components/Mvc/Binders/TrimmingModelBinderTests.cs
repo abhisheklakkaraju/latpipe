@@ -30,8 +30,8 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             await binder.BindModelAsync(context);
 
-            ModelBindingResult expected = new ModelBindingResult();
             ModelBindingResult actual = context.Result;
+            ModelBindingResult expected = new();
 
             Assert.Equal(expected, actual);
         }

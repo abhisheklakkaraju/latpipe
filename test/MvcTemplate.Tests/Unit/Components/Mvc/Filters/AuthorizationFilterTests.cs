@@ -19,7 +19,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public AuthorizationFilterTests()
         {
-            ActionContext action = new ActionContext(Substitute.For<HttpContext>(), new RouteData(), new ActionDescriptor());
+            ActionContext action = new(Substitute.For<HttpContext>(), new RouteData(), new ActionDescriptor());
             context = new AuthorizationFilterContext(action, Array.Empty<IFilterMetadata>());
             authorization = Substitute.For<IAuthorization>();
             filter = new AuthorizationFilter(authorization);

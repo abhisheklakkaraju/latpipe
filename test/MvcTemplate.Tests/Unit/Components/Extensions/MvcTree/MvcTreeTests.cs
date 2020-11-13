@@ -7,7 +7,7 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void MvcTree_CreatesEmpty()
         {
-            MvcTree actual = new MvcTree();
+            MvcTree actual = new();
 
             Assert.Empty(actual.Nodes);
             Assert.Empty(actual.SelectedIds);

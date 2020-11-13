@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using MvcTemplate.Components.Extensions;
 using MvcTemplate.Components.Extensions.Tests;
 using System;
 using System.Threading.Tasks;
@@ -16,18 +15,19 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         public MvcTreeTagHelperTests()
         {
-            MvcTree tree = new MvcTree();
+            MvcTree tree = new();
             tree.SelectedIds.Add(123456);
             tree.Nodes.Add(new MvcTreeNode("Test"));
             tree.Nodes[0].Children.Add(new MvcTreeNode(4567, "Test2"));
             tree.Nodes[0].Children.Add(new MvcTreeNode(123456, "Test1"));
 
-            EmptyModelMetadataProvider provider = new EmptyModelMetadataProvider();
-            ModelExplorer explorer = new ModelExplorer(provider, provider.GetMetadataForProperty(typeof(MvcTreeView), "MvcTree"), tree);
+            EmptyModelMetadataProvider provider = new();
+            TagHelperContent content = new DefaultTagHelperContent();
+            ModelExplorer explorer = new(provider, provider.GetMetadataForProperty(typeof(MvcTreeView), "MvcTree"), tree);
 
             helper = new MvcTreeTagHelper();
             helper.For = new ModelExpression("MvcTree", explorer);
-            output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => Task.FromResult<TagHelperContent?>(null));
+            output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
         }
 
         [Fact]

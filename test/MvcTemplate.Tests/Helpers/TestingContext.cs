@@ -14,7 +14,7 @@ namespace MvcTemplate.Tests
                 .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MvcTemplateTest;Trusted_Connection=True;MultipleActiveResultSets=True")
                 .Options;
 
-            using Context context = new Context(Options);
+            using Context context = new(Options);
 
             context.Database.Migrate();
         }

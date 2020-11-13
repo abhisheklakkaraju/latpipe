@@ -15,7 +15,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [InlineData("XMLHttpRequest", true)]
         public void IsValidForRequest_Ajax(String header, Boolean isValid)
         {
-            RouteContext context = new RouteContext(Substitute.For<HttpContext>());
+            RouteContext context = new(Substitute.For<HttpContext>());
             context.HttpContext.Request.Headers["X-Requested-With"].Returns(new StringValues(header));
 
             Boolean actual = new AjaxOnlyAttribute().IsValidForRequest(context, new ActionDescriptor());

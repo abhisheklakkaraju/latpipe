@@ -18,7 +18,7 @@ namespace MvcTemplate.Tests
         }
         public static IHtmlHelper<T?> CreateHtmlHelper<T>(T? model) where T : class
         {
-            ViewContext context = new ViewContext();
+            ViewContext context = new();
             IUrlHelper url = Substitute.For<IUrlHelper>();
             IHtmlHelper<T?> html = Substitute.For<IHtmlHelper<T?>>();
             IAuthorization authorization = Substitute.For<IAuthorization>();

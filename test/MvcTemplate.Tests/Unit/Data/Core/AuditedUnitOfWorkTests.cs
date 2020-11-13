@@ -38,7 +38,7 @@ namespace MvcTemplate.Data.Tests
             unitOfWork = new AuditedUnitOfWork(context, 1);
             unitOfWork.Insert(ObjectsFactory.CreateRole(1));
 
-            LoggableEntity expected = new LoggableEntity(context.ChangeTracker.Entries<AModel>().Single());
+            LoggableEntity expected = new(context.ChangeTracker.Entries<AModel>().Single());
 
             unitOfWork.Commit();
 
@@ -58,7 +58,7 @@ namespace MvcTemplate.Data.Tests
 
             unitOfWork.Update(model);
 
-            LoggableEntity expected = new LoggableEntity(context.ChangeTracker.Entries<AModel>().Single());
+            LoggableEntity expected = new(context.ChangeTracker.Entries<AModel>().Single());
 
             unitOfWork.Commit();
 
@@ -85,7 +85,7 @@ namespace MvcTemplate.Data.Tests
         {
             unitOfWork.Delete(model);
 
-            LoggableEntity expected = new LoggableEntity(context.ChangeTracker.Entries<AModel>().Single());
+            LoggableEntity expected = new(context.ChangeTracker.Entries<AModel>().Single());
 
             unitOfWork.Commit();
 

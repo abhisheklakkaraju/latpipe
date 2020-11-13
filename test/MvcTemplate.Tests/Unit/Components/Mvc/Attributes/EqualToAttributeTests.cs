@@ -38,7 +38,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetValidationResult_EqualValue()
         {
-            ValidationContext context = new ValidationContext(new AllTypesView { StringField = "Test" });
+            ValidationContext context = new(new AllTypesView { StringField = "Test" });
 
             Assert.Null(attribute.GetValidationResult("Test", context));
         }
@@ -46,7 +46,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetValidationResult_Property_Error()
         {
-            ValidationContext context = new ValidationContext(new AllTypesView());
+            ValidationContext context = new(new AllTypesView());
 
             String? actual = attribute.GetValidationResult("Test", context)?.ErrorMessage;
             String? expected = Validation.For("EqualTo", context.DisplayName, attribute.OtherPropertyName);
@@ -58,7 +58,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         public void GetValidationResult_NoProperty_Error()
         {
             attribute = new EqualToAttribute("Temp");
-            ValidationContext context = new ValidationContext(new AllTypesView());
+            ValidationContext context = new(new AllTypesView());
 
             String? expected = Validation.For("EqualTo", context.DisplayName, "Temp");
             String? actual = attribute.GetValidationResult("Test", context)?.ErrorMessage;

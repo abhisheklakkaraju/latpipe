@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using MvcTemplate.Resources;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using System;
 using Xunit;
 

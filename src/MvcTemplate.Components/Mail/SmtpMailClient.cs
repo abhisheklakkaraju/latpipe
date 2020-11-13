@@ -18,8 +18,8 @@ namespace MvcTemplate.Components.Mail
 
         public async Task SendAsync(String email, String subject, String body)
         {
-            using SmtpClient client = new SmtpClient(Config.Host, Config.Port);
-            using MailMessage mail = new MailMessage(Config.Sender!, email, subject, body);
+            using SmtpClient client = new(Config.Host, Config.Port);
+            using MailMessage mail = new(Config.Sender!, email, subject, body);
 
             client.Credentials = new NetworkCredential(Config.Sender, Config.Password);
             client.EnableSsl = Config.EnableSsl;

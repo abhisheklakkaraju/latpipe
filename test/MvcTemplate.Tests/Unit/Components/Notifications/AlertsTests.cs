@@ -30,7 +30,7 @@ namespace MvcTemplate.Components.Notifications.Tests
         [Fact]
         public void Merge_Alerts()
         {
-            Alerts part = new Alerts();
+            Alerts part = new();
             part.AddError("SecondError");
             alerts.AddError("FirstError");
 

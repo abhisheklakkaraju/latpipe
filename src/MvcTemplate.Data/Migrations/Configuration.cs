@@ -33,7 +33,7 @@ namespace MvcTemplate.Data.Migrations
 
         private void SeedPermissions()
         {
-            List<Permission> permissions = new List<Permission>
+            List<Permission> permissions = new()
             {
                 new Permission { Area = "Administration", Controller = "Accounts", Action = "Create" },
                 new Permission { Area = "Administration", Controller = "Accounts", Action = "Details" },

@@ -10,7 +10,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Errors_FromModelState()
         {
-            ModelStateDictionary modelState = new ModelStateDictionary();
+            ModelStateDictionary modelState = new();
             modelState.AddModelError("WhitespaceErrors", "           ");
             modelState.AddModelError("WhitespaceErrors", "Whitespace");
             modelState.AddModelError("TwoErrors", "Error1");

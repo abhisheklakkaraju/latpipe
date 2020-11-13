@@ -27,7 +27,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void AddValidation_StringLength()
         {
-            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 0 });
+            StringLengthAdapter adapter = new(new StringLengthAttribute(128) { MinimumLength = 0 });
 
             adapter.AddValidation(context);
 
@@ -39,7 +39,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void AddValidation_StringLengthRange()
         {
-            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 4 });
+            StringLengthAdapter adapter = new(new StringLengthAttribute(128) { MinimumLength = 4 });
 
             adapter.AddValidation(context);
 
@@ -52,7 +52,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetErrorMessage_StringLength()
         {
-            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 0 });
+            StringLengthAdapter adapter = new(new StringLengthAttribute(128) { MinimumLength = 0 });
 
             String expected = Validation.For("StringLength", context.ModelMetadata.PropertyName, 128);
             String actual = adapter.GetErrorMessage(context);
@@ -64,7 +64,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void GetErrorMessage_StringLengthRange()
         {
-            StringLengthAdapter adapter = new StringLengthAdapter(new StringLengthAttribute(128) { MinimumLength = 4 });
+            StringLengthAdapter adapter = new(new StringLengthAttribute(128) { MinimumLength = 4 });
 
             String expected = Validation.For("StringLengthRange", context.ModelMetadata.PropertyName, 128, 4);
             String actual = adapter.GetErrorMessage(context);
