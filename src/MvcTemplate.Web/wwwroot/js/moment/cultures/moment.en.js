@@ -6,7 +6,7 @@
 }(this, moment => {
     "use strict";
 
-    const en = moment.updateLocale("en", {
+    const en = moment.updateLocale("en-GB", {
         months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
         monthsShort: "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
         weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
@@ -61,8 +61,8 @@
         }
     });
 
-    if (document.documentElement.lang == "en") {
-        moment.locale("en");
+    if (document.documentElement.lang == "en-GB") {
+        moment.locale("en-GB");
     }
 
     return en;
