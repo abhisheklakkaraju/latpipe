@@ -1,12 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MvcTemplate.Rename
 {
-    public class Program
+    public static class Program
     {
         public static void Main()
         {
@@ -15,10 +14,10 @@ namespace MvcTemplate.Rename
             String templateName = "MvcTemplate";
 
             Console.Write("Enter root namespace name: ");
-            while ((project = Console.ReadLine().Trim()) == "") { }
+            while ((project = Console.ReadLine()?.Trim() ?? "") == "") { }
 
             Console.Write("Enter new site admin user password (32 symbols max): ");
-            while ((password = Console.ReadLine().Trim()) == "") { }
+            while ((password = Console.ReadLine()?.Trim() ?? "") == "") { }
 
             Int32 port = new Random().Next(1000, 19175);
             Int32 sslPort = new Random().Next(44300, 44400);
@@ -36,8 +35,8 @@ namespace MvcTemplate.Rename
 
             for (Int32 i = 0; i < files.Length; i++)
             {
-                Console.CursorTop -= 1;
-                Console.WriteLine($"Renaming content...     {((i + 1) * 100 / files.Length).ToString().PadLeft(3)}%");
+                Console.CursorTop--;
+                Console.WriteLine($"Renaming content...     {(i + 1) * 100 / files.Length,3}%");
 
                 String extension = Path.GetExtension(files[i]);
 
@@ -67,9 +66,9 @@ namespace MvcTemplate.Rename
             for (Int32 i = 0; i < directories.Length; i++)
             {
                 Console.CursorLeft = 0;
-                Console.Write($"Renaming directories... {((i + 1) * 100 / directories.Length).ToString().PadLeft(3)}%");
+                Console.Write($"Renaming directories... {(i + 1) * 100 / directories.Length,3}%");
 
-                String projectDir = Path.Combine(Directory.GetParent(directories[i]).FullName, directories[i].Split('\\').Last().Replace(templateName, project));
+                String projectDir = Path.Combine(Directory.GetParent(directories[i])!.FullName, directories[i].Split('\\').Last().Replace(templateName, project));
                 Directory.Move(directories[i], projectDir);
             }
 
@@ -81,9 +80,9 @@ namespace MvcTemplate.Rename
             for (Int32 i = 0; i < files.Length; i++)
             {
                 Console.CursorLeft = 0;
-                Console.Write($"Renaming files...       {((i + 1) * 100 / files.Length).ToString().PadLeft(3)}%");
+                Console.Write($"Renaming files...       {(i + 1) * 100 / files.Length,3}%");
 
-                String projectFile = Path.Combine(Directory.GetParent(files[i]).FullName, files[i].Split('\\').Last().Replace(templateName, project));
+                String projectFile = Path.Combine(Directory.GetParent(files[i])!.FullName, files[i].Split('\\').Last().Replace(templateName, project));
                 File.Move(files[i], projectFile);
             }
 
