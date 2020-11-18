@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -27,6 +28,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             TagHelperContent content = new DefaultTagHelperContent();
             TagHelperAttribute[] attributes = { new TagHelperAttribute("for", "Test") };
             ModelMetadata metadata = Substitute.For<ModelMetadata>(ModelMetadataIdentity.ForType(type));
+            TagHelperContext context = new(new TagHelperAttributeList(), new Dictionary<Object, Object>(), "test");
             TagHelperOutput output = new("label", new TagHelperAttributeList(attributes), (_, __) => Task.FromResult(content));
 
             helper.For = new ModelExpression("Total.Sum", new ModelExplorer(new EmptyModelMetadataProvider(), metadata, null));
@@ -34,7 +36,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             metadata.DisplayName.Returns("Progix");
             helper.Required = required;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Assert.Equal("Test", output.Attributes["for"].Value);
             Assert.Equal($"<span class=\"require\">{require}</span>", output.Content.GetContent());

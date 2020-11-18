@@ -3,6 +3,7 @@ using MvcTemplate.Components.Security;
 using MvcTemplate.Tests;
 using NSubstitute;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
@@ -13,6 +14,7 @@ namespace MvcTemplate.Components.Mvc.Tests
     {
         private IAuthorization authorization;
         private AuthorizeTagHelper helper;
+        private TagHelperContext context;
         private TagHelperOutput output;
 
         public AuthorizeTagHelperTests()
@@ -20,6 +22,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             TagHelperContent content = new DefaultTagHelperContent();
 
             output = new TagHelperOutput("authorize", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
+            context = new TagHelperContext(new TagHelperAttributeList(), new Dictionary<Object, Object>(), "test");
             helper = new AuthorizeTagHelper(authorization = Substitute.For<IAuthorization>());
             helper.ViewContext = HtmlHelperFactory.CreateHtmlHelper().ViewContext;
         }
@@ -52,7 +55,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             helper.Action = action;
             helper.Area = area;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Assert.Empty(output.PostContent.GetContent());
             Assert.Empty(output.PostElement.GetContent());
@@ -90,7 +93,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             helper.Action = action;
             helper.Area = area;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Assert.Equal("PostContent", output.PostContent.GetContent());
             Assert.Equal("PostElement", output.PostElement.GetContent());

@@ -17,7 +17,7 @@ namespace MvcTemplate.Controllers
             Validator = validator;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext? context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
 

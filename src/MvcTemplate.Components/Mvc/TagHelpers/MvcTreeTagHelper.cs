@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using MvcTemplate.Components.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace MvcTemplate.Components.Mvc
         [HtmlAttributeName("mvc-tree-for")]
         public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext? context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             String treeClasses = "mvc-tree";
             MvcTree tree = For?.Model as MvcTree ?? new MvcTree();

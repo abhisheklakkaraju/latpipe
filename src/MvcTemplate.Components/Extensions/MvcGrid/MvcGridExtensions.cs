@@ -87,10 +87,10 @@ namespace MvcTemplate.Components.Extensions
                 .Sortable();
         }
 
-        private static IHtmlContent GenerateLink<T>(T model, IUrlHelper? url, String action, String iconClass)
+        private static IHtmlContent GenerateLink<T>(T model, IUrlHelper url, String action, String iconClass)
         {
             TagBuilder link = new("a");
-            link.Attributes["href"] = url?.Action(action, RouteFor(model));
+            link.Attributes["href"] = url.Action(action, RouteFor(model));
             link.Attributes["title"] = Resource.ForAction(action);
             link.AddCssClass(iconClass);
 

@@ -36,6 +36,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(validator.CanCreate(ObjectsFactory.CreateRoleView(role.Id + 1)));
             Assert.Single(validator.ModelState);
+            Assert.Empty(validator.Alerts);
         }
 
         [Fact]
@@ -48,6 +49,7 @@ namespace MvcTemplate.Validators.Tests
             Boolean canCreate = validator.CanCreate(view);
 
             Assert.False(canCreate);
+            Assert.Empty(validator.Alerts);
             Assert.Single(validator.ModelState);
             Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState[nameof(RoleView.Title)].Errors.Single().ErrorMessage);
         }
@@ -67,6 +69,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(validator.CanEdit(ObjectsFactory.CreateRoleView(role.Id + 1)));
             Assert.Single(validator.ModelState);
+            Assert.Empty(validator.Alerts);
         }
 
         [Fact]
@@ -78,6 +81,7 @@ namespace MvcTemplate.Validators.Tests
             Boolean canEdit = validator.CanEdit(view);
 
             Assert.False(canEdit);
+            Assert.Empty(validator.Alerts);
             Assert.Single(validator.ModelState);
             Assert.Equal(Validation.For<RoleView>("UniqueTitle"), validator.ModelState[nameof(RoleView.Title)].Errors.Single().ErrorMessage);
         }

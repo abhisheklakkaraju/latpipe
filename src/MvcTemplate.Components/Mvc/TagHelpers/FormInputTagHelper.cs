@@ -9,7 +9,7 @@ namespace MvcTemplate.Components.Mvc
         [HtmlAttributeName("asp-for")]
         public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext? context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (output.Attributes["autocomplete"] == null)
                 output.Attributes.Add("autocomplete", "off");

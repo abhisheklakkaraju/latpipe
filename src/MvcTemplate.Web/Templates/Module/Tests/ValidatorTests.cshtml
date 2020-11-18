@@ -43,6 +43,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(validator.CanCreate(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
             Assert.Single(validator.ModelState);
+            Assert.Empty(validator.Alerts);
         }
         @foreach (PropertyInfo index in Model.Indexes)
         {
@@ -64,6 +65,7 @@ namespace MvcTemplate.Validators.Tests
         @:    Boolean canCreate = validator.CanCreate(view);
 @:
         @:    Assert.False(canCreate);
+        @:    Assert.Empty(validator.Alerts);
         @:    Assert.Single(validator.ModelState);
         @:    Assert.Equal(Validation.For<@Model.View>("Unique@(index.Name)"), validator.ModelState[nameof(@(Model.View).@(index.Name))].Errors.Single().ErrorMessage);
         @:}
@@ -84,6 +86,7 @@ namespace MvcTemplate.Validators.Tests
 
             Assert.False(validator.CanEdit(ObjectsFactory.Create@(Model.View)(@(Model.ModelVarName).Id + 1)));
             Assert.Single(validator.ModelState);
+            Assert.Empty(validator.Alerts);
         }
         @foreach (PropertyInfo index in Model.Indexes)
         {
@@ -104,6 +107,7 @@ namespace MvcTemplate.Validators.Tests
         @:    Boolean canEdit = validator.CanEdit(view);
 @:
         @:    Assert.False(canEdit);
+        @:    Assert.Empty(validator.Alerts);
         @:    Assert.Single(validator.ModelState);
         @:    Assert.Equal(Validation.For<@Model.View>("Unique@(index.Name)"), validator.ModelState[nameof(@(Model.View).@(index.Name))].Errors.Single().ErrorMessage);
         @:}

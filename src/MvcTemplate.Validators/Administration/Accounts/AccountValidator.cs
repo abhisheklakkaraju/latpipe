@@ -71,7 +71,7 @@ namespace MvcTemplate.Validators
             return isValid;
         }
 
-        private Boolean IsAuthenticated(String? username, String? password)
+        private Boolean IsAuthenticated(String username, String password)
         {
             String? passhash = UnitOfWork
                 .Select<Account>()
@@ -86,7 +86,7 @@ namespace MvcTemplate.Validators
 
             return isCorrect;
         }
-        private Boolean IsCorrectPassword(Int64 id, String? password)
+        private Boolean IsCorrectPassword(Int64 id, String password)
         {
             String passhash = UnitOfWork
                 .Select<Account>()
@@ -101,7 +101,7 @@ namespace MvcTemplate.Validators
 
             return isCorrect;
         }
-        private Boolean IsUniqueUsername(Int64 id, String? username)
+        private Boolean IsUniqueUsername(Int64 id, String username)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Account>()
@@ -114,7 +114,7 @@ namespace MvcTemplate.Validators
 
             return isUnique;
         }
-        private Boolean IsUniqueEmail(Int64 id, String? email)
+        private Boolean IsUniqueEmail(Int64 id, String email)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Account>()
@@ -128,7 +128,7 @@ namespace MvcTemplate.Validators
             return isUnique;
         }
 
-        private Boolean IsValidResetToken(String? token)
+        private Boolean IsValidResetToken(String token)
         {
             Boolean isValid = UnitOfWork
                 .Select<Account>()
@@ -141,7 +141,7 @@ namespace MvcTemplate.Validators
 
             return isValid;
         }
-        private Boolean IsActive(String? username)
+        private Boolean IsActive(String username)
         {
             Boolean isActive = UnitOfWork
                 .Select<Account>()

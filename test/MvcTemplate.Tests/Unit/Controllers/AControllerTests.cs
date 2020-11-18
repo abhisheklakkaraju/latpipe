@@ -18,6 +18,7 @@ namespace MvcTemplate.Controllers.Tests
 {
     public class AControllerTests : ControllerTests
     {
+        private ActionExecutingContext context;
         private AController controller;
         private String controllerName;
         private ActionContext action;
@@ -34,10 +35,10 @@ namespace MvcTemplate.Controllers.Tests
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
-            action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
-
-            controllerName = (String)controller.RouteData.Values["controller"]!;
             areaName = controller.RouteData.Values["area"] as String;
+            controllerName = (String)controller.RouteData.Values["controller"]!;
+            action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
+            context = new ActionExecutingContext(action, new List<IFilterMetadata>(), new Dictionary<String, Object>(), controller);
         }
         public override void Dispose()
         {
@@ -174,7 +175,7 @@ namespace MvcTemplate.Controllers.Tests
             controller.ControllerContext.HttpContext = Substitute.For<HttpContext>();
             controller.HttpContext.RequestServices.GetService(typeof(IAuthorization)).Returns(Substitute.For<IAuthorization>());
 
-            controller.OnActionExecuting(null);
+            controller.OnActionExecuting(context);
 
             Object expected = controller.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
             Object actual = controller.Authorization;
@@ -189,7 +190,7 @@ namespace MvcTemplate.Controllers.Tests
         {
             controller.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Returns(new Claim(ClaimTypes.NameIdentifier, identifier));
 
-            controller.OnActionExecuting(null);
+            controller.OnActionExecuting(context);
 
             Int64? actual = controller.CurrentAccountId;
             Int64? expected = accountId;

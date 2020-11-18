@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using MvcTemplate.Components.Extensions.Tests;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -10,6 +11,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 {
     public class MvcTreeTagHelperTests
     {
+        private TagHelperContext context;
         private MvcTreeTagHelper helper;
         private TagHelperOutput output;
 
@@ -28,12 +30,13 @@ namespace MvcTemplate.Components.Mvc.Tests
             helper = new MvcTreeTagHelper();
             helper.For = new ModelExpression("MvcTree", explorer);
             output = new TagHelperOutput("div", new TagHelperAttributeList(), (_, __) => Task.FromResult(content));
+            context = new TagHelperContext(new TagHelperAttributeList(), new Dictionary<Object, Object>(), "test");
         }
 
         [Fact]
         public void Process_AddsDataForAttribute()
         {
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Object expected = "MvcTree.SelectedIds";
             Object actual = output.Attributes["data-for"].Value;
@@ -48,7 +51,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             helper.Readonly = isReadonly;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Object expected = classes;
             Object actual = output.Attributes["class"].Value;
@@ -65,7 +68,7 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             helper.Readonly = isReadonly;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             Object expected = classes;
             Object actual = output.Attributes["class"].Value;
@@ -76,7 +79,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void Process_BuildsTree()
         {
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             String actual = output.Content.GetContent();
             String expected =
@@ -105,7 +108,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         {
             helper.HideDepth = 1;
 
-            helper.Process(null, output);
+            helper.Process(context, output);
 
             String actual = output.Content.GetContent();
             String expected =

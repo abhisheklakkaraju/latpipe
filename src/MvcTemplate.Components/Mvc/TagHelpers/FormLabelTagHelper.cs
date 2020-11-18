@@ -13,7 +13,7 @@ namespace MvcTemplate.Components.Mvc
         [HtmlAttributeName("asp-for")]
         public ModelExpression? For { get; set; }
 
-        public override void Process(TagHelperContext? context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             TagBuilder require = new("span");
             require.Attributes["class"] = "require";

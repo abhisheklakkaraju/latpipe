@@ -28,7 +28,7 @@ namespace MvcTemplate.Validators
             return isValid;
         }
 
-        private Boolean IsUniqueTitle(Int64 id, String? title)
+        private Boolean IsUniqueTitle(Int64 id, String title)
         {
             Boolean isUnique = !UnitOfWork
                 .Select<Role>()

@@ -69,7 +69,7 @@ namespace MvcTemplate.Controllers
             return base.RedirectToAction(actionName, controllerName, routeValues);
         }
 
-        public override void OnActionExecuting(ActionExecutingContext? context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             Authorization = HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
