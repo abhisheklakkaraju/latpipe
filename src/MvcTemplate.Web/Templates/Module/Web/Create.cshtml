@@ -20,6 +20,10 @@
                         {
                         <input asp-for="@property.Name" asp-format="{0:d}" class="datepicker" type="text" />
                         }
+                        else if (typeof(Boolean?).IsAssignableFrom(property.PropertyType))
+                        {
+                        <input asp-for="@property.Name" />
+                        }
                         else if (Model.Relations[property] is String relation)
                         {
                         <div mvc-lookup-for="@property.Name" handler="@@nameof(Lookup.@relation)"></div>
