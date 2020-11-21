@@ -1,11 +1,11 @@
-/*!
- * Mvc.Grid 6.1.0
+﻿/*!
+ * Mvc.Grid 6.2.2
  * https://github.com/NonFactors/AspNetCore.Grid
  *
  * Copyright © NonFactors
  *
  * Licensed under the terms of the MIT License
- * http://www.opensource.org/licenses/mit-license.php
+ * https://www.opensource.org/licenses/mit-license.php
  */
 class MvcGrid {
     constructor(container, options = {}) {
@@ -19,6 +19,7 @@ class MvcGrid {
         grid.columns = [];
         grid.element = element;
         grid.loadingDelay = 300;
+        grid.loadingTimerId = 0;
         grid.name = element.dataset.name;
         grid.controller = new AbortController();
         grid.isAjax = Boolean(element.dataset.url);
@@ -91,6 +92,30 @@ class MvcGrid {
             columns: this.columns.map(column => ({ name: column.name, hidden: column.isHidden }))
         };
     }
+    configure(configuration) {
+        configuration.columns.forEach((column, index) => {
+            const rows = this.element.querySelectorAll("tr");
+            const i = this.columns.findIndex(col => col.name.toLowerCase() == column.name.toLowerCase());
+
+            if (i >= 0) {
+                this.columns[i].isHidden = column.hidden == true;
+
+                for (const tr of rows) {
+                    if (column.hidden) {
+                        tr.children[i].classList.add("mvc-grid-hidden");
+                    } else {
+                        tr.children[i].classList.remove("mvc-grid-hidden");
+                    }
+
+                    if (i != index) {
+                        tr.insertBefore(tr.children[i], tr.children[index]);
+                    }
+                }
+
+                this.columns.splice(i - (index < i ? 1 : 0), 0, this.columns.splice(index, 1)[0]);
+            }
+        });
+    }
 
     reload() {
         const grid = this;
@@ -139,7 +164,7 @@ class MvcGrid {
             }).then(response => {
                 const parent = grid.element.parentElement;
                 const template = document.createElement("template");
-                const i = [].indexOf.call(parent.children, grid.element);
+                const i = Array.from(parent.children).indexOf(grid.element);
 
                 template.innerHTML = response.trim();
 
@@ -533,8 +558,8 @@ class MvcGridPager {
 
         pager.grid = grid;
         pager.element = element;
-        pager.pages = element.querySelectorAll("[data-page]");
         pager.totalRows = parseInt(element.dataset.totalRows);
+        pager.pages = grid.element.querySelectorAll("[data-page]");
         pager.showPageSizes = element.dataset.showPageSizes == "True";
         pager.rowsPerPage = element.querySelector(".mvc-grid-pager-rows");
         pager.currentPage = pager.pages.length ? parseInt(element.querySelector(".active").dataset.page) : 1;
@@ -543,7 +568,7 @@ class MvcGridPager {
         pager.bind();
     }
 
-    apply(page) {
+    apply(page, rows) {
         const grid = this.grid;
         const query = grid.url.searchParams;
 
@@ -553,7 +578,7 @@ class MvcGridPager {
         query.set(`${grid.prefix}page`, page);
 
         if (this.showPageSizes) {
-            query.set(`${grid.prefix}rows`, this.rowsPerPage.value);
+            query.set(`${grid.prefix}rows`, rows == null ? this.rowsPerPage.value : rows);
         }
 
         grid.reload();
@@ -562,6 +587,7 @@ class MvcGridPager {
     cleanUp() {
         delete this.element.dataset.showPageSizes;
         delete this.element.dataset.totalPages;
+        delete this.element.dataset.totalRows;
     }
     bind() {
         const pager = this;
@@ -572,16 +598,18 @@ class MvcGridPager {
             });
         }
 
-        pager.rowsPerPage.addEventListener("change", () => {
-            const rows = parseInt(pager.rowsPerPage.value);
+        pager.grid.element.querySelectorAll(".mvc-grid-pager-rows").forEach(rowsPerPage => {
+            rowsPerPage.addEventListener("change", function() {
+                const rows = parseInt(this.value);
 
-            if (rows) {
-                const totalPages = Math.ceil(pager.totalRows / rows);
+                if (rows) {
+                    const totalPages = Math.ceil(pager.totalRows / rows);
 
-                pager.apply(Math.min(pager.currentPage, totalPages).toString());
-            } else {
-                pager.apply("1");
-            }
+                    pager.apply(Math.min(pager.currentPage, totalPages).toString(), rows.toString());
+                } else {
+                    pager.apply("1", rows.toString());
+                }
+            });
         });
     }
 }
@@ -665,9 +693,9 @@ class MvcGridPopup {
 
         if (input) {
             if (input.tagName == "SELECT" && input.multiple) {
-                [].forEach.call(input.options, option => {
+                for (const option of Array.from(input.options)) {
                     option.selected = values.indexOf(option.value) >= 0;
-                });
+                }
             } else {
                 input.value = values[0] || "";
             }
@@ -752,7 +780,7 @@ class MvcGridPopup {
             const grid = popup.draggedColumn.grid;
 
             if (dropzone != dragged.previousElementSibling && dropzone != dragged.nextElementSibling) {
-                const index = [].indexOf.call(popup.element.querySelectorAll(".mvc-grid-dropzone"), dropzone);
+                const index = Array.from(popup.element.querySelectorAll(".mvc-grid-dropzone")).indexOf(dropzone);
                 const i = grid.columns.indexOf(popup.draggedColumn);
 
                 dropzone.parentElement.insertBefore(dragged.previousElementSibling, dropzone);
@@ -813,12 +841,11 @@ class MvcGridFilter {
     constructor(column) {
         const filter = this;
 
-        filter.methods = [];
         filter.column = column;
-        filter.cssClasses = "";
         filter.type = column.filter.type;
         filter.mode = column.grid.filterMode;
         filter.methods = ["equals", "not-equals"];
+        filter.cssClasses = "mvc-grid-default-filter";
     }
 
     init() {
@@ -936,16 +963,15 @@ class MvcGridFilter {
         for (const input of MvcGridPopup.element.querySelectorAll(".mvc-grid-value")) {
             if (input.tagName == "SELECT") {
                 input.addEventListener("change", () => {
-                    filter.column.filter[input.dataset.filter].values = [].filter.call(input.options, option => option.selected).map(option => option.value);
+                    const options = Array.from(input.options).filter(option => option.selected);
+
+                    filter.column.filter[input.dataset.filter].values = options.map(option => option.value);
 
                     if (filter.mode != "excel") {
                         const inlineInput = filter.column.filter.inlineInput;
 
-                        if (filter.mode == "header" || filter.mode == "row" && filter.type == "multi") {
-                            inlineInput.value = [].filter
-                                .call(input.options, option => option.selected)
-                                .map(option => option.text)
-                                .join(", ");
+                        if (filter.mode == "header" || filter.type == "multi") {
+                            inlineInput.value = options.map(option => option.text).join(", ");
                         } else {
                             inlineInput.value = input.value;
                         }
@@ -990,6 +1016,7 @@ class MvcGridTextFilter extends MvcGridFilter {
     constructor(column) {
         super(column);
 
+        this.cssClasses = "mvc-grid-text-filter";
         this.methods = ["contains", "equals", "not-equals", "starts-with", "ends-with"];
     }
 }
@@ -998,6 +1025,7 @@ class MvcGridNumberFilter extends MvcGridFilter {
     constructor(column) {
         super(column);
 
+        this.cssClasses = "mvc-grid-number-filter";
         this.methods = ["equals", "not-equals", "less-than", "greater-than", "less-than-or-equal", "greater-than-or-equal"];
     }
 
@@ -1010,6 +1038,7 @@ class MvcGridDateFilter extends MvcGridFilter {
     constructor(column) {
         super(column);
 
+        this.cssClasses = "mvc-grid-date-filter";
         this.methods = ["equals", "not-equals", "earlier-than", "later-than", "earlier-than-or-equal", "later-than-or-equal"];
     }
 }

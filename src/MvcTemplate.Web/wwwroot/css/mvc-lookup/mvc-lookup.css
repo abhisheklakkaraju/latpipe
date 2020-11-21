@@ -1,11 +1,11 @@
 ﻿/*!
- * Mvc.Lookup 5.0.1
+ * Mvc.Lookup 5.1.1
  * https://github.com/NonFactors/AspNetCore.Lookup
  *
  * Copyright © NonFactors
  *
  * Licensed under the terms of the MIT License
- * http://www.opensource.org/licenses/mit-license.php
+ * https://www.opensource.org/licenses/mit-license.php
  */
 
 .mvc-lookup {
@@ -174,8 +174,13 @@
     overflow: hidden;
 }
 
+.mvc-lookup-open .mvc-lookup-overlay {
+    display: flex;
+}
+
 .mvc-lookup-overlay {
     background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
     box-sizing: border-box;
     overflow-x: auto;
     padding: 3em 1em;
@@ -189,12 +194,8 @@
     top: 0;
 }
 
-.mvc-lookup-wrapper {
-    justify-content: center;
-    display: flex;
-}
-
 .mvc-lookup-dialog {
+    height: min-content;
     min-width: 400px;
     max-width: 100%;
     z-index: 1100;
@@ -220,6 +221,10 @@
 .mvc-lookup-title {
     font-size: 1.1em;
     flex: 1;
+}
+
+.mvc-lookup-title:empty::before {
+    content: "\200b";
 }
 
 .mvc-lookup-close {
@@ -383,6 +388,7 @@
     border: none;
 }
 
+.mvc-lookup-table th:last-child,
 .mvc-lookup-table td:last-child {
     box-sizing: border-box;
     text-align: center;

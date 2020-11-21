@@ -1,34 +1,14 @@
 Validator = {
     init() {
+        Wellidate.default.rules.number.groupSeparator = NumberConverter.group;
+        Wellidate.default.rules.number.decimalSeparator = NumberConverter.decimal;
+
         Wellidate.default.rules.date.isValid = function () {
             const value = this.normalizeValue();
+            const dateFormat = moment().locale(document.documentElement.lang)._locale._longDateFormat.L;
+            const dateTimeFormat = moment().locale(document.documentElement.lang)._locale._longDateFormat.LLL;
 
-            return !value || moment(value).isValid();
-        };
-
-        Wellidate.default.rules.number.isValid = function () {
-            const number = this;
-            const scale = parseInt(number.scale);
-            const value = number.normalizeValue();
-            const precision = parseInt(number.precision);
-            const parts = value.split(NumberConverter.decimal);
-            let isValid = NumberConverter.parse(value);
-
-            if (isValid && value && precision > 0) {
-                number.isValidPrecision = number.digits(parts[0].replace(new RegExp(`^[-+${NumberConverter.group}0]+`), "")) <= precision - (scale || 0);
-                isValid = isValid && number.isValidPrecision;
-            } else {
-                number.isValidPrecision = true;
-            }
-
-            if (isValid && parts.length > 1 && scale >= 0) {
-                number.isValidScale = number.digits(parts[1].replace(/0+$/, "")) <= scale;
-                isValid = isValid && number.isValidScale;
-            } else {
-                number.isValidScale = true;
-            }
-
-            return isValid;
+            return !value || (moment(value, dateFormat).isValid() || moment(value, dateTimeFormat).isValid());
         };
 
         Wellidate.default.rules.min.isValid = function () {

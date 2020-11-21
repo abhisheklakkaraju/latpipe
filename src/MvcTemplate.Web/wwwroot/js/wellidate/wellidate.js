@@ -1,5 +1,5 @@
 /*!
- * Wellidate 2.0.0
+ * Wellidate 2.1.0
  * https://github.com/NonFactors/Wellidate
  *
  * Copyright © NonFactors
@@ -21,14 +21,16 @@
             const validatable = this;
 
             validatable.rules = {};
+            validatable.bindings = [];
             validatable.isValid = true;
             validatable.isDirty = false;
             validatable.elements = group;
             validatable.element = group[0];
             validatable.wellidate = wellidate;
 
-            validatable.build();
-            validatable.bind();
+            validatable.buildErrorContainers();
+            validatable.buildInputRules();
+            validatable.buildDataRules();
         }
 
         validate() {
@@ -156,13 +158,56 @@
             }));
         }
 
+        bind() {
+            const validatable = this;
+            const wellidate = this.wellidate;
+            const input = validatable.element;
+            const event = input.tagName == "SELECT" || input.type == "hidden" ? "change" : "input";
+
+            const changeEvent = function () {
+                if (this.type == "hidden" || validatable.isDirty) {
+                    validatable.validate();
+                }
+            };
+            const blurEvent = function () {
+                if (validatable.isDirty || this.value.length) {
+                    validatable.isDirty = !validatable.validate();
+                }
+            };
+            const focusEvent = function () {
+                if (wellidate.focusCleanup) {
+                    validatable.reset();
+                }
+
+                wellidate.lastActive = this;
+            };
+
+            for (const element of validatable.elements) {
+                element.addEventListener("blur", blurEvent);
+                element.addEventListener(event, changeEvent);
+                element.addEventListener("focus", focusEvent);
+            }
+
+            validatable.bindings.push(blurEvent, changeEvent, focusEvent);
+        }
+        unbind() {
+            for (const binding of this.bindings) {
+                for (const element of this.elements) {
+                    element.removeEventListener("blur", binding);
+                    element.removeEventListener("focus", binding);
+                    element.removeEventListener("input", binding);
+                    element.removeEventListener("change", binding);
+                }
+            }
+        }
+
         buildErrorContainers() {
             let name = this.element.name;
 
             if (name) {
                 name = name.replace(/(["\]\\])/g, "\\$1");
 
-                this.errorContainers = [].map.call(document.querySelectorAll(`[data-valmsg-for="${name}"]`), container => container);
+                this.errorContainers = Array.from(document.querySelectorAll(`[data-valmsg-for="${name}"]`));
             } else {
                 this.errorContainers = [];
             }
@@ -235,7 +280,7 @@
         buildDataRules() {
             const element = this.element;
             const defaultRule = Wellidate.default.rule;
-            const attributes = [].filter.call(element.attributes, attribute => /^data-val-\w+$/.test(attribute.name));
+            const attributes = Array.from(element.attributes).filter(attribute => /^data-val-\w+$/.test(attribute.name));
 
             for (const attribute of attributes) {
                 const prefix = attribute.name;
@@ -248,48 +293,14 @@
                         isDataMessage: Boolean(attribute.value)
                     };
 
-                    [].forEach.call(element.attributes, parameter => {
-                        if (parameter.name.indexOf(`${prefix}-`) == 0) {
+                    for (const parameter of Array.from(element.attributes)) {
+                        if (parameter.name.startsWith(`${prefix}-`)) {
                             dataRule[parameter.name.substring(prefix.length + 1)] = parameter.value;
                         }
-                    });
+                    }
 
                     this.rules[method] = Object.assign({}, defaultRule, rule, dataRule, { element });
                 }
-            }
-        }
-        build() {
-            this.buildErrorContainers();
-            this.buildInputRules();
-            this.buildDataRules();
-        }
-
-        bind() {
-            const validatable = this;
-            const wellidate = this.wellidate;
-            const input = validatable.element;
-            const event = input.tagName == "SELECT" || input.type == "hidden" ? "change" : "input";
-
-            for (const element of validatable.elements) {
-                element.addEventListener(event, () => {
-                    if (element.type == "hidden" || validatable.isDirty) {
-                        validatable.validate();
-                    }
-                });
-
-                element.addEventListener("focus", function () {
-                    if (wellidate.focusCleanup) {
-                        validatable.reset();
-                    }
-
-                    wellidate.lastActive = this;
-                });
-
-                element.addEventListener("blur", function () {
-                    if (validatable.isDirty || this.value.length) {
-                        validatable.isDirty = !validatable.validate();
-                    }
-                });
             }
         }
     }
@@ -336,6 +347,7 @@
             wellidate.setOption("excludes", options.excludes);
             wellidate.setOption("focusCleanup", options.focusCleanup);
             wellidate.setOption("focusInvalid", options.focusInvalid);
+            wellidate.setOption("submitHandler", options.submitHandler);
             wellidate.setOption("fieldValidClass", options.fieldValidClass);
             wellidate.setOption("fieldErrorClass", options.fieldErrorClass);
             wellidate.setOption("inputValidClass", options.inputValidClass);
@@ -365,22 +377,30 @@
 
         rebuild() {
             const wellidate = this;
+            const validatables = [];
 
-            wellidate.validatables = [];
+            wellidate.validatables.forEach(validatable => validatable.unbind());
 
             if (wellidate.container.matches(wellidate.include)) {
                 const group = wellidate.buildGroupElements(wellidate.container);
+                const validatable = wellidate.validatables.find(validatable => validatable.element == group[0]);
 
-                wellidate.validatables.push(new WellidateValidatable(wellidate, group));
+                validatables.push(validatable || new WellidateValidatable(wellidate, group));
+                validatables[validatables.length - 1].bind();
             } else {
                 for (const element of wellidate.container.querySelectorAll(wellidate.include)) {
                     const group = wellidate.buildGroupElements(element);
 
                     if (element == group[0]) {
-                        wellidate.validatables.push(new WellidateValidatable(wellidate, group));
+                        const validatable = wellidate.validatables.find(validatable => validatable.element == element);
+
+                        validatables.push(validatable || new WellidateValidatable(wellidate, group));
+                        validatables[validatables.length - 1].bind();
                     }
                 }
             }
+
+            wellidate.validatables = validatables;
         }
         form(...filter) {
             const wellidate = this;
@@ -437,38 +457,54 @@
             }
         }
         validate(...filter) {
-            const valid = [];
-            const invalid = [];
+            const results = {
+                isValid: true,
+                pending: [],
+                invalid: [],
+                valid: []
+            };
 
             for (const validatable of this.filterValidatables(...filter)) {
+                const rules = [];
+
                 validatable.isValid = true;
 
                 for (const method of Object.keys(validatable.rules)) {
                     const rule = validatable.rules[method];
 
-                    if (rule.isEnabled() && !rule.isValid(validatable)) {
-                        invalid.push({
-                            message: rule.formatMessage(),
-                            validatable: validatable,
-                            method: method
-                        });
+                    if (rule.isEnabled()) {
+                        const isValid = rule.isValid(validatable);
 
-                        validatable.isValid = false;
+                        if (isValid === false) {
+                            results.invalid.push({
+                                message: rule.formatMessage(),
+                                validatable: validatable,
+                                method: method
+                            });
 
-                        break;
+                            validatable.isValid = false;
+                            results.isValid = false;
+
+                            break;
+                        } else if (typeof isValid != "boolean") {
+                            rules.push({ method: method, promise: isValid });
+
+                            if (!results.pending.some(rule => rule.validatable == validatable)) {
+                                results.pending.push({
+                                    validatable: validatable,
+                                    rules: rules
+                                });
+                            }
+                        }
                     }
                 }
 
                 if (validatable.isValid) {
-                    valid.push({ validatable });
+                    results.valid.push({ validatable });
                 }
             }
 
-            return {
-                isValid: !invalid.length,
-                invalid: invalid,
-                valid: valid
-            };
+            return results;
         }
 
         reset() {
@@ -514,7 +550,7 @@
             if (group.name) {
                 const name = group.name.replace(/(["\]\\])/g, "\\$1");
 
-                return [].map.call(document.querySelectorAll(`[name="${name}"]`), element => element);
+                return Array.from(document.querySelectorAll(`[name="${name}"]`));
             }
 
             return [group];
@@ -578,7 +614,7 @@
                         if (wellidate.submitHandler) {
                             e.preventDefault();
 
-                            wellidate.submitHandler();
+                            wellidate.submitHandler(e);
                         }
                     } else {
                         e.preventDefault();
@@ -635,6 +671,7 @@
             reset() {
                 this.show({
                     isValid: true,
+                    pending: [],
                     invalid: [],
                     valid: []
                 });
@@ -670,10 +707,10 @@
             },
             normalizeValue(element) {
                 const input = element || this.element;
-                let { value } = input;
+                let value = input.value;
 
                 if (input.tagName == "SELECT" && input.multiple) {
-                    return [].filter.call(input.options, option => option.selected).length.toString();
+                    return Array.from(input.options).filter(option => option.selected).length.toString();
                 } else if (input.type == "radio") {
                     if (input.name) {
                         const name = input.name.replace(/(["\]\\])/g, "\\$1");
@@ -760,6 +797,8 @@
                 }
             },
             number: {
+                groupSeparator: ",",
+                decimalSeparator: ".",
                 message: "Please enter a valid number.",
                 scaleMessage: "Please enter a value with no more than {0} fractional digits",
                 precisionMessage: "Please enter a value using no more than {0} significant digits",
@@ -768,18 +807,23 @@
                     const scale = parseInt(number.scale);
                     const value = number.normalizeValue();
                     const precision = parseInt(number.precision);
-                    let isValid = /^$|^[+-]?(\d+|\d{1,3}(,\d{3})+)?(\.\d+)?$/.test(value);
+                    const parts = value.split(this.decimalSeparator);
+                    let isValid = new RegExp(`^$|^[+-]?(\\d*|\\d[0-9${this.groupSeparator}]*)[${this.decimalSeparator}]?\\d*$`).test(value);
 
                     if (isValid && value && precision > 0) {
-                        number.isValidPrecision = number.digits(value.split(".")[0].replace(/^[-+,0]+/, "")) <= precision - (scale || 0);
-                        isValid = isValid && number.isValidPrecision;
+                        const digits = number.digits(parts[0].replace(new RegExp(`^[-+${this.groupSeparator}0]+`), ""));
+
+                        number.isValidPrecision = digits <= precision - (scale || 0);
+                        isValid = number.isValidPrecision;
                     } else {
                         number.isValidPrecision = true;
                     }
 
-                    if (isValid && value.indexOf(".") >= 0 && scale >= 0) {
-                        number.isValidScale = number.digits(value.split(".")[1].replace(/0+$/, "")) <= scale;
-                        isValid = isValid && number.isValidScale;
+                    if (isValid && parts[1] && scale >= 0) {
+                        const digits = number.digits(parts[1].replace(/0+$/, ""));
+
+                        number.isValidScale = digits <= scale;
+                        isValid = number.isValidScale;
                     } else {
                         number.isValidScale = true;
                     }
@@ -893,7 +937,7 @@
                 page: 1024,
                 message: "File size should not exceed {0} MB.",
                 isValid() {
-                    const size = [].reduce.call(this.element.files, (total, file) => total + file.size, 0);
+                    const size = Array.from(this.element.files).reduce((total, file) => total + file.size, 0);
 
                     return size <= this.max || this.max == null;
                 },
@@ -909,16 +953,16 @@
                 isValid() {
                     const filter = this.types.split(",").map(type => type.trim());
 
-                    const correct = [].filter.call(this.element.files, file => {
+                    const correct = Array.from(this.element.files).filter(file => {
                         const extension = file.name.split(".").pop();
 
                         for (const type of filter) {
-                            if (type.indexOf(".") == 0) {
+                            if (type.startsWith(".")) {
                                 if (file.name != extension && `.${extension}` == type) {
                                     return true;
                                 }
-                            } else if (/\/\*$/.test(type)) {
-                                if (file.type.indexOf(type.replace(/\*$/, "")) == 0) {
+                            } else if (type.endsWith("/*")) {
+                                if (file.type.startsWith(type.replace(/\*$/, ""))) {
                                     return true;
                                 }
                             } else if (file.type == type) {
@@ -954,32 +998,38 @@
                     }
 
                     clearTimeout(remote.start);
-                    remote.start = setTimeout(() => {
-                        if (validatable.isValid) {
-                            remote.controller = new AbortController();
 
-                            fetch(remote.buildUrl(), {
-                                method: remote.type,
-                                headers: { "X-Requested-With": "XMLHttpRequest" }
-                            }).then(response => {
-                                if (validatable.isValid && response.ok) {
-                                    return response.text();
-                                }
+                    return new Promise((resolve, reject) => {
+                        remote.start = setTimeout(() => {
+                            if (validatable.isValid) {
+                                remote.controller = new AbortController();
 
-                                return "";
-                            }).then(response => {
-                                if (response) {
-                                    remote.apply(validatable, response);
-                                }
-                            });
+                                remote.prepare(validatable).then(response => {
+                                    if (validatable.isValid && response.ok) {
+                                        return response.text();
+                                    }
 
-                            remote.prepare(validatable);
+                                    return "";
+                                }).then(response => {
+                                    if (response) {
+                                        resolve(remote.apply(validatable, response));
+                                    } else {
+                                        resolve(true);
+                                    }
+                                }).catch(reason => {
+                                    if (reason.name == "AbortError") {
+                                        resolve(true);
+                                    }
 
-                            validatable.pending();
-                        }
-                    }, 1);
+                                    reject(reason);
+                                });
 
-                    return true;
+                                validatable.pending();
+                            } else {
+                                resolve(true);
+                            }
+                        }, 1);
+                    });
                 },
                 buildUrl() {
                     const remote = this;
@@ -997,6 +1047,11 @@
                     return url.href;
                 },
                 prepare() {
+                    return fetch(this.buildUrl(), {
+                        method: this.type,
+                        signal: this.controller.signal,
+                        headers: { "X-Requested-With": "XMLHttpRequest" }
+                    });
                 },
                 apply(validatable, response) {
                     const result = JSON.parse(response);

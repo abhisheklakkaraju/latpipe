@@ -3,16 +3,16 @@
     "gulp": "gulp"
   },
   "devDependencies": {
-    "gulp": "4.0.2",
-    "gulp-concat": "2.6.1",
-    "gulp-uglify-es": "2.0.0",
-    "gulp-uglifycss": "1.1.0",
-    "rimraf": "3.0.2"
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify-es": "^2.0.0",
+    "gulp-uglifycss": "^1.1.0",
+    "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@bevacqua/rome": "3.0.3",
-    "bootstrap.native": "2.0.27",
-    "moment": "2.24.0",
-    "wellidate": "2.0.0"
+    "@bevacqua/rome": "^3.0.3",
+    "bootstrap.native": "^3.0.14",
+    "moment": "^2.29.1",
+    "wellidate": "^2.1.0"
   }
 }
