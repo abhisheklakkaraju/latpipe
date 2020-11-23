@@ -99,6 +99,7 @@ namespace MvcTemplate.Web
         private void ConfigureOptions(IServiceCollection services)
         {
             services.Configure<CookieTempDataProviderOptions>(provider => provider.Cookie.Name = Config["Cookies:TempData"]);
+            services.Configure<RouteOptions>(options => options.ConstraintMap["slug"] = typeof(SlugifyTransformer));
             services.Configure<SessionOptions>(session => session.Cookie.Name = Config["Cookies:Session"]);
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.Configure<MailConfiguration>(Config.GetSection("Mail"));
@@ -181,11 +182,11 @@ namespace MvcTemplate.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("MultiArea", "{language}/{area}/{controller}/{action=Index}/{id:int?}");
-                endpoints.MapControllerRoute("DefaultArea", "{area:exists}/{controller}/{action=Index}/{id:int?}");
-                endpoints.MapControllerRoute("Multi", "{language}/{controller}/{action=Index}/{id:int?}");
-                endpoints.MapControllerRoute("Default", "{controller}/{action=Index}/{id:int?}");
-                endpoints.MapControllerRoute("Home", "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("MultiArea", "{language}/{area:slug:exists}/{controller:slug}/{action:slug=Index}/{id:int?}");
+                endpoints.MapControllerRoute("DefaultArea", "{area:slug:exists}/{controller:slug}/{action:slug=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Multi", "{language}/{controller:slug}/{action:slug=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Default", "{controller:slug}/{action:slug=Index}/{id:int?}");
+                endpoints.MapControllerRoute("Home", "{controller:slug=Home}/{action:slug=Index}");
             });
         }
 
