@@ -2,6 +2,7 @@
     "Titles": {
         "Email": "Email",
         "Password": "Password",
+        "RoleId": "Role",
         "Username": "Username"
     }
 }

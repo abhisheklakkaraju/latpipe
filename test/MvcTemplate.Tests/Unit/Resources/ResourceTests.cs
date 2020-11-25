@@ -222,15 +222,6 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForProperty_FromLambdaExpressionRelation()
-        {
-            String expected = ResourceFor($"Views/{nameof(Area.Administration)}/{nameof(Roles)}/{nameof(RoleView)}", "Titles", nameof(RoleView.Id));
-            String actual = Resource.ForProperty<AccountEditView, Int64?>(account => account.RoleId);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void ForProperty_NotFoundLambdaExpression_Empty()
         {
             Assert.Empty(Resource.ForProperty<AccountView, Int64>(account => account.Id));
@@ -261,24 +252,6 @@ namespace MvcTemplate.Resources.Tests
         }
 
         [Fact]
-        public void ForProperty_FromRelation()
-        {
-            String expected = ResourceFor($"Views/{nameof(Area.Administration)}/{nameof(Accounts)}/{nameof(AccountView)}", "Titles", nameof(AccountView.Username));
-            String actual = Resource.ForProperty(typeof(Object), $"{nameof(Account)}{nameof(Account.Username)}");
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void ForProperty_FromMultipleRelations()
-        {
-            String actual = Resource.ForProperty(typeof(RoleView), $"{nameof(Account)}{nameof(Role)}{nameof(Account)}{nameof(Account.Username)}");
-            String expected = ResourceFor($"Views/{nameof(Area.Administration)}/{nameof(Accounts)}/{nameof(AccountView)}", "Titles", nameof(Account.Username));
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void ForProperty_NotFoundProperty_Empty()
         {
             Assert.Empty(Resource.ForProperty(typeof(AccountView), nameof(AccountView.Id)));
@@ -304,17 +277,6 @@ namespace MvcTemplate.Resources.Tests
             Expression<Func<AccountView, String?>> lambda = (account) => account.Username;
 
             String expected = ResourceFor($"Views/{nameof(Area.Administration)}/{nameof(Accounts)}/{nameof(AccountView)}", "Titles", nameof(AccountView.Username));
-            String actual = Resource.ForProperty(lambda.Body);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void ForProperty_FromExpressionRelation()
-        {
-            Expression<Func<AccountEditView, Int64?>> lambda = (account) => account.RoleId;
-
-            String expected = ResourceFor($"Views/{nameof(Area.Administration)}/{nameof(Roles)}/{nameof(RoleView)}", "Titles", nameof(RoleView.Id));
             String actual = Resource.ForProperty(lambda.Body);
 
             Assert.Equal(expected, actual);

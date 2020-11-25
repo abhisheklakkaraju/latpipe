@@ -1,10 +1,7 @@
 @model ModuleModel
 @{
     PropertyInfo[] properties = Model
-        .AllViewProperties
-        .Where(property =>
-            property.Name != "CreationDate" &&
-            Model.Relations[property] == null)
+        .ViewProperties
         .OrderBy(property => property.Name)
         .ToArray();
 
@@ -17,7 +14,7 @@
     "Titles": {
         @for (Int32 i = 0; i < properties.Length; i++)
         {
-            String title = properties[i].Name == "Id" ? Model.Model.Humanize() : properties[i].Name.Humanize();
+            String title = Model.Relations[properties[i]] == null ? properties[i].Name.Humanize() : properties[i].Name.Substring(0, properties[i].Name.Length - 2).Humanize();
 
             if (i + 1 < properties.Length)
             {

@@ -94,25 +94,7 @@ namespace MvcTemplate.Resources
         }
         public static String ForProperty(String view, String name)
         {
-            if (Localized(view, "Titles", name) is String { Length: > 0 } title)
-                return title;
-
-            String[] properties = SplitCamelCase(name);
-            String language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
-            for (Int32 skipped = 0; skipped < properties.Length; skipped++)
-            {
-                for (Int32 viewSize = 1; viewSize < properties.Length - skipped; viewSize++)
-                {
-                    String relation = $"{String.Concat(properties.Skip(skipped).Take(viewSize))}View";
-                    String property = String.Concat(properties.Skip(viewSize + skipped));
-
-                    if (Localized(relation, "Titles", property) is String { Length: > 0 } relationTitle)
-                        return Set(view)[language, "Titles", name] = relationTitle;
-                }
-            }
-
-            return "";
+            return Localized(view, "Titles", name);
         }
         public static String ForProperty(Type view, String name)
         {
