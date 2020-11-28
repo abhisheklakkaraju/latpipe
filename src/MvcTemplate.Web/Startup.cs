@@ -46,10 +46,11 @@ namespace MvcTemplate.Web
 
         public void Configure(IApplicationBuilder app)
         {
-            RegisterMiddleware(app);
-            RegisterResources();
-
             SeedDatabase(app);
+
+            RegisterResources();
+            RegisterConstants(app);
+            RegisterMiddleware(app);
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -158,6 +159,11 @@ namespace MvcTemplate.Web
                     type = type.BaseType;
                 }
             }
+        }
+        private void RegisterConstants(IApplicationBuilder app)
+        {
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            using IUnitOfWork unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         }
         private void RegisterMiddleware(IApplicationBuilder app)
         {

@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MvcTemplate.Data\MvcTemplate.Data.csproj" />
+    <ProjectReference Include="..\MvcTemplate\MvcTemplate.csproj" />
   </ItemGroup>
 
 </Project>

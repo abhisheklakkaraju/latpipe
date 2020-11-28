@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MvcTemplate\MvcTemplate.csproj" />
     <ProjectReference Include="..\MvcTemplate.Services\MvcTemplate.Services.csproj" />
     <ProjectReference Include="..\MvcTemplate.Validators\MvcTemplate.Validators.csproj" />
   </ItemGroup>
