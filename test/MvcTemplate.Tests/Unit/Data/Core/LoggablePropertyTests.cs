@@ -112,8 +112,8 @@ namespace MvcTemplate.Data.Tests
         {
             textProperty.IsModified = false;
 
-            String actual = new LoggableProperty(textProperty, "Original").ToString();
-            String expected = $"{textProperty.Metadata.Name}: \"Original\"";
+            String actual = new LoggableProperty(textProperty, "Originalê").ToString();
+            String expected = $"{textProperty.Metadata.Name}: \"Originalê\"";
 
             Assert.Equal(expected, actual);
         }

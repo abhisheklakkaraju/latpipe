@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -336,7 +337,8 @@ namespace MvcTemplate.Web.Templates
 
                 String text = Regex.Replace(JsonSerializer.Serialize(resources, new JsonSerializerOptions
                 {
-                    WriteIndented = true
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 }), "(^ +)", "$1$1", RegexOptions.Multiline);
 
                 File.WriteAllText($"Resources/Shared/{resource}.json", $"{text}\n");

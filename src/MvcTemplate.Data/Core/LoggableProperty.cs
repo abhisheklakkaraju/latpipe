@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace MvcTemplate.Data
@@ -10,6 +11,8 @@ namespace MvcTemplate.Data
         private Object? OldValue { get; }
         private Object? NewValue { get; }
         private String Property { get; }
+
+        private static JsonSerializerOptions Options = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 
         public LoggableProperty(PropertyEntry entry, Object? newValue)
         {
@@ -33,7 +36,7 @@ namespace MvcTemplate.Data
             {
                 null => "null",
                 DateTime date => $"\"{date:yyyy-MM-dd HH:mm:ss}\"",
-                _ => JsonSerializer.Serialize(value)
+                _ => JsonSerializer.Serialize(value, Options)
             };
         }
     }
