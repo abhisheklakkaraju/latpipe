@@ -22,7 +22,7 @@ namespace MvcTemplate.Resources.Tests
 
             foreach (SiteMapNode node in Flatten(sitemap.Elements()).Where(node => node.Action != null))
             {
-                String path = $"{node.Area}/{node.Controller}/{node.Action}";
+                String path = $"{node.Area}/{node.Controller}/{node.Action}".Trim('/');
 
                 Assert.True(Resource.ForPage(path) != "", $"'{path}' page does not have a title.");
             }
@@ -33,7 +33,7 @@ namespace MvcTemplate.Resources.Tests
         {
             XElement sitemap = XDocument.Load("../../../../../src/MvcTemplate.Web/mvc.sitemap").Element("siteMap")!;
 
-            foreach (String path in Flatten(sitemap.Elements()).Select(node => $"{node.Area}/{node.Controller}/{node.Action}"))
+            foreach (String path in Flatten(sitemap.Elements()).Select(node => $"{node.Area}/{node.Controller}/{node.Action}".Trim('/')))
                 Assert.True(Resource.ForSiteMap(path) != "", $"'{path}' page does not have a sitemap title.");
         }
 

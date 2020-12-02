@@ -37,8 +37,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Action);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
+            Assert.Equal("Administration", actual[0].Path);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal("Administration//", actual[0].Path);
 
             actual = actual[0].Children.ToArray();
 
@@ -56,7 +56,7 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Equal("Roles", actual[1].Controller);
             Assert.Equal("Administration", actual[1].Area);
             Assert.Equal("fa fa-users", actual[1].IconClass);
-            Assert.Equal("Administration/Roles/", actual[1].Path);
+            Assert.Equal("Administration/Roles", actual[1].Path);
 
             actual = actual[1].Children.ToArray();
 
@@ -73,7 +73,7 @@ namespace MvcTemplate.Components.Mvc.Tests
         [Fact]
         public void For_ReturnsAuthorizedNodes()
         {
-            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration//").Returns(false);
+            authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration").Returns(false);
             authorization.IsGrantedFor(context.HttpContext.User.Id(), "Administration/Accounts/Index").Returns(true);
 
             SiteMapNode[] actual = siteMap.For(context).ToArray();
@@ -83,8 +83,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Action);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
+            Assert.Equal("Administration", actual[0].Path);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal("Administration//", actual[0].Path);
 
             actual = actual[0].Children.ToArray();
 
@@ -140,8 +140,8 @@ namespace MvcTemplate.Components.Mvc.Tests
             Assert.Null(actual[0].Action);
             Assert.Null(actual[0].Controller);
             Assert.Equal("Administration", actual[0].Area);
+            Assert.Equal("Administration", actual[0].Path);
             Assert.Equal("fa fa-cogs", actual[0].IconClass);
-            Assert.Equal("Administration//", actual[0].Path);
 
             actual = actual[0].Children.ToArray();
 
@@ -167,11 +167,11 @@ namespace MvcTemplate.Components.Mvc.Tests
 
             Assert.Equal(2, actual.Length);
 
+            Assert.Equal("Home/Index", actual[0].Path);
             Assert.Equal("fa fa-home", actual[0].IconClass);
-            Assert.Equal("/Home/Index", actual[0].Path);
 
+            Assert.Equal("Profile/Edit", actual[1].Path);
             Assert.Equal("fa fa-pencil-alt", actual[1].IconClass);
-            Assert.Equal("/Profile/Edit", actual[1].Path);
         }
 
         [Fact]

@@ -37,7 +37,7 @@ namespace MvcTemplate.Web.Templates
 
         public override void Run()
         {
-            String path = $"{(Area != null ? $"{Area}/" : "")}{Controller}";
+            String path = $"{Area}/{Controller}".Trim('/');
 
             Dictionary<String, GennyScaffoldingResult> results = new()
             {
@@ -102,23 +102,23 @@ namespace MvcTemplate.Web.Templates
                     AddResource("Page", "Headers", Model!, Model.Humanize());
                     AddResource("Page", "Headers", Model.Pluralize(), Model.Pluralize().Humanize());
 
-                    AddResource("Page", "Titles", $"{Area}/{Controller}/Create", $"{Model.Humanize()} creation");
-                    AddResource("Page", "Titles", $"{Area}/{Controller}/Delete", $"{Model.Humanize()} deletion");
-                    AddResource("Page", "Titles", $"{Area}/{Controller}/Details", $"{Model.Humanize()} details");
-                    AddResource("Page", "Titles", $"{Area}/{Controller}/Index", Model.Pluralize().Humanize());
-                    AddResource("Page", "Titles", $"{Area}/{Controller}/Edit", $"{Model.Humanize()} edit");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Create".Trim('/'), $"{Model.Humanize()} creation");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Delete".Trim('/'), $"{Model.Humanize()} deletion");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Details".Trim('/'), $"{Model.Humanize()} details");
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Index".Trim('/'), Model.Pluralize().Humanize());
+                    AddResource("Page", "Titles", $"{Area}/{Controller}/Edit".Trim('/'), $"{Model.Humanize()} edit");
 
                     if (Area != null)
                         AddResource("Shared", "Areas", Area, Area.Humanize());
-                    AddResource("Shared", "Controllers", $"{Area}/{Controller}", Model.Pluralize().Humanize());
+                    AddResource("Shared", "Controllers", $"{Area}/{Controller}".Trim('/'), Model.Pluralize().Humanize());
 
                     if (Area != null)
-                        AddResource("SiteMap", "Titles", $"{Area}//", Area.Humanize());
-                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Create", "Create");
-                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Delete", "Delete");
-                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Details", "Details");
-                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Index", Model.Pluralize().Humanize());
-                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Edit", "Edit");
+                        AddResource("SiteMap", "Titles", Area, Area.Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Create".Trim('/'), "Create");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Delete".Trim('/'), "Delete");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Details".Trim('/'), "Details");
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Index".Trim('/'), Model.Pluralize().Humanize());
+                    AddResource("SiteMap", "Titles", $"{Area}/{Controller}/Edit".Trim('/'), "Edit");
 
                     Logger.WriteLine("");
                     Logger.WriteLine("Scaffolded successfully!", ConsoleColor.Green);

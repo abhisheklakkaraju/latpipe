@@ -1,11 +1,6 @@
 {
     "Titles": {
-        "/Home/Error": "Error",
-        "/Home/Index": "Home",
-        "/Home/NotFound": "Not found",
-        "/Profile/Delete": "Profile",
-        "/Profile/Edit": "Profile",
-        "Administration//": "Administration",
+        "Administration": "Administration",
         "Administration/Accounts/Create": "Create",
         "Administration/Accounts/Details": "Details",
         "Administration/Accounts/Edit": "Edit",
@@ -14,6 +9,11 @@
         "Administration/Roles/Delete": "Delete",
         "Administration/Roles/Details": "Details",
         "Administration/Roles/Edit": "Edit",
-        "Administration/Roles/Index": "Roles"
+        "Administration/Roles/Index": "Roles",
+        "Home/Error": "Error",
+        "Home/Index": "Home",
+        "Home/NotFound": "Not found",
+        "Profile/Delete": "Profile",
+        "Profile/Edit": "Profile"
     }
 }

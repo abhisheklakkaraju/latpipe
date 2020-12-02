@@ -29,7 +29,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         [Theory]
         [InlineData("A/B/C", "A", "B", "C", "D", "E", "F")]
-        [InlineData("//", null, null, null, null, null, null)]
         [InlineData("A/B/C", null, null, null, "A", "B", "C")]
         public void Process_NotAuthorized_SurpressesOutput(
             String permission,
@@ -67,7 +66,6 @@ namespace MvcTemplate.Components.Mvc.Tests
 
         [Theory]
         [InlineData("A/B/C", "A", "B", "C", "D", "E", "F")]
-        [InlineData("//", null, null, null, null, null, null)]
         [InlineData("A/B/C", null, null, null, "A", "B", "C")]
         public void Process_RemovesWrappingTag(
             String permission,

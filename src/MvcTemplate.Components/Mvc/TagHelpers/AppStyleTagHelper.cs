@@ -66,7 +66,7 @@ namespace MvcTemplate.Components.Mvc
             String extension = Environment.IsDevelopment() ? ".css" : ".min.css";
             RouteValueDictionary route = ViewContext?.RouteData.Values ?? new RouteValueDictionary();
 
-            return $"{(route["Area"] == null ? null : $"{route["Area"]}/")}{route["controller"]}/{Action}{extension}".ToLower();
+            return $"{route["area"]}/{route["controller"]}/{Action}{extension}".ToLower().Trim('/');
         }
     }
 }

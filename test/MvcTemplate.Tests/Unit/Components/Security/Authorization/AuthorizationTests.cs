@@ -52,7 +52,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), nameof(AuthorizeController.Action));
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.False(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.False(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/Test"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/Test"));
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), "Other");
 
-            Assert.False(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/Test"));
+            Assert.False(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/Test"));
         }
 
         [Fact]
@@ -212,7 +212,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), nameof(AuthorizeController.Action));
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.False(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.False(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "AllowAnonymous", "AuthorizedAction");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AllowAnonymousController)}/{nameof(AllowAnonymousController.AuthorizedAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AllowAnonymousController)}/{nameof(AllowAnonymousController.AuthorizedAction)}"));
         }
 
         [Fact]
@@ -236,7 +236,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.AllowAnonymousAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.AllowAnonymousAction)}"));
         }
 
         [Fact]
@@ -244,7 +244,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.AllowUnauthorizedAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.AllowUnauthorizedAction)}"));
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(AuthorizeController), nameof(AuthorizeController.Action));
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -260,7 +260,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.False(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.False(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -268,7 +268,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AllowAnonymousController)}/{nameof(AllowAnonymousController.SimpleAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AllowAnonymousController)}/{nameof(AllowAnonymousController.SimpleAction)}"));
         }
 
         [Fact]
@@ -276,7 +276,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AllowUnauthorizedController)}/{nameof(AllowUnauthorizedController.AuthorizedAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AllowUnauthorizedController)}/{nameof(AllowUnauthorizedController.AuthorizedAction)}"));
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", nameof(InheritedAuthorizedController), nameof(InheritedAuthorizedController.InheritanceAction));
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(InheritedAuthorizedController)}/{nameof(InheritedAuthorizedController.InheritanceAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(InheritedAuthorizedController)}/{nameof(InheritedAuthorizedController.InheritanceAction)}"));
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.False(authorization.IsGrantedFor(accountId, $"/{nameof(InheritedAuthorizedController)}/{nameof(InheritedAuthorizedController.InheritanceAction)}"));
+            Assert.False(authorization.IsGrantedFor(accountId, $"{nameof(InheritedAuthorizedController)}/{nameof(InheritedAuthorizedController.InheritanceAction)}"));
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(InheritedAllowAnonymousController)}/{nameof(InheritedAllowAnonymousController.InheritanceAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(InheritedAllowAnonymousController)}/{nameof(InheritedAllowAnonymousController.InheritanceAction)}"));
         }
 
         [Fact]
@@ -308,7 +308,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(InheritedAllowUnauthorizedController)}/{nameof(InheritedAllowUnauthorizedController.InheritanceAction)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(InheritedAllowUnauthorizedController)}/{nameof(InheritedAllowUnauthorizedController.InheritanceAction)}"));
         }
 
         [Fact]
@@ -316,7 +316,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             Int64 accountId = CreateAccountWithPermissionFor("", "Test", "Test");
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(NotAttributedController)}/{nameof(NotAttributedController.Action)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(NotAttributedController)}/{nameof(NotAttributedController.Action)}"));
         }
 
         [Fact]
@@ -340,7 +340,7 @@ namespace MvcTemplate.Components.Security.Tests
         {
             CreateAccountWithPermissionFor("", nameof(AuthorizeController), nameof(AuthorizeController.Action));
 
-            Assert.False(authorization.IsGrantedFor(null, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.False(authorization.IsGrantedFor(null, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]
@@ -366,7 +366,7 @@ namespace MvcTemplate.Components.Security.Tests
 
             context.Drop();
 
-            Assert.True(authorization.IsGrantedFor(accountId, $"/{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
+            Assert.True(authorization.IsGrantedFor(accountId, $"{nameof(AuthorizeController)}/{nameof(AuthorizeController.Action)}"));
         }
 
         [Fact]

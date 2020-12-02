@@ -63,7 +63,7 @@ namespace MvcTemplate.Controllers
             actionName ??= RouteData.Values["action"] as String;
             area ??= RouteData.Values["area"] as String;
 
-            if (!IsAuthorizedFor($"{area}/{controllerName}/{actionName}"))
+            if (!IsAuthorizedFor($"{area}/{controllerName}/{actionName}".Trim('/')))
                 return RedirectToDefault();
 
             return base.RedirectToAction(actionName, controllerName, routeValues);

@@ -63,7 +63,7 @@ namespace MvcTemplate.Components.Security
                         .Role!
                         .Permissions
                         .Select(role => role.Permission)
-                        .Select(permission => permission.Area + "/" + permission.Controller + "/" + permission.Action)
+                        .Select(permission => (permission.Area + "/" + permission.Controller + "/" + permission.Action).Trim('/'))
                 })
                 .ToDictionary(
                     account => account.Id,
@@ -104,8 +104,9 @@ namespace MvcTemplate.Components.Security
         private String? RequiredPermissionFor(String action)
         {
             String[] path = action.Split('/');
+            path = path.Length < 3 ? new[] { "" }.Concat(path).ToArray() : path;
             AuthorizeAsAttribute? auth = Actions[action].GetCustomAttribute<AuthorizeAsAttribute>(false);
-            String asAction = $"{auth?.Area ?? path[0]}/{auth?.Controller ?? path[1]}/{auth?.Action ?? path[2]}";
+            String asAction = $"{auth?.Area ?? path[0]}/{auth?.Controller ?? path[1]}/{auth?.Action ?? path[2]}".Trim('/');
 
             if (action != asAction)
                 return RequiredPermissionFor(asAction);
@@ -118,7 +119,7 @@ namespace MvcTemplate.Components.Security
             String? area = method.DeclaringType?.GetCustomAttribute<AreaAttribute>(false)?.RouteValue;
             String? controller = method.DeclaringType?.Name;
 
-            return $"{area}/{controller}/{action}";
+            return $"{area}/{controller}/{action}".Trim('/');
         }
         private Boolean IsAction(MethodInfo method)
         {

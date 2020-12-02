@@ -103,7 +103,7 @@ namespace MvcTemplate.Components.Extensions
             String? controller = context.RouteData.Values["controller"] as String;
             IAuthorization authorization = context.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
-            return authorization.IsGrantedFor(account, $"{area}/{controller}/{action}");
+            return authorization.IsGrantedFor(account, $"{area}/{controller}/{action}".Trim('/'));
         }
         private static IDictionary<String, Object?> RouteFor<T>(T model)
         {

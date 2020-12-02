@@ -26,7 +26,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = context.RouteData.Values["action"] as String;
             String? controller = context.RouteData.Values["controller"] as String;
 
-            if (!Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}"))
+            if (!Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}".Trim('/')))
                 context.Result = new ViewResult
                 {
                     StatusCode = StatusCodes.Status404NotFound,

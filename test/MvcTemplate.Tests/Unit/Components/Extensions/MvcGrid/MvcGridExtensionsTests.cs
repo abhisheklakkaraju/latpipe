@@ -43,16 +43,15 @@ namespace MvcTemplate.Components.Extensions.Tests
         [Fact]
         public void AddAction_Authorized_Renders()
         {
-            AllTypesView view = new();
             StringWriter writer = new();
             IUrlHelper url = context.HttpContext.RequestServices.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(context);
             IAuthorization authorization = html.Grid.ViewContext!.HttpContext.RequestServices.GetRequiredService<IAuthorization>();
 
             url.Action(Arg.Any<UrlActionContext>()).Returns("/test");
-            authorization.IsGrantedFor(Arg.Any<Int64?>(), "//Details").Returns(true);
+            authorization.IsGrantedFor(Arg.Any<Int64?>(), "Details").Returns(true);
 
             IGridColumn<AllTypesView, IHtmlContent> column = columns.AddAction("Details", "fa fa-info");
-            column.ValueFor(new GridRow<AllTypesView>(view, 0)).WriteTo(writer, HtmlEncoder.Default);
+            column.ValueFor(new GridRow<AllTypesView>(new AllTypesView(), 0)).WriteTo(writer, HtmlEncoder.Default);
 
             String expected = $"<a class=\"fa fa-info\" href=\"/test\" title=\"{Resource.ForAction("Details")}\"></a>";
             String actual = writer.ToString();

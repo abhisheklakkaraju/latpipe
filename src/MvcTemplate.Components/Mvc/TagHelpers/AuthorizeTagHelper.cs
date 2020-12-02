@@ -34,7 +34,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = Action ?? ViewContext?.RouteData.Values["action"] as String;
             String? controller = Controller ?? ViewContext?.RouteData.Values["controller"] as String;
 
-            if (!Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}"))
+            if (!Authorization.IsGrantedFor(accountId, $"{area}/{controller}/{action}".Trim('/')))
                 output.SuppressOutput();
         }
     }

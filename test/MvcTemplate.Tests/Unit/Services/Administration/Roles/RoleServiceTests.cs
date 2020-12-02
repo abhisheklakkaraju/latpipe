@@ -296,7 +296,7 @@ namespace MvcTemplate.Services.Tests
                     Id = permission.Id,
                     Area = Resource.ForArea(permission.Area),
                     Action = Resource.ForAction(permission.Action),
-                    Controller = Resource.ForController($"{permission.Area}/{permission.Controller}")
+                    Controller = Resource.ForController($"{permission.Area}/{permission.Controller}".Trim('/'))
                 });
 
             foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault()?.Controller))

@@ -80,7 +80,7 @@ namespace MvcTemplate.Resources
             String? action = path["action"] as String;
             String? controller = path["controller"] as String;
 
-            return ForPage($"{area}/{controller}/{action}");
+            return ForPage($"{area}/{controller}/{action}".Trim('/'));
         }
 
         public static String ForSiteMap(String path)

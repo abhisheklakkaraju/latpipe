@@ -93,7 +93,7 @@ namespace MvcTemplate.Components.Mvc
                 node.Area = (String?)element.Attribute("area") ?? parent?.Area;
                 node.Controller = (String?)element.Attribute("controller") ?? (element.Attribute("area") == null ? parent?.Controller : null);
 
-                node.Path = $"{node.Area}/{node.Controller}/{node.Action}";
+                node.Path = $"{node.Area}/{node.Controller}/{node.Action}".Replace("//", "/").Trim('/');
                 node.Children = Parse(element, node);
                 node.Parent = parent;
 
@@ -128,7 +128,7 @@ namespace MvcTemplate.Components.Mvc
             String? action = route["action"] as String;
             String? area = route["area"] as String;
 
-            return $"{area}/{controller}/{action}";
+            return $"{area}/{controller}/{action}".Trim('/');
         }
         private Boolean IsEmpty(SiteMapNode node)
         {

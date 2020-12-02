@@ -163,7 +163,7 @@ namespace MvcTemplate.Resources.Tests
                 ["action"] = nameof(Profile.Edit)
             };
 
-            String expected = ResourceFor("Shared/Page", "Titles", $"/{nameof(Profile)}/{nameof(Profile.Edit)}");
+            String expected = ResourceFor("Shared/Page", "Titles", $"{nameof(Profile)}/{nameof(Profile.Edit)}");
             String actual = Resource.ForPage(values);
 
             Assert.Equal(expected, actual);
@@ -194,8 +194,8 @@ namespace MvcTemplate.Resources.Tests
         [Fact]
         public void ForSiteMap_WithoutControllerAndAction()
         {
-            String expected = ResourceFor("Shared/SiteMap", "Titles", $"{nameof(Area.Administration)}//");
-            String actual = Resource.ForSiteMap($"{nameof(Area.Administration)}//");
+            String expected = ResourceFor("Shared/SiteMap", "Titles", nameof(Area.Administration));
+            String actual = Resource.ForSiteMap(nameof(Area.Administration));
 
             Assert.Equal(expected, actual);
         }
