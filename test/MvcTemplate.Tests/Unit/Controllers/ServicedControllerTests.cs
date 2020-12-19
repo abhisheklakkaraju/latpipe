@@ -22,7 +22,7 @@ namespace MvcTemplate.Controllers.Tests
         {
             service = Substitute.For<IService>();
             controller = Substitute.ForPartsOf<ServicedController<IService>>(service);
-            ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
+            ActionContext action = new(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             context = new ActionExecutingContext(action, new List<IFilterMetadata>(), new Dictionary<String, Object>(), controller);
 
             controller.ControllerContext.RouteData = new RouteData();

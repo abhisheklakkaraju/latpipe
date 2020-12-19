@@ -24,8 +24,8 @@ namespace MvcTemplate.Controllers.Tests
         {
             service = Substitute.For<IService>();
             validator = Substitute.For<IValidator>();
+            ActionContext action = new(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             controller = Substitute.ForPartsOf<ValidatedController<IValidator, IService>>(validator, service);
-            ActionContext action = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             context = new ActionExecutingContext(action, new List<IFilterMetadata>(), new Dictionary<String, Object>(), controller);
 
             controller.ControllerContext.RouteData = new RouteData();
