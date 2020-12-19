@@ -299,7 +299,7 @@ namespace MvcTemplate.Services.Tests
                     Controller = Resource.ForController($"{permission.Area}/{permission.Controller}".Trim('/'))
                 });
 
-            foreach (IGrouping<String?, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault()?.Controller))
+            foreach (IGrouping<String, PermissionView> area in permissions.GroupBy(permission => permission.Area).OrderBy(permission => permission.Key ?? permission.FirstOrDefault()?.Controller))
             {
                 List<MvcTreeNode> nodes = new();
 
@@ -313,7 +313,7 @@ namespace MvcTemplate.Services.Tests
                     nodes.Add(node);
                 }
 
-                if (area.Key == null)
+                if (area.Key.Length == 0)
                     root.Children.AddRange(nodes);
                 else
                     root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });

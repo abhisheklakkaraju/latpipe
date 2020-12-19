@@ -44,7 +44,7 @@ namespace MvcTemplate.Services
             MvcTreeNode root = new(Resource.ForString("All"));
             permissions.Nodes.Add(root);
 
-            foreach (IGrouping<String?, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
+            foreach (IGrouping<String, PermissionView> area in GetAllPermissions().GroupBy(permission => permission.Area))
             {
                 List<MvcTreeNode> nodes = new();
 
@@ -56,7 +56,7 @@ namespace MvcTemplate.Services
                     nodes.Add(node);
                 }
 
-                if (area.Key == null)
+                if (area.Key.Length == 0)
                     root.Children.AddRange(nodes);
                 else
                     root.Children.Add(new MvcTreeNode(area.Key) { Children = nodes });
