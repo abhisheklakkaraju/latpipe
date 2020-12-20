@@ -11,7 +11,7 @@ namespace MvcTemplate.Components.Mvc
         public EmailAddressAdapter(EmailAddressAttribute attribute)
             : base(attribute, null)
         {
-            attribute.ErrorMessage = Validation.For("Email");
+            attribute.ErrorMessage = Validation.For("EmailAddress");
         }
 
         public override void AddValidation(ClientModelValidationContext context)

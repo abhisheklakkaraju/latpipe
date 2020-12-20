@@ -32,13 +32,13 @@ namespace MvcTemplate.Components.Mvc.Tests
             adapter.AddValidation(context);
 
             Assert.Single(attributes);
-            Assert.Equal(Validation.For("Email", context.ModelMetadata.PropertyName), attributes["data-val-email"]);
+            Assert.Equal(Validation.For("EmailAddress", context.ModelMetadata.PropertyName), attributes["data-val-email"]);
         }
 
         [Fact]
         public void GetErrorMessage_Email()
         {
-            String expected = Validation.For("Email", context.ModelMetadata.PropertyName);
+            String expected = Validation.For("EmailAddress", context.ModelMetadata.PropertyName);
             String actual = adapter.GetErrorMessage(context);
 
             Assert.Equal(expected, actual);
