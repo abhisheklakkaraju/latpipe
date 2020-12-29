@@ -18,7 +18,7 @@ namespace MvcTemplate.Tests
                 IsLocked = false,
 
                 RecoveryToken = $"Token{id}",
-                RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(5),
+                RecoveryTokenExpiration = DateTime.Now.AddMinutes(5),
 
                 Role = CreateRole(id)
             };

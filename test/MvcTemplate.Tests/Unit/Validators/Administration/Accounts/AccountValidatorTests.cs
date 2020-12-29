@@ -68,7 +68,7 @@ namespace MvcTemplate.Validators.Tests
         [Fact]
         public void CanReset_ExpiredToken_ReturnsFalse()
         {
-            account.RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(-5);
+            account.RecoveryTokenExpiration = DateTime.Now.AddMinutes(-5);
             context.Update(account);
             context.SaveChanges();
 

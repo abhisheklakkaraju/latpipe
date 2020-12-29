@@ -22,7 +22,7 @@ namespace MvcTemplate.Objects
 
         [StringLength(36)]
         public String? RecoveryToken { get; set; }
-        public DateTime? RecoveryTokenExpirationDate { get; set; }
+        public DateTime? RecoveryTokenExpiration { get; set; }
 
         public Int64? RoleId { get; set; }
         public virtual Role? Role { get; set; }

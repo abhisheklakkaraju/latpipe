@@ -48,7 +48,7 @@ namespace MvcTemplate.Data.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<DateTime?>("RecoveryTokenExpirationDate")
+                    b.Property<DateTime?>("RecoveryTokenExpiration")
                         .HasColumnType("datetime2");
 
                     b.Property<long?>("RoleId")

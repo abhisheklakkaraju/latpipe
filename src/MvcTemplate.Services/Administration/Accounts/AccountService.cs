@@ -50,7 +50,7 @@ namespace MvcTemplate.Services
             if (account == null)
                 return null;
 
-            account.RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(30);
+            account.RecoveryTokenExpiration = DateTime.Now.AddMinutes(30);
             account.RecoveryToken = Guid.NewGuid().ToString();
 
             UnitOfWork.Update(account);
@@ -62,7 +62,7 @@ namespace MvcTemplate.Services
         {
             Account account = UnitOfWork.Select<Account>().Single(model => model.RecoveryToken == view.Token);
             account.Passhash = Hasher.HashPassword(view.NewPassword);
-            account.RecoveryTokenExpirationDate = null;
+            account.RecoveryTokenExpiration = null;
             account.RecoveryToken = null;
 
             UnitOfWork.Update(account);

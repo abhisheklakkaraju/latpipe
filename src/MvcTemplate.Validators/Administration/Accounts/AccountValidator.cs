@@ -134,7 +134,7 @@ namespace MvcTemplate.Validators
                 .Select<Account>()
                 .Any(account =>
                     account.RecoveryToken == token &&
-                    account.RecoveryTokenExpirationDate > DateTime.Now);
+                    account.RecoveryTokenExpiration > DateTime.Now);
 
             if (!isValid)
                 Alerts.AddError(Validation.For<AccountView>("ExpiredToken"));

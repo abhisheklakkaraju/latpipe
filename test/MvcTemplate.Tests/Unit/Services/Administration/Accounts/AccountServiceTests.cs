@@ -127,7 +127,7 @@ namespace MvcTemplate.Services.Tests
         public void Recover_Information()
         {
             AccountRecoveryView view = ObjectsFactory.CreateAccountRecoveryView(0);
-            account.RecoveryTokenExpirationDate = DateTime.Now.AddMinutes(30);
+            account.RecoveryTokenExpiration = DateTime.Now.AddMinutes(30);
             String? oldToken = account.RecoveryToken;
             view.Email = view.Email.ToUpper();
 
@@ -136,9 +136,9 @@ namespace MvcTemplate.Services.Tests
             Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
-            Assert.InRange(actual.RecoveryTokenExpirationDate!.Value.Ticks,
-                expected.RecoveryTokenExpirationDate.Value.Ticks - TimeSpan.TicksPerSecond,
-                expected.RecoveryTokenExpirationDate.Value.Ticks + TimeSpan.TicksPerSecond);
+            Assert.InRange(actual.RecoveryTokenExpiration!.Value.Ticks,
+                expected.RecoveryTokenExpiration.Value.Ticks - TimeSpan.TicksPerSecond,
+                expected.RecoveryTokenExpiration.Value.Ticks + TimeSpan.TicksPerSecond);
             Assert.Equal(expected.RecoveryToken, actual.RecoveryToken);
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.IsLocked, actual.IsLocked);
@@ -165,7 +165,7 @@ namespace MvcTemplate.Services.Tests
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.IsLocked, actual.IsLocked);
             Assert.Equal(expected.Username, actual.Username);
-            Assert.Null(actual.RecoveryTokenExpirationDate);
+            Assert.Null(actual.RecoveryTokenExpiration);
             Assert.Equal(expected.RoleId, actual.RoleId);
             Assert.Equal(expected.Email, actual.Email);
             Assert.Equal(expected.Id, actual.Id);
@@ -188,7 +188,7 @@ namespace MvcTemplate.Services.Tests
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.Email?.ToLower(), actual.Email);
             Assert.Equal(expected.Username, actual.Username);
-            Assert.Null(actual.RecoveryTokenExpirationDate);
+            Assert.Null(actual.RecoveryTokenExpiration);
             Assert.Equal(expected.RoleId, actual.RoleId);
             Assert.Null(actual.RecoveryToken);
             Assert.False(actual.IsLocked);
@@ -208,7 +208,7 @@ namespace MvcTemplate.Services.Tests
             Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
-            Assert.Equal(expected.RecoveryTokenExpirationDate, actual.RecoveryTokenExpirationDate);
+            Assert.Equal(expected.RecoveryTokenExpiration, actual.RecoveryTokenExpiration);
             Assert.Equal(expected.RecoveryToken, actual.RecoveryToken);
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.IsLocked, actual.IsLocked);
@@ -232,7 +232,7 @@ namespace MvcTemplate.Services.Tests
             Account actual = Assert.Single(context.Set<Account>().AsNoTracking());
             Account expected = account;
 
-            Assert.Equal(expected.RecoveryTokenExpirationDate, actual.RecoveryTokenExpirationDate);
+            Assert.Equal(expected.RecoveryTokenExpiration, actual.RecoveryTokenExpiration);
             Assert.Equal(expected.RecoveryToken, actual.RecoveryToken);
             Assert.Equal(expected.CreationDate, actual.CreationDate);
             Assert.Equal(expected.Email.ToLower(), actual.Email);

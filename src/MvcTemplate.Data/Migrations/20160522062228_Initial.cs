@@ -66,7 +66,7 @@ namespace MvcTemplate.Data.Migrations
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     IsLocked = table.Column<bool>(type: "bit", nullable: false),
                     RecoveryToken = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
-                    RecoveryTokenExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RecoveryTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleId = table.Column<long>(type: "bigint", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
